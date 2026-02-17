@@ -1,0 +1,19 @@
+@import 'bootstrap';
+
+/* Custom styles for eGuidance Portal */
+.card {
+    margin-bottom: 1rem;
+}
+
+.navbar-brand {
+    font-weight: bold;
+}
+
+.badge {
+    font-size: 0.875em;
+}
+
+.btn-sm {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
