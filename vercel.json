@@ -1,0 +1,47 @@
+{
+  "version": 2,
+  "name": "eguidance-portal",
+  "builds": [
+    {
+      "src": "public/index.php",
+      "use": "@vercel/php"
+    },
+    {
+      "src": "api/index.php",
+      "use": "@vercel/php"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.php"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/public/index.php"
+    }
+  ],
+  "env": {
+    "APP_ENV": "production",
+    "APP_DEBUG": "false",
+    "APP_URL": "https://eguidance-portal.vercel.app",
+    "APP_KEY": "",
+    "DB_CONNECTION": "mysql",
+    "DB_HOST": "",
+    "DB_PORT": "3306",
+    "DB_DATABASE": "",
+    "DB_USERNAME": "",
+    "DB_PASSWORD": "",
+    "CACHE_DRIVER": "array",
+    "SESSION_DRIVER": "cookie",
+    "QUEUE_CONNECTION": "sync"
+  },
+  "functions": {
+    "public/index.php": {
+      "runtime": "php@8.2"
+    },
+    "api/index.php": {
+      "runtime": "php@8.2"
+    }
+  }
+}
