@@ -315,24 +315,45 @@
         }
         
         @media (max-width: 768px) {
+            body {
+                align-items: flex-start;
+                padding: 1rem;
+            }
             .login-container {
                 flex-direction: column;
                 width: 100%;
-                max-width: 400px;
+                max-width: 460px;
+                margin: auto;
+                border-radius: 16px;
             }
-            
             .brand-panel {
-                padding: 2rem;
+                padding: 1.5rem 2rem;
                 text-align: center;
             }
-            
             .brand-logo {
                 justify-content: center;
+                margin-bottom: 0.75rem;
             }
-            
+            .brand-heading { font-size: 1.4rem; margin-bottom: 0.5rem; }
+            .brand-description { font-size: 0.875rem; }
+            .brand-features { display: none; }
             .login-panel {
-                padding: 2rem;
+                padding: 1.75rem 2rem;
             }
+            .login-title { font-size: 1.4rem; }
+            .back-link { position: static; margin-bottom: 1rem; display: inline-flex; }
+        }
+        @media (max-width: 480px) {
+            body { padding: 0; align-items: stretch; }
+            .login-container {
+                border-radius: 0;
+                min-height: 100vh;
+                max-width: 100%;
+            }
+            .brand-panel { padding: 1.25rem 1.5rem; }
+            .login-panel { padding: 1.5rem; }
+            .form-group { margin-bottom: 1rem; }
+            .form-input { padding: 0.75rem; font-size: 0.95rem; }
         }
     </style>
 </head>

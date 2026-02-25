@@ -36,6 +36,20 @@ class CounselorController extends Controller
         return view('counselor.concerns.index', compact('concerns'));
     }
 
+    public function showConcern(Concern $concern)
+    {
+        $concern->load(['student', 'category']);
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'concern' => $concern
+            ]);
+        }
+
+        return redirect()->route('counselor.concerns.index');
+    }
+
     public function respondToConcern(Request $request, Concern $concern)
     {
         $request->validate([
@@ -104,7 +118,7 @@ class CounselorController extends Controller
     public function appointments()
     {
         $appointments = Appointment::where('counselor_id', Auth::id())
-            ->with('student')
+            ->with(['student', 'concern'])
             ->orderBy('appointment_date', 'desc')
             ->get();
         
@@ -113,48 +127,79 @@ class CounselorController extends Controller
 
     public function showAppointment(Appointment $appointment)
     {
-        if ($appointment->counselor_id !== Auth::id()) {
+        if ($appointment->counselor_id != Auth::id()) {
             abort(403);
         }
 
-        $appointment->load(['student', 'concern', 'sessionNotes']);
+        $appointment->load(['student', 'concern.category', 'sessionNotes']);
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'appointment' => $appointment
+            ]);
+        }
         
         return view('counselor.appointments.show', compact('appointment'));
     }
 
     public function respondToAppointment(Request $request, Appointment $appointment)
     {
-        if ($appointment->counselor_id !== Auth::id()) {
+        if ($appointment->counselor_id != Auth::id()) {
             abort(403);
         }
 
-        $request->validate([
-            'status' => 'required|in:confirmed,completed,cancelled',
-            'cancellation_reason' => 'required_if:status,cancelled|string',
-            'notes' => 'nullable|string',
-        ]);
-
-        $appointment->update([
-            'status' => $request->status,
-            'cancellation_reason' => $request->cancellation_reason,
-        ]);
-
-        // Create session note if completed
-        if ($request->status === 'completed' && $request->notes) {
-            SessionNote::create([
-                'appointment_id' => $appointment->id,
-                'counselor_id' => Auth::id(),
-                'notes' => $request->notes,
-                'session_type' => 'follow_up',
+        try {
+            $request->validate([
+                'status' => 'required|in:confirmed,completed,cancelled',
+                'cancellation_reason' => 'required_if:status,cancelled|nullable|string',
+                'notes' => 'nullable|string',
             ]);
-        }
 
-        return redirect()->back()->with('success', 'Appointment updated successfully.');
+            $appointment->update([
+                'status' => $request->status,
+                'cancellation_reason' => $request->cancellation_reason,
+            ]);
+
+            // Create session note if completed
+            if ($request->status === 'completed' && $request->notes) {
+                SessionNote::create([
+                    'appointment_id' => $appointment->id,
+                    'counselor_id' => Auth::id(),
+                    'notes' => $request->notes,
+                    'session_type' => 'follow_up',
+                ]);
+            }
+
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Appointment updated successfully.'
+                ]);
+            }
+
+            return redirect()->back()->with('success', 'Appointment updated successfully.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            if ($request->expectsJson()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Failed to update: ' . $e->getMessage()
+                ], 500);
+            }
+            return redirect()->back()->with('error', 'Failed to update appointment.');
+        }
     }
 
     public function createSessionNote(Appointment $appointment)
     {
-        if ($appointment->counselor_id !== Auth::id()) {
+        if ($appointment->counselor_id != Auth::id()) {
             abort(403);
         }
 
@@ -163,7 +208,7 @@ class CounselorController extends Controller
 
     public function storeSessionNote(Request $request, Appointment $appointment)
     {
-        if ($appointment->counselor_id !== Auth::id()) {
+        if ($appointment->counselor_id != Auth::id()) {
             abort(403);
         }
 

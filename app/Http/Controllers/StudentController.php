@@ -117,4 +117,117 @@ class StudentController extends Controller
         
         return view('student.appointments.index', compact('appointments'));
     }
+
+    public function showAppointment(Appointment $appointment)
+    {
+        if ($appointment->student_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $appointment->load('counselor');
+
+        if (request()->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'appointment' => $appointment
+            ]);
+        }
+
+        return view('student.appointments.show', compact('appointment'));
+    }
+
+    public function rescheduleAppointment(Request $request, Appointment $appointment)
+    {
+        if ($appointment->student_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if (!in_array($appointment->status, ['scheduled', 'confirmed'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This appointment cannot be rescheduled.'
+            ], 422);
+        }
+
+        try {
+            $request->validate([
+                'appointment_date' => 'required|date',
+            ]);
+
+            $newDate = \Carbon\Carbon::parse($request->appointment_date);
+
+            if ($newDate->isPast()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The appointment date must be in the future.'
+                ], 422);
+            }
+
+            $appointment->update([
+                'appointment_date' => $newDate,
+                'status' => 'scheduled',
+                'notes' => 'Rescheduled by student. ' . ($appointment->notes ?? ''),
+            ]);
+
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Appointment rescheduled successfully.',
+                    'appointment' => $appointment->fresh()->load('counselor')
+                ]);
+            }
+
+            return redirect()->route('student.appointments.index')
+                ->with('success', 'Appointment rescheduled successfully.');
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation failed.',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to reschedule: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    public function cancelAppointment(Request $request, Appointment $appointment)
+    {
+        if ($appointment->student_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if (!in_array($appointment->status, ['scheduled', 'confirmed'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This appointment cannot be cancelled.'
+            ], 422);
+        }
+
+        try {
+            $appointment->update([
+                'status' => 'cancelled',
+                'cancellation_reason' => $request->reason ?? 'Cancelled by student.',
+            ]);
+
+            if (request()->expectsJson()) {
+                return response()->json([
+                    'success' => true,
+                    'message' => 'Appointment cancelled successfully.'
+                ]);
+            }
+
+            return redirect()->route('student.appointments.index')
+                ->with('success', 'Appointment cancelled successfully.');
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to cancel: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

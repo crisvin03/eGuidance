@@ -18,9 +18,9 @@
                     <thead>
                         <tr>
                             <th>User</th>
-                            <th>Email</th>
+                            <th class="table-hide-mobile">Email</th>
                             <th>Role</th>
-                            <th>Student ID</th>
+                            <th class="table-hide-mobile">Student ID</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -36,7 +36,7 @@
                                         <span>{{ $user->name }}</span>
                                     </div>
                                 </td>
-                                <td>{{ $user->email }}</td>
+                                <td class="table-hide-mobile">{{ $user->email }}</td>
                                 <td>
                                     @if($user->role_id == 3)
                                         <span class="badge badge-danger">Administrator</span>
@@ -46,7 +46,7 @@
                                         <span class="badge badge-info">Student</span>
                                     @endif
                                 </td>
-                                <td>{{ $user->student_id ?? '-' }}</td>
+                                <td class="table-hide-mobile">{{ $user->student_id ?? '-' }}</td>
                                 <td>
                                     @if($user->is_active)
                                         <span class="badge badge-success">Active</span>

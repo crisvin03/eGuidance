@@ -19,9 +19,9 @@
                         <tr>
                             <th>Title</th>
                             <th>Category</th>
-                            <th>Description</th>
+                            <th class="table-hide-mobile">Description</th>
                             <th>Status</th>
-                            <th>Submitted</th>
+                            <th class="table-hide-mobile">Submitted</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -42,7 +42,7 @@
                                 <td>
                                     <span class="badge bg-info">{{ $concern->category->name }}</span>
                                 </td>
-                                <td>
+                                <td class="table-hide-mobile">
                                     <small class="text-muted">{{ Str::limit($concern->description, 80) }}</small>
                                 </td>
                                 <td>
@@ -54,7 +54,7 @@
                                         <span class="badge badge-warning">Pending</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="table-hide-mobile">
                                     <small class="text-muted">{{ $concern->created_at->format('M d, Y') }}</small>
                                 </td>
                                 <td>

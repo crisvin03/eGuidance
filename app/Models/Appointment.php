@@ -34,4 +34,9 @@ class Appointment extends Model
     {
         return $this->belongsTo(Concern::class, 'concern_id');
     }
+
+    public function sessionNotes()
+    {
+        return $this->hasMany(SessionNote::class);
+    }
 }

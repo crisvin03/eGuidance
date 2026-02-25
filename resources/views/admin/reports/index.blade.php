@@ -185,37 +185,30 @@
     <div class="card-body">
         <div class="row">
             <div class="col-md-3 col-sm-6 mb-2">
-                <button class="btn btn-outline-primary w-100" onclick="exportData('concerns')">
+                <a href="{{ route('admin.reports.export.concerns') }}" class="btn btn-outline-primary w-100">
                     <i class="bi bi-download"></i>
                     Export Concerns (CSV)
-                </button>
+                </a>
             </div>
             <div class="col-md-3 col-sm-6 mb-2">
-                <button class="btn btn-success w-100" onclick="exportData('appointments')">
+                <a href="{{ route('admin.reports.export.appointments') }}" class="btn btn-success w-100">
                     <i class="bi bi-download"></i>
                     Export Appointments (CSV)
-                </button>
+                </a>
             </div>
             <div class="col-md-3 col-sm-6 mb-2">
-                <button class="btn btn-info w-100" onclick="exportData('users')">
+                <a href="{{ route('admin.reports.export.users') }}" class="btn btn-info w-100">
                     <i class="bi bi-download"></i>
                     Export Users (CSV)
-                </button>
+                </a>
             </div>
             <div class="col-md-3 col-sm-6 mb-2">
-                <button class="btn btn-secondary w-100" onclick="exportData('reports')">
+                <a href="{{ route('admin.reports.export.full') }}" class="btn btn-secondary w-100">
                     <i class="bi bi-file-earmark-text"></i>
                     Generate Full Report
-                </button>
+                </a>
             </div>
         </div>
     </div>
 </div>
-
-<script>
-function exportData(type) {
-    // In a real application, this would generate and download CSV files
-    alert(`Export ${type} functionality would be implemented here`);
-}
-</script>
 @endsection

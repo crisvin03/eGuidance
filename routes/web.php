@@ -36,12 +36,16 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/appointments/create', [StudentController::class, 'createAppointment'])->name('appointments.create');
     Route::post('/appointments', [StudentController::class, 'storeAppointment'])->name('appointments.store');
     Route::get('/appointments', [StudentController::class, 'myAppointments'])->name('appointments.index');
+    Route::get('/appointments/{appointment}', [StudentController::class, 'showAppointment'])->name('appointments.show');
+    Route::put('/appointments/{appointment}/reschedule', [StudentController::class, 'rescheduleAppointment'])->name('appointments.reschedule');
+    Route::put('/appointments/{appointment}/cancel', [StudentController::class, 'cancelAppointment'])->name('appointments.cancel');
 });
 
 // Counselor routes
 Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counselor.')->group(function () {
     Route::get('/dashboard', [CounselorController::class, 'dashboard'])->name('dashboard');
     Route::get('/concerns', [CounselorController::class, 'concerns'])->name('concerns.index');
+    Route::get('/concerns/{concern}', [CounselorController::class, 'showConcern'])->name('concerns.show');
     Route::post('/concerns/{concern}/respond', [CounselorController::class, 'respondToConcern'])->name('concerns.respond');
     Route::get('/appointments', [CounselorController::class, 'appointments'])->name('appointments.index');
     Route::get('/appointments/{appointment}', [CounselorController::class, 'showAppointment'])->name('appointments.show');
@@ -64,4 +68,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
     Route::put('/categories/{category}', [AdminController::class, 'updateCategory'])->name('categories.update');
     Route::get('/reports', [AdminController::class, 'reports'])->name('reports.index');
+    Route::get('/reports/export/concerns', [AdminController::class, 'exportConcerns'])->name('reports.export.concerns');
+    Route::get('/reports/export/appointments', [AdminController::class, 'exportAppointments'])->name('reports.export.appointments');
+    Route::get('/reports/export/users', [AdminController::class, 'exportUsers'])->name('reports.export.users');
+    Route::get('/reports/export/full', [AdminController::class, 'exportFullReport'])->name('reports.export.full');
 });

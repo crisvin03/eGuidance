@@ -3,6 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'SIGMA Portal') - Guidance & Monitoring Assistance</title>
     
     @vite(['resources/css/app.css'])
@@ -443,27 +444,229 @@
             color: #2563eb;
         }
         
-        /* Mobile Responsive */
-        @media (max-width: 768px) {
+        /* Sidebar overlay backdrop */
+        .sidebar-backdrop {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 999;
+            backdrop-filter: blur(2px);
+        }
+        .sidebar-backdrop.active {
+            display: block;
+        }
+
+        /* Hamburger button - hidden on desktop */
+        .sidebar-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #475569;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 8px;
+            line-height: 1;
+        }
+        .sidebar-toggle:hover { background: #f1f5f9; }
+
+        /* Responsive tables */
+        .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+
+        /* ── Tablet (≤992px) ── */
+        @media (max-width: 992px) {
             .sidebar {
+                width: 260px;
                 transform: translateX(-100%);
+                z-index: 1000;
             }
-            
             .sidebar.active {
                 transform: translateX(0);
             }
-            
             .main-content {
                 margin-left: 0;
             }
-            
+            .sidebar-toggle {
+                display: inline-flex;
+                align-items: center;
+            }
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+            .top-header {
+                padding: 0.875rem 1.25rem;
+            }
+            .content-area {
+                padding: 1.25rem;
+            }
+        }
+
+        /* ── Mobile (≤576px) ── */
+        @media (max-width: 576px) {
+            .sidebar {
+                width: 280px;
+            }
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 0.75rem;
+                margin-bottom: 1rem;
+            }
+            .stat-card {
+                padding: 1rem;
+            }
+            .stat-value {
+                font-size: 1.5rem;
+            }
+            .stat-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            .content-area {
+                padding: 0.875rem;
+            }
+            .top-header {
+                padding: 0.75rem 1rem;
+            }
+            .page-title {
+                font-size: 1.1rem;
+            }
+            /* Hide user name/role text on very small screens */
+            .user-info {
+                display: none;
+            }
+            .user-dropdown {
+                padding: 0.375rem;
+                gap: 0.375rem;
+            }
+            /* Card adjustments */
+            .card-header {
+                padding: 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .card-body {
+                padding: 1rem;
+            }
+            /* Stack card-header flex items */
+            .card-header.d-flex {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            .card-header.d-flex .btn {
+                width: 100%;
+                justify-content: center;
+            }
+            /* Table font size */
+            .table th, .table td {
+                padding: 0.625rem 0.75rem;
+                font-size: 0.8rem;
+            }
+            /* Buttons */
+            .btn {
+                padding: 0.5rem 0.875rem;
+                font-size: 0.8rem;
+            }
+            /* Row cols on mobile */
+            .row > [class*="col-md-"] {
+                margin-bottom: 1rem;
+            }
+            /* Modal full-width on mobile */
+            .modal-dialog {
+                margin: 0.5rem;
+            }
+            .modal-content {
+                border-radius: 12px;
+            }
+        }
+
+        /* ── Extra small (≤400px) ── */
+        @media (max-width: 400px) {
             .stats-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .content-area {
-                padding: 1rem;
+            .stat-card {
+                padding: 0.875rem;
             }
+        }
+
+        /* ── Action buttons: wrap on mobile ── */
+        @media (max-width: 768px) {
+            .btn-group {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.25rem;
+            }
+            .btn-group .btn {
+                border-radius: 6px !important;
+                flex: 1 1 auto;
+                min-width: 0;
+                white-space: nowrap;
+                font-size: 0.75rem;
+                padding: 0.35rem 0.5rem;
+            }
+            /* Hide icon-only labels on very small screens to save space */
+            .btn-sm .btn-label { display: none; }
+        }
+
+        /* ── Bootstrap col-md-6 stacks on mobile ── */
+        @media (max-width: 767px) {
+            .col-md-6, .col-md-4, .col-md-3, .col-md-8 {
+                width: 100%;
+                max-width: 100%;
+                flex: 0 0 100%;
+            }
+            .col-md-6 + .col-md-6 { margin-top: 1rem; }
+        }
+
+        /* ── Forms responsive ── */
+        @media (max-width: 576px) {
+            .form-control, .form-select {
+                font-size: 0.9rem;
+            }
+            /* Alert messages */
+            .alert { font-size: 0.875rem; padding: 0.75rem 1rem; }
+            /* Modal dialog full width */
+            .modal-dialog { margin: 0.375rem; max-width: calc(100vw - 0.75rem); }
+            .modal-lg { max-width: calc(100vw - 0.75rem); }
+            .modal-body { padding: 1rem; }
+            .modal-header { padding: 0.875rem 1rem; }
+            .modal-footer {
+                padding: 0.75rem 1rem;
+                flex-wrap: wrap;
+                gap: 0.5rem;
+            }
+            .modal-footer .btn { flex: 1; justify-content: center; }
+            /* Table: hide less important columns on mobile */
+            .table-hide-mobile { display: none; }
+            /* Stat change text truncate */
+            .stat-change { font-size: 0.7rem; }
+            /* Nav badge */
+            .nav-link-badge { font-size: 0.65rem; padding: 0.1rem 0.4rem; }
+        }
+
+        /* ── Sidebar close button ── */
+        .sidebar-close {
+            display: none;
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.25rem;
+            color: #64748b;
+            cursor: pointer;
+            padding: 0.25rem;
+            border-radius: 6px;
+            line-height: 1;
+        }
+        .sidebar-close:hover { background: #f1f5f9; }
+        @media (max-width: 992px) {
+            .sidebar-header { position: relative; padding-right: 3rem; }
+            .sidebar-close { display: block; }
         }
     </style>
 </head>
@@ -478,6 +681,9 @@
                     <span class="sidebar-logo-subtitle">Guidance & Monitoring Assistance</span>
                 </div>
             </a>
+            <button class="sidebar-close" onclick="closeSidebar()" aria-label="Close menu">
+                <i class="bi bi-x-lg"></i>
+            </button>
         </div>
         
         <nav class="sidebar-nav">
@@ -559,7 +765,7 @@
         <!-- Top Header -->
         <header class="top-header">
             <div class="header-left">
-                <button class="btn btn-secondary d-md-none" onclick="toggleSidebar()">
+                <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" aria-label="Toggle menu">
                     <i class="bi bi-list"></i>
                 </button>
                 <h1 class="page-title">@yield('title', 'Dashboard')</h1>
@@ -606,11 +812,36 @@
         </div>
     </main>
     
+    <!-- Sidebar backdrop -->  
+    <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('active');
+            const sidebar  = document.getElementById('sidebar');
+            const backdrop = document.getElementById('sidebarBackdrop');
+            sidebar.classList.toggle('active');
+            backdrop.classList.toggle('active');
+            document.body.style.overflow = sidebar.classList.contains('active') ? 'hidden' : '';
         }
+
+        function closeSidebar() {
+            document.getElementById('sidebar').classList.remove('active');
+            document.getElementById('sidebarBackdrop').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+
+        // Close sidebar on nav link click (mobile)
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                if (window.innerWidth <= 992) closeSidebar();
+            });
+        });
+
+        // Close sidebar on resize to desktop
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 992) closeSidebar();
+        });
     </script>
 </body>
 </html>

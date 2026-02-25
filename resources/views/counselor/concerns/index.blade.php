@@ -291,10 +291,10 @@
                             <th>Student</th>
                             <th>Title</th>
                             <th>Category</th>
-                            <th>Description</th>
+                            <th class="table-hide-mobile">Description</th>
                             <th>Status</th>
-                            <th>Counseling Date</th>
-                            <th>Submitted</th>
+                            <th class="table-hide-mobile">Counseling Date</th>
+                            <th class="table-hide-mobile">Submitted</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -324,7 +324,7 @@
                                 <td>
                                     <span class="badge bg-info">{{ $concern->category->name }}</span>
                                 </td>
-                                <td>
+                                <td class="table-hide-mobile">
                                     <small class="text-muted">{{ Str::limit($concern->description, 80) }}</small>
                                 </td>
                                 <td>
@@ -336,7 +336,7 @@
                                         <span class="badge badge-warning">Pending</span>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="table-hide-mobile">
                                     @if($concern->counseling_date)
                                         <small class="text-muted">
                                             <i class="bi bi-calendar-check"></i>
@@ -346,7 +346,7 @@
                                         <small class="text-muted">Not scheduled</small>
                                     @endif
                                 </td>
-                                <td>
+                                <td class="table-hide-mobile">
                                     <small class="text-muted">{{ $concern->created_at->format('M d, Y') }}</small>
                                 </td>
                                 <td>
@@ -409,18 +409,14 @@
                 <div class="modal-body">
                     <input type="hidden" name="concern_id" id="response_concern_id">
                     
+                    <input type="hidden" name="status" value="scheduled">
+
                     <div class="mb-3">
-                        <label for="status" class="form-label">Update Status</label>
-                        <select class="form-select" name="status" id="status" required onchange="toggleCounselingDate()">
-                            <option value="under_review">Under Review</option>
-                            <option value="scheduled">Scheduled for Counseling</option>
-                            <option value="resolved">Resolved</option>
-                        </select>
-                    </div>
-                    
-                    <div class="mb-3" id="counselingDateGroup" style="display: none;">
-                        <label for="counseling_date" class="form-label">Counseling Date & Time</label>
-                        <input type="datetime-local" class="form-control" name="counseling_date" id="counseling_date" min="">
+                        <label for="counseling_date" class="form-label">
+                            <i class="bi bi-calendar3 me-1"></i>Counseling Date & Time <span class="text-danger">*</span>
+                        </label>
+                        <input type="datetime-local" class="form-control" name="counseling_date" id="counseling_date"
+                            min="{{ now()->format('Y-m-d\TH:i') }}" required>
                         <small class="text-muted">Select the date and time for the counseling session</small>
                     </div>
                     
@@ -488,13 +484,103 @@
 
 <script>
 function showDetails(concernId) {
-    // In a real application, you would fetch this data via AJAX
     const modal = new bootstrap.Modal(document.getElementById('concernModal'));
     document.querySelector('#concernModal .modal-body').innerHTML = `
-        <p><strong>Loading concern details...</strong></p>
-        <p>This would show the full concern details including any previous responses.</p>
-    `;
+        <div class="text-center py-4">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Loading concern details...</p>
+        </div>`;
     modal.show();
+
+    fetch(`/counselor/concerns/${concernId}`, {
+        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
+    })
+    .then(r => r.json().then(data => ({ ok: r.ok, data })))
+    .then(({ ok, data }) => {
+        if (!ok || !data.success) throw new Error('Failed to load');
+        const c = data.concern;
+
+        let statusBadge = '';
+        if (c.status === 'resolved')      statusBadge = '<span class="badge bg-success">Resolved</span>';
+        else if (c.status === 'scheduled') statusBadge = '<span class="badge bg-info">Scheduled</span>';
+        else if (c.status === 'under_review') statusBadge = '<span class="badge bg-warning text-dark">Under Review</span>';
+        else statusBadge = '<span class="badge bg-secondary">Submitted</span>';
+
+        const submitted = new Date(c.created_at).toLocaleDateString('en-US', {
+            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+        });
+
+        let html = `
+            <div class="row g-3">
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <small class="text-muted d-block mb-1">Student</small>
+                        <strong>${c.is_anonymous ? '<i class="bi bi-incognito me-1"></i>Anonymous' : c.student.name}</strong>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <small class="text-muted d-block mb-1">Status</small>
+                        ${statusBadge}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <small class="text-muted d-block mb-1">Category</small>
+                        <span class="badge bg-info">${c.category.name}</span>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="p-3 bg-light rounded">
+                        <small class="text-muted d-block mb-1">Submitted</small>
+                        <small>${submitted}</small>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="p-3 bg-light rounded">
+                        <small class="text-muted d-block mb-1"><i class="bi bi-chat-dots me-1"></i>Title</small>
+                        <strong>${c.title}</strong>
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="p-3 bg-light rounded">
+                        <small class="text-muted d-block mb-1"><i class="bi bi-text-paragraph me-1"></i>Description</small>
+                        <p class="mb-0">${c.description.replace(/\n/g, '<br>')}</p>
+                    </div>
+                </div>`;
+
+        if (c.counseling_date) {
+            const cDate = new Date(c.counseling_date).toLocaleDateString('en-US', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
+            });
+            html += `
+                <div class="col-12">
+                    <div class="alert alert-warning mb-0">
+                        <i class="bi bi-calendar-check me-2"></i>
+                        <strong>Counseling Scheduled:</strong> ${cDate}
+                    </div>
+                </div>`;
+        }
+
+        if (c.counselor_response) {
+            html += `
+                <div class="col-12">
+                    <div class="alert alert-info mb-0">
+                        <h6 class="alert-heading"><i class="bi bi-person-check-fill me-1"></i>Counselor Response</h6>
+                        <p class="mb-0">${c.counselor_response.replace(/\n/g, '<br>')}</p>
+                    </div>
+                </div>`;
+        }
+
+        html += `</div>`;
+        document.querySelector('#concernModal .modal-body').innerHTML = html;
+    })
+    .catch(() => {
+        document.querySelector('#concernModal .modal-body').innerHTML = `
+            <div class="alert alert-danger">
+                <i class="bi bi-exclamation-triangle me-2"></i>Failed to load concern details. Please try again.
+            </div>`;
+    });
 }
 
 function respondToConcern(concernId) {
@@ -509,8 +595,6 @@ function respondToConcern(concernId) {
     document.getElementById('counseling_date').min = localDateTime;
     
     // Reset form
-    document.getElementById('status').value = 'under_review';
-    document.getElementById('counselingDateGroup').style.display = 'none';
     document.getElementById('counseling_date').value = '';
     document.getElementById('response').value = '';
     
@@ -518,32 +602,18 @@ function respondToConcern(concernId) {
     modal.show();
 }
 
-function toggleCounselingDate() {
-    const status = document.getElementById('status').value;
-    const counselingDateGroup = document.getElementById('counselingDateGroup');
-    
-    if (status === 'scheduled') {
-        counselingDateGroup.style.display = 'block';
-        document.getElementById('counseling_date').required = true;
-    } else {
-        counselingDateGroup.style.display = 'none';
-        document.getElementById('counseling_date').required = false;
-        document.getElementById('counseling_date').value = '';
-    }
-}
 
 document.getElementById('responseForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
-    const status = formData.get('status');
-    
-    // Validate counseling date if status is scheduled
-    if (status === 'scheduled' && !formData.get('counseling_date')) {
-        alert('Please select a counseling date and time when scheduling a session.');
+
+    // Validate counseling date
+    if (!formData.get('counseling_date')) {
+        alert('Please select a counseling date and time.');
         return;
     }
-    
+
     // Get form data
     const concernId = formData.get('concern_id');
     const response = formData.get('response');
