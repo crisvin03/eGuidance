@@ -25,7 +25,7 @@
             justify-content: center;
             background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #3d7a7a 100%);
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
         }
         
         body::before {
@@ -318,37 +318,41 @@
             body {
                 align-items: flex-start;
                 padding: 1rem;
+                overflow-y: auto;
             }
             .login-container {
                 flex-direction: column;
                 width: 100%;
-                max-width: 460px;
-                margin: auto;
+                max-width: 480px;
+                margin: 1rem auto;
                 border-radius: 16px;
+                min-height: auto;
             }
             .brand-panel {
-                padding: 1.5rem 2rem;
+                padding: 2rem 1.5rem;
                 text-align: center;
+                min-height: auto;
             }
             .brand-logo {
                 justify-content: center;
-                margin-bottom: 0.75rem;
+                margin-bottom: 1rem;
             }
             .brand-heading { font-size: 1.4rem; margin-bottom: 0.5rem; }
-            .brand-description { font-size: 0.875rem; }
+            .brand-description { font-size: 0.9rem; margin-bottom: 1rem; }
             .brand-features { display: none; }
             .login-panel {
-                padding: 1.75rem 2rem;
+                padding: 2rem 1.5rem;
             }
             .login-title { font-size: 1.4rem; }
             .back-link { position: static; margin-bottom: 1rem; display: inline-flex; }
         }
         @media (max-width: 480px) {
-            body { padding: 0; align-items: stretch; }
+            body { padding: 0; overflow-y: auto; align-items: flex-start; }
             .login-container {
                 border-radius: 0;
                 min-height: 100vh;
                 max-width: 100%;
+                margin: 0;
             }
             .brand-panel { padding: 1.25rem 1.5rem; }
             .login-panel { padding: 1.5rem; }
