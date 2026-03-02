@@ -11,7 +11,7 @@
                 <p class="card-text text-muted">Share your concerns with our guidance counselors for support and assistance.</p>
             </div>
             <div class="card-body">
-                <form method="POST" action="{{ route('student.concerns.store') }}">
+                <form method="POST" action="{{ route('student.concerns.store') }}" enctype="multipart/form-data">
                     @csrf
                     
                     <div class="mb-4">
@@ -52,6 +52,19 @@
                             <span class="invalid-feedback" role="alert">
                                 <strong>{{ $message }}</strong>
                             </span>
+                        @enderror
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">
+                            <i class="bi bi-paperclip me-2"></i>Attachment <span class="text-muted">(Optional)</span>
+                        </label>
+                        <input type="file" id="attachment" name="attachment"
+                               class="form-control @error('attachment') is-invalid @enderror"
+                               accept=".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx">
+                        <small class="text-muted">Accepted: JPG, PNG, GIF, PDF, DOC, DOCX &mdash; Max 5MB</small>
+                        @error('attachment')
+                            <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                         @enderror
                     </div>
 

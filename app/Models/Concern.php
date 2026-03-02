@@ -19,7 +19,9 @@ class Concern extends Model
         'counseling_date',
         'response',
         'counselor_response',
-        'resolved_at'
+        'resolved_at',
+        'attachment_path',
+        'attachment_name'
     ];
 
     protected $casts = [

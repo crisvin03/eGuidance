@@ -351,11 +351,10 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <button class="btn btn-primary btn-sm" onclick="showDetails({{ $concern->id }})">
-                                            <i class="bi bi-eye"></i>
-                                            View
-                                        </button>
-                                        @if($concern->status !== 'resolved')
+                                        <a href="{{ route('counselor.concerns.show', $concern->id) }}" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-eye"></i> View
+                                        </a>
+                                        @if(!in_array($concern->status, ['resolved', 'scheduled']))
                                             <button class="btn btn-success btn-sm" onclick="respondToConcern({{ $concern->id }})">
                                                 <i class="bi bi-reply"></i>
                                                 Respond

@@ -70,15 +70,17 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group" id="appt-actions-{{ $appointment->id }}">
-                                        <button class="btn btn-primary btn-sm" onclick="viewAppointment({{ $appointment->id }})">
+                                        <a href="{{ route('counselor.appointments.show', $appointment->id) }}" class="btn btn-primary btn-sm">
                                             <i class="bi bi-eye"></i> View
-                                        </button>
-                                        @if(in_array($appointment->status, ['scheduled', 'confirmed']))
-                                            @if($appointment->status == 'scheduled')
-                                                <button class="btn btn-success btn-sm" onclick="openConfirm({{ $appointment->id }})">
-                                                    <i class="bi bi-check-circle"></i> Confirm
-                                                </button>
-                                            @endif
+                                        </a>
+                                        @if($appointment->status == 'scheduled')
+                                            <button class="btn btn-success btn-sm" onclick="openConfirm({{ $appointment->id }})">
+                                                <i class="bi bi-check-circle"></i> Confirm
+                                            </button>
+                                            <button class="btn btn-danger btn-sm" onclick="openCancel({{ $appointment->id }})">
+                                                <i class="bi bi-x-circle"></i> Cancel
+                                            </button>
+                                        @elseif($appointment->status == 'confirmed')
                                             <button class="btn btn-warning btn-sm" onclick="openComplete({{ $appointment->id }})">
                                                 <i class="bi bi-check2-all"></i> Complete
                                             </button>
@@ -376,16 +378,16 @@ function submitStatus(status) {
             // Remove action buttons for terminal states
             if (status === 'completed' || status === 'cancelled') {
                 const actions = document.getElementById(`appt-actions-${currentAppointmentId}`);
-                actions.innerHTML = `<button class="btn btn-primary btn-sm" onclick="viewAppointment(${currentAppointmentId})">
+                actions.innerHTML = `<a href="/counselor/appointments/${currentAppointmentId}" class="btn btn-primary btn-sm">
                     <i class="bi bi-eye"></i> View
-                </button>`;
+                </a>`;
             } else if (status === 'confirmed') {
                 // Remove confirm button, keep complete and cancel
                 const actions = document.getElementById(`appt-actions-${currentAppointmentId}`);
                 actions.innerHTML = `
-                    <button class="btn btn-primary btn-sm" onclick="viewAppointment(${currentAppointmentId})">
+                    <a href="/counselor/appointments/${currentAppointmentId}" class="btn btn-primary btn-sm">
                         <i class="bi bi-eye"></i> View
-                    </button>
+                    </a>
                     <button class="btn btn-warning btn-sm" onclick="openComplete(${currentAppointmentId})">
                         <i class="bi bi-check2-all"></i> Complete
                     </button>

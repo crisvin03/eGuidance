@@ -25,7 +25,8 @@
             justify-content: center;
             background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #3d7a7a 100%);
             position: relative;
-            overflow: hidden;
+            overflow-y: auto;
+            padding: 1.5rem 0;
         }
         
         body::before {

@@ -3,6 +3,18 @@
 @section('title', 'Settings')
 
 @section('content')
+@if(session('success'))
+    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
+@if($errors->any())
+    <div class="alert alert-danger alert-dismissible fade show mb-4" role="alert">
+        <i class="bi bi-exclamation-circle me-2"></i>{{ $errors->first() }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+@endif
 <div class="row">
     <div class="col-md-8">
         <div class="card">
@@ -17,19 +29,19 @@
                     <div class="mb-4">
                         <h6 class="mb-3">Email Notifications</h6>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="email_concerns" name="email_concerns" checked>
+                            <input class="form-check-input" type="checkbox" id="email_concerns" name="email_concerns" {{ ($settings['email_concerns'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="email_concerns">
                                 Concern updates and responses
                             </label>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="email_appointments" name="email_appointments" checked>
+                            <input class="form-check-input" type="checkbox" id="email_appointments" name="email_appointments" {{ ($settings['email_appointments'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="email_appointments">
                                 Appointment reminders and updates
                             </label>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="email_system" name="email_system" checked>
+                            <input class="form-check-input" type="checkbox" id="email_system" name="email_system" {{ ($settings['email_system'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="email_system">
                                 System announcements and updates
                             </label>
@@ -39,19 +51,19 @@
                     <div class="mb-4">
                         <h6 class="mb-3">In-App Notifications</h6>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="app_concerns" name="app_concerns" checked>
+                            <input class="form-check-input" type="checkbox" id="app_concerns" name="app_concerns" {{ ($settings['app_concerns'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="app_concerns">
                                 New concerns and responses
                             </label>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="app_appointments" name="app_appointments" checked>
+                            <input class="form-check-input" type="checkbox" id="app_appointments" name="app_appointments" {{ ($settings['app_appointments'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="app_appointments">
                                 Appointment notifications
                             </label>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="app_messages" name="app_messages" checked>
+                            <input class="form-check-input" type="checkbox" id="app_messages" name="app_messages" {{ ($settings['app_messages'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="app_messages">
                                 Messages and communications
                             </label>
@@ -78,20 +90,20 @@
                     <div class="mb-4">
                         <h6 class="mb-3">Profile Visibility</h6>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="show_email" name="show_email">
+                            <input class="form-check-input" type="checkbox" id="show_email" name="show_email" {{ ($settings['show_email'] ?? false) ? 'checked' : '' }}>
                             <label class="form-check-label" for="show_email">
                                 Show email address to other users
                             </label>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="show_phone" name="show_phone">
+                            <input class="form-check-input" type="checkbox" id="show_phone" name="show_phone" {{ ($settings['show_phone'] ?? false) ? 'checked' : '' }}>
                             <label class="form-check-label" for="show_phone">
                                 Show phone number to counselors
                             </label>
                         </div>
                         @if(Auth::user()->role_id == 1)
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="anonymous_default" name="anonymous_default">
+                            <input class="form-check-input" type="checkbox" id="anonymous_default" name="anonymous_default" {{ ($settings['anonymous_default'] ?? false) ? 'checked' : '' }}>
                             <label class="form-check-label" for="anonymous_default">
                                 Submit concerns anonymously by default
                             </label>
@@ -102,13 +114,13 @@
                     <div class="mb-4">
                         <h6 class="mb-3">Data & Privacy</h6>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="data_analytics" name="data_analytics" checked>
+                            <input class="form-check-input" type="checkbox" id="data_analytics" name="data_analytics" {{ ($settings['data_analytics'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="data_analytics">
                                 Allow usage analytics for improvement
                             </label>
                         </div>
                         <div class="form-check form-switch mb-2">
-                            <input class="form-check-input" type="checkbox" id="remember_login" name="remember_login" checked>
+                            <input class="form-check-input" type="checkbox" id="remember_login" name="remember_login" {{ ($settings['remember_login'] ?? true) ? 'checked' : '' }}>
                             <label class="form-check-label" for="remember_login">
                                 Remember login session
                             </label>
@@ -138,7 +150,7 @@
                         <select class="form-select" id="preferred_counselor" name="preferred_counselor">
                             <option value="">No Preference</option>
                             @foreach(App\Models\User::where('role_id', 2)->where('is_active', 1)->get() as $counselor)
-                                <option value="{{ $counselor->id }}">{{ $counselor->name }}</option>
+                                <option value="{{ $counselor->id }}" {{ ($settings['preferred_counselor'] ?? '') == $counselor->id ? 'selected' : '' }}>{{ $counselor->name }}</option>
                             @endforeach
                         </select>
                     </div>
@@ -146,19 +158,19 @@
                     <div class="mb-3">
                         <label for="appointment_reminder" class="form-label">Appointment Reminder Time</label>
                         <select class="form-select" id="appointment_reminder" name="appointment_reminder">
-                            <option value="15">15 minutes before</option>
-                            <option value="30" selected>30 minutes before</option>
-                            <option value="60">1 hour before</option>
-                            <option value="1440">1 day before</option>
+                            <option value="15" {{ ($settings['appointment_reminder'] ?? '30') == '15' ? 'selected' : '' }}>15 minutes before</option>
+                            <option value="30" {{ ($settings['appointment_reminder'] ?? '30') == '30' ? 'selected' : '' }}>30 minutes before</option>
+                            <option value="60" {{ ($settings['appointment_reminder'] ?? '30') == '60' ? 'selected' : '' }}>1 hour before</option>
+                            <option value="1440" {{ ($settings['appointment_reminder'] ?? '30') == '1440' ? 'selected' : '' }}>1 day before</option>
                         </select>
                     </div>
                     
                     <div class="mb-3">
                         <label for="contact_method" class="form-label">Preferred Contact Method</label>
                         <select class="form-select" id="contact_method" name="contact_method">
-                            <option value="email" selected>Email</option>
-                            <option value="phone">Phone</option>
-                            <option value="both">Both</option>
+                            <option value="email" {{ ($settings['contact_method'] ?? 'email') == 'email' ? 'selected' : '' }}>Email</option>
+                            <option value="phone" {{ ($settings['contact_method'] ?? 'email') == 'phone' ? 'selected' : '' }}>Phone</option>
+                            <option value="both" {{ ($settings['contact_method'] ?? 'email') == 'both' ? 'selected' : '' }}>Both</option>
                         </select>
                     </div>
                     

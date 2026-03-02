@@ -28,6 +28,8 @@ class User extends Authenticatable
         'gender',
         'address',
         'is_active',
+        'settings',
+        'profile_photo',
     ];
 
     /**
@@ -52,6 +54,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'date_of_birth' => 'date',
             'is_active' => 'boolean',
+            'settings' => 'array',
         ];
     }
 

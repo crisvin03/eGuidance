@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Concern;
 use App\Models\Appointment;
 use App\Models\SessionNote;
+use App\Mail\ConcernScheduled;
+use App\Mail\AppointmentConfirmed;
 
 class CounselorController extends Controller
 {
@@ -47,7 +50,7 @@ class CounselorController extends Controller
             ]);
         }
 
-        return redirect()->route('counselor.concerns.index');
+        return view('counselor.concerns.show', compact('concern'));
     }
 
     public function respondToConcern(Request $request, Concern $concern)
@@ -89,6 +92,17 @@ class CounselorController extends Controller
                         'status' => 'scheduled',
                         'notes' => 'Appointment rescheduled for concern: ' . $concern->title
                     ]);
+                }
+            }
+
+            // Send email notification when concern is scheduled
+            if ($request->status === 'scheduled') {
+                $concern->load(['student', 'category']);
+                try {
+                    Mail::to($concern->student->email)->send(new ConcernScheduled($concern));
+                } catch (\Exception $mailEx) {
+                    // Don't fail the whole request if mail fails
+                    \Log::warning('Could not send concern scheduled email: ' . $mailEx->getMessage());
                 }
             }
 
@@ -160,6 +174,16 @@ class CounselorController extends Controller
                 'status' => $request->status,
                 'cancellation_reason' => $request->cancellation_reason,
             ]);
+
+            // Send email notification when appointment is confirmed
+            if ($request->status === 'confirmed') {
+                $appointment->load(['student', 'counselor', 'concern']);
+                try {
+                    Mail::to($appointment->student->email)->send(new AppointmentConfirmed($appointment));
+                } catch (\Exception $mailEx) {
+                    \Log::warning('Could not send appointment confirmed email: ' . $mailEx->getMessage());
+                }
+            }
 
             // Create session note if completed
             if ($request->status === 'completed' && $request->notes) {

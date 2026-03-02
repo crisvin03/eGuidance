@@ -19,20 +19,13 @@
         
         body {
             font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #3d7a7a 100%);
             position: relative;
             overflow: hidden;
-        }
-        
-        /* Desktop only - prevent scroll */
-        @media (min-width: 769px) {
-            body {
-                overflow: hidden !important;
-            }
         }
         
         body::before {
@@ -51,7 +44,6 @@
         .register-container {
             display: flex;
             width: min(900px, 95vw);
-            max-height: 90vh;
             background: white;
             border-radius: 24px;
             overflow: hidden;
@@ -304,67 +296,40 @@
         @media (max-width: 768px) {
             body {
                 align-items: flex-start;
-                padding: 1rem;
-                overflow-y: auto !important;
+                overflow: auto !important;
                 height: auto;
                 min-height: 100vh;
+                padding: 0;
             }
             .register-container {
                 flex-direction: column;
                 width: 100%;
-                max-width: 480px;
-                margin: 1rem auto;
-                border-radius: 16px;
-                min-height: auto;
-                max-height: none;
+                border-radius: 0;
+                min-height: 100vh;
                 overflow: visible;
             }
             .brand-panel {
-                padding: 1.5rem;
+                padding: 1.25rem 1.5rem;
                 text-align: center;
                 min-height: auto;
             }
             .brand-logo {
                 justify-content: center;
-                margin-bottom: 0.75rem;
+                margin-bottom: 0.5rem;
             }
-            .brand-logo img { width: 40px; height: 40px; }
-            .brand-logo-text h2 { font-size: 1.3rem; }
-            .brand-heading { font-size: 1.3rem; margin-bottom: 0.4rem; }
-            .brand-description { font-size: 0.85rem; margin-bottom: 0; }
+            .brand-logo img { width: 36px; height: 36px; }
+            .brand-logo-text h2 { font-size: 1.2rem; }
+            .brand-heading { font-size: 1.1rem; margin-bottom: 0.3rem; }
+            .brand-description { font-size: 0.8rem; margin-bottom: 0; }
             .brand-features { display: none; }
-            .register-panel { padding: 1.5rem; }
-            .register-title { font-size: 1.4rem; margin-bottom: 0.25rem; }
-            .register-subtitle { margin-bottom: 1rem; font-size: 0.875rem; }
-            .form-group { margin-bottom: 0.875rem; }
-            .form-input { padding: 0.7rem 1rem; font-size: 0.95rem; }
-            .submit-btn { padding: 0.8rem; }
-            .login-link { margin-top: 1rem; padding-top: 1rem; }
-        }
-        
-        @media (max-width: 480px) {
-            body { 
-                padding: 0; 
-                overflow-y: auto !important; 
-                align-items: flex-start;
-                height: auto;
-                min-height: 100vh;
-            }
-            .register-container {
-                border-radius: 0;
-                min-height: 100vh;
-                max-width: 100%;
-                margin: 0;
-                max-height: none;
-                overflow: visible;
-            }
-            .brand-panel { padding: 1.25rem 1.5rem; }
-            .register-panel { padding: 1.5rem; }
-            .form-group { margin-bottom: 0.875rem; }
-            .form-input { padding: 0.7rem 1rem; font-size: 0.95rem; }
-            .register-title { font-size: 1.3rem; }
-            .submit-btn { padding: 0.8rem; }
-            .login-link { margin-top: 1rem; padding-top: 1rem; }
+            .register-panel { padding: 1.25rem 1.5rem; justify-content: flex-start; }
+            .register-title { font-size: 1.3rem; margin-bottom: 0.2rem; }
+            .register-subtitle { margin-bottom: 0.75rem; font-size: 0.85rem; }
+            .form-group { margin-bottom: 0.6rem; }
+            .form-label { margin-bottom: 0.3rem; font-size: 0.85rem; }
+            .form-input { padding: 0.55rem 0.875rem; font-size: 0.9rem; border-radius: 10px; }
+            .submit-btn { padding: 0.7rem; font-size: 0.95rem; margin-top: 0.25rem; }
+            .login-link { margin-top: 0.75rem; padding-top: 0.75rem; font-size: 0.85rem; }
         }
     </style>
 </head>

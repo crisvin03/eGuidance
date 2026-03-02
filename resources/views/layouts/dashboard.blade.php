@@ -33,7 +33,7 @@
             background: #ffffff;
             z-index: 1000;
             transition: all 0.3s ease;
-            overflow-y: auto;
+            overflow-y: hidden;
             box-shadow: 2px 0 10px rgba(0,0,0,0.1);
         }
         
@@ -648,6 +648,26 @@
             .nav-link-badge { font-size: 0.65rem; padding: 0.1rem 0.4rem; }
         }
 
+        .sidebar-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #e2e8f0;
+            margin-top: auto;
+        }
+
+        .sidebar-dev-credit {
+            font-size: 0.7rem;
+            color: #94a3b8;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .sidebar-dev-credit span {
+            font-weight: 600;
+            color: #64748b;
+        }
+
         /* ── Sidebar close button ── */
         .sidebar-close {
             display: none;
@@ -686,7 +706,7 @@
             </button>
         </div>
         
-        <nav class="sidebar-nav">
+        <nav class="sidebar-nav" style="display:flex; flex-direction:column; height:calc(100vh - 81px);">
             @auth
                 @if(Auth::user()->role_id == 1) <!-- Student -->
                     <div class="nav-section">
@@ -706,6 +726,10 @@
                         <a href="{{ route('student.appointments.index') }}" class="nav-link @if(request()->is('student/appointments*')) active @endif">
                             <i class="bi bi-calendar3"></i>
                             <span class="nav-link-text">Appointments</span>
+                        </a>
+                        <a href="{{ route('student.resources') }}" class="nav-link @if(request()->is('student/resources')) active @endif">
+                            <i class="bi bi-journal-bookmark"></i>
+                            <span class="nav-link-text">Resources</span>
                         </a>
                     </div>
                     
@@ -757,6 +781,13 @@
                     </a>
                 </div>
             @endauth
+
+            <div style="flex:1;"></div>
+            <div class="sidebar-footer">
+                <div class="sidebar-dev-credit">
+                    Developed by <span>Crisvin Habitsuela</span>
+                </div>
+            </div>
         </nav>
     </aside>
     
@@ -774,9 +805,16 @@
             <div class="header-right">
                 @auth
                     <div class="user-dropdown dropdown-toggle" data-bs-toggle="dropdown">
-                        <div class="user-avatar">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
-                        </div>
+                        @if(Auth::user()->profile_photo)
+                            <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
+                                 alt="{{ Auth::user()->name }}"
+                                 class="user-avatar"
+                                 style="object-fit:cover;padding:0;">
+                        @else
+                            <div class="user-avatar">
+                                {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                            </div>
+                        @endif
                         <div class="user-info">
                             <span class="user-name">{{ Auth::user()->name }}</span>
                             <span class="user-role">

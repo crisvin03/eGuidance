@@ -22,6 +22,11 @@ class StudentController extends Controller
         return view('student.dashboard', compact('concerns', 'appointments'));
     }
 
+    public function resources()
+    {
+        return view('student.resources');
+    }
+
     public function createConcern()
     {
         $categories = ConcernCategory::where('is_active', true)->get();
@@ -31,18 +36,29 @@ class StudentController extends Controller
     public function storeConcern(Request $request)
     {
         $request->validate([
-            'category_id' => 'required|exists:concern_categories,id',
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
+            'category_id'  => 'required|exists:concern_categories,id',
+            'title'        => 'required|string|max:255',
+            'description'  => 'required|string',
             'is_anonymous' => 'boolean',
+            'attachment'   => 'nullable|file|mimes:jpg,jpeg,png,gif,pdf,doc,docx|max:5120',
         ]);
 
+        $attachmentPath = null;
+        $attachmentName = null;
+        if ($request->hasFile('attachment')) {
+            $file = $request->file('attachment');
+            $attachmentName = $file->getClientOriginalName();
+            $attachmentPath = $file->store('concern-attachments', 'public');
+        }
+
         Concern::create([
-            'student_id' => Auth::id(),
-            'category_id' => $request->category_id,
-            'title' => $request->title,
-            'description' => $request->description,
-            'is_anonymous' => $request->boolean('is_anonymous', false),
+            'student_id'      => Auth::id(),
+            'category_id'     => $request->category_id,
+            'title'           => $request->title,
+            'description'     => $request->description,
+            'is_anonymous'    => $request->boolean('is_anonymous', false),
+            'attachment_path' => $attachmentPath,
+            'attachment_name' => $attachmentName,
         ]);
 
         return redirect()->route('student.dashboard')
@@ -71,15 +87,6 @@ class StudentController extends Controller
             $query->where('status', '!=', 'cancelled')->orderBy('appointment_date', 'desc');
         }]);
 
-        // Return JSON response for AJAX requests
-        if (request()->expectsJson()) {
-            return response()->json([
-                'success' => true,
-                'concern' => $concern
-            ]);
-        }
-
-        // Return view for direct access (if needed)
         return view('student.concerns.show', compact('concern'));
     }
 

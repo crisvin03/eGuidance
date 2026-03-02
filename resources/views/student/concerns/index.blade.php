@@ -58,10 +58,9 @@
                                     <small class="text-muted">{{ $concern->created_at->format('M d, Y') }}</small>
                                 </td>
                                 <td>
-                                    <button class="btn btn-primary btn-sm" onclick="showDetails({{ $concern->id }})">
-                                        <i class="bi bi-eye"></i>
-                                        View
-                                    </button>
+                                    <a href="{{ route('student.concerns.show', $concern->id) }}" class="btn btn-primary btn-sm">
+                                        <i class="bi bi-eye"></i> View
+                                    </a>
                                 </td>
                             </tr>
                         @endforeach
@@ -79,24 +78,6 @@
                 </a>
             </div>
         @endif
-    </div>
-</div>
-
-<!-- Modal for concern details -->
-<div class="modal fade" id="concernModal" tabindex="-1">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Concern Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Content will be loaded dynamically -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -297,3 +278,4 @@ function showDetails(concernId) {
 }
 </script>
 @endsection
+{{-- Note: showDetails JS kept for legacy but View now redirects to show page --}}

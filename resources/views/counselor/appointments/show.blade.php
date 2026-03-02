@@ -1,21 +1,24 @@
-@extends('layouts.app')
+@extends('layouts.dashboard')
+
+@section('title', 'Appointment Details')
 
 @section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center">
-                    <h4>Appointment Details</h4>
-                    <div>
-                        @if($appointment->status == 'scheduled')
-                            <button class="btn btn-success btn-sm" onclick="updateStatus('confirmed')">Confirm</button>
-                            <button class="btn btn-warning btn-sm" onclick="updateStatus('completed')">Complete</button>
-                            <button class="btn btn-danger btn-sm" onclick="updateStatus('cancelled')">Cancel</button>
-                        @endif
-                        <a href="{{ route('counselor.appointments.index') }}" class="btn btn-secondary btn-sm">Back</a>
-                    </div>
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Appointment Details</h5>
+                <div>
+                    @if($appointment->status == 'scheduled')
+                        <button class="btn btn-success btn-sm" onclick="updateStatus('confirmed')">Confirm</button>
+                        <button class="btn btn-danger btn-sm" onclick="updateStatus('cancelled')">Cancel</button>
+                    @elseif($appointment->status == 'confirmed')
+                        <button class="btn btn-warning btn-sm" onclick="updateStatus('completed')">Complete</button>
+                        <button class="btn btn-danger btn-sm" onclick="updateStatus('cancelled')">Cancel</button>
+                    @endif
+                    <a href="{{ route('counselor.appointments.index') }}" class="btn btn-secondary btn-sm">Back</a>
                 </div>
+            </div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
@@ -98,7 +101,6 @@
                     @endif
                 </div>
             </div>
-        </div>
     </div>
 </div>
 

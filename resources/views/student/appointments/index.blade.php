@@ -66,9 +66,9 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <button class="btn btn-primary btn-sm" onclick="showDetails({{ $appointment->id }})">
+                                        <a href="{{ route('student.appointments.show', $appointment->id) }}" class="btn btn-primary btn-sm">
                                             <i class="bi bi-eye"></i> View
-                                        </button>
+                                        </a>
                                         @if(in_array($appointment->status, ['scheduled', 'confirmed']) && !$appointment->concern_id)
                                             <button class="btn btn-warning btn-sm" onclick="openReschedule({{ $appointment->id }}, '{{ $appointment->appointment_date->format('Y-m-d\TH:i') }}')">
                                                 <i class="bi bi-calendar2"></i> Reschedule
@@ -95,27 +95,6 @@
                 </a>
             </div>
         @endif
-    </div>
-</div>
-
-<!-- View Appointment Modal -->
-<div class="modal fade" id="viewModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-calendar-check me-2"></i>Appointment Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body" id="viewModalBody">
-                <div class="text-center py-4">
-                    <div class="spinner-border text-primary" role="status"></div>
-                    <p class="mt-2 text-muted">Loading...</p>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
-        </div>
     </div>
 </div>
 
@@ -176,84 +155,6 @@
 
 <script>
 let currentAppointmentId = null;
-
-// ─── VIEW ────────────────────────────────────────────────────────────────────
-function showDetails(appointmentId) {
-    currentAppointmentId = appointmentId;
-    const modal = new bootstrap.Modal(document.getElementById('viewModal'));
-    document.getElementById('viewModalBody').innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2 text-muted">Loading appointment details...</p>
-        </div>`;
-    modal.show();
-
-    fetch(`/student/appointments/${appointmentId}`, {
-        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-    })
-    .then(r => r.json())
-    .then(data => {
-        if (!data.success) throw new Error('Failed to load');
-        const a = data.appointment;
-
-        let statusBadge = '';
-        if (a.status === 'completed')  statusBadge = '<span class="badge bg-success">Completed</span>';
-        else if (a.status === 'cancelled') statusBadge = '<span class="badge bg-danger">Cancelled</span>';
-        else if (a.status === 'confirmed') statusBadge = '<span class="badge bg-info">Confirmed</span>';
-        else statusBadge = '<span class="badge bg-warning text-dark">Scheduled</span>';
-
-        const apptDate = new Date(a.appointment_date);
-        const formatted = apptDate.toLocaleDateString('en-US', {
-            weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-            hour: '2-digit', minute: '2-digit'
-        });
-
-        document.getElementById('viewModalBody').innerHTML = `
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1">Counselor</small>
-                        <div class="d-flex align-items-center gap-2">
-                            <div class="user-avatar">${a.counselor.name.substring(0,2).toUpperCase()}</div>
-                            <strong>${a.counselor.name}</strong>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1">Status</small>
-                        ${statusBadge}
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1"><i class="bi bi-calendar3 me-1"></i>Date & Time</small>
-                        <strong>${formatted}</strong>
-                    </div>
-                </div>
-                ${a.notes ? `
-                <div class="col-12">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1"><i class="bi bi-chat-left-text me-1"></i>Notes</small>
-                        <p class="mb-0">${a.notes.replace(/\n/g, '<br>')}</p>
-                    </div>
-                </div>` : ''}
-                ${a.cancellation_reason ? `
-                <div class="col-12">
-                    <div class="alert alert-danger mb-0">
-                        <small class="fw-bold"><i class="bi bi-x-circle me-1"></i>Cancellation Reason:</small><br>
-                        ${a.cancellation_reason}
-                    </div>
-                </div>` : ''}
-            </div>`;
-    })
-    .catch(() => {
-        document.getElementById('viewModalBody').innerHTML = `
-            <div class="alert alert-danger">
-                <i class="bi bi-exclamation-triangle me-2"></i>Failed to load appointment details. Please try again.
-            </div>`;
-    });
-}
 
 // ─── RESCHEDULE ──────────────────────────────────────────────────────────────
 function openReschedule(appointmentId, currentDate) {
@@ -339,15 +240,7 @@ function submitCancel() {
     .then(r => r.json().then(data => ({ ok: r.ok, data })))
     .then(({ ok, data }) => {
         if (ok && data.success) {
-            bootstrap.Modal.getInstance(document.getElementById('cancelModal')).hide();
-            document.querySelector(`.appt-status-${currentAppointmentId}`).innerHTML =
-                '<span class="badge badge-danger">Cancelled</span>';
-            const row = document.getElementById(`appointment-row-${currentAppointmentId}`);
-            const btnGroup = row.querySelector('.btn-group');
-            btnGroup.innerHTML = `<button class="btn btn-primary btn-sm" onclick="showDetails(${currentAppointmentId})">
-                <i class="bi bi-eye"></i> View
-            </button>`;
-            showToast('Appointment cancelled successfully.', 'danger');
+            location.reload();
         } else {
             let msg = data.message || 'Failed to cancel.';
             if (data.errors) msg = Object.values(data.errors).flat().join(' ');
