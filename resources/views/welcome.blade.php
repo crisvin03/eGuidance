@@ -813,7 +813,7 @@
             </div>
             <div class="about-stats">
                 <div class="stat-item">
-                    <div class="stat-number">500+</div>
+                    <div class="stat-number">200+</div>
                     <div class="stat-label">Students Helped</div>
                 </div>
                 <div class="stat-item">
@@ -825,7 +825,7 @@
                     <div class="stat-label">Confidential</div>
                 </div>
                 <div class="stat-item">
-                    <div class="stat-number">15+</div>
+                    <div class="stat-number">2</div>
                     <div class="stat-label">Expert Counselors</div>
                 </div>
             </div>
