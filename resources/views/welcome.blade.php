@@ -201,6 +201,19 @@
             z-index: 1;
         }
         
+        .hands-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: url('{{ asset('background.jpg') }}');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: 1;
+        }
+        
         .hero-pattern {
             position: absolute;
             top: 0;
