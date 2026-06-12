@@ -38,6 +38,11 @@ class RoleMiddleware
                     abort(403, 'Unauthorized');
                 }
                 break;
+            case 'teacher':
+                if (!$user->isTeacher()) {
+                    abort(403, 'Unauthorized');
+                }
+                break;
         }
 
         return $next($request);

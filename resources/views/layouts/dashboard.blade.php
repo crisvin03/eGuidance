@@ -731,6 +731,10 @@
                             <i class="bi bi-journal-bookmark"></i>
                             <span class="nav-link-text">Resources</span>
                         </a>
+                        <a href="{{ route('student.kamustaka') }}" class="nav-link @if(request()->is('student/kamusta-ka*')) active @endif">
+                            <i class="bi bi-heart-pulse"></i>
+                            <span class="nav-link-text">Kamusta Ka?</span>
+                        </a>
                     </div>
                     
                 @elseif(Auth::user()->role_id == 2) <!-- Counselor -->
@@ -749,8 +753,57 @@
                             <i class="bi bi-calendar3"></i>
                             <span class="nav-link-text">Appointments</span>
                         </a>
+                        <a href="{{ route('counselor.incident-reports.index') }}" class="nav-link @if(request()->is('counselor/incident-reports*')) active @endif">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span class="nav-link-text">Incident Reports</span>
+                            @php $pendingIR = App\Models\IncidentReport::where('status','pending')->count(); @endphp
+                            @if($pendingIR > 0)
+                                <span class="nav-link-badge">{{ $pendingIR }}</span>
+                            @endif
+                        </a>
+                        <a href="{{ route('counselor.referrals.index') }}" class="nav-link @if(request()->is('counselor/referrals*')) active @endif">
+                            <i class="bi bi-person-check"></i>
+                            <span class="nav-link-text">Student Referrals</span>
+                            @php $pendingRef = App\Models\StudentReferral::where('status','pending')->count(); @endphp
+                            @if($pendingRef > 0)
+                                <span class="nav-link-badge">{{ $pendingRef }}</span>
+                            @endif
+                        </a>
                     </div>
                     
+                @elseif(Auth::user()->role_id == 4) <!-- Teacher -->
+                    <div class="nav-section">
+                        <div class="nav-section-title">Main</div>
+                        <a href="{{ route('teacher.dashboard') }}" class="nav-link @if(request()->is('teacher/dashboard')) active @endif">
+                            <i class="bi bi-speedometer2"></i>
+                            <span class="nav-link-text">Dashboard</span>
+                        </a>
+                        <a href="{{ route('teacher.incident-reports.create') }}" class="nav-link @if(request()->is('teacher/incident-reports/create')) active @endif">
+                            <i class="bi bi-file-earmark-plus"></i>
+                            <span class="nav-link-text">Submit Incident Report</span>
+                        </a>
+                        <a href="{{ route('teacher.referrals.create') }}" class="nav-link @if(request()->is('teacher/referrals/create')) active @endif">
+                            <i class="bi bi-person-plus"></i>
+                            <span class="nav-link-text">Refer a Student</span>
+                        </a>
+                        <a href="{{ route('teacher.forms.index') }}" class="nav-link @if(request()->is('teacher/forms')) active @endif">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span class="nav-link-text">Generate Forms</span>
+                        </a>
+                        <a href="{{ route('teacher.case-tracking.index') }}" class="nav-link @if(request()->is('teacher/case-tracking*')) active @endif">
+                            <i class="bi bi-kanban"></i>
+                            <span class="nav-link-text">View Submitted Cases</span>
+                        </a>
+                        <a href="{{ route('teacher.intervention-guides.index') }}" class="nav-link @if(request()->is('teacher/intervention-guides*')) active @endif">
+                            <i class="bi bi-journal-bookmark"></i>
+                            <span class="nav-link-text">Intervention Guides</span>
+                        </a>
+                        <a href="{{ route('teacher.talk-to-counselor') }}" class="nav-link @if(request()->is('teacher/talk-to-counselor')) active @endif">
+                            <i class="bi bi-chat-heart"></i>
+                            <span class="nav-link-text">Talk to Counselor</span>
+                        </a>
+                    </div>
+
                 @elseif(Auth::user()->role_id == 3) <!-- Admin -->
                     <div class="nav-section">
                         <div class="nav-section-title">Main</div>
@@ -782,12 +835,7 @@
                 </div>
             @endauth
 
-            <div style="flex:1;"></div>
-            <div class="sidebar-footer">
-                <div class="sidebar-dev-credit">
-                    Developed by <span>Crisvin Habitsuela</span>
-                </div>
-            </div>
+
         </nav>
     </aside>
     
@@ -821,6 +869,7 @@
                                 @if(Auth::user()->role_id == 1) Student
                                 @elseif(Auth::user()->role_id == 2) Counselor
                                 @elseif(Auth::user()->role_id == 3) Administrator
+                                @elseif(Auth::user()->role_id == 4) Teacher
                                 @endif
                             </span>
                         </div>

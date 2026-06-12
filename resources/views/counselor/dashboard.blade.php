@@ -3,261 +3,311 @@
 @section('title', 'Counselor Dashboard')
 
 @section('content')
-<!-- Statistics Cards -->
-<div class="stats-grid">
-    <div class="stat-card">
-        <div class="stat-icon">
-            <i class="bi bi-clock-history"></i>
-        </div>
-        <div class="stat-value">{{ $pendingConcerns }}</div>
-        <div class="stat-label">Pending Concerns</div>
-        <div class="stat-change negative">
-            <i class="bi bi-arrow-up"></i>
-            {{ $pendingConcerns }} need attention
-        </div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-icon">
-            <i class="bi bi-calendar-check"></i>
-        </div>
-        <div class="stat-value">{{ $todayAppointments }}</div>
-        <div class="stat-label">Today's Appointments</div>
-        <div class="stat-change positive">
-            <i class="bi bi-calendar"></i>
-            {{ $todayAppointments > 0 ? 'Scheduled today' : 'No appointments' }}
-        </div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-icon">
-            <i class="bi bi-people"></i>
-        </div>
-        <div class="stat-value">{{ $upcomingAppointments->count() }}</div>
-        <div class="stat-label">Upcoming Sessions</div>
-        <div class="stat-change positive">
-            <i class="bi bi-arrow-up"></i>
-            Next 7 days
-        </div>
-    </div>
-    
-    <div class="stat-card">
-        <div class="stat-icon">
-            <i class="bi bi-graph-up"></i>
-        </div>
-        <div class="stat-value">85%</div>
-        <div class="stat-label">Response Rate</div>
-        <div class="stat-change positive">
-            <i class="bi bi-arrow-up"></i>
-            Above average
-        </div>
-    </div>
-</div>
 
-<!-- Main Content Area -->
-<div class="row">
-    <!-- Upcoming Appointments -->
-    <div class="col-lg-8 col-md-7">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
-                <h5 class="card-title">Upcoming Appointments</h5>
-                <a href="{{ route('counselor.appointments.index') }}" class="btn btn-outline-primary btn-sm">
-                    <i class="bi bi-list"></i>
-                    View All
+<!-- Welcome Banner -->
+<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:16px;">
+    <div class="card-body p-4 text-white">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div>
+                <h4 class="fw-bold mb-1">Welcome, {{ Auth::user()->name }}! 👋</h4>
+                <p class="mb-0 opacity-75">CARE Center Counselor Portal &mdash; {{ now()->format('l, F d, Y') }}</p>
+            </div>
+            <div class="d-flex gap-2 flex-wrap">
+                <a href="{{ route('counselor.concerns.index') }}" class="btn btn-light btn-sm fw-semibold">
+                    <i class="bi bi-chat-dots me-1"></i> View Concerns
+                    @if($pendingConcerns > 0)
+                        <span class="badge bg-danger ms-1">{{ $pendingConcerns }}</span>
+                    @endif
+                </a>
+                <a href="{{ route('counselor.appointments.index') }}" class="btn btn-outline-light btn-sm fw-semibold">
+                    <i class="bi bi-calendar3 me-1"></i> Appointments
                 </a>
             </div>
-            <div class="card-body">
-                @if($upcomingAppointments->count() > 0)
-                    <div class="table-responsive">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Student</th>
-                                    <th class="d-none-tablet">Date & Time</th>
-                                    <th class="d-none-lg">Status</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach($upcomingAppointments as $appointment)
-                                    <tr>
-                                        <td>
-                                            <div class="d-flex align-items-center gap-2">
-                                                <div class="user-avatar">
-                                                    {{ strtoupper(substr($appointment->student->name, 0, 2)) }}
-                                                </div>
-                                                <div>
-                                                    <div class="fw-semibold">{{ $appointment->student->name }}</div>
-                                                    <small class="text-muted d-none-tablet">
-                                                        {{ $appointment->appointment_date->format('M d, h:i A') }}
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td class="d-none-tablet">
-                                            <div class="d-flex align-items-center gap-2">
-                                                <i class="bi bi-calendar3 text-primary"></i>
-                                                <span>{{ $appointment->appointment_date->format('M d, h:i A') }}</span>
-                                            </div>
-                                        </td>
-                                        <td class="d-none-lg">
-                                            @if($appointment->appointment_date > now())
-                                                <span class="badge badge-info">Scheduled</span>
-                                            @else
-                                                <span class="badge badge-warning">Pending</span>
-                                            @endif
-                                        </td>
-                                        <td>
-                                            <div class="btn-group" role="group">
-                                                <a href="{{ route('counselor.appointments.show', $appointment) }}" class="btn btn-primary btn-sm">
-                                                    <i class="bi bi-eye"></i>
-                                                    <span class="d-none-mobile"> View</span>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @else
-                    <div class="text-center py-5">
-                        <i class="bi bi-calendar-x" style="font-size: 3rem; color: #cbd5e1;"></i>
-                        <h5 class="mt-3 text-muted">No Upcoming Appointments</h5>
-                        <p class="text-muted">You don't have any appointments scheduled</p>
-                        <a href="{{ route('counselor.appointments.index') }}" class="btn btn-primary">
-                            <i class="bi bi-plus-circle"></i>
-                            Schedule Appointment
-                        </a>
-                    </div>
-                @endif
+        </div>
+    </div>
+</div>
+
+<!-- Stats Row -->
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+            <div class="card-body text-center p-3">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                     style="width:48px;height:48px;background:rgba(245,158,11,0.1);">
+                    <i class="bi bi-hourglass-split fs-5 text-warning"></i>
+                </div>
+                <div class="fs-3 fw-bold text-warning">{{ $pendingConcerns }}</div>
+                <div class="text-muted small">Pending Concerns</div>
+                <div class="text-danger" style="font-size:0.75rem;">need attention</div>
             </div>
         </div>
     </div>
-    
-    <!-- Quick Actions Sidebar -->
-    <div class="col-lg-4 col-md-5">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Quick Actions</h5>
-            </div>
-            <div class="card-body">
-                <div class="d-grid gap-2">
-                    <a href="{{ route('counselor.concerns.index') }}" class="btn btn-primary d-flex align-items-center justify-content-between">
-                        <span>
-                            <i class="bi bi-chat-dots me-2"></i>
-                            View Concerns
-                        </span>
-                        @if($pendingConcerns > 0)
-                            <span class="badge bg-danger">{{ $pendingConcerns }}</span>
-                        @endif
-                    </a>
-                    <a href="{{ route('counselor.appointments.index') }}" class="btn btn-secondary">
-                        <i class="bi bi-calendar3 me-2"></i>
-                        Manage Appointments
-                    </a>
-                    <a href="#" class="btn btn-secondary">
-                        <i class="bi bi-file-text me-2"></i>
-                        Session Notes
-                    </a>
-                    <a href="#" class="btn btn-secondary">
-                        <i class="bi bi-graph-up me-2"></i>
-                        View Reports
-                    </a>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+            <div class="card-body text-center p-3">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                     style="width:48px;height:48px;background:rgba(32,178,170,0.1);">
+                    <i class="bi bi-calendar-check fs-5" style="color:#20B2AA;"></i>
                 </div>
+                <div class="fs-3 fw-bold" style="color:#20B2AA;">{{ $todayAppointments }}</div>
+                <div class="text-muted small">Today's Appointments</div>
+                <div class="text-muted" style="font-size:0.75rem;">{{ $todayAppointments > 0 ? 'scheduled today' : 'no sessions today' }}</div>
             </div>
         </div>
-        
-        <!-- Counselor Stats Card -->
-        <div class="card mt-3">
-            <div class="card-header">
-                <h5 class="card-title">Your Stats</h5>
-            </div>
-            <div class="card-body">
-                <div class="row text-center">
-                    <div class="col-6">
-                        <div class="stat-value-sm">{{ $pendingConcerns }}</div>
-                        <div class="stat-label-sm">Pending</div>
-                    </div>
-                    <div class="col-6">
-                        <div class="stat-value-sm">{{ $todayAppointments }}</div>
-                        <div class="stat-label-sm">Today</div>
-                    </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+            <div class="card-body text-center p-3">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                     style="width:48px;height:48px;background:rgba(59,130,246,0.1);">
+                    <i class="bi bi-people fs-5 text-primary"></i>
                 </div>
-                <hr>
-                <div class="d-flex justify-content-between align-items-center">
-                    <span class="text-muted">Response Rate</span>
-                    <span class="badge badge-success">85%</span>
+                <div class="fs-3 fw-bold text-primary">{{ $upcomingAppointments->count() }}</div>
+                <div class="text-muted small">Upcoming Sessions</div>
+                <div class="text-muted" style="font-size:0.75rem;">next 7 days</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
+            <div class="card-body text-center p-3">
+                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
+                     style="width:48px;height:48px;background:rgba(16,185,129,0.1);">
+                    <i class="bi bi-graph-up-arrow fs-5 text-success"></i>
+                </div>
+                @php $totalConcerns = App\Models\Concern::count(); $resolved = App\Models\Concern::where('status','resolved')->count(); @endphp
+                <div class="fs-3 fw-bold text-success">{{ $totalConcerns > 0 ? round(($resolved/$totalConcerns)*100) : 0 }}%</div>
+                <div class="text-muted small">Resolution Rate</div>
+                <div class="text-success" style="font-size:0.75rem;">{{ $resolved }} resolved</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
+    <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
+        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#20B2AA;"></i>Quick Actions</h6>
+    </div>
+    <div class="card-body px-4 pb-4">
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <a href="{{ route('counselor.concerns.index') }}" class="text-decoration-none">
+                    <div class="border rounded-3 p-3 text-center quick-action-card position-relative">
+                        <i class="bi bi-chat-dots-fill fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <div class="fw-semibold small">Student Concerns</div>
+                        @if($pendingConcerns > 0)
+                            <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem;">{{ $pendingConcerns }}</span>
+                        @endif
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ route('counselor.appointments.index') }}" class="text-decoration-none">
+                    <div class="border rounded-3 p-3 text-center quick-action-card">
+                        <i class="bi bi-calendar3 fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <div class="fw-semibold small">Appointments</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ route('counselor.incident-reports.index') }}" class="text-decoration-none">
+                    <div class="border rounded-3 p-3 text-center quick-action-card position-relative">
+                        <i class="bi bi-file-earmark-text fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <div class="fw-semibold small">Incident Reports</div>
+                        @php $pendingIR = App\Models\IncidentReport::where('status','pending')->count(); @endphp
+                        @if($pendingIR > 0)
+                            <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem;">{{ $pendingIR }}</span>
+                        @endif
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ route('counselor.referrals.index') }}" class="text-decoration-none">
+                    <div class="border rounded-3 p-3 text-center quick-action-card position-relative">
+                        <i class="bi bi-person-check fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <div class="fw-semibold small">Student Referrals</div>
+                        @php $pendingRef = App\Models\StudentReferral::where('status','pending')->count(); @endphp
+                        @if($pendingRef > 0)
+                            <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem;">{{ $pendingRef }}</span>
+                        @endif
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Upcoming Appointments + Analytics -->
+<div class="row g-4 mb-4">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
+            <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2" style="color:#20B2AA;"></i>Upcoming Appointments</h6>
+                <a href="{{ route('counselor.appointments.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
+            </div>
+            <div class="card-body px-4 pb-4">
+                @forelse($upcomingAppointments as $appointment)
+                    <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
+                                 style="width:38px;height:38px;background:linear-gradient(135deg,#20B2AA,#008B8B);font-size:0.75rem;">
+                                {{ strtoupper(substr($appointment->student->name, 0, 2)) }}
+                            </div>
+                            <div>
+                                <div class="fw-semibold small">{{ $appointment->student->name }}</div>
+                                <div class="text-muted" style="font-size:0.78rem;">
+                                    <i class="bi bi-clock me-1"></i>{{ $appointment->appointment_date->format('M d, Y \a\t h:i A') }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center gap-2">
+                            <span class="badge bg-info">Scheduled</span>
+                            <a href="{{ route('counselor.appointments.show', $appointment) }}" class="btn btn-sm btn-outline-secondary">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-muted py-5">
+                        <i class="bi bi-calendar-x fs-2 d-block mb-2 opacity-50"></i>
+                        No upcoming appointments scheduled.
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Mini -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
+            <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
+                <h6 class="fw-bold mb-0"><i class="bi bi-pie-chart me-2" style="color:#20B2AA;"></i>Concerns by Status</h6>
+            </div>
+            <div class="card-body px-4 pb-4">
+                @php
+                    $submitted = App\Models\Concern::where('status','submitted')->count();
+                    $scheduled = App\Models\Concern::where('status','scheduled')->count();
+                    $resolvedC = App\Models\Concern::where('status','resolved')->count();
+                    $total2    = $submitted + $scheduled + $resolvedC;
+                @endphp
+                <canvas id="counselorDonut" style="max-height:200px;" class="mb-3"></canvas>
+                <div class="d-flex flex-column gap-2 mt-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2"><span class="rounded-circle d-inline-block" style="width:10px;height:10px;background:#f59e0b;"></span><small>Pending</small></div>
+                        <span class="fw-semibold small">{{ $submitted }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2"><span class="rounded-circle d-inline-block" style="width:10px;height:10px;background:#3b82f6;"></span><small>Scheduled</small></div>
+                        <span class="fw-semibold small">{{ $scheduled }}</span>
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center gap-2"><span class="rounded-circle d-inline-block" style="width:10px;height:10px;background:#22c55e;"></span><small>Resolved</small></div>
+                        <span class="fw-semibold small">{{ $resolvedC }}</span>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Recent Activity -->
-<div class="card mt-4">
-    <div class="card-header">
-        <h5 class="card-title">Recent Activity</h5>
+<!-- Case Management: Incident Reports & Referrals from Teachers -->
+<div class="row g-4 mb-4">
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
+            <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2" style="color:#20B2AA;"></i>Teacher Incident Reports</h6>
+                <div class="d-flex gap-2 align-items-center">
+                    @php $pendingReports = App\Models\IncidentReport::where('status','pending')->count(); @endphp
+                    @if($pendingReports > 0)
+                        <span class="badge bg-danger">{{ $pendingReports }} pending</span>
+                    @endif
+                    <a href="{{ route('counselor.incident-reports.index') }}" class="btn btn-primary btn-sm">View All</a>
+                </div>
+            </div>
+            <div class="card-body px-4 pb-4">
+                @php $reports = App\Models\IncidentReport::with('teacher')->latest()->take(5)->get(); @endphp
+                @forelse($reports as $report)
+                    <div class="d-flex justify-content-between align-items-start py-3 border-bottom">
+                        <div>
+                            <div class="fw-semibold text-dark small">{{ $report->student_name }}</div>
+                            <div class="text-muted" style="font-size:0.78rem;">{{ $report->grade_section }} &bull; {{ $report->case_number }}</div>
+                            <div class="text-muted" style="font-size:0.78rem;">by {{ $report->teacher->name ?? '—' }}</div>
+                        </div>
+                        <div class="d-flex gap-2 align-items-center">
+                            <span class="badge bg-{{ $report->urgency_badge }} text-capitalize">{{ $report->urgency_level }}</span>
+                            <a href="{{ route('counselor.incident-reports.show', $report) }}" class="btn btn-primary btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
+                        <small>No incident reports yet</small>
+                    </div>
+                @endforelse
+            </div>
+        </div>
     </div>
-    <div class="card-body">
-        <div class="table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th class="d-none-tablet">Activity</th>
-                        <th class="d-none-lg">Date</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="user-avatar">
-                                    JD
-                                </div>
-                                <span>John Doe</span>
-                            </div>
-                        </td>
-                        <td class="d-none-tablet">Submitted new concern</td>
-                        <td class="d-none-lg">{{ now()->subMinutes(45)->format('M d, h:i A') }}</td>
-                        <td><span class="badge badge-warning">Pending</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="user-avatar">
-                                    MJ
-                                </div>
-                                <span>Mary Johnson</span>
-                            </div>
-                        </td>
-                        <td class="d-none-tablet">Completed session</td>
-                        <td class="d-none-lg">{{ now()->subHours(2)->format('M d, h:i A') }}</td>
-                        <td><span class="badge badge-success">Completed</span></td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <div class="d-flex align-items-center gap-2">
-                                <div class="user-avatar">
-                                    RS
-                                </div>
-                                <span>Robert Smith</span>
-                            </div>
-                        </td>
-                        <td class="d-none-tablet">Scheduled follow-up</td>
-                        <td class="d-none-lg">{{ now()->subHours(3)->format('M d, h:i A') }}</td>
-                        <td><span class="badge badge-info">Scheduled</span></td>
-                    </tr>
-                </tbody>
-            </table>
+    <div class="col-md-6">
+        <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
+            <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
+                <h6 class="fw-bold mb-0"><i class="bi bi-person-check me-2" style="color:#20B2AA;"></i>Student Referrals</h6>
+                <div class="d-flex gap-2 align-items-center">
+                    @php $pendingRefs = App\Models\StudentReferral::where('status','pending')->count(); @endphp
+                    @if($pendingRefs > 0)
+                        <span class="badge bg-warning text-dark">{{ $pendingRefs }} pending</span>
+                    @endif
+                    <a href="{{ route('counselor.referrals.index') }}" class="btn btn-primary btn-sm">View All</a>
+                </div>
+            </div>
+            <div class="card-body px-4 pb-4">
+                @php $referrals = App\Models\StudentReferral::with('teacher')->latest()->take(5)->get(); @endphp
+                @forelse($referrals as $ref)
+                    <div class="d-flex justify-content-between align-items-start py-3 border-bottom">
+                        <div>
+                            <div class="fw-semibold text-dark small">{{ $ref->student_name }}</div>
+                            <div class="text-muted" style="font-size:0.78rem;">{{ $ref->grade_section }} &bull; {{ $ref->referral_number }}</div>
+                            <div class="text-muted" style="font-size:0.78rem;">by {{ $ref->teacher->name ?? '—' }}</div>
+                        </div>
+                        <div class="d-flex gap-2 align-items-center">
+                            <span class="badge bg-{{ $ref->status_badge }} text-capitalize">{{ $ref->status }}</span>
+                            <a href="{{ route('counselor.referrals.show', $ref) }}" class="btn btn-primary btn-sm">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                        </div>
+                    </div>
+                @empty
+                    <div class="text-center text-muted py-4">
+                        <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
+                        <small>No referrals yet</small>
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+new Chart(document.getElementById('counselorDonut'), {
+    type: 'doughnut',
+    data: {
+        labels: ['Pending', 'Scheduled', 'Resolved'],
+        datasets: [{ data: [{{ $submitted }}, {{ $scheduled }}, {{ $resolvedC }}], backgroundColor: ['#f59e0b','#3b82f6','#22c55e'], borderWidth: 0 }]
+    },
+    options: { cutout: '70%', plugins: { legend: { display: false } } }
+});
+</script>
 
 <style>
-/* Enhanced Mobile Responsive Styles for Counselor Dashboard */
+.quick-action-card { transition:all 0.2s ease; cursor:pointer; color:#334155; background:#f8fafc; }
+.quick-action-card:hover { background:rgba(32,178,170,0.06); border-color:#20B2AA !important; transform:translateY(-3px); box-shadow:0 8px 20px rgba(32,178,170,0.15); }
+</style>
+
+<style>
+/* End of counselor dashboard */
 
 /* Extra Small Devices (Phones: 320px - 575px) */
 @media (max-width: 575px) {

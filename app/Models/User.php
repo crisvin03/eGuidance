@@ -107,4 +107,9 @@ class User extends Authenticatable
     {
         return $this->role_id === 3;
     }
+
+    public function isTeacher()
+    {
+        return $this->role_id === 4;
+    }
 }

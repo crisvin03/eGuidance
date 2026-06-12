@@ -41,5 +41,12 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1, // student
             'student_id' => 'STU001',
         ]);
+
+        // Create sample teacher
+        \App\Models\User::factory()->create([
+            'name' => 'Teacher Maria',
+            'email' => 'teacher@eguidance.com',
+            'role_id' => 4, // teacher
+        ]);
     }
 }

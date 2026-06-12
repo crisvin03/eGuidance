@@ -27,6 +27,28 @@ class StudentController extends Controller
         return view('student.resources');
     }
 
+    public function kamustaka()
+    {
+        return view('student.kamustaka');
+    }
+
+    public function storeKamustaka(Request $request)
+    {
+        $mood = $request->input('mood');
+
+        return match($mood) {
+            'okay'     => redirect()->route('student.resources')->with('kamusta_message', 'Glad to hear you\'re okay! Here are some resources to keep you feeling great.'),
+            'not_sure' => redirect()->route('student.appointments.create')->with('kamusta_message', 'It\'s okay to feel unsure. Consider booking a counseling session — talking helps.'),
+            'not_okay' => redirect()->route('student.kamustaka.support')->with('kamusta_mood', 'not_okay'),
+            default    => redirect()->route('student.dashboard'),
+        };
+    }
+
+    public function kamustakaSupportPage()
+    {
+        return view('student.kamustaka-support');
+    }
+
     public function createConcern()
     {
         $categories = ConcernCategory::where('is_active', true)->get();

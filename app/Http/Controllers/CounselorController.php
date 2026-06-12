@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\Concern;
 use App\Models\Appointment;
 use App\Models\SessionNote;
+use App\Models\IncidentReport;
+use App\Models\StudentReferral;
 use App\Mail\ConcernScheduled;
 use App\Mail\AppointmentConfirmed;
 
@@ -254,5 +256,69 @@ class CounselorController extends Controller
 
         return redirect()->route('counselor.appointments.show', $appointment)
             ->with('success', 'Session note created successfully.');
+    }
+
+    // ─── Incident Reports (from Teachers) ─────────────────────────────────────
+
+    public function incidentReports()
+    {
+        $reports = IncidentReport::with('teacher')
+            ->orderByDesc('created_at')
+            ->paginate(15);
+        return view('counselor.incident-reports.index', compact('reports'));
+    }
+
+    public function showIncidentReport(IncidentReport $incidentReport)
+    {
+        $incidentReport->load(['teacher', 'counselor']);
+        return view('counselor.incident-reports.show', compact('incidentReport'));
+    }
+
+    public function updateIncidentReport(Request $request, IncidentReport $incidentReport)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,ongoing,closed',
+            'counselor_notes' => 'nullable|string',
+        ]);
+
+        $incidentReport->update([
+            'status' => $request->status,
+            'counselor_notes' => $request->counselor_notes,
+            'assigned_counselor_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Incident report updated successfully.');
+    }
+
+    // ─── Student Referrals (from Teachers) ────────────────────────────────────
+
+    public function referrals()
+    {
+        $referrals = StudentReferral::with('teacher')
+            ->orderByDesc('created_at')
+            ->paginate(15);
+        return view('counselor.referrals.index', compact('referrals'));
+    }
+
+    public function showReferral(StudentReferral $studentReferral)
+    {
+        $studentReferral->load(['teacher', 'counselor']);
+        return view('counselor.referrals.show', compact('studentReferral'));
+    }
+
+    public function updateReferral(Request $request, StudentReferral $studentReferral)
+    {
+        $request->validate([
+            'status' => 'required|in:pending,ongoing,closed',
+            'counselor_notes' => 'nullable|string',
+        ]);
+
+        $studentReferral->update([
+            'status' => $request->status,
+            'counselor_notes' => $request->counselor_notes,
+            'assigned_counselor_id' => Auth::id(),
+        ]);
+
+        return redirect()->back()->with('success', 'Referral updated successfully.');
     }
 }

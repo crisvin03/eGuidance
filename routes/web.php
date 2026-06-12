@@ -41,6 +41,9 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::put('/appointments/{appointment}/reschedule', [StudentController::class, 'rescheduleAppointment'])->name('appointments.reschedule');
     Route::put('/appointments/{appointment}/cancel', [StudentController::class, 'cancelAppointment'])->name('appointments.cancel');
     Route::get('/resources', [StudentController::class, 'resources'])->name('resources');
+    Route::get('/kamusta-ka', [StudentController::class, 'kamustaka'])->name('kamustaka');
+    Route::post('/kamusta-ka', [StudentController::class, 'storeKamustaka'])->name('kamustaka.store');
+    Route::get('/kamusta-ka/support', [StudentController::class, 'kamustakaSupportPage'])->name('kamustaka.support');
 });
 
 // Counselor routes
@@ -54,6 +57,29 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::post('/appointments/{appointment}/respond', [CounselorController::class, 'respondToAppointment'])->name('appointments.respond');
     Route::get('/appointments/{appointment}/session-notes/create', [CounselorController::class, 'createSessionNote'])->name('appointments.session-notes.create');
     Route::post('/appointments/{appointment}/session-notes', [CounselorController::class, 'storeSessionNote'])->name('appointments.session-notes.store');
+    Route::get('/incident-reports', [CounselorController::class, 'incidentReports'])->name('incident-reports.index');
+    Route::get('/incident-reports/{incidentReport}', [CounselorController::class, 'showIncidentReport'])->name('incident-reports.show');
+    Route::post('/incident-reports/{incidentReport}/update', [CounselorController::class, 'updateIncidentReport'])->name('incident-reports.update');
+    Route::get('/referrals', [CounselorController::class, 'referrals'])->name('referrals.index');
+    Route::get('/referrals/{studentReferral}', [CounselorController::class, 'showReferral'])->name('referrals.show');
+    Route::post('/referrals/{studentReferral}/update', [CounselorController::class, 'updateReferral'])->name('referrals.update');
+});
+
+// Teacher routes
+Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')->group(function () {
+    Route::get('/dashboard', [App\Http\Controllers\TeacherController::class, 'dashboard'])->name('dashboard');
+    Route::get('/incident-reports', [App\Http\Controllers\TeacherController::class, 'incidentReports'])->name('incident-reports.index');
+    Route::get('/incident-reports/create', [App\Http\Controllers\TeacherController::class, 'createIncidentReport'])->name('incident-reports.create');
+    Route::post('/incident-reports', [App\Http\Controllers\TeacherController::class, 'storeIncidentReport'])->name('incident-reports.store');
+    Route::get('/incident-reports/{incidentReport}', [App\Http\Controllers\TeacherController::class, 'showIncidentReport'])->name('incident-reports.show');
+    Route::get('/referrals', [App\Http\Controllers\TeacherController::class, 'referrals'])->name('referrals.index');
+    Route::get('/referrals/create', [App\Http\Controllers\TeacherController::class, 'createReferral'])->name('referrals.create');
+    Route::post('/referrals', [App\Http\Controllers\TeacherController::class, 'storeReferral'])->name('referrals.store');
+    Route::get('/referrals/{studentReferral}', [App\Http\Controllers\TeacherController::class, 'showReferral'])->name('referrals.show');
+    Route::get('/forms', [App\Http\Controllers\TeacherController::class, 'formGenerator'])->name('forms.index');
+    Route::get('/case-tracking', [App\Http\Controllers\TeacherController::class, 'caseTracking'])->name('case-tracking.index');
+    Route::get('/intervention-guides', [App\Http\Controllers\TeacherController::class, 'interventionGuides'])->name('intervention-guides.index');
+    Route::get('/talk-to-counselor', [App\Http\Controllers\TeacherController::class, 'talkToCounselor'])->name('talk-to-counselor');
 });
 
 // Admin routes

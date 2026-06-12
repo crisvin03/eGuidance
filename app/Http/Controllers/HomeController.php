@@ -32,6 +32,8 @@ class HomeController extends Controller
             return redirect()->route('counselor.dashboard');
         } elseif ($user->isAdmin()) {
             return redirect()->route('admin.dashboard');
+        } elseif ($user->isTeacher()) {
+            return redirect()->route('teacher.dashboard');
         }
         
         return view('home');
