@@ -80,6 +80,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::get('/case-tracking', [App\Http\Controllers\TeacherController::class, 'caseTracking'])->name('case-tracking.index');
     Route::get('/intervention-guides', [App\Http\Controllers\TeacherController::class, 'interventionGuides'])->name('intervention-guides.index');
     Route::get('/talk-to-counselor', [App\Http\Controllers\TeacherController::class, 'talkToCounselor'])->name('talk-to-counselor');
+    Route::post('/appointments', [App\Http\Controllers\TeacherController::class, 'storeAppointment'])->name('appointments.store');
 });
 
 // Admin routes

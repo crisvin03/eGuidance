@@ -283,6 +283,32 @@
         <h5 class="card-title">Student Concerns</h5>
     </div>
     <div class="card-body">
+        <form method="GET" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search by title, description, or student..." value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="submitted" {{ request('status')=='submitted' ? 'selected' : '' }}>Submitted</option>
+                    <option value="under_review" {{ request('status')=='under_review' ? 'selected' : '' }}>Under Review</option>
+                    <option value="scheduled" {{ request('status')=='scheduled' ? 'selected' : '' }}>Scheduled</option>
+                    <option value="resolved" {{ request('status')=='resolved' ? 'selected' : '' }}>Resolved</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="category" class="form-select">
+                    <option value="">All Categories</option>
+                    @foreach($categories as $cat)
+                        <option value="{{ $cat->id }}" {{ request('category')==$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
+            </div>
+        </form>
+        
         @if($concerns->count() > 0)
             <div class="table-responsive">
                 <table class="table">
@@ -367,6 +393,9 @@
                     </tbody>
                 </table>
             </div>
+            @if($concerns->hasPages())
+                <div class="mt-3">{{ $concerns->links() }}</div>
+            @endif
         @else
             <div class="text-center py-5">
                 <i class="bi bi-chat-dots" style="font-size: 4rem; color: #cbd5e1;"></i>

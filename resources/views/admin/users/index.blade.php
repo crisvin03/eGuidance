@@ -12,6 +12,31 @@
         </a>
     </div>
     <div class="card-body">
+        <form method="GET" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search by name, email, or student ID..." value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="role" class="form-select">
+                    <option value="">All Roles</option>
+                    <option value="1" {{ request('role')=='1' ? 'selected' : '' }}>Student</option>
+                    <option value="2" {{ request('role')=='2' ? 'selected' : '' }}>Counselor</option>
+                    <option value="3" {{ request('role')=='3' ? 'selected' : '' }}>Administrator</option>
+                    <option value="4" {{ request('role')=='4' ? 'selected' : '' }}>Teacher</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="active" {{ request('status')=='active' ? 'selected' : '' }}>Active</option>
+                    <option value="inactive" {{ request('status')=='inactive' ? 'selected' : '' }}>Inactive</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
+            </div>
+        </form>
+        
         @if($users->count() > 0)
             <div class="table-responsive">
                 <table class="table">
@@ -78,6 +103,9 @@
                     </tbody>
                 </table>
             </div>
+            @if($users->hasPages())
+                <div class="mt-3">{{ $users->links() }}</div>
+            @endif
         @else
             <div class="text-center py-5">
                 <i class="bi bi-people" style="font-size: 4rem; color: #cbd5e1;"></i>

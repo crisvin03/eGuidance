@@ -14,6 +14,24 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         @endif
+        
+        <form method="GET" class="row g-3 mb-4">
+            <div class="col-md-5">
+                <input type="text" name="search" class="form-control" placeholder="Search by student name or notes..." value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="scheduled" {{ request('status')=='scheduled' ? 'selected' : '' }}>Scheduled</option>
+                    <option value="confirmed" {{ request('status')=='confirmed' ? 'selected' : '' }}>Confirmed</option>
+                    <option value="completed" {{ request('status')=='completed' ? 'selected' : '' }}>Completed</option>
+                    <option value="cancelled" {{ request('status')=='cancelled' ? 'selected' : '' }}>Cancelled</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
+            </div>
+        </form>
 
         @if($appointments->count() > 0)
             <div class="table-responsive">
@@ -95,6 +113,9 @@
                     </tbody>
                 </table>
             </div>
+            @if($appointments->hasPages())
+                <div class="mt-3">{{ $appointments->links() }}</div>
+            @endif
         @else
             <div class="text-center py-5">
                 <i class="bi bi-calendar-x" style="font-size: 4rem; color: #cbd5e1;"></i>

@@ -87,14 +87,30 @@ class StudentController extends Controller
             ->with('success', 'Concern submitted successfully.');
     }
 
-    public function myConcerns()
+    public function myConcerns(Request $request)
     {
-        $concerns = Concern::where('student_id', Auth::id())
-            ->with('category')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Concern::where('student_id', Auth::id())->with('category');
         
-        return view('student.concerns.index', compact('concerns'));
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+        
+        $concerns = $query->orderBy('created_at', 'desc')->paginate(15)->appends($request->query());
+        $categories = ConcernCategory::where('is_active', true)->get();
+        
+        return view('student.concerns.index', compact('concerns', 'categories'));
     }
 
     public function showConcern(Concern $concern)
@@ -137,12 +153,23 @@ class StudentController extends Controller
             ->with('success', 'Appointment scheduled successfully.');
     }
 
-    public function myAppointments()
+    public function myAppointments(Request $request)
     {
-        $appointments = Appointment::where('student_id', Auth::id())
-            ->with('counselor')
-            ->orderBy('appointment_date', 'desc')
-            ->get();
+        $query = Appointment::where('student_id', Auth::id())->with('counselor');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('counselor', fn($c) => $c->where('name', 'like', "%{$search}%"))
+                  ->orWhere('notes', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        $appointments = $query->orderBy('appointment_date', 'desc')->paginate(15)->appends($request->query());
         
         return view('student.appointments.index', compact('appointments'));
     }

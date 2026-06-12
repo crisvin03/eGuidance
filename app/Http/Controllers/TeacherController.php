@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\IncidentReport;
 use App\Models\StudentReferral;
 use App\Models\InterventionGuide;
+use App\Models\Appointment;
 use App\Models\User;
 
 class TeacherController extends Controller
@@ -40,10 +41,28 @@ class TeacherController extends Controller
 
     // ─── Incident Reports ─────────────────────────────────────────────────────
 
-    public function incidentReports()
+    public function incidentReports(Request $request)
     {
-        $reports = IncidentReport::where('teacher_id', Auth::id())
-            ->orderByDesc('created_at')->paginate(15);
+        $query = IncidentReport::where('teacher_id', Auth::id());
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('case_number', 'like', "%{$search}%")
+                  ->orWhere('student_name', 'like', "%{$search}%")
+                  ->orWhere('grade_section', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('urgency')) {
+            $query->where('urgency_level', $request->urgency);
+        }
+        
+        $reports = $query->orderByDesc('created_at')->paginate(15)->appends($request->query());
         return view('teacher.incident-reports.index', compact('reports'));
     }
 
@@ -110,10 +129,24 @@ class TeacherController extends Controller
 
     // ─── Student Referrals ────────────────────────────────────────────────────
 
-    public function referrals()
+    public function referrals(Request $request)
     {
-        $referrals = StudentReferral::where('teacher_id', Auth::id())
-            ->orderByDesc('created_at')->paginate(15);
+        $query = StudentReferral::where('teacher_id', Auth::id());
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('referral_number', 'like', "%{$search}%")
+                  ->orWhere('student_name', 'like', "%{$search}%")
+                  ->orWhere('grade_section', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        $referrals = $query->orderByDesc('created_at')->paginate(15)->appends($request->query());
         return view('teacher.referrals.index', compact('referrals'));
     }
 
@@ -169,16 +202,29 @@ class TeacherController extends Controller
     public function caseTracking(Request $request)
     {
         $status = $request->get('status');
+        $search = $request->get('search');
+        
+        $reportsQuery = IncidentReport::where('teacher_id', Auth::id());
+        $referralsQuery = StudentReferral::where('teacher_id', Auth::id());
+        
+        if ($search) {
+            $reportsQuery->where(function($q) use ($search) {
+                $q->where('case_number', 'like', "%{$search}%")
+                  ->orWhere('student_name', 'like', "%{$search}%");
+            });
+            $referralsQuery->where(function($q) use ($search) {
+                $q->where('referral_number', 'like', "%{$search}%")
+                  ->orWhere('student_name', 'like', "%{$search}%");
+            });
+        }
 
-        $reports = IncidentReport::where('teacher_id', Auth::id())
-            ->when($status, fn($q) => $q->where('status', $status))
-            ->orderByDesc('created_at')->get();
+        $reports = $reportsQuery->when($status, fn($q) => $q->where('status', $status))
+            ->orderByDesc('created_at')->paginate(15, ['*'], 'reports_page')->appends($request->query());
 
-        $referrals = StudentReferral::where('teacher_id', Auth::id())
-            ->when($status, fn($q) => $q->where('status', $status))
-            ->orderByDesc('created_at')->get();
+        $referrals = $referralsQuery->when($status, fn($q) => $q->where('status', $status))
+            ->orderByDesc('created_at')->paginate(15, ['*'], 'referrals_page')->appends($request->query());
 
-        return view('teacher.case-tracking.index', compact('reports', 'referrals', 'status'));
+        return view('teacher.case-tracking.index', compact('reports', 'referrals', 'status', 'search'));
     }
 
     // ─── Intervention Guides ──────────────────────────────────────────────────
@@ -212,6 +258,30 @@ class TeacherController extends Controller
     public function talkToCounselor()
     {
         $counselors = User::where('role_id', 2)->where('is_active', true)->get();
-        return view('teacher.talk-to-counselor', compact('counselors'));
+        $appointments = Appointment::where('student_id', Auth::id())
+            ->with('counselor')
+            ->orderByDesc('appointment_date')
+            ->get();
+        return view('teacher.talk-to-counselor', compact('counselors', 'appointments'));
+    }
+
+    public function storeAppointment(Request $request)
+    {
+        $request->validate([
+            'counselor_id' => 'required|exists:users,id',
+            'appointment_date' => 'required|date|after:now',
+            'notes' => 'nullable|string|max:500',
+        ]);
+
+        Appointment::create([
+            'student_id' => Auth::id(),
+            'counselor_id' => $request->counselor_id,
+            'appointment_date' => $request->appointment_date,
+            'notes' => $request->notes,
+            'status' => 'scheduled',
+        ]);
+
+        return redirect()->route('teacher.talk-to-counselor')
+            ->with('success', 'Appointment scheduled successfully. The counselor will be notified.');
     }
 }

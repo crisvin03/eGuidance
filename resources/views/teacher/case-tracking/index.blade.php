@@ -9,26 +9,22 @@
     </div>
 </div>
 
-<!-- Status Filter -->
-<div class="d-flex gap-2 flex-wrap mb-4">
-    <a href="{{ route('teacher.case-tracking.index') }}"
-       class="btn btn-sm {{ !$status ? 'text-white' : 'btn-outline-secondary' }}"
-       style="{{ !$status ? 'background:linear-gradient(135deg,#20B2AA,#008B8B);' : '' }}">
-        All Cases
-    </a>
-    <a href="{{ route('teacher.case-tracking.index', ['status' => 'pending']) }}"
-       class="btn btn-sm {{ $status=='pending' ? 'btn-warning' : 'btn-outline-warning' }}">
-        Pending
-    </a>
-    <a href="{{ route('teacher.case-tracking.index', ['status' => 'ongoing']) }}"
-       class="btn btn-sm {{ $status=='ongoing' ? 'btn-primary' : 'btn-outline-primary' }}">
-        Ongoing
-    </a>
-    <a href="{{ route('teacher.case-tracking.index', ['status' => 'closed']) }}"
-       class="btn btn-sm {{ $status=='closed' ? 'btn-success' : 'btn-outline-success' }}">
-        Closed
-    </a>
-</div>
+<form method="GET" class="row g-3 mb-4">
+    <div class="col-md-6">
+        <input type="text" name="search" class="form-control" placeholder="Search by case/ref no, student name..." value="{{ request('search') }}">
+    </div>
+    <div class="col-md-4">
+        <select name="status" class="form-select">
+            <option value="">All Statuses</option>
+            <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
+            <option value="ongoing" {{ request('status')=='ongoing' ? 'selected' : '' }}>Ongoing</option>
+            <option value="closed" {{ request('status')=='closed' ? 'selected' : '' }}>Closed</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
+    </div>
+</form>
 
 <!-- Incident Reports -->
 <h6 class="fw-bold text-muted mb-3 text-uppercase" style="letter-spacing:0.5px;">
@@ -87,6 +83,9 @@
                 </tbody>
             </table>
         </div>
+        @if($reports->hasPages())
+            <div class="p-4">{{ $reports->links() }}</div>
+        @endif
     </div>
 </div>
 
@@ -141,6 +140,9 @@
                 </tbody>
             </table>
         </div>
+        @if($referrals->hasPages())
+            <div class="p-4">{{ $referrals->links() }}</div>
+        @endif
     </div>
 </div>
 

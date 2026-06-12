@@ -14,6 +14,23 @@
         <h5 class="card-title">Student Referrals</h5>
     </div>
     <div class="card-body">
+        <form method="GET" class="row g-3 mb-4">
+            <div class="col-md-5">
+                <input type="text" name="search" class="form-control" placeholder="Search ref no, student, grade..." value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="ongoing" {{ request('status')=='ongoing' ? 'selected' : '' }}>Ongoing</option>
+                    <option value="closed" {{ request('status')=='closed' ? 'selected' : '' }}>Closed</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
+            </div>
+        </form>
+        
         @if($referrals->count() > 0)
             <div class="table-responsive">
                 <table class="table">

@@ -32,13 +32,31 @@ class CounselorController extends Controller
         return view('counselor.dashboard', compact('pendingConcerns', 'todayAppointments', 'upcomingAppointments'));
     }
 
-    public function concerns()
+    public function concerns(Request $request)
     {
-        $concerns = Concern::with(['student', 'category'])
-            ->orderBy('created_at', 'desc')
-            ->get();
+        $query = Concern::with(['student', 'category']);
         
-        return view('counselor.concerns.index', compact('concerns'));
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhereHas('student', fn($s) => $s->where('name', 'like', "%{$search}%"));
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('category')) {
+            $query->where('category_id', $request->category);
+        }
+        
+        $concerns = $query->orderBy('created_at', 'desc')->paginate(15)->appends($request->query());
+        $categories = \App\Models\ConcernCategory::where('is_active', true)->get();
+        
+        return view('counselor.concerns.index', compact('concerns', 'categories'));
     }
 
     public function showConcern(Concern $concern)
@@ -131,12 +149,23 @@ class CounselorController extends Controller
         }
     }
 
-    public function appointments()
+    public function appointments(Request $request)
     {
-        $appointments = Appointment::where('counselor_id', Auth::id())
-            ->with(['student', 'concern'])
-            ->orderBy('appointment_date', 'desc')
-            ->get();
+        $query = Appointment::where('counselor_id', Auth::id())->with(['student', 'concern']);
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->whereHas('student', fn($s) => $s->where('name', 'like', "%{$search}%"))
+                  ->orWhere('notes', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        $appointments = $query->orderBy('appointment_date', 'desc')->paginate(15)->appends($request->query());
         
         return view('counselor.appointments.index', compact('appointments'));
     }
@@ -260,11 +289,29 @@ class CounselorController extends Controller
 
     // ─── Incident Reports (from Teachers) ─────────────────────────────────────
 
-    public function incidentReports()
+    public function incidentReports(Request $request)
     {
-        $reports = IncidentReport::with('teacher')
-            ->orderByDesc('created_at')
-            ->paginate(15);
+        $query = IncidentReport::with('teacher');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('case_number', 'like', "%{$search}%")
+                  ->orWhere('student_name', 'like', "%{$search}%")
+                  ->orWhere('grade_section', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        if ($request->filled('urgency')) {
+            $query->where('urgency_level', $request->urgency);
+        }
+        
+        $reports = $query->orderByDesc('created_at')->paginate(15)->appends($request->query());
+        
         return view('counselor.incident-reports.index', compact('reports'));
     }
 
@@ -292,11 +339,25 @@ class CounselorController extends Controller
 
     // ─── Student Referrals (from Teachers) ────────────────────────────────────
 
-    public function referrals()
+    public function referrals(Request $request)
     {
-        $referrals = StudentReferral::with('teacher')
-            ->orderByDesc('created_at')
-            ->paginate(15);
+        $query = StudentReferral::with('teacher');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('referral_number', 'like', "%{$search}%")
+                  ->orWhere('student_name', 'like', "%{$search}%")
+                  ->orWhere('grade_section', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+        
+        $referrals = $query->orderByDesc('created_at')->paginate(15)->appends($request->query());
+        
         return view('counselor.referrals.index', compact('referrals'));
     }
 

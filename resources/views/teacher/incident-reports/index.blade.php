@@ -21,6 +21,32 @@
 </div>
 
 <div class="card border-0 shadow-sm" style="border-radius:16px;">
+    <div class="card-body pb-0">
+        <form method="GET" class="row g-3 mb-4">
+            <div class="col-md-4">
+                <input type="text" name="search" class="form-control" placeholder="Search case no, student, grade..." value="{{ request('search') }}">
+            </div>
+            <div class="col-md-3">
+                <select name="status" class="form-select">
+                    <option value="">All Statuses</option>
+                    <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
+                    <option value="ongoing" {{ request('status')=='ongoing' ? 'selected' : '' }}>Ongoing</option>
+                    <option value="closed" {{ request('status')=='closed' ? 'selected' : '' }}>Closed</option>
+                </select>
+            </div>
+            <div class="col-md-3">
+                <select name="urgency" class="form-select">
+                    <option value="">All Urgency Levels</option>
+                    <option value="low" {{ request('urgency')=='low' ? 'selected' : '' }}>Low</option>
+                    <option value="moderate" {{ request('urgency')=='moderate' ? 'selected' : '' }}>Moderate</option>
+                    <option value="high" {{ request('urgency')=='high' ? 'selected' : '' }}>High</option>
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
+            </div>
+        </form>
+    </div>
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">

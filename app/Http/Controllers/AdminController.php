@@ -30,9 +30,28 @@ class AdminController extends Controller
         ));
     }
 
-    public function users()
+    public function users(Request $request)
     {
-        $users = User::with('role')->orderBy('role_id')->orderBy('name')->get();
+        $query = User::with('role');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%")
+                  ->orWhere('student_id', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('role')) {
+            $query->where('role_id', $request->role);
+        }
+        
+        if ($request->filled('status')) {
+            $query->where('is_active', $request->status === 'active');
+        }
+        
+        $users = $query->orderBy('role_id')->orderBy('name')->paginate(15)->appends($request->query());
         return view('admin.users.index', compact('users'));
     }
 
