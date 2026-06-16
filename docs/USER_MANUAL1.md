@@ -1,476 +1,129 @@
-# eGuidance Portal - User Manual
+# SIGMA eGuidance Portal — User Manual
 
 ## Table of Contents
 1. [System Overview](#system-overview)
 2. [System Architecture](#system-architecture)
-   - [System Goals](#system-goals)
-   - [Technology Stack](#technology-stack)
-   - [System Components](#system-components)
-   - [Database Schema](#database-schema)
-   - [Application Architecture](#application-architecture)
-   - [Security Architecture](#security-architecture)
-   - [Email System](#email-system)
-   - [File Storage](#file-storage)
-   - [Deployment Architecture](#deployment-architecture)
-   - [API Documentation](#api-documentation)
-   - [Performance Considerations](#performance-considerations)
-   - [Scalability](#scalability)
 3. [Getting Started](#getting-started)
 4. [Student Guide](#student-guide)
-5. [Counselor Guide](#counselor-guide)
-6. [Administrator Guide](#administrator-guide)
-7. [Common Features](#common-features)
-8. [Troubleshooting](#troubleshooting)
-9. [FAQ](#faq)
+5. [Teacher Guide](#teacher-guide)
+6. [Counselor Guide](#counselor-guide)
+7. [Administrator Guide](#administrator-guide)
+8. [Common Features](#common-features)
+9. [Troubleshooting](#troubleshooting)
+10. [FAQ](#faq)
 
 ---
 
 ## System Overview
 
-The eGuidance Portal is a comprehensive web-based guidance and counseling management system designed to facilitate seamless communication between students and counselors. The system provides a platform for submitting concerns, scheduling appointments, tracking progress, and accessing resources.
+The **SIGMA eGuidance Portal** (Guidance & Monitoring Assistance) is a comprehensive web-based guidance and counseling management system designed for **Bulan National High School**. It facilitates seamless communication between students, teachers, counselors, and administrators through a unified digital platform.
 
 ### Key Features
-- **Concern Submission**: Students can submit counseling concerns with file attachments
-- **Appointment Management**: Schedule, confirm, and track counseling sessions
-- **Real-time Notifications**: Email notifications for important updates
-- **Profile Management**: Personal profiles with photo upload capability
-- **Resource Library**: Access to guidance materials and self-help tools
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
 
-### System Architecture
+| Feature | Description |
+|---------|-------------|
+| **Concern Submission** | Students submit counseling concerns with file attachments and anonymity options |
+| **Appointment Management** | Students and teachers schedule, confirm, and track counseling sessions |
+| **Incident Reports** | Teachers report and document school incidents with urgency levels and case tracking |
+| **Student Referrals** | Teachers formally refer students to the CARE Center for counseling support |
+| **Generate Forms** | Teachers auto-generate and print 7 types of official guidance forms |
+| **Intervention Guides** | Teachers access DepEd-compliant intervention protocols with expandable modal content |
+| **Case Tracking** | Teachers monitor the status of all submitted incident reports and referrals |
+| **Talk to Counselor** | Teachers schedule direct appointments with school counselors |
+| **Kamusta Ka** | Students perform a mental health self-check with guided support routing |
+| **Real-time Notifications** | Email notifications for appointments, concern responses, and status updates |
+| **Profile Management** | Personal profiles with photo upload, settings, and password management |
+| **Resource Library** | Students access guidance materials, emergency contacts, and self-help tools |
+| **Online Resources** | Teachers access curated DepEd, mental health, and career guidance links |
+| **Reports & Export** | Administrators view analytics and export reports as Excel-compatible files |
+| **Search & Filter** | All listing pages include search, filtering, and pagination |
+| **Responsive Design** | Works seamlessly on desktop, tablet, and mobile devices |
 
-The eGuidance Portal is a web-based counseling management system built on the Laravel framework. It follows a Model-View-Controller (MVC) architecture pattern with a focus on security, scalability, and maintainability.
+### Supported User Roles
 
-#### System Goals
-- **Security**: Protect sensitive student and counseling data
-- **Usability**: Intuitive interface for students and counselors
-- **Scalability**: Handle growing user base and data volume
-- **Reliability**: Ensure high availability and data integrity
-- **Maintainability**: Clean, documented code for easy maintenance
+| Role | Description |
+|------|-------------|
+| **Student** | Submit concerns, manage appointments, access resources, Kamusta Ka self-check |
+| **Teacher** | Submit incident reports & referrals, generate forms, access intervention guides, case tracking, talk to counselor |
+| **Counselor** | Review concerns, manage appointments, add session notes, review incident reports & referrals |
+| **Administrator** | Manage all users, categories, system reports with export functionality |
 
-#### Technology Stack
+---
+
+## System Architecture
+
+### Technology Stack
 
 **Backend**
-- **Framework**: Laravel 10.x
+- **Framework**: Laravel 12.x
 - **PHP Version**: PHP 8.2+
-- **Database**: MySQL 8.0+ / MariaDB 10.5+
+- **Database**: MySQL 8.0+ / SQLite (development)
 - **Authentication**: Laravel's built-in authentication system
-- **Queue System**: Laravel Queues (Redis/Database)
-- **Cache**: Redis / File Cache
+- **Cache**: File Cache
 
 **Frontend**
 - **Template Engine**: Blade (Laravel)
 - **CSS Framework**: Bootstrap 5.x
-- **JavaScript**: Vanilla JS + Alpine.js (if needed)
-- **Icons**: Bootstrap Icons
+- **JavaScript**: Vanilla JS
+- **Icons**: Bootstrap Icons 1.11+
 - **Fonts**: Google Fonts (Instrument Sans)
-
-**Development Tools**
-- **Package Manager**: Composer
 - **Asset Bundling**: Vite
-- **Version Control**: Git
-- **Testing**: PHPUnit
-- **Code Quality**: PHP CS Fixer, Laravel Pint
 
 **Infrastructure**
-- **Web Server**: Apache / Nginx
-- **Operating System**: Linux (Ubuntu 20.04+ recommended)
-- **Containerization**: Docker (optional)
-- **Monitoring**: Laravel Telescope / Custom monitoring
+- **Web Server**: Apache / Nginx / Vercel
+- **Operating System**: Linux (Ubuntu 20.04+) or Windows
+- **Version Control**: Git (GitHub)
 
-#### System Components
-
-**Core Modules**
-
-**1. Authentication Module**
-- User registration and login
-- Role-based access control (RBAC)
-- Password reset functionality
-- Session management
-- Profile management
-
-**2. Concern Management Module**
-- Concern submission and tracking
-- File attachment handling
-- Anonymous concern support
-- Category-based organization
-- Status workflow management
-
-**3. Appointment Module**
-- Appointment scheduling
-- Calendar integration
-- Status tracking (scheduled, confirmed, completed, cancelled)
-- Conflict detection
-- Reminder system
-
-**4. Communication Module**
-- Email notifications
-- In-app messaging
-- Counselor responses
-- System announcements
-
-**5. Resource Module**
-- Document library
-- Self-help tools
-- Emergency contacts
-- Educational materials
-
-**6. Reporting Module**
-- Usage analytics
-- Performance metrics
-- User activity logs
-- Export functionality
-
-**Supporting Services**
-
-**Email Service**
-- SMTP configuration
-- Template management
-- Queue processing
-- Delivery tracking
-
-**File Storage Service**
-- Local/Cloud storage
-- File validation
-- Security scanning
-- Access control
-
-**Notification Service**
-- Real-time notifications
-- Email integration
-- Push notifications (future)
-- Preference management
-
-#### Database Schema
+### Database Schema
 
 **Core Tables**
 
-**Users Table**
-- id (Primary)
-- name (String, 255)
-- email (String, 255, Unique)
-- email_verified_at (Timestamp)
-- password (String, 255)
-- role_id (Foreign Key)
-- student_id (String, 255, Nullable)
-- phone (String, 20, Nullable)
-- date_of_birth (Date, Nullable)
-- gender (Enum: male, female, other, Nullable)
-- address (Text, Nullable)
-- profile_photo (String, 255, Nullable)
-- is_active (Boolean, Default: true)
-- settings (JSON, Nullable)
-- remember_token (String, 100)
-- created_at, updated_at (Timestamps)
-
-**Roles Table**
-- id (Primary)
-- name (String, 50, Unique)
-- description (Text, Nullable)
-- created_at, updated_at (Timestamps)
-
-**Concerns Table**
-- id (Primary)
-- student_id (Foreign Key)
-- category_id (Foreign Key)
-- title (String, 255)
-- description (Text)
-- status (Enum: pending, under_review, scheduled, resolved)
-- is_anonymous (Boolean, Default: false)
-- counselor_id (Foreign Key, Nullable)
-- counselor_response (Text, Nullable)
-- counseling_date (DateTime, Nullable)
-- resolved_at (DateTime, Nullable)
-- attachment_path (String, 255, Nullable)
-- attachment_name (String, 255, Nullable)
-- created_at, updated_at (Timestamps)
-
-**Appointments Table**
-- id (Primary)
-- student_id (Foreign Key)
-- counselor_id (Foreign Key)
-- concern_id (Foreign Key, Nullable)
-- appointment_date (DateTime)
-- status (Enum: scheduled, confirmed, completed, cancelled)
-- notes (Text, Nullable)
-- cancellation_reason (Text, Nullable)
-- created_at, updated_at (Timestamps)
-
-**Categories Table**
-- id (Primary)
-- name (String, 100, Unique)
-- description (Text, Nullable)
-- is_active (Boolean, Default: true)
-- created_at, updated_at (Timestamps)
-
-**Session_Notes Table**
-- id (Primary)
-- appointment_id (Foreign Key)
-- counselor_id (Foreign Key)
-- session_type (Enum: initial, follow_up, crisis, group)
-- notes (Text)
-- recommendations (Text, Nullable)
-- is_confidential (Boolean, Default: true)
-- created_at, updated_at (Timestamps)
+| Table | Purpose |
+|-------|---------|
+| `users` | All user accounts (students, teachers, counselors, admins) with profile data |
+| `roles` | User role definitions (Student, Counselor, Administrator, Teacher) |
+| `concerns` | Student-submitted counseling concerns with status workflow |
+| `concern_categories` | Categories for organizing concerns |
+| `appointments` | Scheduled counseling sessions with status tracking |
+| `session_notes` | Counselor notes for completed counseling sessions |
+| `notifications` | In-app notification records |
+| `audit_logs` | System activity and change tracking |
+| `incident_reports` | Teacher-submitted incident reports with case numbers |
+| `student_referrals` | Teacher-submitted student referrals to the CARE Center |
+| `intervention_guides` | Admin-managed intervention guide content and files |
 
 **Relationships**
-- **Users** hasMany **Concerns** (as student)
-- **Users** hasMany **Concerns** (as counselor)
-- **Users** hasMany **Appointments** (as student)
-- **Users** hasMany **Appointments** (as counselor)
-- **Concerns** belongsTo **Categories**
-- **Concerns** hasOne **Appointment**
-- **Appointments** hasMany **Session_Notes**
-- **Users** belongsTo **Roles**
+- Users → Concerns (as student or counselor)
+- Users → Appointments (as student or counselor)
+- Users → Incident Reports (as teacher)
+- Users → Student Referrals (as teacher)
+- Concerns → Concern Categories
+- Concerns → Appointments
+- Appointments → Session Notes
 
-#### Application Architecture
-
-**MVC Pattern Implementation**
-
-**Models**
-- **User**: Authentication and profile management
-- **Concern**: Concern submission and workflow
-- **Appointment**: Scheduling and status management
-- **Category**: Concern categorization
-- **SessionNote**: Counseling session records
-- **Role**: Role-based access control
+### Application Architecture
 
 **Controllers**
-- **AuthController**: Authentication operations
-- **StudentController**: Student-specific operations
-- **CounselorController**: Counselor-specific operations
-- **ProfileController**: Profile management
-- **SettingsController**: User preferences
-- **ConcernController**: Concern CRUD operations
-- **AppointmentController**: Appointment management
+- `StudentController` — Student-specific operations (concerns, appointments, kamustaka, resources)
+- `TeacherController` — Teacher-specific operations (incident reports, referrals, forms, case tracking, intervention guides, talk to counselor)
+- `CounselorController` — Counselor-specific operations (concern review, appointments, session notes, incident reports, referrals)
+- `AdminController` — Administrator operations (user management, categories, reports with export)
+- `ProfileController` — Profile management for all roles
+- `SettingsController` — User preference settings
+- `ConcernController` — Shared concern operations
+- `AppointmentController` — Shared appointment operations
 
-**Views**
-- **Dashboard**: Main dashboard for all roles
-- **Concerns**: Concern submission and listing
-- **Appointments**: Appointment management
-- **Profile**: User profile management
-- **Emails**: Notification templates
-- **Auth**: Authentication pages
+**Middleware**
+- `auth` — Authentication verification
+- `role` — Role-based access control (student, teacher, counselor, admin)
 
-**Middleware Stack**
-1. **Web Middleware**: Session state, CSRF protection
-2. **Auth Middleware**: Authentication verification
-3. **Role Middleware**: Role-based access control
-4. **Custom Middleware**: Additional security and logging
+### Email System
 
-**Service Layer**
-- **EmailService**: Email notification management
-- **FileService**: File upload and storage
-- **NotificationService**: Real-time notifications
-- **ReportService**: Analytics and reporting
-
-#### Security Architecture
-
-**Authentication & Authorization**
-- **Password Hashing**: bcrypt with automatic rehashing
-- **Session Management**: Secure session configuration
-- **Remember Me**: Secure token-based persistence
-- **Rate Limiting**: Login attempt limiting
-- **Two-Factor Authentication**: Ready for implementation
-
-**Data Protection**
-- **Encryption**: Sensitive data encryption at rest
-- **Input Validation**: Comprehensive input sanitization
-- **SQL Injection Prevention**: Eloquent ORM with parameter binding
-- **XSS Protection**: Output escaping and CSP headers
-- **CSRF Protection**: Token-based CSRF prevention
-
-**Access Control**
-- **Role-Based Access Control (RBAC)**: Three-tier system
-- **Permission Checks**: Method-level authorization
-- **Resource Ownership**: User can only access their data
-- **Anonymous Support**: Protected anonymous concern submission
-
-**Audit & Logging**
-- **Activity Logging**: User action tracking
-- **Error Logging**: Comprehensive error tracking
-- **Security Events**: Failed login attempts, suspicious activities
-- **Data Integrity**: Change tracking for sensitive data
-
-#### Email System
-
-**Architecture**
-- **Queue-Based Processing**: Asynchronous email sending
-- **Template System**: Dynamic email templates
-- **Multi-Transport Support**: SMTP, Mailgun, SendGrid, etc.
-- **Delivery Tracking**: Email delivery status monitoring
-
-**Email Types**
-1. **Welcome Emails**: New user registration
-2. **Password Reset**: Secure password recovery
-3. **Concern Notifications**: New concern submissions
-4. **Appointment Confirmations**: Scheduled appointments
-5. **Status Updates**: Concern/appointment status changes
-6. **System Notifications**: Important system updates
-
-**Template System**
-- **Blade Templates**: Dynamic content rendering
-- **Responsive Design**: Mobile-friendly emails
-- **Professional Branding**: Consistent SIGMA branding
-- **Personalization**: User-specific content
-
-#### File Storage
-
-**Storage Architecture**
-- **Local Storage**: Default file system storage
-- **Cloud Storage**: Ready for AWS S3, Google Cloud integration
-- **Symbolic Links**: Public access management
-- **Access Control**: Secure file access permissions
-
-**File Handling**
-- **Upload Validation**: File type, size, and content validation
-- **Security Scanning**: Malware detection capabilities
-- **Thumbnail Generation**: Automatic image thumbnails
-- **Version Control**: File version tracking (future)
-
-**Supported Formats**
-- **Images**: JPG, JPEG, PNG, GIF, WebP (max 2MB)
-- **Documents**: PDF, DOC, DOCX, TXT (max 2MB)
-- **Future**: Audio, Video formats (planned)
-
-#### Deployment Architecture
-
-**Production Environment**
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Load Balancer │────│   Web Server    │────│   Database      │
-│   (Nginx/Apache)│    │   (PHP-FPM)     │    │   (MySQL)       │
-└─────────────────┘    └─────────────────┘    └─────────────────┘
-         │                       │                       │
-         │                       │                       │
-         │              ┌─────────────────┐              │
-         │              │   Redis Cache   │              │
-         │              │   (Sessions)    │              │
-         │              └─────────────────┘              │
-         │                       │                       │
-         │              ┌─────────────────┐              │
-         │              │   File Storage  │              │
-         │              │   (Local/S3)    │              │
-         │              └─────────────────┘              │
-         └───────────────────────────────────────────────┘
-```
-
-**Environment Configuration**
-- **Development**: Local development with SQLite
-- **Staging**: Production-like environment for testing
-- **Production**: Full production stack with monitoring
-
-**Deployment Process**
-1. **Code Deployment**: Git-based deployment
-2. **Dependency Installation**: Composer install
-3. **Database Migrations**: Automated schema updates
-4. **Asset Building**: Vite build process
-5. **Cache Clearing**: Application cache refresh
-6. **Health Checks**: Post-deployment verification
-
-#### API Documentation
-
-**RESTful API Endpoints**
-
-**Authentication**
-```
-POST /api/login          - User authentication
-POST /api/logout         - User logout
-POST /api/register       - User registration
-POST /api/password/email - Password reset request
-```
-
-**Concerns**
-```
-GET    /api/concerns           - List concerns
-POST   /api/concerns           - Create concern
-GET    /api/concerns/{id}      - Get concern details
-PUT    /api/concerns/{id}      - Update concern
-DELETE /api/concerns/{id}      - Delete concern
-POST   /api/concerns/{id}/respond - Respond to concern
-```
-
-**Appointments**
-```
-GET    /api/appointments           - List appointments
-POST   /api/appointments           - Create appointment
-GET    /api/appointments/{id}      - Get appointment details
-PUT    /api/appointments/{id}      - Update appointment
-DELETE /api/appointments/{id}      - Delete appointment
-POST   /api/appointments/{id}/respond - Respond to appointment
-```
-
-**Users**
-```
-GET    /api/users/profile         - Get user profile
-PUT    /api/users/profile         - Update profile
-POST   /api/users/profile/photo   - Upload profile photo
-DELETE /api/users/profile/photo   - Remove profile photo
-```
-
-**Response Format**
-```json
-{
-    "success": true,
-    "data": { ... },
-    "message": "Operation successful",
-    "errors": null
-}
-```
-
-**Error Handling**
-- **400**: Bad Request (validation errors)
-- **401**: Unauthorized (authentication required)
-- **403**: Forbidden (insufficient permissions)
-- **404**: Not Found (resource not found)
-- **422**: Unprocessable Entity (validation failed)
-- **500**: Internal Server Error
-
-#### Performance Considerations
-
-**Database Optimization**
-- **Indexing**: Strategic database indexes
-- **Query Optimization**: Efficient query design
-- **Connection Pooling**: Database connection management
-- **Read Replicas**: Read scaling (future)
-
-**Caching Strategy**
-- **Application Cache**: Frequently accessed data
-- **Query Cache**: Database query results
-- **Page Cache**: Full page caching where appropriate
-- **CDN**: Static asset delivery optimization
-
-**Frontend Optimization**
-- **Asset Minification**: CSS/JS compression
-- **Image Optimization**: Responsive images
-- **Lazy Loading**: On-demand content loading
-- **Browser Caching**: Client-side caching headers
-
-**Monitoring & Analytics**
-- **Application Performance Monitoring (APM)**
-- **Database Query Analysis**
-- **User Behavior Tracking**
-- **Error Rate Monitoring**
-
-#### Scalability
-
-**Horizontal Scaling**
-- **Load Balancing**: Multiple web servers
-- **Database Scaling**: Read replicas and sharding
-- **Microservices**: Service decomposition (future)
-- **Container Orchestration**: Kubernetes deployment (future)
-
-**Vertical Scaling**
-- **Resource Allocation**: CPU and memory scaling
-- **Database Optimization**: Query and schema optimization
-- **Caching Layers**: Multi-level caching strategy
-- **CDN Integration**: Global content delivery
-
-**Capacity Planning**
-- **User Growth**: Projected user base scaling
-- **Data Growth**: Storage capacity planning
-- **Traffic Patterns**: Peak load handling
-- **Geographic Distribution**: Multi-region deployment (future)
+Email notifications are sent for:
+- Appointment confirmations and scheduling
+- Concern responses from counselors
+- New incident report/referral submissions
+- Status change notifications
 
 ---
 
@@ -482,208 +135,375 @@ DELETE /api/users/profile/photo   - Remove profile photo
 - Valid email address for notifications
 
 ### First-Time Login
-1. Open your web browser and navigate to the eGuidance Portal URL
-2. Click on "Register" if you're a new user
-3. Fill in the registration form with:
+1. Navigate to the SIGMA eGuidance Portal URL
+2. Click **"Register"** if you're a new user
+3. Fill in the registration form:
    - Full Name
    - Email Address
-   - Student ID (optional)
-   - Password
-4. Click "Create Account"
-5. Check your email for verification (if enabled)
-6. Log in with your credentials
+   - Student ID (for students)
+   - Password (minimum 8 characters)
+4. Click **"Create Account"**
+5. Log in with your credentials
 
 ### Password Recovery
-1. Click "Forgot Password?" on the login page
+1. Click **"Forgot Password?"** on the login page
 2. Enter your registered email address
-3. Check your email for password reset instructions
-4. Follow the link to create a new password
+3. Follow the email instructions to reset your password
 
 ---
 
 ## Student Guide
 
+### Navigation Menu
+- Dashboard
+- Submit Concern
+- My Concerns
+- Appointments
+- Resources
+- Kamusta Ka?
+
 ### Dashboard Overview
-Upon logging in, students see:
-- **Quick Stats**: Number of active concerns and upcoming appointments
-- **Navigation Menu**: Access to all main features
-- **Recent Activity**: Latest concerns and appointments
+- **Quick Stats**: Active concerns count, upcoming appointments, total concerns
+- **Recent Activity**: Latest concerns and appointment statuses
+- **Quick Actions**: Direct links to submit concerns and book appointments
 
 ### Submitting a Concern
-1. Navigate to **Concerns → Submit New Concern**
+1. Navigate to **Submit Concern** in the sidebar
 2. Fill in the required information:
-   - **Category**: Select the appropriate concern category
+   - **Category**: Select from available concern categories
    - **Title**: Brief summary of your concern
-   - **Description**: Detailed explanation of your concern
-   - **Anonymous**: Check if you wish to remain anonymous
-   - **Attachment**: Upload relevant documents (optional)
-3. Click "Submit Concern"
-4. You'll receive a confirmation and can track the status
+   - **Description**: Detailed explanation
+   - **Anonymous**: Check to hide your identity from counselors
+   - **Attachment**: Upload documents (images, PDFs, up to 5MB)
+3. Click **"Submit Concern"**
+4. Track status from the **My Concerns** page
 
-### Viewing Concern Details
-1. Go to **Concerns → My Concerns**
-2. Click the "View" button next to any concern
-3. View complete details including:
-   - Submission date and category
-   - Counselor response
-   - Scheduled counseling date (if applicable)
+### Viewing & Managing Concerns
+1. Go to **My Concerns** in the sidebar
+2. Use the **search bar** to find concerns by title or description
+3. Filter by **status** (submitted, under review, scheduled, resolved) or **category**
+4. Click **"View"** to see full details:
+   - Submission date, category, and current status
+   - Counselor response and scheduled counseling date
    - Uploaded attachments
 
 ### Managing Appointments
-1. Navigate to **Appointments → My Appointments**
-2. View upcoming and past appointments
-3. Click "View" to see appointment details:
-   - Counselor information
-   - Date and time
-   - Related concerns
-   - Session notes (after appointment)
+1. Navigate to **Appointments** in the sidebar
+2. **Search** by counselor name, **filter** by status (scheduled, confirmed, completed, cancelled)
+3. Click **"View"** for appointment details:
+   - Counselor information, date, time, related concern
+   - Session notes (after completed appointments)
+4. **Reschedule** or **Cancel** appointments as needed
+5. You'll receive email confirmation of any changes
 
-### Rescheduling/Canceling Appointments
-1. Go to **Appointments → My Appointments**
-2. Find the appointment you want to modify
-3. Click "Reschedule" or "Cancel" (if available)
-4. Follow the prompts to complete the action
-5. You'll receive email confirmation of changes
+### Creating a New Appointment
+1. Go to **Appointments → Create Appointment**
+2. Select a counselor from the dropdown
+3. Choose a preferred date and time
+4. Add optional notes about what you'd like to discuss
+5. Click **"Schedule Appointment"**
+
+### Kamusta Ka (Mental Health Self-Check)
+1. Navigate to **Kamusta Ka?** in the sidebar
+2. Select how you're feeling:
+   - **I'm Okay** → Redirected to Resources page with wellness materials
+   - **Not Sure** → Redirected to book a counseling appointment
+   - **I'm Not Okay** → Redirected to a dedicated support page with:
+     - Emergency hotline numbers
+     - Immediate coping strategies
+     - Direct link to schedule urgent counseling
+3. This is a private self-assessment — no records are stored
 
 ### Accessing Resources
 1. Navigate to **Resources** in the sidebar
-2. Browse available sections:
-   - **Emergency Contacts**: Immediate help contacts
-   - **Guidance Articles**: Self-help materials
-   - **Self-Help Tools**: Interactive resources
+2. Browse sections:
+   - **Emergency Contacts**: Crisis hotlines and immediate help numbers
+   - **Guidance Articles**: Self-help materials and mental health tips
+   - **Self-Help Tools**: Interactive wellness resources
 
-### Profile Management
-1. Click your profile picture/name in the top-right
-2. Select "Profile" from the dropdown
-3. Update your information:
-   - **Personal Details**: Name, email, phone, etc.
-   - **Profile Photo**: Upload a profile picture
-   - **Password**: Change your password
-4. Click "Update Profile" to save changes
+---
+
+## Teacher Guide
+
+### Navigation Menu
+- Dashboard
+- Submit Incident Report
+- Refer a Student
+- Generate Forms
+- View Submitted Cases (Case Tracking)
+- Intervention Guides
+- Talk to Counselor
+
+### Dashboard Overview
+- **Stats Cards**: Total incident reports, pending reports, total referrals, pending referrals
+- **Recent Reports**: Last 5 submitted incident reports with status badges
+- **Recent Referrals**: Last 5 submitted referrals with status badges
+
+### Submitting an Incident Report
+1. Navigate to **Submit Incident Report** in the sidebar
+2. Fill in the comprehensive report form:
+   - **Student Name** and **Grade & Section**
+   - **Date of Referral**
+   - **Incident Category**: Bullying, Behavioral Concern, Mental Health, Academic Risk, Child Protection, or Classroom Incident
+   - **Concern Type**: Academic, Emotional/Mental, Social/Peer, Family, Behavioral, Relationships, Safety/Protection, Career/Future, Counseling Support, or Other
+   - **Incident Description**: Detailed account of what happened
+   - **Initial Intervention**: Actions you've already taken
+   - **Parent/Guardian Info**: Name and contact number (if applicable)
+   - **Referred By**: Your name and designation
+   - **Urgency Level**: Low, Moderate, or High
+   - **Attachment**: Supporting documents (optional, up to 2MB)
+3. Click **"Submit Report"**
+4. A unique **case number** (e.g., IR-2026-0001) is auto-generated
+5. The CARE Center is automatically notified
+
+### Viewing Incident Reports
+1. Navigate to **Incident Reports** in the sidebar (shows your reports only)
+2. **Search** by case number, student name, or grade/section
+3. **Filter** by status (pending, ongoing, closed) and urgency level (low, moderate, high)
+4. Click **"View"** for full report details and counselor notes
+5. Pagination shows 15 reports per page
+
+### Referring a Student
+1. Navigate to **Refer a Student** in the sidebar
+2. Fill in the referral form:
+   - **Student Name** and **Grade & Section**
+   - **Reason for Referral**: Detailed explanation of why the student needs support
+   - **Observed Behavior**: Patterns you've noticed (optional)
+   - **Actions Already Taken**: What you've done so far (optional)
+   - **Preferred Follow-up**: Your recommendation for next steps
+   - **Additional Notes**: Any other relevant information
+3. Click **"Submit Referral"**
+4. A unique **referral number** (e.g., SR-2026-0001) is auto-generated
+
+### Viewing Referrals
+1. Navigate to **Referrals** in the sidebar
+2. **Search** by referral number, student name, or grade/section
+3. **Filter** by status (pending, ongoing, closed)
+4. Click **"View"** for full referral details and counselor response
+
+### Generate Forms
+1. Navigate to **Generate Forms** in the sidebar
+2. Select from 7 official form templates:
+   - **Confiscation Slip**: Document confiscated student items
+   - **Call Slip**: Summon a student/parent to the guidance office
+   - **Risk Assessment Form**: Evaluate student risk level
+   - **Bag Search Plan**: Plan and document bag inspections
+   - **Good Moral Request Form**: Character assessment request (landscape format)
+   - **Home Visitation Form**: Record home visit observations (landscape format)
+   - **Conference/Meeting Form**: Document parent-teacher conferences
+3. Fill in the required fields for each form template
+4. Click **"Generate & Print"** — a print-ready preview opens in a new tab
+5. Print directly or save as PDF from the browser
+
+### Case Tracking (View Submitted Cases)
+1. Navigate to **View Submitted Cases** in the sidebar
+2. This page shows **both** your incident reports and referrals in a unified view
+3. **Search** across all cases by case number or student name
+4. **Filter** by status to find specific case types
+5. Each case shows:
+   - Case/referral number
+   - Student name and grade/section
+   - Current status with color-coded badges
+   - Submission date
+6. Click **"View"** to see full details of any case
+
+### Intervention Guides
+1. Navigate to **Intervention Guides** in the sidebar
+2. Browse **6 comprehensive intervention protocol guides**:
+   - **Adult-to-Learner Protection Concern Protocol** — RA 7610, RA 9344, DepEd Order No. 40 compliance
+   - **Learner-to-Learner Protection Concern Protocol** — Anti-Bullying Act (RA 10627), 9-step intervention
+   - **Learner-to-Community Concern Protocol** — 8-step community response, partner directory
+   - **Panic Attack Classroom Response Guide** — Recognition signs, DOs/DON'Ts, crisis protocol
+   - **Referral vs Classroom Management Guide** — Side-by-side comparison, 5-step referral process
+   - **Career Landas Toolkits** — SHS track guide, TESDA/O*NET integration
+3. **Search** guides by title or description
+4. **Filter** by category
+5. Click **"Read Full Guide"** on any card to open a detailed modal with complete protocols
+6. **Online Resources Section**: Access curated links organized into 5 categories:
+   - DepEd/Government Resources
+   - Mental Health Resources
+   - Intervention Support
+   - Career Guidance
+   - Anti-Bullying/Safety
+7. **Emergency Hotlines** quick reference card is always visible
+
+### Talk to Counselor
+1. Navigate to **Talk to Counselor** in the sidebar
+2. **Select a counselor** from the available counselors list
+3. **Choose a date and time** for your appointment
+4. Add optional **notes** about what you'd like to discuss
+5. Click **"Schedule Appointment"**
+6. View all your scheduled appointments below the form
+7. See appointment status (scheduled, confirmed, completed, cancelled)
 
 ---
 
 ## Counselor Guide
 
+### Navigation Menu
+- Dashboard
+- Student Concerns
+- Appointments
+- Incident Reports
+- Student Referrals
+
 ### Dashboard Overview
-Counselors see:
-- **Pending Concerns**: Number of concerns awaiting review
-- **Today's Appointments**: Scheduled sessions for today
-- **Upcoming Appointments**: Next 5 appointments
-- **Quick Actions**: Access to common tasks
+- **Pending Concerns**: Count of concerns awaiting review (shown with badge on sidebar)
+- **Today's Appointments**: Sessions scheduled for today
+- **Upcoming Appointments**: Next 5 scheduled sessions
+- **Pending Incident Reports**: Reports awaiting review (badge on sidebar)
+- **Pending Referrals**: Referrals awaiting review (badge on sidebar)
 
 ### Managing Student Concerns
-1. Navigate to **Concerns → Student Concerns**
-2. Review the list of submitted concerns
-3. Click "View" to see full details including:
+1. Navigate to **Student Concerns** in the sidebar
+2. **Search** by student name, concern title, or description
+3. **Filter** by status (submitted, under review, scheduled, resolved) and category
+4. Click **"View"** to see full details:
    - Student information (unless anonymous)
-   - Concern details and attachments
-   - Submission history
+   - Concern details and file attachments
+   - Submission history and category
 
 ### Responding to Concerns
 1. Open a concern from the list
 2. Review all provided information and attachments
-3. Click "Respond to Concern" (if status allows)
+3. Click **"Respond to Concern"** (available for concerns in "submitted" status)
 4. Fill in the response form:
    - **Counseling Date & Time**: Schedule the session
-   - **Response**: Write your response to the student
-5. Click "Submit Response"
-6. An appointment is automatically created and the student is notified via email
+   - **Response**: Your written response to the student
+5. Click **"Submit Response"**
+6. An appointment is **automatically created** and the student is notified via email
+7. The concern status changes to "scheduled"
 
 ### Managing Appointments
-1. Go to **Appointments → My Appointments**
-2. View all your scheduled appointments
-3. Use the status buttons:
+1. Go to **Appointments** in the sidebar
+2. **Search** by student name, **filter** by status
+3. Use the status action buttons:
    - **Confirm**: Confirm a scheduled appointment
-   - **Complete**: Mark appointment as finished
-   - **Cancel**: Cancel an appointment with reason
+   - **Complete**: Mark appointment as finished (enables session notes)
+   - **Cancel**: Cancel with a reason
+4. Click **"View"** for full appointment details
 
 ### Appointment Workflow
-1. **Scheduled**: Initial status after concern response
-2. **Confirmed**: After counselor confirms the appointment
-3. **Completed**: After the counseling session
-4. **Cancelled**: If appointment is cancelled
+1. **Scheduled** → Initial status after concern response or direct booking
+2. **Confirmed** → Counselor confirms the appointment
+3. **Completed** → After the counseling session takes place
+4. **Cancelled** → If the appointment is cancelled
 
 ### Adding Session Notes
-1. Open an appointment that's been completed
-2. Click "Add Session Note"
+1. Open a **completed** appointment
+2. Click **"Add Session Note"**
 3. Fill in session details:
    - **Session Type**: Initial, follow-up, crisis, or group
-   - **Notes**: Detailed session notes
-   - **Recommendations**: Follow-up recommendations
-   - **Confidential**: Mark if sensitive
-4. Save the note
+   - **Notes**: Detailed session documentation
+   - **Recommendations**: Follow-up actions and referrals
+   - **Confidential**: Mark as sensitive to restrict visibility
+4. Click **"Save Note"**
 
-### Viewing Student Profiles
-1. Click on any student's name in concerns or appointments
-2. View their profile information:
-   - Personal details
-   - Concern history
-   - Appointment history
-   - Previous session notes
+### Reviewing Incident Reports
+1. Navigate to **Incident Reports** in the sidebar
+2. **Search** by case number, student name, or grade/section
+3. **Filter** by status (pending, ongoing, closed) and urgency level
+4. Click **"View"** to see full incident report details
+5. **Update status**: Change from pending → ongoing → closed
+6. Add **counselor notes** documenting your intervention and follow-up
+
+### Reviewing Student Referrals
+1. Navigate to **Student Referrals** in the sidebar
+2. **Search** by referral number, student name, or grade/section
+3. **Filter** by status (pending, ongoing, closed)
+4. Click **"View"** to see full referral details
+5. **Update status** and add **counselor notes** as you work on the case
 
 ---
 
 ## Administrator Guide
 
-### System Administration
-Administrators have access to:
-- **User Management**: Create and manage user accounts
-- **System Settings**: Configure application settings
-- **Reports**: Generate system usage reports
-- **Audit Logs**: View system activity logs
+### Navigation Menu
+- Dashboard
+- User Management
+- Categories
+- Reports
+
+### Dashboard Overview
+- **System Stats**: Total users, students, counselors, total concerns, pending concerns, resolved concerns, total appointments, today's appointments
+- **Quick Overview**: At-a-glance view of the entire system's activity
 
 ### User Management
-1. Navigate to **Administration → Users**
-2. Create new users with appropriate roles:
-   - **Student**: Standard student access
-   - **Counselor**: Full counseling capabilities
-   - **Administrator**: System administration
-3. Assign counselors to students if required
-4. Manage user permissions and access
+1. Navigate to **User Management** in the sidebar
+2. **Search** by name, email, or student ID
+3. **Filter** by role (Student, Counselor, Admin, Teacher) and status (Active, Inactive)
+4. Click **"Add New User"** to create accounts with:
+   - Full Name, Email, Password
+   - Role assignment (Student, Counselor, Administrator, Teacher)
+   - Student ID (for students)
+   - Phone, Date of Birth, Gender, Address
+5. **Edit** users: Update information, change roles, reset passwords
+6. **Activate/Deactivate** users: Toggle account access without deleting
 
-### System Configuration
-1. Go to **Settings → System Settings**
-2. Configure:
-   - **Email Settings**: SMTP configuration for notifications
-   - **Appointment Settings**: Default durations, buffers
-   - **Notification Preferences**: Default notification settings
-   - **Security Settings**: Password policies, session timeouts
+### Managing Categories
+1. Navigate to **Categories** in the sidebar
+2. View all existing concern categories
+3. **Create** new categories with a name and description
+4. **Edit** categories: Update name, description, and active status
+5. Categories are used by students when submitting concerns
 
-### Monitoring and Reports
-1. Access **Reports → Dashboard**
-2. View:
-   - **Usage Statistics**: System usage metrics
-   - **Concern Trends**: Common concern categories
-   - **Appointment Analytics**: Counselor workload metrics
-   - **User Activity**: Login and activity patterns
+### Reports & Analytics
+1. Navigate to **Reports** in the sidebar
+2. View comprehensive analytics:
+   - **Concerns by Category**: Breakdown with counts and percentages
+   - **Monthly Concerns**: Last 12 months trend data
+   - **Monthly Appointments**: Last 12 months scheduling data
+   - **Appointment Status Breakdown**: Scheduled, confirmed, completed, cancelled counts
+3. **Export Reports** — Download Excel-compatible (.xls) files:
+   - **Concerns Report**: All concerns with student, category, status, dates
+   - **Appointments Report**: All appointments with student, counselor, status, source
+   - **Users Report**: All user accounts with role, status, contact info
+   - **Full System Report**: Comprehensive report with summary metrics, category breakdown, monthly trends, and appointment analytics
 
 ---
 
 ## Common Features
 
-### Navigation
-- **Sidebar Menu**: Main navigation to all features
-- **Top Bar**: User profile, notifications, and quick actions
-- **Breadcrumbs**: Navigation trail showing current location
+### Search, Filter & Pagination
+All listing pages across the system include:
+- **Search Bar**: Find records by name, title, ID number, or description
+- **Filter Dropdowns**: Narrow results by status, category, role, urgency, etc.
+- **Pagination**: Navigate through results (15 items per page)
+- **Result Count**: Shows "Showing X to Y of Z results"
+- Filters and search parameters are preserved in pagination links
 
-### Search and Filter
-- Use search bars to quickly find concerns or appointments
-- Filter by date, status, category, or other criteria
-- Sort results by relevance, date, or priority
+### Navigation
+- **Sidebar Menu**: Role-specific navigation with active state indicators
+- **Top Header**: Page title, user profile dropdown with logout
+- **Mobile Responsive**: Hamburger menu toggle on smaller screens, sidebar overlay
+- **Badge Indicators**: Unread counts on key navigation items (pending concerns, reports, referrals)
 
 ### Notifications
-- **In-App**: Real-time notifications in the interface
-- **Email**: Automatic email notifications for:
-  - Concern submissions
-  - Appointment confirmations
-  - Status changes
-  - Important reminders
+- **Email Notifications**: Automatic emails for:
+  - Concern submissions and responses
+  - Appointment confirmations and scheduling
+  - Status changes and updates
+- **In-App Badges**: Sidebar badges show pending counts for counselors
 
 ### File Attachments
 - **Supported Formats**: Images (JPG, PNG, GIF), Documents (PDF, DOC, DOCX)
-- **Size Limit**: Maximum 2MB per file
-- **Security**: All files are scanned and stored securely
+- **Size Limit**: Up to 5MB for concerns, 2MB for incident reports
+- **Security**: Files stored securely with validated types
+- **Download**: View/download attachments from detail pages
+
+### Profile Management (All Roles)
+1. Click your profile picture/name in the top-right corner
+2. Select **"Profile"** to update:
+   - Personal details (name, email, phone)
+   - Profile photo (upload/remove)
+3. **Change Password**: Update your password with current password verification
+
+### Settings (All Roles)
+1. Click your profile in the top-right corner → **"Settings"**
+2. Configure:
+   - **Notification Preferences**: Email notification toggles
+   - **Privacy Settings**: Control data visibility
+   - **Counseling Preferences**: Counseling-related settings
 
 ---
 
@@ -691,29 +511,40 @@ Administrators have access to:
 
 ### Common Issues
 
-#### Login Problems
-- **Forgot Password**: Use the "Forgot Password" link
-- **Account Locked**: Contact administrator
-- **Browser Issues**: Clear cache and cookies, try a different browser
+**Login Problems**
+- Use **"Forgot Password"** to reset your password
+- Clear browser cache and cookies
+- Try a different browser (Chrome, Firefox, Edge, Safari)
+- Contact the administrator if your account is deactivated
 
-#### Email Not Received
-- **Check Spam Folder**: Look in spam/junk folders
-- **Verify Email**: Ensure email address is correct in profile
-- **Contact Admin**: If issues persist, contact system administrator
+**Email Not Received**
+- Check spam/junk folders
+- Verify your email address is correct in your profile
+- Contact the administrator if the issue persists
 
-#### File Upload Issues
-- **File Size**: Ensure file is under 2MB
-- **File Type**: Check if file format is supported
-- **Internet Connection**: Stable connection required for uploads
+**File Upload Issues**
+- Ensure the file is under the size limit (5MB for concerns, 2MB for reports)
+- Check that the file format is supported (JPG, PNG, PDF, DOC, DOCX)
+- Ensure a stable internet connection during upload
 
-#### Appointment Issues
-- **Time Conflicts**: Check for overlapping appointments
-- **Browser Refresh**: Refresh page if appointments don't update
-- **Time Zone**: Ensure correct time zone settings
+**Appointment Issues**
+- Check for date/time conflicts with existing appointments
+- Appointments must be scheduled for future dates only
+- Refresh the page if the appointment list doesn't update
+
+**Pagination Not Showing**
+- Refresh the page to reload the data
+- Ensure your browser is up to date
+- Clear browser cache if tables appear blank
+
+**Form Printing Issues**
+- Ensure your browser's pop-up blocker allows new windows
+- Use the browser's print dialog to select the correct printer
+- For landscape forms (Good Moral, Home Visitation), the print layout auto-adjusts
 
 ### Performance Tips
-- Use modern browsers for best performance
-- Ensure stable internet connection
+- Use a modern, up-to-date browser
+- Ensure a stable internet connection
 - Close unnecessary browser tabs
 - Regularly clear browser cache
 
@@ -726,36 +557,76 @@ Administrators have access to:
 **Q: How do I reset my password?**
 A: Click "Forgot Password?" on the login page and follow the email instructions.
 
-**Q: Can I submit concerns anonymously?**
-A: Yes, check the "Anonymous" option when submitting a concern.
-
-**Q: How do I upload files with my concern?**
-A: Use the attachment field on the concern submission form. Files must be under 2MB.
-
 **Q: Will I receive email notifications?**
 A: Yes, you'll receive emails for appointment confirmations, concern responses, and important updates.
 
+**Q: Can I change my role?**
+A: No, only administrators can change user roles. Contact your admin.
+
+**Q: How do I update my profile?**
+A: Click your name/photo in the top-right corner → "Profile" to update your information.
+
 ### Student Questions
 
-**Q: How long does it take to get a response to my concern?**
-A: Response times vary, but counselors typically respond within 1-2 business days.
+**Q: Can I submit concerns anonymously?**
+A: Yes, check the "Anonymous" option when submitting a concern.
+
+**Q: How long does it take to get a response?**
+A: Counselors typically respond within 1-2 business days.
 
 **Q: Can I reschedule my appointment?**
-A: Yes, use the "Reschedule" button on your appointments page before the appointment time.
+A: Yes, use the "Reschedule" button on your Appointments page.
 
 **Q: Are my concerns confidential?**
-A: Yes, all concerns are confidential and only accessible to assigned counselors.
+A: Yes, all concerns are confidential and only visible to assigned counselors.
+
+**Q: What is Kamusta Ka?**
+A: A private mental health self-check that guides you to the right support based on how you're feeling.
+
+### Teacher Questions
+
+**Q: How do I report an incident?**
+A: Navigate to "Submit Incident Report" in the sidebar, fill in all required fields, and submit. A case number is auto-generated.
+
+**Q: How do I refer a student for counseling?**
+A: Navigate to "Refer a Student" and complete the referral form. A referral number is auto-generated.
+
+**Q: What forms can I generate?**
+A: 7 official forms: Confiscation Slip, Call Slip, Risk Assessment, Bag Search Plan, Good Moral Request, Home Visitation Form, and Conference/Meeting Form.
+
+**Q: How do I track my submitted cases?**
+A: Navigate to "View Submitted Cases" to see all your incident reports and referrals in one place with current statuses.
+
+**Q: What are Intervention Guides?**
+A: 6 comprehensive protocol guides covering adult-to-learner protection, learner-to-learner protection, community concerns, panic attacks, referrals vs classroom management, and career guidance. Each guide can be opened in a detailed modal.
+
+**Q: Can I schedule an appointment with a counselor?**
+A: Yes, use the "Talk to Counselor" page to schedule appointments directly.
 
 ### Counselor Questions
 
-**Q: How do I view student history?**
-A: Click on the student's name in any concern or appointment to view their complete history.
+**Q: How do I respond to a student concern?**
+A: Open the concern from "Student Concerns", click "Respond to Concern", set a counseling date, and write your response.
 
-**Q: Can I add private notes?**
-A: Yes, mark session notes as "Confidential" to restrict access.
+**Q: How do I add session notes?**
+A: After completing an appointment, click "Add Session Note" to document the session.
 
-**Q: How are appointments created?**
-A: Appointments are automatically created when you respond to a concern with a scheduled date.
+**Q: Can I review teacher-submitted incident reports?**
+A: Yes, navigate to "Incident Reports" to view, update status, and add counselor notes.
+
+**Q: How do I process student referrals?**
+A: Navigate to "Student Referrals", review the referral details, update the status, and add your notes.
+
+### Administrator Questions
+
+**Q: How do I create a new teacher account?**
+A: Go to "User Management" → "Add New User" → select "Teacher" as the role.
+
+**Q: How do I export reports?**
+A: Navigate to "Reports" and click the export buttons to download Concerns, Appointments, Users, or Full System reports as Excel files.
+
+**Q: Can I deactivate a user without deleting them?**
+A: Yes, use the "Deactivate" button on the user's row. Their data is preserved and can be reactivated.
 
 ---
 
@@ -763,21 +634,21 @@ A: Appointments are automatically created when you respond to a concern with a s
 
 For technical support or questions:
 - **Email**: support@eguidance.portal
-- **Phone**: [Support Phone Number]
-- **Help Desk**: Available Monday-Friday, 9:00 AM - 5:00 PM
+- **Help Desk**: Available Monday-Friday, 8:00 AM - 5:00 PM
 
 For urgent counseling matters:
-- **Emergency Hotline**: [Emergency Number]
-- **On-Call Counselor**: [On-Call Contact]
+- **Emergency Hotline**: Contact the school guidance office directly
+- **On-Call Counselor**: Available through the Talk to Counselor feature
 
 ---
 
 ## Version Information
 
-**Current Version**: 1.0.0  
-**Last Updated**: March 2026  
-**Documentation Version**: 1.0
+**Current Version**: 2.0.0
+**Last Updated**: June 2026
+**System Name**: SIGMA eGuidance Portal — Guidance & Monitoring Assistance
+**School**: Bulan National High School
 
 ---
 
-*This manual is regularly updated to reflect system changes and improvements. Check for the latest version on the portal's help section.*
+*This manual reflects the current state of the SIGMA eGuidance Portal. Contact your system administrator for any questions or feature requests.*
