@@ -40,23 +40,23 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="role_id" class="col-md-4 col-form-label text-md-end">Role <span class="text-danger">*</span></label>
+                        <label for="role" class="col-md-4 col-form-label text-md-end">Role <span class="text-danger">*</span></label>
                         <div class="col-md-6">
-                            <select id="role_id" class="form-select @error('role_id') is-invalid @enderror"
-                                name="role_id" required onchange="toggleStudentFields()">
+                            <select id="role" class="form-select @error('role') is-invalid @enderror"
+                                name="role" required onchange="toggleStudentFields()">
                                 @foreach($roles as $role)
-                                    <option value="{{ $role->id }}" {{ old('role_id', $user->role_id) == $role->id ? 'selected' : '' }}>
+                                    <option value="{{ $role->name }}" {{ old('role', $user->role->name ?? '') == $role->name ? 'selected' : '' }}>
                                         {{ ucfirst($role->name) }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('role_id')
+                            @error('role')
                                 <span class="invalid-feedback"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
                     </div>
 
-                    <div id="student_fields" style="display: {{ $user->role_id == 1 ? 'block' : 'none' }};">
+                    <div id="student_fields" style="display: {{ ($user->role->name ?? '') == 'student' ? 'block' : 'none' }};">
                         <div class="row mb-3">
                             <label for="student_id" class="col-md-4 col-form-label text-md-end">Student ID</label>
                             <div class="col-md-6">
@@ -198,9 +198,9 @@
 
 <script>
 function toggleStudentFields() {
-    const roleSelect = document.getElementById('role_id');
+    const roleSelect = document.getElementById('role');
     const studentFields = document.getElementById('student_fields');
-    studentFields.style.display = roleSelect.value == '1' ? 'block' : 'none';
+    studentFields.style.display = roleSelect.value == 'student' ? 'block' : 'none';
 }
 </script>
 @endsection

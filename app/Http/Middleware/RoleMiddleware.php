@@ -20,29 +20,8 @@ class RoleMiddleware
             return redirect('/login');
         }
 
-        $user = Auth::user();
-        
-        switch ($role) {
-            case 'student':
-                if (!$user->isStudent()) {
-                    abort(403, 'Unauthorized');
-                }
-                break;
-            case 'counselor':
-                if (!$user->isCounselor()) {
-                    abort(403, 'Unauthorized');
-                }
-                break;
-            case 'admin':
-                if (!$user->isAdmin()) {
-                    abort(403, 'Unauthorized');
-                }
-                break;
-            case 'teacher':
-                if (!$user->isTeacher()) {
-                    abort(403, 'Unauthorized');
-                }
-                break;
+        if (!Auth::user()->hasRole($role)) {
+            abort(403, 'Unauthorized');
         }
 
         return $next($request);

@@ -12,8 +12,8 @@
     $concernsChange        = $lastMonthConcerns > 0 ? round((($thisMonthConcerns - $lastMonthConcerns) / $lastMonthConcerns) * 100, 1) : 0;
     $appointmentsChange    = $lastMonthAppointments > 0 ? round((($thisMonthAppointments - $lastMonthAppointments) / $lastMonthAppointments) * 100, 1) : 0;
     $todayPending          = App\Models\Concern::where('status', 'submitted')->whereDate('created_at', today())->count();
-    $totalStudents         = App\Models\User::where('role_id', 1)->count();
-    $totalTeachers         = App\Models\User::where('role_id', 4)->count();
+    $totalStudents         = App\Models\User::whereHas('role', fn($q) => $q->where('name', 'student'))->count();
+    $totalTeachers         = App\Models\User::whereHas('role', fn($q) => $q->where('name', 'teacher'))->count();
     $totalIncidentReports  = App\Models\IncidentReport::count();
     $totalReferrals        = App\Models\StudentReferral::count();
 

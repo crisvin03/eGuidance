@@ -132,7 +132,7 @@
                     <i class="bi bi-people" style="font-size: 2rem; color: #20B2AA;"></i>
                 </div>
                 <p class="text-center text-muted">
-                    <strong>{{ App\Models\User::where('role_id', 2)->where('is_active', 1)->count() }}</strong><br>
+                    <strong>{{ App\Models\User::whereHas('role', fn($q) => $q->where('name', 'counselor'))->where('is_active', 1)->count() }}</strong><br>
                     Counselors available to help
                 </p>
                 <div class="text-center">

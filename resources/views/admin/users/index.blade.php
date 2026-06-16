@@ -38,10 +38,10 @@
         <div class="col-md-2">
             <select name="role" class="form-select">
                 <option value="">All Roles</option>
-                <option value="1" {{ request('role')=='1' ? 'selected' : '' }}>Student</option>
-                <option value="2" {{ request('role')=='2' ? 'selected' : '' }}>Counselor</option>
-                <option value="3" {{ request('role')=='3' ? 'selected' : '' }}>Admin</option>
-                <option value="4" {{ request('role')=='4' ? 'selected' : '' }}>Teacher</option>
+                <option value="student" {{ request('role')=='student' ? 'selected' : '' }}>Student</option>
+                <option value="counselor" {{ request('role')=='counselor' ? 'selected' : '' }}>Counselor</option>
+                <option value="admin" {{ request('role')=='admin' ? 'selected' : '' }}>Admin</option>
+                <option value="teacher" {{ request('role')=='teacher' ? 'selected' : '' }}>Teacher</option>
             </select>
         </div>
         <div class="col-md-2">
@@ -87,11 +87,11 @@
                                 </td>
                                 <td class="table-hide-mobile">{{ $user->email }}</td>
                                 <td>
-                                    @if($user->role_id == 3)
+                                    @if($user->isAdmin())
                                         <span class="badge badge-danger">Administrator</span>
-                                    @elseif($user->role_id == 2)
+                                    @elseif($user->isCounselor())
                                         <span class="badge badge-success">Counselor</span>
-                                    @elseif($user->role_id == 4)
+                                    @elseif($user->isTeacher())
                                         <span class="badge" style="background:#eff6ff;color:#7c3aed;">Teacher</span>
                                     @else
                                         <span class="badge badge-info">Student</span>

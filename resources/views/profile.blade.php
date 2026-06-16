@@ -59,7 +59,7 @@
                 <h6 class="card-title">Quick Stats</h6>
             </div>
             <div class="card-body">
-                @if(Auth::user()->role_id == 1) <!-- Student -->
+                @if(Auth::user()->isStudent()) <!-- Student -->
                     <div class="d-flex justify-content-between mb-2">
                         <span>Concerns Submitted</span>
                         <strong>{{ App\Models\Concern::where('student_id', Auth::user()->id)->count() }}</strong>
@@ -68,7 +68,7 @@
                         <span>Appointments</span>
                         <strong>{{ App\Models\Appointment::where('student_id', Auth::user()->id)->count() }}</strong>
                     </div>
-                @elseif(Auth::user()->role_id == 2) <!-- Counselor -->
+                @elseif(Auth::user()->isCounselor()) <!-- Counselor -->
                     <div class="d-flex justify-content-between mb-2">
                         <span>Concerns Handled</span>
                         <strong>{{ App\Models\Concern::count() }}</strong>

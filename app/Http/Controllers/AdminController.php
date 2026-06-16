@@ -15,8 +15,8 @@ class AdminController extends Controller
     public function dashboard()
     {
         $totalUsers = User::count();
-        $totalStudents = User::where('role_id', 1)->count();
-        $totalCounselors = User::where('role_id', 2)->count();
+        $totalStudents = User::whereHas('role', fn($q) => $q->where('name', 'student'))->count();
+        $totalCounselors = User::whereHas('role', fn($q) => $q->where('name', 'counselor'))->count();
         $totalConcerns = Concern::count();
         $pendingConcerns = Concern::where('status', 'submitted')->count();
         $resolvedConcerns = Concern::where('status', 'resolved')->count();
@@ -44,14 +44,14 @@ class AdminController extends Controller
         }
         
         if ($request->filled('role')) {
-            $query->where('role_id', $request->role);
+            $query->whereHas('role', fn($q) => $q->where('name', $request->role));
         }
         
         if ($request->filled('status')) {
             $query->where('is_active', $request->status === 'active');
         }
         
-        $users = $query->orderBy('role_id')->orderBy('name')->paginate(15)->appends($request->query());
+        $users = $query->with('role')->orderBy('name')->paginate(15)->appends($request->query());
         return view('admin.users.index', compact('users'));
     }
 
@@ -67,7 +67,7 @@ class AdminController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8|confirmed',
-            'role_id' => 'required|exists:roles,id',
+            'role' => 'required|exists:roles,name',
             'student_id' => 'nullable|string|unique:users,student_id',
             'phone' => 'nullable|string',
             'date_of_birth' => 'nullable|date',
@@ -75,11 +75,13 @@ class AdminController extends Controller
             'address' => 'nullable|string',
         ]);
 
+        $role = \App\Models\Role::where('name', $request->role)->first();
+
         User::create([
             'name' => $request->name,
             'email' => $request->email,
             'password' => bcrypt($request->password),
-            'role_id' => $request->role_id,
+            'role_id' => $role->id,
             'student_id' => $request->student_id,
             'phone' => $request->phone,
             'date_of_birth' => $request->date_of_birth,
@@ -102,7 +104,7 @@ class AdminController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'role_id' => 'required|exists:roles,id',
+            'role' => 'required|exists:roles,name',
             'student_id' => 'nullable|string|unique:users,student_id,' . $user->id,
             'phone' => 'nullable|string',
             'date_of_birth' => 'nullable|date',
@@ -111,10 +113,12 @@ class AdminController extends Controller
             'is_active' => 'boolean',
         ]);
 
+        $role = \App\Models\Role::where('name', $request->role)->first();
+
         $user->update([
             'name' => $request->name,
             'email' => $request->email,
-            'role_id' => $request->role_id,
+            'role_id' => $role->id,
             'student_id' => $request->student_id,
             'phone' => $request->phone,
             'date_of_birth' => $request->date_of_birth,
@@ -307,7 +311,7 @@ table{border-collapse:collapse;width:100%;}
 
     public function exportUsers()
     {
-        $users     = User::with('role')->orderBy('role_id')->orderBy('name')->get();
+        $users     = User::with('role')->orderBy('name')->get();
         $styles    = $this->xlsStyles();
         $generated = now()->format('F d, Y h:i A');
         $total     = $users->count();
@@ -399,8 +403,8 @@ table{border-collapse:collapse;width:100%;}
         $html .= "<tr><td class='col-header'>Metric</td><td class='col-header'>Value</td></tr>";
         $metrics = [
             'Total Users'            => User::count(),
-            'Total Students'         => User::where('role_id', 1)->count(),
-            'Total Counselors'       => User::where('role_id', 2)->count(),
+            'Total Students'         => User::whereHas('role', fn($q) => $q->where('name', 'student'))->count(),
+            'Total Counselors'       => User::whereHas('role', fn($q) => $q->where('name', 'counselor'))->count(),
             'Total Concerns'         => $totalConcerns,
             'Resolved Concerns'      => $resolvedConcerns,
             'Resolution Rate'        => $resolutionRate . '%',

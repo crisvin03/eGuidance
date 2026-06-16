@@ -62,15 +62,15 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label for="role_id" class="col-md-4 col-form-label text-md-end">Role</label>
+                        <label for="role" class="col-md-4 col-form-label text-md-end">Role</label>
                         <div class="col-md-6">
-                            <select id="role_id" class="form-select @error('role_id') is-invalid @enderror" name="role_id" required onchange="toggleStudentFields()">
+                            <select id="role" class="form-select @error('role') is-invalid @enderror" name="role" required onchange="toggleStudentFields()">
                                 <option value="">Select a role</option>
                                 @foreach($roles as $role)
-                                    <option value="{{ $role->id }}">{{ ucfirst($role->name) }}</option>
+                                    <option value="{{ $role->name }}">{{ ucfirst($role->name) }}</option>
                                 @endforeach
                             </select>
-                            @error('role_id')
+                            @error('role')
                                 <span class="invalid-feedback" role="alert">
                                     <strong>{{ $message }}</strong>
                                 </span>
@@ -187,10 +187,10 @@
 
 <script>
 function toggleStudentFields() {
-    const roleSelect = document.getElementById('role_id');
+    const roleSelect = document.getElementById('role');
     const studentFields = document.getElementById('student_fields');
     
-    if (roleSelect.value == '1') { // Student role
+    if (roleSelect.value == 'student') {
         studentFields.style.display = 'block';
     } else {
         studentFields.style.display = 'none';

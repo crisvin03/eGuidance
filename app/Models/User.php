@@ -93,23 +93,28 @@ class User extends Authenticatable
         return $this->hasMany(AuditLog::class);
     }
 
-    public function isStudent()
+    public function hasRole(string $roleName): bool
     {
-        return $this->role_id === 1;
+        return $this->role && $this->role->name === $roleName;
     }
 
-    public function isCounselor()
+    public function isStudent(): bool
     {
-        return $this->role_id === 2;
+        return $this->hasRole('student');
     }
 
-    public function isAdmin()
+    public function isCounselor(): bool
     {
-        return $this->role_id === 3;
+        return $this->hasRole('counselor');
     }
 
-    public function isTeacher()
+    public function isAdmin(): bool
     {
-        return $this->role_id === 4;
+        return $this->hasRole('admin');
+    }
+
+    public function isTeacher(): bool
+    {
+        return $this->hasRole('teacher');
     }
 }

@@ -257,7 +257,7 @@ class TeacherController extends Controller
 
     public function talkToCounselor()
     {
-        $counselors = User::where('role_id', 2)->where('is_active', true)->get();
+        $counselors = User::whereHas('role', fn($q) => $q->where('name', 'counselor'))->where('is_active', true)->get();
         $appointments = Appointment::where('student_id', Auth::id())
             ->with('counselor')
             ->orderByDesc('appointment_date')

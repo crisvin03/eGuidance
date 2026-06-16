@@ -64,10 +64,12 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $studentRole = \App\Models\Role::where('name', 'student')->first();
+
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role_id' => 1,
+            'role_id' => $studentRole->id,
             'student_id' => $data['student_id'] ?? null,
             'password' => Hash::make($data['password']),
         ]);

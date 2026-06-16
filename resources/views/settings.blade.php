@@ -101,7 +101,7 @@
                                 Show phone number to counselors
                             </label>
                         </div>
-                        @if(Auth::user()->role_id == 1)
+                        @if(Auth::user()->isStudent())
                         <div class="form-check form-switch mb-2">
                             <input class="form-check-input" type="checkbox" id="anonymous_default" name="anonymous_default" {{ ($settings['anonymous_default'] ?? false) ? 'checked' : '' }}>
                             <label class="form-check-label" for="anonymous_default">
@@ -135,7 +135,7 @@
             </div>
         </div>
         
-        @if(Auth::user()->role_id == 1)
+        @if(Auth::user()->isStudent())
         <div class="card mt-4">
             <div class="card-header">
                 <h5 class="card-title">Counseling Preferences</h5>
@@ -149,7 +149,7 @@
                         <label for="preferred_counselor" class="form-label">Preferred Counselor</label>
                         <select class="form-select" id="preferred_counselor" name="preferred_counselor">
                             <option value="">No Preference</option>
-                            @foreach(App\Models\User::where('role_id', 2)->where('is_active', 1)->get() as $counselor)
+                            @foreach(App\Models\User::whereHas('role', fn($q) => $q->where('name', 'counselor'))->where('is_active', 1)->get() as $counselor)
                                 <option value="{{ $counselor->id }}" {{ ($settings['preferred_counselor'] ?? '') == $counselor->id ? 'selected' : '' }}>{{ $counselor->name }}</option>
                             @endforeach
                         </select>

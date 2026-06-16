@@ -707,7 +707,7 @@
         
         <nav class="sidebar-nav" style="display:flex; flex-direction:column; height:calc(100vh - 81px);">
             @auth
-                @if(Auth::user()->role_id == 1) <!-- Student -->
+                @if(Auth::user()->isStudent())
                     <div class="nav-section">
                         <div class="nav-section-title">Main</div>
                         <a href="{{ route('student.dashboard') }}" class="nav-link @if(request()->is('student/dashboard')) active @endif">
@@ -736,7 +736,7 @@
                         </a>
                     </div>
                     
-                @elseif(Auth::user()->role_id == 2) <!-- Counselor -->
+                @elseif(Auth::user()->isCounselor())
                     <div class="nav-section">
                         <div class="nav-section-title">Main</div>
                         <a href="{{ route('counselor.dashboard') }}" class="nav-link @if(request()->is('counselor/dashboard')) active @endif">
@@ -770,7 +770,7 @@
                         </a>
                     </div>
                     
-                @elseif(Auth::user()->role_id == 4) <!-- Teacher -->
+                @elseif(Auth::user()->isTeacher())
                     <div class="nav-section">
                         <div class="nav-section-title">Main</div>
                         <a href="{{ route('teacher.dashboard') }}" class="nav-link @if(request()->is('teacher/dashboard')) active @endif">
@@ -803,7 +803,7 @@
                         </a>
                     </div>
 
-                @elseif(Auth::user()->role_id == 3) <!-- Admin -->
+                @elseif(Auth::user()->isAdmin())
                     <div class="nav-section">
                         <div class="nav-section-title">Main</div>
                         <a href="{{ route('admin.dashboard') }}" class="nav-link @if(request()->is('admin/dashboard')) active @endif">
@@ -865,10 +865,10 @@
                         <div class="user-info">
                             <span class="user-name">{{ Auth::user()->name }}</span>
                             <span class="user-role">
-                                @if(Auth::user()->role_id == 1) Student
-                                @elseif(Auth::user()->role_id == 2) Counselor
-                                @elseif(Auth::user()->role_id == 3) Administrator
-                                @elseif(Auth::user()->role_id == 4) Teacher
+                                @if(Auth::user()->isStudent()) Student
+                                @elseif(Auth::user()->isCounselor()) Counselor
+                                @elseif(Auth::user()->isAdmin()) Administrator
+                                @elseif(Auth::user()->isTeacher()) Teacher
                                 @endif
                             </span>
                         </div>
