@@ -75,31 +75,38 @@
         
         .sidebar-nav {
             padding: 1rem 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            height: calc(100vh - 81px);
         }
         
         .nav-section {
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
         
         .nav-section-title {
             padding: 0 1.5rem;
             margin-bottom: 0.5rem;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             font-weight: 600;
             color: #64748b;
             text-transform: uppercase;
             letter-spacing: 0.5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .nav-link {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.75rem 1.5rem;
+            padding: 0.65rem 1.5rem;
             color: #475569;
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
+            font-size: 0.875rem;
         }
         
         .nav-link:hover {
@@ -122,15 +129,19 @@
         
         .nav-link-text {
             flex: 1;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .nav-link-badge {
             background: #20B2AA;
             color: white;
-            padding: 0.125rem 0.5rem;
-            border-radius: 12px;
-            font-size: 0.75rem;
+            padding: 0.125rem 0.4rem;
+            border-radius: 10px;
+            font-size: 0.7rem;
             font-weight: 600;
+            flex-shrink: 0;
         }
         
         /* Main Content */
@@ -667,6 +678,47 @@
             color: #64748b;
         }
 
+        /* Pagination fixes */
+        .pagination {
+            margin-top: 1.5rem !important;
+            margin-bottom: 1rem !important;
+            display: flex !important;
+            justify-content: center !important;
+            flex-wrap: wrap !important;
+            gap: 0.25rem !important;
+        }
+        .pagination .page-item .page-link {
+            padding: 0.45rem 0.75rem !important;
+            border-radius: 6px !important;
+            font-size: 0.85rem !important;
+            color: #475569 !important;
+            border: 1px solid #e2e8f0 !important;
+            line-height: 1.4 !important;
+            box-shadow: none !important;
+        }
+        .pagination .page-item.active .page-link {
+            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%) !important;
+            border-color: #20B2AA !important;
+            color: #fff !important;
+        }
+        .pagination .page-item.disabled .page-link {
+            color: #94a3b8 !important;
+            background: #f8fafc !important;
+        }
+        .pagination .page-item .page-link:hover {
+            background: #f1f5f9 !important;
+            color: #1e293b !important;
+        }
+        .pagination .page-item.active .page-link:hover {
+            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%) !important;
+            color: #fff !important;
+        }
+        /* Pagination wrapper */
+        nav[aria-label="pagination"] {
+            display: flex;
+            justify-content: center;
+        }
+
         /* ── Sidebar close button ── */
         .sidebar-close {
             display: none;
@@ -714,6 +766,14 @@
                             <i class="bi bi-speedometer2"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
+                        <a href="{{ route('student.kamustaka') }}" class="nav-link @if(request()->is('student/kamusta-ka*')) active @endif">
+                            <i class="bi bi-heart-pulse"></i>
+                            <span class="nav-link-text">Kamusta Ka?</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-section">
+                        <div class="nav-section-title">My Concerns</div>
                         <a href="{{ route('student.concerns.create') }}" class="nav-link @if(request()->is('student/concerns/create')) active @endif">
                             <i class="bi bi-plus-circle"></i>
                             <span class="nav-link-text">Submit Concern</span>
@@ -726,31 +786,47 @@
                             <i class="bi bi-calendar3"></i>
                             <span class="nav-link-text">Appointments</span>
                         </a>
+                    </div>
+
+                    <div class="nav-section">
+                        <div class="nav-section-title">Support</div>
                         <a href="{{ route('student.resources') }}" class="nav-link @if(request()->is('student/resources')) active @endif">
                             <i class="bi bi-journal-bookmark"></i>
                             <span class="nav-link-text">Resources</span>
                         </a>
-                        <a href="{{ route('student.kamustaka') }}" class="nav-link @if(request()->is('student/kamusta-ka*')) active @endif">
-                            <i class="bi bi-heart-pulse"></i>
-                            <span class="nav-link-text">Kamusta Ka?</span>
+                        <a href="{{ route('student.forms.index') }}" class="nav-link @if(request()->is('student/forms*')) active @endif">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span class="nav-link-text">Forms/Downloads</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-section">
+                        <div class="nav-section-title">Account</div>
+                        <a href="{{ route('profile') }}" class="nav-link @if(request()->is('profile')) active @endif">
+                            <i class="bi bi-person-circle"></i>
+                            <span class="nav-link-text">My Profile</span>
+                        </a>
+                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif">
+                            <i class="bi bi-gear"></i>
+                            <span class="nav-link-text">Settings</span>
                         </a>
                     </div>
                     
                 @elseif(Auth::user()->isCounselor())
                     <div class="nav-section">
-                        <div class="nav-section-title">Main</div>
+                        <div class="nav-section-title">Dashboard</div>
                         <a href="{{ route('counselor.dashboard') }}" class="nav-link @if(request()->is('counselor/dashboard')) active @endif">
                             <i class="bi bi-speedometer2"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Cases & Referrals</div>
                         <a href="{{ route('counselor.concerns.index') }}" class="nav-link @if(request()->is('counselor/concerns*')) active @endif">
                             <i class="bi bi-chat-dots"></i>
                             <span class="nav-link-text">Student Concerns</span>
                             <span class="nav-link-badge">{{ App\Models\Concern::where('status', 'submitted')->count() }}</span>
-                        </a>
-                        <a href="{{ route('counselor.appointments.index') }}" class="nav-link @if(request()->is('counselor/appointments*')) active @endif">
-                            <i class="bi bi-calendar3"></i>
-                            <span class="nav-link-text">Appointments</span>
                         </a>
                         <a href="{{ route('counselor.incident-reports.index') }}" class="nav-link @if(request()->is('counselor/incident-reports*')) active @endif">
                             <i class="bi bi-file-earmark-text"></i>
@@ -762,7 +838,7 @@
                         </a>
                         <a href="{{ route('counselor.referrals.index') }}" class="nav-link @if(request()->is('counselor/referrals*')) active @endif">
                             <i class="bi bi-person-check"></i>
-                            <span class="nav-link-text">Student Referrals</span>
+                            <span class="nav-link-text">Teacher Referrals</span>
                             @php $pendingRef = App\Models\StudentReferral::where('status','pending')->count(); @endphp
                             @if($pendingRef > 0)
                                 <span class="nav-link-badge">{{ $pendingRef }}</span>
@@ -770,36 +846,100 @@
                         </a>
                     </div>
                     
+                    <div class="nav-section">
+                        <div class="nav-section-title">Sessions & Appointments</div>
+                        <a href="{{ route('counselor.appointments.index') }}" class="nav-link @if(request()->is('counselor/appointments*')) active @endif">
+                            <i class="bi bi-calendar3"></i>
+                            <span class="nav-link-text">Appointments</span>
+                        </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Resources</div>
+                        <a href="{{ route('counselor.forms.index') }}" class="nav-link @if(request()->is('counselor/forms*')) active @endif">
+                            <i class="bi bi-file-earmark-arrow-down"></i>
+                            <span class="nav-link-text">Forms/Downloads</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-section">
+                        <div class="nav-section-title">Account</div>
+                        <a href="{{ route('profile') }}" class="nav-link @if(request()->is('profile')) active @endif">
+                            <i class="bi bi-person-circle"></i>
+                            <span class="nav-link-text">My Profile</span>
+                        </a>
+                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif">
+                            <i class="bi bi-gear"></i>
+                            <span class="nav-link-text">Settings</span>
+                        </a>
+                    </div>
+                    
                 @elseif(Auth::user()->isTeacher())
                     <div class="nav-section">
-                        <div class="nav-section-title">Main</div>
+                        <div class="nav-section-title">Dashboard</div>
                         <a href="{{ route('teacher.dashboard') }}" class="nav-link @if(request()->is('teacher/dashboard')) active @endif">
                             <i class="bi bi-speedometer2"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Submit Cases</div>
                         <a href="{{ route('teacher.incident-reports.create') }}" class="nav-link @if(request()->is('teacher/incident-reports/create')) active @endif">
                             <i class="bi bi-file-earmark-plus"></i>
-                            <span class="nav-link-text">Submit Incident Report</span>
+                            <span class="nav-link-text">Report Incident</span>
                         </a>
                         <a href="{{ route('teacher.referrals.create') }}" class="nav-link @if(request()->is('teacher/referrals/create')) active @endif">
                             <i class="bi bi-person-plus"></i>
                             <span class="nav-link-text">Refer a Student</span>
                         </a>
-                        <a href="{{ route('teacher.forms.index') }}" class="nav-link @if(request()->is('teacher/forms')) active @endif">
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">My Cases</div>
+                        <a href="{{ route('teacher.incident-reports.index') }}" class="nav-link @if(request()->is('teacher/incident-reports') && !request()->is('teacher/incident-reports/create')) active @endif">
                             <i class="bi bi-file-earmark-text"></i>
-                            <span class="nav-link-text">Generate Forms</span>
+                            <span class="nav-link-text">My Reports</span>
+                        </a>
+                        <a href="{{ route('teacher.referrals.index') }}" class="nav-link @if(request()->is('teacher/referrals') && !request()->is('teacher/referrals/create')) active @endif">
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span class="nav-link-text">My Referrals</span>
                         </a>
                         <a href="{{ route('teacher.case-tracking.index') }}" class="nav-link @if(request()->is('teacher/case-tracking*')) active @endif">
                             <i class="bi bi-kanban"></i>
-                            <span class="nav-link-text">View Submitted Cases</span>
+                            <span class="nav-link-text">Track All Cases</span>
+                        </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Resources</div>
+                        <a href="{{ route('teacher.forms.index') }}" class="nav-link @if(request()->is('teacher/forms')) active @endif">
+                            <i class="bi bi-file-earmark-text"></i>
+                            <span class="nav-link-text">Forms/Downloads</span>
                         </a>
                         <a href="{{ route('teacher.intervention-guides.index') }}" class="nav-link @if(request()->is('teacher/intervention-guides*')) active @endif">
                             <i class="bi bi-journal-bookmark"></i>
                             <span class="nav-link-text">Intervention Guides</span>
                         </a>
+                    </div>
+                    
+                    <div class="nav-section">
+                        <div class="nav-section-title">Support</div>
                         <a href="{{ route('teacher.talk-to-counselor') }}" class="nav-link @if(request()->is('teacher/talk-to-counselor')) active @endif">
                             <i class="bi bi-chat-heart"></i>
                             <span class="nav-link-text">Talk to Counselor</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-section">
+                        <div class="nav-section-title">Account</div>
+                        <a href="{{ route('profile') }}" class="nav-link @if(request()->is('profile')) active @endif">
+                            <i class="bi bi-person-circle"></i>
+                            <span class="nav-link-text">My Profile</span>
+                        </a>
+                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif">
+                            <i class="bi bi-gear"></i>
+                            <span class="nav-link-text">Settings</span>
                         </a>
                     </div>
 
@@ -824,14 +964,6 @@
                         </a>
                     </div>
                 @endif
-                
-                <div class="nav-section">
-                    <div class="nav-section-title">Account</div>
-                    <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif">
-                        <i class="bi bi-gear"></i>
-                        <span class="nav-link-text">Settings</span>
-                    </a>
-                </div>
             @endauth
 
 

@@ -399,15 +399,15 @@
     <section id="about" class="about">
         <div class="about-grid">
             <div class="about-content fade-up">
-                <h2>About SIGMA</h2>
+                <h2>About Bulan NHS Care Corner Online</h2>
                 <p>
-                    SIGMA (Guidance & Monitoring Assistance) is a comprehensive digital platform built for Bulan National High School's CARE Center. It bridges the gap between students and guidance counselors, making support accessible, confidential, and efficient.
+                    The Bulan NHS Care Corner Online is a modern digital support hub designed to make help more accessible, responsive, and student-centered for the entire Bulan National High School community. Through one secure platform, learners and school personnel can easily access counseling services, psychosocial support, child protection assistance, referrals, wellness resources, and other support programs.
                 </p>
                 <p>
-                    From submitting concerns and booking appointments to incident reporting and case tracking, SIGMA empowers the entire school community with tools designed for modern guidance services.
+                    Whether you're a student seeking guidance, a teacher needing professional support, or someone concerned about a learner's well-being, the platform provides a safe and confidential space to connect with the right services. It also streamlines documentation, referrals, monitoring, and case management to ensure timely, coordinated, and compassionate support for everyone.
                 </p>
                 <div class="about-callout">
-                    <p><i class="bi bi-quote me-1"></i> Every student deserves a safe space to be heard and a trusted adult to guide them.</p>
+                    <p><i class="bi bi-quote me-1"></i> Because at Bulan NHS, no one should have to face challenges alone.</p>
                 </div>
             </div>
             <div class="stats-grid fade-up">

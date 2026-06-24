@@ -84,7 +84,7 @@
             </table>
         </div>
         @if($reports->hasPages())
-            <div class="p-4">{{ $reports->links() }}</div>
+            <div class="px-4 py-3 border-top">{{ $reports->links() }}</div>
         @endif
     </div>
 </div>
@@ -141,7 +141,7 @@
             </table>
         </div>
         @if($referrals->hasPages())
-            <div class="p-4">{{ $referrals->links() }}</div>
+            <div class="px-4 py-3 border-top">{{ $referrals->links() }}</div>
         @endif
     </div>
 </div>

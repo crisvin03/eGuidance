@@ -120,10 +120,9 @@
     </div>
 
     <div class="col-md-4">
-        @if(!in_array($concern->status, ['resolved', 'scheduled']))
         <div class="card mb-3">
             <div class="card-header">
-                <h6 class="card-title mb-0"><i class="bi bi-reply me-1"></i>Respond to Concern</h6>
+                <h6 class="card-title mb-0"><i class="bi bi-reply me-1"></i>Update Concern</h6>
             </div>
             <div class="card-body">
                 @if(session('success'))
@@ -132,30 +131,61 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 @endif
-                <form method="POST" action="{{ route('counselor.concerns.respond', $concern) }}">
+                <form method="POST" action="{{ route('counselor.concerns.update', $concern) }}">
                     @csrf
-                    <input type="hidden" name="status" value="scheduled">
+                    @method('PUT')
+                    
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Counseling Date & Time <span class="text-danger">*</span></label>
+                        <label class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
+                        <select class="form-select @error('status') is-invalid @enderror" name="status" id="concernStatus" required onchange="toggleScheduling()">
+                            <option value="submitted" {{ $concern->status == 'submitted' ? 'selected' : '' }}>Submitted (Pending)</option>
+                            <option value="scheduled" {{ $concern->status == 'scheduled' ? 'selected' : '' }}>Schedule for Appointment</option>
+                            <option value="resolved" {{ $concern->status == 'resolved' ? 'selected' : '' }}>Resolved (No Appointment Needed)</option>
+                        </select>
+                        @error('status')<span class="invalid-feedback">{{ $message }}</span>@enderror
+                        <small class="text-muted">Not all concerns require an appointment. You can resolve directly if appropriate.</small>
+                    </div>
+                    
+                    <div class="mb-3" id="schedulingSection" style="display:{{ $concern->status == 'scheduled' ? 'block' : 'none' }};">
+                        <label class="form-label fw-semibold">Counseling Date & Time</label>
                         <input type="datetime-local" class="form-control @error('counseling_date') is-invalid @enderror"
-                               name="counseling_date" value="{{ old('counseling_date') }}"
-                               min="{{ now()->format('Y-m-d\TH:i') }}" required>
+                               name="counseling_date" value="{{ $concern->counseling_date ? $concern->counseling_date->format('Y-m-d\TH:i') : old('counseling_date') }}"
+                               min="{{ now()->format('Y-m-d\TH:i') }}">
                         @error('counseling_date')<span class="invalid-feedback">{{ $message }}</span>@enderror
+                        <small class="text-muted">Required only if scheduling for appointment</small>
                     </div>
+                    
                     <div class="mb-3">
-                        <label class="form-label fw-semibold">Response <span class="text-danger">*</span></label>
-                        <textarea class="form-control @error('response') is-invalid @enderror"
-                                  name="response" rows="4" required
-                                  placeholder="Write your response to the student...">{{ old('response') }}</textarea>
-                        @error('response')<span class="invalid-feedback">{{ $message }}</span>@enderror
+                        <label class="form-label fw-semibold">Counselor Response <span class="text-danger">*</span></label>
+                        <textarea class="form-control @error('counselor_response') is-invalid @enderror"
+                                  name="counselor_response" rows="4" required
+                                  placeholder="Write or edit your response to the student...">{{ old('counselor_response', $concern->counselor_response) }}</textarea>
+                        @error('counselor_response')<span class="invalid-feedback">{{ $message }}</span>@enderror
+                        <small class="text-muted">You can edit your response anytime</small>
                     </div>
+                    
                     <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-send me-1"></i> Submit Response
+                        <i class="bi bi-check-circle me-1"></i> Update Concern
                     </button>
                 </form>
             </div>
         </div>
-        @endif
+
+        <script>
+        function toggleScheduling() {
+            const status = document.getElementById('concernStatus').value;
+            const schedulingSection = document.getElementById('schedulingSection');
+            const dateInput = document.querySelector('input[name="counseling_date"]');
+            
+            if (status === 'scheduled') {
+                schedulingSection.style.display = 'block';
+                dateInput.required = true;
+            } else {
+                schedulingSection.style.display = 'none';
+                dateInput.required = false;
+            }
+        }
+        </script>
 
         <div class="card">
             <div class="card-header">

@@ -44,6 +44,8 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/kamusta-ka', [StudentController::class, 'kamustaka'])->name('kamustaka');
     Route::post('/kamusta-ka', [StudentController::class, 'storeKamustaka'])->name('kamustaka.store');
     Route::get('/kamusta-ka/support', [StudentController::class, 'kamustakaSupportPage'])->name('kamustaka.support');
+    Route::get('/forms', [StudentController::class, 'formGenerator'])->name('forms.index');
+    Route::get('/virtual-id', [StudentController::class, 'virtualId'])->name('virtual-id');
 });
 
 // Counselor routes
@@ -52,6 +54,7 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/concerns', [CounselorController::class, 'concerns'])->name('concerns.index');
     Route::get('/concerns/{concern}', [CounselorController::class, 'showConcern'])->name('concerns.show');
     Route::post('/concerns/{concern}/respond', [CounselorController::class, 'respondToConcern'])->name('concerns.respond');
+    Route::put('/concerns/{concern}/update', [CounselorController::class, 'updateConcern'])->name('concerns.update');
     Route::get('/appointments', [CounselorController::class, 'appointments'])->name('appointments.index');
     Route::get('/appointments/{appointment}', [CounselorController::class, 'showAppointment'])->name('appointments.show');
     Route::post('/appointments/{appointment}/respond', [CounselorController::class, 'respondToAppointment'])->name('appointments.respond');
@@ -63,6 +66,7 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/referrals', [CounselorController::class, 'referrals'])->name('referrals.index');
     Route::get('/referrals/{studentReferral}', [CounselorController::class, 'showReferral'])->name('referrals.show');
     Route::post('/referrals/{studentReferral}/update', [CounselorController::class, 'updateReferral'])->name('referrals.update');
+    Route::get('/forms', [CounselorController::class, 'formGenerator'])->name('forms.index');
 });
 
 // Teacher routes
@@ -81,6 +85,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::get('/intervention-guides', [App\Http\Controllers\TeacherController::class, 'interventionGuides'])->name('intervention-guides.index');
     Route::get('/talk-to-counselor', [App\Http\Controllers\TeacherController::class, 'talkToCounselor'])->name('talk-to-counselor');
     Route::post('/appointments', [App\Http\Controllers\TeacherController::class, 'storeAppointment'])->name('appointments.store');
+    Route::get('/virtual-id', [App\Http\Controllers\TeacherController::class, 'virtualId'])->name('virtual-id');
 });
 
 // Admin routes

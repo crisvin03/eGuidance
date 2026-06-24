@@ -64,26 +64,38 @@
                         </div>
                     @endif
                     
-                    @if($appointment->sessionNotes->count() > 0)
+                    @if($appointment->sessionNotes && $appointment->sessionNotes->count() > 0)
                         <div class="row mt-4">
                             <div class="col-12">
-                                <h5>Session Notes</h5>
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="mb-0"><i class="bi bi-journal-text me-2"></i>Session Notes</h5>
+                                    @if(in_array($appointment->status, ['confirmed', 'completed']))
+                                        <a href="{{ route('counselor.appointments.session-notes.create', $appointment) }}" class="btn btn-sm btn-primary">
+                                            <i class="bi bi-plus-circle me-1"></i>Add New Note
+                                        </a>
+                                    @endif
+                                </div>
                                 @foreach($appointment->sessionNotes as $note)
-                                    <div class="card mb-2">
+                                    <div class="card mb-3 border-start border-primary border-3">
                                         <div class="card-body">
-                                            <div class="d-flex justify-content-between">
-                                                <h6>{{ ucfirst($note->session_type) }} Session</h6>
-                                                <small class="text-muted">{{ $note->created_at->format('M d, Y h:i A') }}</small>
-                                            </div>
-                                            <p>{{ $note->notes }}</p>
-                                            @if($note->recommendations)
-                                                <div class="alert alert-light">
-                                                    <strong>Recommendations:</strong><br>
-                                                    {{ $note->recommendations }}
+                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                                <div>
+                                                    <h6 class="mb-1"><i class="bi bi-calendar-event me-1"></i>{{ ucfirst($note->session_type) }} Session</h6>
+                                                    <small class="text-muted">By {{ $note->counselor->name }} • {{ $note->created_at->format('M d, Y h:i A') }}</small>
                                                 </div>
-                                            @endif
-                                            @if($note->is_confidential)
-                                                <small class="text-muted"><i class="fas fa-lock"></i> Confidential</small>
+                                                @if($note->is_confidential)
+                                                    <span class="badge bg-warning"><i class="bi bi-lock-fill me-1"></i>Confidential</span>
+                                                @endif
+                                            </div>
+                                            <div class="mb-2">
+                                                <strong class="d-block mb-1">Session Notes:</strong>
+                                                <p class="mb-0" style="white-space:pre-wrap;">{{ $note->notes }}</p>
+                                            </div>
+                                            @if($note->recommendations)
+                                                <div class="alert alert-light mb-0 mt-2">
+                                                    <strong><i class="bi bi-lightbulb me-1"></i>Recommendations:</strong>
+                                                    <p class="mb-0 mt-1" style="white-space:pre-wrap;">{{ $note->recommendations }}</p>
+                                                </div>
                                             @endif
                                         </div>
                                     </div>
@@ -92,10 +104,13 @@
                         </div>
                     @endif
                     
-                    @if($appointment->status !== 'completed')
+                    @if(in_array($appointment->status, ['confirmed', 'completed']) && (!$appointment->sessionNotes || $appointment->sessionNotes->count() == 0))
                         <div class="row mt-4">
                             <div class="col-12">
-                                <button class="btn btn-primary" onclick="createSessionNote()">Add Session Note</button>
+                                <div class="alert alert-info">
+                                    <i class="bi bi-info-circle me-2"></i>No session notes yet. 
+                                    <a href="{{ route('counselor.appointments.session-notes.create', $appointment) }}" class="alert-link">Add session note</a> to document this counseling session.
+                                </div>
                             </div>
                         </div>
                     @endif

@@ -43,7 +43,7 @@
                         ['icon'=>'💙','title'=>'Teen Mental Health Guide','desc'=>'A comprehensive guide for teenagers on managing stress, emotions, and mental wellbeing.','url'=>'https://www.nimh.nih.gov/health/topics/child-and-adolescent-mental-health','badge'=>'NIMH','color'=>'info'],
                         ['icon'=>'🌱','title'=>'Building Resilience','desc'=>'How to bounce back from adversity, trauma, and stress — practical skills for students.','url'=>'https://www.apa.org/topics/resilience','badge'=>'APA','color'=>'success'],
                         ['icon'=>'😴','title'=>'Sleep & Mental Health','desc'=>'The critical connection between sleep and mental health for students and teenagers.','url'=>'https://www.sleepfoundation.org/mental-health','badge'=>'Sleep Foundation','color'=>'warning'],
-                        ['icon'=>'🤝','title'=>'Dealing with Bullying','desc'=>'Resources and strategies for students dealing with bullying situations at school.','url'=>'https://www.stopbullying.gov/resources/kids','badge'=>'StopBullying.gov','color'=>'danger'],
+                        ['icon'=>'🤝','title'=>'Dealing with Bullying','desc'=>'Resources and strategies for students dealing with bullying situations at school.','url'=>'https://www.pacer.org/bullying/resources/students/','badge'=>'PACER Center','color'=>'danger'],
                         ['icon'=>'📖','title'=>'DepEd Mental Health Policy','desc'=>'The official Department of Education policy on student mental health and wellbeing.','url'=>'https://www.deped.gov.ph/mental-health','badge'=>'DepEd','color'=>'secondary'],
                     ];
                     @endphp

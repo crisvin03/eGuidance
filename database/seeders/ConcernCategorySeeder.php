@@ -15,10 +15,16 @@ class ConcernCategorySeeder extends Seeder
     {
         $categories = [
             ['name' => 'Academic Concerns', 'description' => 'Issues related to studies, grades, and academic performance'],
-            ['name' => 'Personal/Emotional', 'description' => 'Personal problems and emotional issues'],
-            ['name' => 'Bullying/Harassment', 'description' => 'Reports of bullying or harassment'],
-            ['name' => 'Career Guidance', 'description' => 'Career planning and guidance'],
-            ['name' => 'Other', 'description' => 'Other concerns not covered by specific categories'],
+            ['name' => 'Mental Health', 'description' => 'Mental health and emotional wellness concerns'],
+            ['name' => 'Bullying', 'description' => 'Reports of bullying incidents'],
+            ['name' => 'Precursor to Bullying', 'description' => 'Early signs or behaviors that may lead to bullying'],
+            ['name' => 'Family', 'description' => 'Family-related concerns and issues'],
+            ['name' => 'Relationship', 'description' => 'Relationship concerns with peers, friends, or others'],
+            ['name' => 'Safety and Protection', 'description' => 'Safety concerns and protection issues'],
+            ['name' => 'Career and Future', 'description' => 'Career planning, guidance, and future aspirations'],
+            ['name' => 'Counseling and Support Requests', 'description' => 'General counseling and support requests'],
+            ['name' => 'Psychological Testing', 'description' => 'Requests for psychological testing and assessment'],
+            ['name' => 'Others', 'description' => 'Other concerns not covered by specific categories'],
         ];
 
         foreach ($categories as $category) {

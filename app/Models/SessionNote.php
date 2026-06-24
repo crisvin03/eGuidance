@@ -11,6 +11,7 @@ class SessionNote extends Model
         'counselor_id',
         'notes',
         'session_type',
+        'session_date',
         'recommendations',
         'is_confidential',
     ];

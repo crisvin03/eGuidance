@@ -15,7 +15,31 @@
     <div class="col-md-4">
         <div class="card text-center">
             <div class="card-body">
-                {{-- Profile Photo --}}
+                {{-- Profile Photo with Upload Form --}}
+                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" id="photoUploadForm">
+                    @csrf
+                    @method('PUT')
+                    {{-- Pass existing user data as hidden fields --}}
+                    <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                    <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+                    @if(Auth::user()->isStudent())
+                        <input type="hidden" name="lrn" value="{{ Auth::user()->lrn ?? '' }}">
+                        <input type="hidden" name="grade_level" value="{{ Auth::user()->grade_level ?? '' }}">
+                        <input type="hidden" name="section" value="{{ Auth::user()->section ?? '' }}">
+                        <input type="hidden" name="adviser" value="{{ Auth::user()->adviser ?? '' }}">
+                        <input type="hidden" name="contact_person" value="{{ Auth::user()->contact_person ?? '' }}">
+                        <input type="hidden" name="contact_number" value="{{ Auth::user()->contact_number ?? '' }}">
+                    @endif
+                    @if(Auth::user()->isTeacher())
+                        <input type="hidden" name="advisee" value="{{ Auth::user()->advisee ?? '' }}">
+                    @endif
+                    <input type="hidden" name="phone" value="{{ Auth::user()->phone ?? '' }}">
+                    <input type="hidden" name="date_of_birth" value="{{ Auth::user()->date_of_birth ?? '' }}">
+                    <input type="hidden" name="gender" value="{{ Auth::user()->gender ?? '' }}">
+                    <input type="hidden" name="address" value="{{ Auth::user()->address ?? '' }}">
+                    <input type="file" id="photoInput" name="profile_photo" accept="image/*" class="d-none" onchange="document.getElementById('photoUploadForm').submit();">
+                </form>
+                
                 <div class="mb-3 position-relative d-inline-block">
                     @if(Auth::user()->profile_photo)
                         <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
@@ -29,15 +53,19 @@
                         </div>
                     @endif
                     <label for="photoInput" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                           style="width:28px;height:28px;cursor:pointer;" title="Change photo">
+                           style="width:28px;height:28px;cursor:pointer;" title="Click to upload photo">
                         <i class="bi bi-camera-fill" style="font-size:.75rem;"></i>
                     </label>
                 </div>
+                
+                @error('profile_photo')
+                    <div class="alert alert-danger alert-dismissible fade show py-2 mt-2">
+                        <small>{{ $message }}</small>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                @enderror
                 <h5 class="card-title">{{ Auth::user()->name }}</h5>
                 <p class="card-text text-muted">{{ ucfirst(Auth::user()->role->name) }}</p>
-                @if(Auth::user()->student_id)
-                    <p class="card-text"><small class="text-muted">ID: {{ Auth::user()->student_id }}</small></p>
-                @endif
                 <div class="mt-2">
                     <span class="badge {{ Auth::user()->is_active ? 'badge-success' : 'badge-secondary' }}">
                         {{ Auth::user()->is_active ? 'Active' : 'Inactive' }}
@@ -50,6 +78,22 @@
                         <i class="bi bi-trash me-1"></i>Remove Photo
                     </button>
                 </form>
+                @endif
+                
+                @if(Auth::user()->isStudent())
+                <div class="mt-3">
+                    <a href="{{ route('student.virtual-id') }}" class="btn btn-sm w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                        <i class="bi bi-person-badge me-1"></i>View Virtual ID
+                    </a>
+                </div>
+                @endif
+                
+                @if(Auth::user()->isTeacher())
+                <div class="mt-3">
+                    <a href="{{ route('teacher.virtual-id') }}" class="btn btn-sm w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                        <i class="bi bi-person-badge me-1"></i>View Virtual ID
+                    </a>
+                </div>
                 @endif
             </div>
         </div>
@@ -107,11 +151,6 @@
                 <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" id="profileForm">
                     @csrf
                     @method('PUT')
-                    {{-- Hidden file input triggered by camera icon --}}
-                    <input type="file" id="photoInput" name="profile_photo" accept="image/*" class="d-none" onchange="previewPhoto(this)">
-                    @error('profile_photo')
-                        <div class="alert alert-danger py-2 mb-3"><i class="bi bi-exclamation-triangle me-1"></i>{{ $message }}</div>
-                    @enderror
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -124,11 +163,76 @@
                         </div>
                     </div>
                     
-                    @if(Auth::user()->student_id)
+                    @if(Auth::user()->isStudent())
+                        <div class="alert alert-info mb-3">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <strong>Complete your profile:</strong> Please fill in all required fields (Photo, LRN, Grade Level, Section, Adviser, Emergency Contact Person, and Contact Number) to access all features including your Virtual ID.
+                        </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="student_id" class="form-label">Student ID</label>
-                                <input type="text" class="form-control" id="student_id" value="{{ Auth::user()->student_id }}" readonly>
+                                <label for="lrn" class="form-label fw-semibold">LRN (Learner Reference Number) <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('lrn') is-invalid @enderror" id="lrn" name="lrn" value="{{ Auth::user()->lrn ?? '' }}" placeholder="12-digit Learner Reference Number" required>
+                                @error('lrn')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="grade_level" class="form-label fw-semibold">Grade Level <span class="text-danger">*</span></label>
+                                <select class="form-select @error('grade_level') is-invalid @enderror" id="grade_level" name="grade_level" required>
+                                    <option value="">Select Grade Level</option>
+                                    <option value="Grade 7"  {{ Auth::user()->grade_level == 'Grade 7'  ? 'selected' : '' }}>Grade 7</option>
+                                    <option value="Grade 8"  {{ Auth::user()->grade_level == 'Grade 8'  ? 'selected' : '' }}>Grade 8</option>
+                                    <option value="Grade 9"  {{ Auth::user()->grade_level == 'Grade 9'  ? 'selected' : '' }}>Grade 9</option>
+                                    <option value="Grade 10" {{ Auth::user()->grade_level == 'Grade 10' ? 'selected' : '' }}>Grade 10</option>
+                                    <option value="Grade 11" {{ Auth::user()->grade_level == 'Grade 11' ? 'selected' : '' }}>Grade 11</option>
+                                    <option value="Grade 12" {{ Auth::user()->grade_level == 'Grade 12' ? 'selected' : '' }}>Grade 12</option>
+                                </select>
+                                @error('grade_level')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="section" class="form-label fw-semibold">Section <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('section') is-invalid @enderror" id="section" name="section" value="{{ Auth::user()->section ?? '' }}" placeholder="e.g., Sampaguita, Narra" required>
+                                @error('section')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="adviser" class="form-label fw-semibold">Adviser Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('adviser') is-invalid @enderror" id="adviser" name="adviser" value="{{ Auth::user()->adviser ?? '' }}" placeholder="Your class adviser's full name" required>
+                                @error('adviser')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="contact_person" class="form-label fw-semibold">Emergency Contact Person <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control @error('contact_person') is-invalid @enderror" id="contact_person" name="contact_person" value="{{ Auth::user()->contact_person ?? '' }}" placeholder="Parent/Guardian Name" required>
+                                @error('contact_person')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="contact_number" class="form-label fw-semibold">Emergency Contact Number <span class="text-danger">*</span></label>
+                                <input type="tel" class="form-control @error('contact_number') is-invalid @enderror" id="contact_number" name="contact_number" value="{{ Auth::user()->contact_number ?? '' }}" placeholder="Parent/Guardian Phone Number" required>
+                                @error('contact_number')
+                                    <span class="invalid-feedback">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <hr class="my-3">
+                    @endif
+                    
+                    @if(Auth::user()->isTeacher())
+                        <div class="row">
+                            <div class="col-md-12 mb-3">
+                                <label for="advisee" class="form-label">Advisee Class/Section</label>
+                                <input type="text" class="form-control" id="advisee" name="advisee" value="{{ Auth::user()->advisee ?? '' }}" placeholder="e.g., Grade 9 - Mabini">
+                                <small class="text-muted">The class/section you are advising</small>
                             </div>
                         </div>
                     @endif
@@ -224,27 +328,4 @@
     </div>
 </div>
 
-<script>
-function previewPhoto(input) {
-    if (input.files && input.files[0]) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            const container = input.closest('.col-md-4').querySelector('.card .card-body');
-            const existing = container.querySelector('img.rounded-circle');
-            const avatar = container.querySelector('.user-avatar');
-            if (existing) {
-                existing.src = e.target.result;
-            } else if (avatar) {
-                const img = document.createElement('img');
-                img.src = e.target.result;
-                img.className = 'rounded-circle border';
-                img.style.cssText = 'width:90px;height:90px;object-fit:cover;';
-                avatar.replaceWith(img);
-            }
-        };
-        reader.readAsDataURL(input.files[0]);
-        document.getElementById('profileForm').submit();
-    }
-}
-</script>
 @endsection

@@ -51,6 +51,29 @@
             <div class="card-body px-4 pb-4">
                 <div class="row g-3">
                     <div class="col-12">
+                        <label class="form-label fw-semibold">Category for Monitoring and Referral <span class="text-danger">*</span></label>
+                        <select name="referral_category" class="form-select" required>
+                            <option value="">Select category...</option>
+                            <option value="Not applicable">Not applicable</option>
+                            <option value="Indigenous Peoples (IP) Learners">Indigenous Peoples (IP) Learners</option>
+                            <option value="Muslim Learners">Muslim Learners</option>
+                            <option value="Learners with Disabilities (LWDs)">Learners with Disabilities (LWDs)</option>
+                            <option value="LGBTQIA+ Learners">LGBTQIA+ Learners</option>
+                            <option value="Pregnant Learners">Pregnant Learners</option>
+                            <option value="Young Mothers and Fathers">Young Mothers and Fathers</option>
+                            <option value="Children in Conflict with the Law (CICL)">Children in Conflict with the Law (CICL)</option>
+                            <option value="Learners at Risk of Dropping Out (LARDOs)">Learners at Risk of Dropping Out (LARDOs)</option>
+                            <option value="Learner-Victims of Violence Against Women and Their Children (VAWC)">Learner-Victims of Violence Against Women and Their Children (VAWC)</option>
+                            <option value="Learner-Victims of Child Abuse, Neglect, Exploitation, and Other Criminal Acts">Learner-Victims of Child Abuse, Neglect, Exploitation, and Other Criminal Acts</option>
+                            <option value="Learners Affected by Natural Calamities, Armed Conflict, and Other Emergencies">Learners Affected by Natural Calamities, Armed Conflict, and Other Emergencies</option>
+                            <option value="Learners Experiencing Psychosocial Distress or Recent Traumatic Events">Learners Experiencing Psychosocial Distress or Recent Traumatic Events</option>
+                            <option value="Learners Requiring Mental Health and Psychosocial Support (MHPSS)">Learners Requiring Mental Health and Psychosocial Support (MHPSS)</option>
+                            <option value="Learners with Chronic Health Conditions or Special Medical Needs">Learners with Chronic Health Conditions or Special Medical Needs</option>
+                            <option value="Other Learners Requiring Specialized Intervention and Support">Other Learners Requiring Specialized Intervention and Support</option>
+                        </select>
+                        <small class="text-muted">Select the appropriate category for monitoring and referral purposes</small>
+                    </div>
+                    <div class="col-12">
                         <label class="form-label fw-semibold">Reason for Referral <span class="text-danger">*</span></label>
                         <textarea name="reason_for_referral" class="form-control" rows="3" placeholder="Primary reason for referring this student..." required>{{ old('reason_for_referral') }}</textarea>
                     </div>

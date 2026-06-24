@@ -132,6 +132,14 @@
                 </a>
             </div>
             <div class="col-6 col-md-3">
+                <a href="{{ route('student.forms.index') }}" class="text-decoration-none">
+                    <div class="border rounded-3 p-3 text-center quick-action-card">
+                        <i class="bi bi-file-earmark-text fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <div class="fw-semibold small">Request Forms</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
                 <a href="{{ route('student.concerns.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
                         <i class="bi bi-chat-dots fs-2 mb-2 d-block" style="color:#20B2AA;"></i>

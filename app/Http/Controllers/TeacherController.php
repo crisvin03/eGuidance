@@ -160,6 +160,7 @@ class TeacherController extends Controller
         $data = $request->validate([
             'student_name'       => 'required|string|max:255',
             'grade_section'      => 'required|string|max:100',
+            'referral_category'  => 'required|string|max:255',
             'reason_for_referral'=> 'required|string',
             'observed_behavior'  => 'nullable|string',
             'actions_taken'      => 'nullable|string',
@@ -172,6 +173,7 @@ class TeacherController extends Controller
             'teacher_id'         => Auth::id(),
             'student_name'       => $data['student_name'],
             'grade_section'      => $data['grade_section'],
+            'referral_category'  => $data['referral_category'],
             'reason_for_referral'=> $data['reason_for_referral'],
             'observed_behavior'  => $data['observed_behavior'],
             'actions_taken'      => $data['actions_taken'],
@@ -283,5 +285,12 @@ class TeacherController extends Controller
 
         return redirect()->route('teacher.talk-to-counselor')
             ->with('success', 'Appointment scheduled successfully. The counselor will be notified.');
+    }
+
+    // ─── Virtual ID ───────────────────────────────────────────────────────────
+
+    public function virtualId()
+    {
+        return view('teacher.virtual-id');
     }
 }

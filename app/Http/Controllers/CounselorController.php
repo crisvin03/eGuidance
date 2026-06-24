@@ -258,7 +258,7 @@ class CounselorController extends Controller
             abort(403);
         }
 
-        return view('counselor.session-notes.create', compact('appointment'));
+        return view('counselor.appointments.session-notes-create', compact('appointment'));
     }
 
     public function storeSessionNote(Request $request, Appointment $appointment)
@@ -269,7 +269,8 @@ class CounselorController extends Controller
 
         $request->validate([
             'notes' => 'required|string',
-            'session_type' => 'required|in:initial,follow_up,crisis,group',
+            'session_type' => 'required|in:individual,group,crisis,follow_up,assessment,referral',
+            'session_date' => 'required|date',
             'recommendations' => 'nullable|string',
             'is_confidential' => 'boolean',
         ]);
@@ -279,8 +280,9 @@ class CounselorController extends Controller
             'counselor_id' => Auth::id(),
             'notes' => $request->notes,
             'session_type' => $request->session_type,
+            'session_date' => $request->session_date,
             'recommendations' => $request->recommendations,
-            'is_confidential' => $request->boolean('is_confidential', true),
+            'is_confidential' => $request->boolean('is_confidential', false),
         ]);
 
         return redirect()->route('counselor.appointments.show', $appointment)
@@ -381,5 +383,43 @@ class CounselorController extends Controller
         ]);
 
         return redirect()->back()->with('success', 'Referral updated successfully.');
+    }
+
+    public function formGenerator()
+    {
+        return view('counselor.forms.index');
+    }
+
+    public function updateConcern(Request $request, Concern $concern)
+    {
+        $request->validate([
+            'status' => 'required|in:submitted,scheduled,resolved',
+            'counselor_response' => 'required|string',
+            'counseling_date' => 'nullable|date|after:now',
+        ]);
+
+        $data = [
+            'status' => $request->status,
+            'counselor_response' => $request->counselor_response,
+        ];
+
+        // Only update counseling_date if status is scheduled
+        if ($request->status === 'scheduled') {
+            $request->validate([
+                'counseling_date' => 'required|date|after:now',
+            ]);
+            $data['counseling_date'] = $request->counseling_date;
+        } else {
+            $data['counseling_date'] = null;
+        }
+
+        // Mark as resolved if status is resolved
+        if ($request->status === 'resolved') {
+            $data['resolved_at'] = now();
+        }
+
+        $concern->update($data);
+
+        return redirect()->back()->with('success', 'Concern updated successfully.');
     }
 }

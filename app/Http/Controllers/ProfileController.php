@@ -17,23 +17,56 @@ class ProfileController extends Controller
     {
         $user = auth()->user();
         
-        $request->validate([
-            'name'          => 'required|string|max:255',
-            'email'         => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'phone'         => 'nullable|string|max:20',
-            'date_of_birth' => 'nullable|date',
-            'gender'        => 'nullable|in:male,female,other',
-            'address'       => 'nullable|string|max:500',
-            'profile_photo' => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
-        ]);
+        // Check if this is a photo-only update (no other fields modified)
+        $isPhotoOnly = $request->hasFile('profile_photo') && 
+                       $request->filled('name') && 
+                       $request->filled('email') &&
+                       $request->name === $user->name &&
+                       $request->email === $user->email;
+        
+        $validationRules = [
+            'name'           => 'required|string|max:255',
+            'email'          => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone'          => 'nullable|string|max:20',
+            'date_of_birth'  => 'nullable|date',
+            'gender'         => 'nullable|in:male,female,other',
+            'address'        => 'nullable|string|max:500',
+            'profile_photo'  => 'nullable|image|mimes:jpg,jpeg,png,gif,webp|max:2048',
+            'lrn'            => 'nullable|string|max:50',
+            'grade_level'    => 'nullable|string|max:50',
+            'section'        => 'nullable|string|max:50',
+            'adviser'        => 'nullable|string|max:255',
+            'contact_person' => 'nullable|string|max:255',
+            'contact_number' => 'nullable|string|max:20',
+            'advisee'        => 'nullable|string|max:255',
+        ];
+
+        // For students, make certain fields required only if not photo-only update
+        if ($user->isStudent() && !$isPhotoOnly) {
+            $validationRules['lrn'] = 'required|string|max:50';
+            $validationRules['grade_level'] = 'required|string|max:50';
+            $validationRules['section'] = 'required|string|max:50';
+            $validationRules['adviser'] = 'required|string|max:255';
+            $validationRules['contact_person'] = 'required|string|max:255';
+            $validationRules['contact_number'] = 'required|string|max:20';
+        }
+
+        $request->validate($validationRules);
 
         $data = [
-            'name'          => $request->name,
-            'email'         => $request->email,
-            'phone'         => $request->phone,
-            'date_of_birth' => $request->date_of_birth,
-            'gender'        => $request->gender,
-            'address'       => $request->address,
+            'name'           => $request->name,
+            'email'          => $request->email,
+            'phone'          => $request->phone,
+            'date_of_birth'  => $request->date_of_birth,
+            'gender'         => $request->gender,
+            'address'        => $request->address,
+            'lrn'            => $request->lrn,
+            'grade_level'    => $request->grade_level,
+            'section'        => $request->section,
+            'adviser'        => $request->adviser,
+            'contact_person' => $request->contact_person,
+            'contact_number' => $request->contact_number,
+            'advisee'        => $request->advisee,
         ];
 
         if ($request->hasFile('profile_photo')) {

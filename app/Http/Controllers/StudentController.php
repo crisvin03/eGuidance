@@ -286,4 +286,15 @@ class StudentController extends Controller
             ], 500);
         }
     }
+
+    public function formGenerator()
+    {
+        return view('student.forms.index');
+    }
+
+    public function virtualId()
+    {
+        $user = Auth::user();
+        return view('student.virtual-id', compact('user'));
+    }
 }
