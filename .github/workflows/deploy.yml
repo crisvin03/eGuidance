@@ -1,0 +1,35 @@
+name: Deploy eGuidance to VPS
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            cd /home/eguidance-portal.sbs/eGuidance
+
+            git pull origin master
+
+            composer install --no-dev --optimize-autoloader
+
+            php artisan migrate --force
+
+            npm install
+            npm run build
+
+            php artisan optimize:clear
+            php artisan config:cache
+            php artisan view:cache
+
+            /usr/local/lsws/bin/lswsctrl restart
