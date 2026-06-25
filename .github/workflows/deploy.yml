@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy via SSH
+      - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.VPS_HOST }}
@@ -19,10 +19,10 @@ jobs:
           script: |
             cd /home/eguidance-portal.sbs/eGuidance
 
-            git pull origin master
+            git fetch origin
+            git reset --hard origin/master
 
             composer install --no-dev --optimize-autoloader
-
             php artisan migrate --force
 
             npm install
