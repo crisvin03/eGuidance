@@ -22,8 +22,8 @@
                                         <div style="display:inline-block;background:rgba(255,255,255,0.2);border-radius:50%;width:54px;height:54px;line-height:54px;text-align:center;margin-bottom:12px;">
                                             <span style="font-size:24px;">&#128197;</span>
                                         </div>
-                                        <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">SIGMA</h1>
-                                        <p style="margin:4px 0 0;color:rgba(255,255,255,0.85);font-size:12px;letter-spacing:1px;text-transform:uppercase;">Guidance Portal</p>
+                                        <h1 style="margin:0;color:#ffffff;font-size:22px;font-weight:700;letter-spacing:0.5px;">BNHS Care Corner</h1>
+                                        <p style="margin:4px 0 0;color:rgba(255,255,255,0.85);font-size:12px;letter-spacing:1px;text-transform:uppercase;">Guidance & Support Portal</p>
                                     </td>
                                 </tr>
                             </table>
@@ -134,7 +134,7 @@
                     <!-- Footer -->
                     <tr>
                         <td style="background:#ffffff;border-radius:0 0 12px 12px;padding:20px 40px;text-align:center;">
-                            <p style="margin:0 0 4px;color:#1a3a3a;font-size:13px;font-weight:700;">SIGMA Guidance Portal</p>
+                            <p style="margin:0 0 4px;color:#1a3a3a;font-size:13px;font-weight:700;">BNHS Care Corner</p>
                             <p style="margin:0;color:#9ca3af;font-size:12px;line-height:1.6;">
                                 This is an automated notification. Please do not reply to this email.<br>
                                 &copy; {{ date('Y') }} {{ config('app.name') }}. All rights reserved.

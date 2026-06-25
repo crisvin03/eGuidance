@@ -387,7 +387,58 @@ class CounselorController extends Controller
 
     public function formGenerator()
     {
-        return view('counselor.forms.index');
+        // Redirect counselors directly to submitted forms list
+        return redirect()->route('counselor.forms.submitted');
+    }
+
+    public function submittedForms(Request $request)
+    {
+        $query = \App\Models\TeacherFormSubmission::with('teacher');
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('student_name', 'like', "%{$search}%")
+                  ->orWhere('form_title', 'like', "%{$search}%")
+                  ->orWhereHas('teacher', fn($t) => $t->where('name', 'like', "%{$search}%"));
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('form_type')) {
+            $query->where('form_type', $request->form_type);
+        }
+
+        $submissions = $query->orderByDesc('created_at')->paginate(10)->appends($request->query());
+
+        return view('counselor.forms.submitted', compact('submissions'));
+    }
+
+    public function showSubmittedForm(\App\Models\TeacherFormSubmission $submission)
+    {
+        $submission->load('teacher');
+        return view('counselor.forms.show', compact('submission'));
+    }
+
+    public function reviewForm(Request $request, \App\Models\TeacherFormSubmission $submission)
+    {
+        $request->validate([
+            'status'          => 'required|in:reviewed,acknowledged',
+            'counselor_notes' => 'nullable|string',
+        ]);
+
+        $submission->update([
+            'status'          => $request->status,
+            'counselor_notes' => $request->counselor_notes,
+            'reviewed_by'     => Auth::id(),
+            'reviewed_at'     => now(),
+        ]);
+
+        return redirect()->route('counselor.forms.submitted.show', $submission)
+            ->with('success', 'Form marked as ' . $request->status . '.');
     }
 
     public function updateConcern(Request $request, Concern $concern)

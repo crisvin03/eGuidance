@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Login - SIGMA Guidance Portal</title>
+    <title>Login - BNHS Care Corner</title>
     
     @vite(['resources/css/app.css'])
     
@@ -365,10 +365,10 @@
     <div class="login-container">
         <div class="brand-panel">
             <div class="brand-logo">
-                <img src="{{ asset('logo.png') }}" alt="SIGMA Logo" style="width: 55px; height: 55px; border-radius: 12px;">
+                <img src="{{ asset('logo.png') }}" alt="BNHS Care Corner" style="width: 55px; height: 55px; border-radius: 12px;">
                 <div class="brand-text">
-                    <span class="brand-name">SIGMA</span>
-                    <span class="brand-subtitle">Guidance & Monitoring Assistance</span>
+                    <span class="brand-name">Care Corner</span>
+                    <span class="brand-subtitle">BNHS Guidance & Support</span>
                 </div>
             </div>
             

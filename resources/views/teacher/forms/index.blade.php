@@ -2,9 +2,40 @@
 @section('title', 'Generate Forms')
 
 @section('content')
-<div class="mb-4">
-    <h5 class="fw-bold mb-1">Generate Forms</h5>
-    <small class="text-muted">Select a form, fill in the details, and print. Teacher name and date are auto-filled.</small>
+<style>
+    .btn-send-counselor {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.5rem 1.1rem;
+        border-radius: 8px;
+        border: 2px solid #20B2AA;
+        cursor: pointer;
+        font-size: 0.875rem;
+        font-weight: 600;
+        color: #20B2AA;
+        background: #ffffff;
+        transition: all 0.2s;
+    }
+    .btn-send-counselor:hover {
+        background: #20B2AA;
+        color: #ffffff;
+    }
+    .btn-send-counselor:hover { opacity: 0.88; }
+    .btn-send-counselor:disabled { opacity: 0.6; cursor: not-allowed; }
+</style>
+<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
+    <div>
+        <h5 class="fw-bold mb-0">Generate Forms</h5>
+        <small class="text-muted">Select a form, fill in the details, then send to the counselor for review.</small>
+    </div>
+    <a href="{{ route('teacher.forms.submissions') }}" class="btn text-white fw-semibold btn-sm" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+        <i class="bi bi-clock-history me-1"></i> My Submitted Forms
+        @php $pendingCount = \App\Models\TeacherFormSubmission::where('teacher_id', Auth::id())->count(); @endphp
+        @if($pendingCount > 0)
+            <span class="badge rounded-pill bg-white ms-1" style="color:#20B2AA;font-size:0.7rem;">{{ $pendingCount }}</span>
+        @endif
+    </a>
 </div>
 
 <div class="row g-4">
@@ -58,8 +89,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn text-white" style="background:#20B2AA;" onclick="generateAndPrint()">
-                    <i class="bi bi-printer me-1"></i> Generate & Print
+                <button type="button" class="btn-send-counselor" onclick="sendToCounselor()" id="sendBtn">
+                    <i class="bi bi-send me-1"></i> Send to Counselor
                 </button>
             </div>
         </div>
@@ -73,10 +104,14 @@
 const teacherName = @json(Auth::user()->name);
 const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 const todayShort = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+const submitFormUrl = @json(route('teacher.forms.submit'));
+const csrfToken = @json(csrf_token());
 let currentFormId = '';
+let currentFormTitle = '';
 
 function openFormGenerator(formId, formTitle) {
     currentFormId = formId;
+    currentFormTitle = formTitle;
     document.getElementById('formModalTitle').textContent = 'Generate: ' + formTitle;
     document.getElementById('formModalBody').innerHTML = getFormFields(formId);
     new bootstrap.Modal(document.getElementById('formModal')).show();
@@ -351,18 +386,81 @@ function addBagRow() {
     document.getElementById('bagRows').insertAdjacentHTML('beforeend', row);
 }
 
-function generateAndPrint() {
-    const printContent = buildPrintContent(currentFormId);
-    const printWindow = window.open('', '_blank', 'width=900,height=700');
-    printWindow.document.write(printContent);
-    printWindow.document.close();
-    setTimeout(() => printWindow.print(), 500);
-    bootstrap.Modal.getInstance(document.getElementById('formModal')).hide();
-}
-
 function val(id) { const el = document.getElementById(id); return el ? el.value : ''; }
 function checked(id) { const el = document.getElementById(id); return el ? el.checked : false; }
 function checkbox(isChecked) { return isChecked ? '&#9746;' : '&#9744;'; }
+
+function sendToCounselor() {
+    // Collect all named form field values
+    const formData = {};
+    document.querySelectorAll('#formModalBody input, #formModalBody select, #formModalBody textarea').forEach(el => {
+        if (!el.id && !el.name) return; // skip unnamed elements (row inputs handled below)
+        if (el.type === 'checkbox') {
+            formData[el.id || el.name] = el.checked ? (el.value || true) : false;
+        } else {
+            formData[el.id || el.name] = el.value;
+        }
+    });
+
+    // Capture risk rows (risk-assessment form)
+    document.querySelectorAll('.risk-row').forEach((row, rowIdx) => {
+        const inputs = row.querySelectorAll('input, select');
+        inputs.forEach((inp, colIdx) => {
+            formData[`ff_risk_${rowIdx}_${colIdx}`] = inp.value;
+        });
+    });
+
+    // Capture bag rows (bag-search form)
+    document.querySelectorAll('.bag-row').forEach((row, rowIdx) => {
+        const inputs = row.querySelectorAll('input');
+        inputs.forEach((inp, colIdx) => {
+            formData[`ff_bag_${rowIdx}_${colIdx}`] = inp.value;
+        });
+    });
+
+    const studentName = document.getElementById('ff_student_name')?.value || '';
+    const gradeSection = document.getElementById('ff_grade_section')?.value || '';
+
+    const btn = document.getElementById('sendBtn');
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Sending...';
+
+    fetch(submitFormUrl, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': csrfToken,
+            'Accept': 'application/json',
+        },
+        body: JSON.stringify({
+            form_type:     currentFormId,
+            form_title:    currentFormTitle,
+            student_name:  studentName,
+            grade_section: gradeSection,
+            form_data:     formData,
+        })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            bootstrap.Modal.getInstance(document.getElementById('formModal')).hide();
+            // Show toast notification
+            const toast = document.createElement('div');
+            toast.className = 'position-fixed bottom-0 end-0 p-3';
+            toast.style.zIndex = 9999;
+            toast.innerHTML = `<div class="toast show align-items-center text-white border-0" style="background:#20B2AA;border-radius:12px;" role="alert">
+                <div class="d-flex"><div class="toast-body"><i class="bi bi-check-circle me-2"></i>${data.message}</div>
+                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>`;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+    })
+    .catch(() => {
+        btn.disabled = false;
+        btn.innerHTML = '<i class="bi bi-send me-1"></i> Send to Counselor';
+        alert('Failed to send. Please try again.');
+    });
+}
 
 function buildPrintContent(formId) {
     const css = `<style>

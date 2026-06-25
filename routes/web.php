@@ -67,6 +67,9 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/referrals/{studentReferral}', [CounselorController::class, 'showReferral'])->name('referrals.show');
     Route::post('/referrals/{studentReferral}/update', [CounselorController::class, 'updateReferral'])->name('referrals.update');
     Route::get('/forms', [CounselorController::class, 'formGenerator'])->name('forms.index');
+    Route::get('/forms/submitted', [CounselorController::class, 'submittedForms'])->name('forms.submitted');
+    Route::get('/forms/submitted/{submission}', [CounselorController::class, 'showSubmittedForm'])->name('forms.submitted.show');
+    Route::post('/forms/submitted/{submission}/review', [CounselorController::class, 'reviewForm'])->name('forms.submitted.review');
 });
 
 // Teacher routes
@@ -81,6 +84,9 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::post('/referrals', [App\Http\Controllers\TeacherController::class, 'storeReferral'])->name('referrals.store');
     Route::get('/referrals/{studentReferral}', [App\Http\Controllers\TeacherController::class, 'showReferral'])->name('referrals.show');
     Route::get('/forms', [App\Http\Controllers\TeacherController::class, 'formGenerator'])->name('forms.index');
+    Route::post('/forms/submit', [App\Http\Controllers\TeacherController::class, 'submitForm'])->name('forms.submit');
+    Route::get('/forms/my-submissions', [App\Http\Controllers\TeacherController::class, 'myFormSubmissions'])->name('forms.submissions');
+    Route::get('/forms/my-submissions/{submission}', [App\Http\Controllers\TeacherController::class, 'showFormSubmission'])->name('forms.submissions.show');
     Route::get('/case-tracking', [App\Http\Controllers\TeacherController::class, 'caseTracking'])->name('case-tracking.index');
     Route::get('/intervention-guides', [App\Http\Controllers\TeacherController::class, 'interventionGuides'])->name('intervention-guides.index');
     Route::get('/talk-to-counselor', [App\Http\Controllers\TeacherController::class, 'talkToCounselor'])->name('talk-to-counselor');

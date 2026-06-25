@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Register - SIGMA Guidance Portal</title>
+    <title>Register - BNHS Care Corner</title>
     
     @vite(['resources/css/app.css'])
     
@@ -338,10 +338,10 @@
         <!-- Brand Panel -->
         <div class="brand-panel">
             <div class="brand-logo">
-                <img src="{{ asset('logo.png') }}" alt="SIGMA">
+                <img src="{{ asset('logo.png') }}" alt="BNHS Care Corner">
                 <div class="brand-logo-text">
-                    <h2>SIGMA</h2>
-                    <p>Guidance Portal</p>
+                    <h2>Care Corner</h2>
+                    <p>BNHS Guidance & Support</p>
                 </div>
             </div>
             

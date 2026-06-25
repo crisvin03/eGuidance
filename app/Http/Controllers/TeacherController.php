@@ -199,6 +199,62 @@ class TeacherController extends Controller
         return view('teacher.forms.index');
     }
 
+    public function submitForm(Request $request)
+    {
+        $request->validate([
+            'form_type'    => 'required|string',
+            'form_title'   => 'required|string',
+            'student_name' => 'nullable|string|max:255',
+            'grade_section'=> 'nullable|string|max:100',
+            'form_data'    => 'required',
+        ]);
+
+        \App\Models\TeacherFormSubmission::create([
+            'teacher_id'    => Auth::id(),
+            'form_type'     => $request->form_type,
+            'form_title'    => $request->form_title,
+            'student_name'  => $request->student_name,
+            'grade_section' => $request->grade_section,
+            'form_data'     => is_array($request->form_data)
+                                ? $request->form_data
+                                : json_decode($request->form_data, true) ?? [],
+            'status'        => 'submitted',
+        ]);
+
+        return response()->json(['success' => true, 'message' => 'Form sent to counselor successfully.']);
+    }
+
+    public function myFormSubmissions(Request $request)
+    {
+        $query = \App\Models\TeacherFormSubmission::where('teacher_id', Auth::id());
+
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('student_name', 'like', "%{$search}%")
+                  ->orWhere('form_title', 'like', "%{$search}%");
+            });
+        }
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->filled('form_type')) {
+            $query->where('form_type', $request->form_type);
+        }
+
+        $submissions = $query->orderByDesc('created_at')->paginate(10)->appends($request->query());
+
+        return view('teacher.forms.submissions', compact('submissions'));
+    }
+
+    public function showFormSubmission(\App\Models\TeacherFormSubmission $submission)
+    {
+        if ($submission->teacher_id !== Auth::id()) abort(403);
+        return view('teacher.forms.show', compact('submission'));
+    }
+
     // ─── Case Tracking ────────────────────────────────────────────────────────
 
     public function caseTracking(Request $request)

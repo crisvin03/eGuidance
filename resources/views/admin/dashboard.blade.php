@@ -38,7 +38,7 @@
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div>
                 <h4 class="fw-bold mb-1">Admin Dashboard 🛡️</h4>
-                <p class="mb-0 opacity-75">SIGMA eGuidance Portal &mdash; {{ now()->format('l, F d, Y') }}</p>
+                <p class="mb-0 opacity-75">BNHS Care Corner Admin Dashboard &mdash; {{ now()->format('l, F d, Y') }}</p>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <a href="{{ route('admin.users.create') }}" class="btn btn-light btn-sm fw-semibold">

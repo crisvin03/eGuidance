@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>SIGMA - Guidance & Monitoring Assistance</title>
+    <title>BNHS Care Corner - Guidance & Support Portal</title>
     @vite(['resources/css/app.css'])
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
@@ -271,10 +271,10 @@
     {{-- NAVBAR --}}
     <nav class="navbar" id="navbar">
         <a href="#" class="nav-brand">
-            <img src="{{ asset('logo.png') }}" alt="SIGMA">
+            <img src="{{ asset('logo.png') }}" alt="BNHS Care Corner">
             <div>
-                <div class="nav-brand-name">SIGMA</div>
-                <div class="nav-brand-sub">Guidance & Monitoring Assistance</div>
+                <div class="nav-brand-name">Care Corner</div>
+                <div class="nav-brand-sub">BNHS Guidance & Support</div>
             </div>
         </a>
         <button class="nav-toggle" onclick="document.getElementById('navActions').classList.toggle('open')" aria-label="Menu">
@@ -444,7 +444,7 @@
 
     {{-- FOOTER --}}
     <footer class="footer">
-        &copy; {{ date('Y') }} SIGMA &mdash; Guidance & Monitoring Assistance &bull; Bulan National High School
+        &copy; {{ date('Y') }} BNHS Care Corner &mdash; Guidance & Support Portal &bull; Bulan National High School
     </footer>
 
     <script>
