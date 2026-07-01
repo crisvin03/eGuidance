@@ -4,6 +4,22 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>BNHS Care Corner - Guidance & Support Portal</title>
+
+    {{-- Open Graph / Link Preview --}}
+    <meta property="og:type"        content="website">
+    <meta property="og:url"         content="{{ url('/') }}">
+    <meta property="og:title"       content="BNHS Care Corner - Guidance & Support Portal">
+    <meta property="og:description" content="A safe, confidential space for students to share concerns, connect with counselors, and get the guidance support they need — anytime.">
+    <meta property="og:image"       content="{{ asset('cover.jpg') }}">
+    <meta property="og:image:width"  content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name"   content="BNHS Care Corner">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card"        content="summary_large_image">
+    <meta name="twitter:title"       content="BNHS Care Corner - Guidance & Support Portal">
+    <meta name="twitter:description" content="A safe, confidential space for students to share concerns, connect with counselors, and get the guidance support they need — anytime.">
+    <meta name="twitter:image"       content="{{ asset('cover.jpg') }}">
     @vite(['resources/css/app.css'])
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
