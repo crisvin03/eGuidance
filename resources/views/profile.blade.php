@@ -291,7 +291,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
                     </div>
                 @endif
-                <form method="POST" action="{{ route('password.update') }}">
+                <form method="POST" action="{{ route('profile.password') }}">
                     @csrf
                     @method('PUT')
                     <div class="row">
