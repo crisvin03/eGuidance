@@ -14,17 +14,15 @@ class ConcernCategorySeeder extends Seeder
     public function run(): void
     {
         $categories = [
-            ['name' => 'Academic Concerns', 'description' => 'Issues related to studies, grades, and academic performance'],
-            ['name' => 'Mental Health', 'description' => 'Mental health and emotional wellness concerns'],
-            ['name' => 'Bullying', 'description' => 'Reports of bullying incidents'],
-            ['name' => 'Precursor to Bullying', 'description' => 'Early signs or behaviors that may lead to bullying'],
+            ['name' => 'Academic', 'description' => 'Issues related to studies, grades, and academic performance'],
+            ['name' => 'Emotional and Mental Wellness', 'description' => 'Mental health, emotional wellness, and psychological concerns'],
+            ['name' => 'Social and Peer', 'description' => 'Concerns involving social interactions and peer relationships'],
             ['name' => 'Family', 'description' => 'Family-related concerns and issues'],
-            ['name' => 'Relationship', 'description' => 'Relationship concerns with peers, friends, or others'],
-            ['name' => 'Safety and Protection', 'description' => 'Safety concerns and protection issues'],
+            ['name' => 'Behavioral', 'description' => 'Behavioral concerns and conduct-related issues'],
+            ['name' => 'Personal and Relationship', 'description' => 'Personal concerns and relationship issues'],
+            ['name' => 'Bullying/Safety', 'description' => 'Reports of bullying, harassment, or safety concerns'],
             ['name' => 'Career and Future', 'description' => 'Career planning, guidance, and future aspirations'],
-            ['name' => 'Counseling and Support Requests', 'description' => 'General counseling and support requests'],
-            ['name' => 'Psychological Testing', 'description' => 'Requests for psychological testing and assessment'],
-            ['name' => 'Others', 'description' => 'Other concerns not covered by specific categories'],
+            ['name' => 'Counseling and Support', 'description' => 'General counseling and support requests'],
         ];
 
         foreach ($categories as $category) {

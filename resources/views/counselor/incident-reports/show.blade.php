@@ -32,10 +32,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted d-block mb-1"><i class="bi bi-123 me-1"></i>Age</small>
+                            <strong>{{ $incidentReport->student_age ?? '—' }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="p-3 bg-light rounded">
                             <small class="text-muted d-block mb-1"><i class="bi bi-book me-1"></i>Grade & Section</small>
                             <strong>{{ $incidentReport->grade_section }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted d-block mb-1"><i class="bi bi-geo-alt me-1"></i>Address</small>
+                            <strong>{{ $incidentReport->student_address ?? '—' }}</strong>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -46,6 +58,10 @@
                     </div>
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded">
+                            <small class="text-muted d-block mb-1"><i class="bi bi-clock me-1"></i>Time of Incident</small>
+                            <strong>{{ $incidentReport->time_of_incident ? \Carbon\Carbon::parse($incidentReport->time_of_incident)->format('h:i A') : '—' }}</strong>
+                        </div>
+                    </div>
                             <small class="text-muted d-block mb-1"><i class="bi bi-person-badge me-1"></i>Submitted By</small>
                             <strong>{{ $incidentReport->teacher->name ?? '—' }}</strong>
                         </div>

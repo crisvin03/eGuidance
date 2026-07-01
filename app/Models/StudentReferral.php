@@ -13,6 +13,8 @@ class StudentReferral extends Model
         'referral_number',
         'teacher_id',
         'student_name',
+        'student_address',
+        'student_age',
         'grade_section',
         'referral_category',
         'reason_for_referral',

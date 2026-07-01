@@ -20,9 +20,17 @@
             </div>
             <div class="card-body px-4 pb-4">
                 <div class="row g-3">
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="text-muted small mb-1">Student Name</div>
                         <div class="fw-semibold">{{ $studentReferral->student_name }}</div>
+                    </div>
+                    <div class="col-sm-2">
+                        <div class="text-muted small mb-1">Age</div>
+                        <div class="fw-semibold">{{ $studentReferral->student_age ?? '—' }}</div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="text-muted small mb-1">Address</div>
+                        <div class="fw-semibold">{{ $studentReferral->student_address ?? '—' }}</div>
                     </div>
                     <div class="col-sm-6">
                         <div class="text-muted small mb-1">Grade & Section</div>

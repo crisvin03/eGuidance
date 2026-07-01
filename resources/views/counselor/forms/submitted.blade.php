@@ -3,13 +3,6 @@
 
 @section('content')
 
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show mb-4">
-        <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-@endif
-
 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
     <div>
         <h5 class="fw-bold mb-0">Submitted Forms</h5>
@@ -93,8 +86,7 @@
                             </td>
                             <td class="py-3">
                                 <a href="{{ route('counselor.forms.submitted.show', $submission->id) }}"
-                                   class="btn btn-sm btn-outline-primary">
-                                    <i class="bi bi-eye me-1"></i> View
+                                   class="btn btn-primary btn-sm"><i class="bi bi-eye me-1"></i> View
                                 </a>
                             </td>
                         </tr>

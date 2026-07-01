@@ -473,10 +473,10 @@ function buildPrintContent(formId) {
         table th,table td{border:1px solid #000;padding:6px 8px;text-align:left;font-size:10pt;}
         table th{background:#000;color:#fff;font-weight:bold;}
         .section-header{background:#000;color:#fff;font-weight:bold;padding:4px 8px;margin:15px 0 10px;display:inline-block;font-size:10pt;}
-        .signature-line{border-bottom:1px solid #000;width:250px;display:inline-block;margin-top:30px;}
-        .signature-label{font-weight:bold;text-align:center;font-size:10pt;}
+        .signature-line{border-bottom:1px solid #000;width:250px;display:block;margin:30px auto 0;}
+        .signature-label{font-weight:bold;text-align:center;font-size:10pt;width:250px;display:block;margin:4px auto 0;}
         .grid-row{display:flex;margin-bottom:8px;}
-        .grid-col{flex:1;padding-right:15px;}
+        .grid-col{flex:1;padding:0 8px;}.sig-col{text-align:center;}
         .header-bar{background:#ccc;padding:10px;text-align:center;margin-bottom:20px;border:2px solid #000;}
         .dashed-line{border-top:2px dashed #000;margin:20px 0;}
         .box{border:2px solid #000;padding:15px;margin:10px 0;}
@@ -513,7 +513,7 @@ function buildPrintContent(formId) {
                     <div class="grid-col"><strong>*Action Taken</strong><br>${actions.map(a=>`${checkbox(true)} ${a}`).join('<br>')}</div>
                     <div class="grid-col"><strong>*Device Details</strong><br>* Brand/Model: <span class="field">${val('ff_brand')}</span><br>* Serial Number: <span class="field">${val('ff_serial')}</span><br>* Description/Color: <span class="field">${val('ff_color')}</span></div>
                 </div></div>
-                <br><div class="grid-row"><div class="grid-col"><div class="signature-line"></div><br><div class="signature-label">Teacher/Personnel Confiscating<br>Signature over Printed Name</div></div>
+                <br><div class="grid-row"><div class="grid-col sig-col"><div class="signature-line"></div><div class="signature-label">Teacher/Personnel Confiscating<br>Signature over Printed Name</div></div>
                 <div class="grid-col"><em>I acknowledge that my portable electronic device was confiscated in accordance with school policy.</em><br><br>Student Signature: <span class="field"></span><br>Date: <span class="field">${todayShort}</span></div></div>
                 <div class="dashed-line"></div>
                 <div style="text-align:center"><strong>*Parent/Guardian Acknowledgment (for 3rd Offense of Retrieval)</strong><br><em>I acknowledge receipt of my child's device and understand the policy.</em></div>
@@ -527,8 +527,8 @@ function buildPrintContent(formId) {
                 <p>Inaanyayahan po namin kayo sa Guidance Office ng paaralan sa darating na <span class="field">${val('ff_day')}</span> <em>araw at petsa</em> <span class="field">${val('ff_date')}</span>, sa oras na <span class="field">${val('ff_time')}</span> upang dumalo para sa isang pag-uusap na may kinalaman sa inyong anak.</p>
                 <p>Inaasahan namin ang inyong kooperasyon at positibong pagtugon.</p>
                 <p>Gumagalang,</p>
-                <br><div class="signature-line"></div><br><div class="signature-label">Guidance Designate</div>
-                <br><div class="signature-line"></div><br><div class="signature-label">Class Adviser</div>
+                <br><div style="display:inline-block;text-align:center;min-width:260px;"><div class="signature-line"></div><br><div class="signature-label">Guidance Designate</div></div>
+                <br><div style="display:inline-block;text-align:center;min-width:260px;"><div class="signature-line"></div><br><div class="signature-label">Class Adviser</div></div>
                 <div style="float:right;text-align:center;margin-top:-80px;"><strong>Natanggap ni:</strong><br><br><div class="signature-line"></div><br><em>Pangalan at Lagda ng Magulang</em><br><br><div class="signature-line" style="width:150px"></div><br><div class="signature-label">Petsa</div></div>`;
             break;
 
@@ -572,15 +572,15 @@ function buildPrintContent(formId) {
                 <p><strong>ITEM/S CONFISCATED:</strong></p>
                 <div class="grid-row"><div class="grid-col">${['Pornographic Materials','Unnecessary items that may cause harm','Flammable & hazardous chemicals','Deadly Weapon/s'].map(i=>`${checkbox(items.includes(i))} <strong>${i}</strong><br>&nbsp;&nbsp;&nbsp;Pls. specify: <span class="field">${items.includes(i)&&val('ff_specify')?val('ff_specify'):''}</span>`).join('<br>')}</div>
                 <div class="grid-col">${['Cigarettes, Vape','Gambling Paraphernalia','Others'].map(i=>`${checkbox(items.includes(i))} <strong>${i}</strong><br>&nbsp;&nbsp;&nbsp;Pls. specify: <span class="field"></span>`).join('<br>')}</div></div>
-                <br><div class="grid-row"><div class="grid-col">Confiscated by:<br><div class="signature-line"></div><br><div class="signature-label">TEACHER-IN-CHARGE</div></div>
-                <div class="grid-col">Noted by:<br><div class="signature-line"></div><br><div class="signature-label">GUIDANCE TEACHER/DESIGNATE</div></div></div>
+                <br><div class="grid-row"><div class="grid-col"><div class="signature-label" style="margin-bottom:0;font-weight:normal;">Confiscated by:</div><div class="signature-line"></div><br><div class="signature-label">TEACHER-IN-CHARGE</div></div>
+                <div class="grid-col"><div class="signature-label" style="margin-bottom:0;font-weight:normal;">Noted by:</div><div class="signature-line"></div><br><div class="signature-label">GUIDANCE TEACHER/DESIGNATE</div></div></div>
                 <div class="dashed-line"></div>
                 <em>To be accomplished upon claiming the confiscated item.</em><div style="float:right">DOCUMENT NO. <span class="field">${val('ff_docno')}</span></div>
                 <div class="form-title">CLAIM SLIP</div>
                 <p>I, <span class="field"></span> parent/guardian of <span class="field">${val('ff_student_name')}</span>, acknowledge receipt of the item that was confiscated from my child within the school premises.</p>
                 <p>I fully understand the reason for its confiscation and commit to providing proper guidance to my child to prevent the recurrence of bringing items that do not contribute to the learning process.</p>
-                <br><div class="grid-row"><div class="grid-col"><div class="signature-line"></div><br><div class="signature-label">PARENT'S SIGNATURE OVER PRINTED NAME</div></div>
-                <div class="grid-col"><div class="signature-line"></div><br><div class="signature-label">DATE OF CLAIM</div></div></div>`;
+                <br><div class="grid-row"><div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">PARENT'S SIGNATURE OVER PRINTED NAME</div></div>
+                <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">DATE OF CLAIM</div></div></div>`;
             break;
 
         case 'bag-search':
@@ -614,7 +614,7 @@ function buildPrintContent(formId) {
                 <p>I hereby request the issuance of a Good Moral Certificate for the above-stated purpose.</p>
                 <p>I understand that this request is subject to verification of records and compliance with the school's policies.</p>
                 <p>I certify that the information provided in this form is true and correct to the best of my knowledge.</p>
-                <br><div class="grid-row"><div class="grid-col"><div class="signature-line"></div><br><div class="signature-label">Signature over Printed Name<br>of Requestor</div></div><div class="grid-col"><div class="signature-line"></div><br><div class="signature-label">Date Signed</div></div></div>
+                <br><div class="grid-row"><div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Signature over Printed Name<br>of Requestor</div></div><div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Date Signed</div></div></div>
                 <div class="dashed-line"></div>
                 <div style="text-align:center"><strong>FOR OFFICIAL USE ONLY</strong></div>
                 <p>Action Taken: &nbsp; &#9744; Approved &nbsp; &#9744; Disapproved &nbsp;&nbsp;&nbsp; Date Processed: <span class="field"></span></p>
@@ -645,9 +645,9 @@ function buildPrintContent(formId) {
                 <div class="section-header">IV. OBSERVATIONS / INFORMATION GATHERED</div>
                 <p>${val('ff_observations') || '<span class="field-long" style="width:100%">&nbsp;</span>'}</p>
                 <br><div class="grid-row">
-                    <div class="grid-col" style="text-align:center"><div class="signature-line"></div><br><div class="signature-label">School Counselor</div></div>
-                    <div class="grid-col" style="text-align:center"><div class="signature-line"></div><br><div class="signature-label">Conducted by: ${teacherName}</div></div>
-                    <div class="grid-col" style="text-align:center"><div class="signature-line"></div><br><div class="signature-label">Parent/Guardian</div></div>
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">School Counselor</div></div>
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Conducted by: ${teacherName}</div></div>
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Parent/Guardian</div></div>
                 </div>
                 <br><p style="font-size:9pt;font-style:italic;">Note: All information gathered during the home visitation shall be treated with confidentiality and used solely for the welfare and development of the learner.</p>`;
             break;

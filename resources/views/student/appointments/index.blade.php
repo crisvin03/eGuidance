@@ -12,13 +12,6 @@
         </a>
     </div>
     <div class="card-body">
-        @if(session('success'))
-            <div class="alert alert-success alert-dismissible fade show">
-                {{ session('success') }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-            </div>
-        @endif
-        
         <form method="GET" class="row g-3 mb-4">
             <div class="col-md-5">
                 <input type="text" name="search" class="form-control" placeholder="Search by counselor name or notes..." value="{{ request('search') }}">
@@ -85,7 +78,7 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         <a href="{{ route('student.appointments.show', $appointment->id) }}" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-eye"></i> View
+                                            <i class="bi bi-eye me-1"></i> View
                                         </a>
                                         @if(in_array($appointment->status, ['scheduled', 'confirmed']) && !$appointment->concern_id)
                                             <button class="btn btn-warning btn-sm" onclick="openReschedule({{ $appointment->id }}, '{{ $appointment->appointment_date->format('Y-m-d\TH:i') }}')">

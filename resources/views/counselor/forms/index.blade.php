@@ -10,14 +10,12 @@
 <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
     <div>
         <h5 class="fw-bold mb-0">Forms & Downloads</h5>
-        <small class="text-muted">Generate forms and review forms submitted by teachers</small>
+        <small class="text-muted">Fill in and generate official forms directly from here.</small>
     </div>
     <a href="{{ route('counselor.forms.submitted') }}" class="btn text-white fw-semibold position-relative" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
         <i class="bi bi-inbox me-1"></i> Submitted Forms by Teachers
         @if($pendingCount > 0)
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">
-                {{ $pendingCount }}
-            </span>
+            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">{{ $pendingCount }}</span>
         @endif
     </a>
 </div>
@@ -25,15 +23,15 @@
 <div class="row g-4">
     @php
         $forms = [
-            ['icon' => 'bi-phone',            'title' => 'Confiscation Slip (Electronic Device)', 'desc' => 'For confiscation of portable electronic devices per school policy.',    'id' => 'confiscation-electronic'],
-            ['icon' => 'bi-envelope-paper',   'title' => 'Call Slip',                             'desc' => 'For summoning parents/guardians to the Guidance Office.',              'id' => 'call-slip'],
-            ['icon' => 'bi-shield-exclamation','title' => 'Initial Risk Assessment Form',         'desc' => 'For initial risk assessment of students with safety concerns.',         'id' => 'risk-assessment'],
-            ['icon' => 'bi-slash-circle',      'title' => 'Confiscation Slip (Prohibited Items)', 'desc' => 'For confiscation of prohibited or dangerous items from students.',     'id' => 'confiscation-prohibited'],
-            ['icon' => 'bi-backpack',          'title' => 'Random Routine Bag Search Plan',       'desc' => 'For documenting routine bag search activities per school year.',       'id' => 'bag-search'],
-            ['icon' => 'bi-award',             'title' => 'Good Moral Request Form',              'desc' => 'For requesting good moral character certification for students.',      'id' => 'good-moral'],
-            ['icon' => 'bi-house-heart',       'title' => 'Home Visitation Form',                 'desc' => 'For documenting home visitation activities and observations.',        'id' => 'home-visitation'],
-            ['icon' => 'bi-journal-text',      'title' => 'Session Notes Template',               'desc' => 'Template for documenting counseling session notes.',                  'id' => 'session-notes'],
-            ['icon' => 'bi-clipboard-data',    'title' => 'Case Summary Report',                  'desc' => 'Template for comprehensive case summary and documentation.',          'id' => 'case-summary'],
+            ['icon' => 'bi-phone',             'title' => 'Confiscation Slip (Electronic Device)', 'desc' => 'For confiscation of portable electronic devices per school policy.',   'id' => 'confiscation-electronic'],
+            ['icon' => 'bi-envelope-paper',    'title' => 'Call Slip',                             'desc' => 'For summoning parents/guardians to the Guidance Office.',             'id' => 'call-slip'],
+            ['icon' => 'bi-shield-exclamation','title' => 'Initial Risk Assessment Form',          'desc' => 'For initial risk assessment of students with safety concerns.',        'id' => 'risk-assessment'],
+            ['icon' => 'bi-slash-circle',      'title' => 'Confiscation Slip (Prohibited Items)',  'desc' => 'For confiscation of prohibited or dangerous items from students.',    'id' => 'confiscation-prohibited'],
+            ['icon' => 'bi-backpack',          'title' => 'Random Routine Bag Search Plan',        'desc' => 'For documenting routine bag search activities per school year.',      'id' => 'bag-search'],
+            ['icon' => 'bi-award',             'title' => 'Good Moral Request Form',               'desc' => 'For requesting good moral character certification for students.',     'id' => 'good-moral'],
+            ['icon' => 'bi-house-heart',       'title' => 'Home Visitation Form',                  'desc' => 'For documenting home visitation activities and observations.',       'id' => 'home-visitation'],
+            ['icon' => 'bi-journal-text',      'title' => 'Session Notes Template',                'desc' => 'Template for documenting counseling session notes and outcomes.',    'id' => 'session-notes'],
+            ['icon' => 'bi-clipboard-data',    'title' => 'Case Summary Report',                   'desc' => 'Template for comprehensive case summary and documentation.',         'id' => 'case-summary'],
         ];
     @endphp
 
@@ -65,15 +63,15 @@
 <!-- Form Generator Modal -->
 <div class="modal fade" id="formModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="formModalTitle">Generate Form</h5>
+        <div class="modal-content" style="border-radius:16px;">
+            <div class="modal-header" style="border-radius:16px 16px 0 0;">
+                <h5 class="modal-title fw-bold" id="formModalTitle">Generate Form</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="formModalBody"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn text-white" style="background:#20B2AA;" onclick="generateAndPrint()">
+                <button type="button" class="btn text-white fw-semibold" style="background:linear-gradient(135deg,#20B2AA,#008B8B);" onclick="generateAndPrint()">
                     <i class="bi bi-printer me-1"></i> Generate & Print
                 </button>
             </div>
@@ -83,10 +81,9 @@
 
 <div id="printContainer" style="display:none;"></div>
 
-{{-- Reuse the same JS from teacher forms --}}
 <script>
 const teacherName = @json(Auth::user()->name);
-const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const today      = new Date().toLocaleDateString('en-US', { month: 'long',   day: 'numeric', year: 'numeric' });
 const todayShort = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
 let currentFormId = '';
 
@@ -97,13 +94,13 @@ function openFormGenerator(formId, formTitle) {
     new bootstrap.Modal(document.getElementById('formModal')).show();
 }
 
-function val(id) { const el = document.getElementById(id); return el ? el.value : ''; }
+function val(id)     { const el = document.getElementById(id); return el ? el.value : ''; }
 function checked(id) { const el = document.getElementById(id); return el ? el.checked : false; }
 function checkbox(isChecked) { return isChecked ? '&#9746;' : '&#9744;'; }
 
 function generateAndPrint() {
     const printContent = buildPrintContent(currentFormId);
-    const printWindow = window.open('', '_blank', 'width=900,height=700');
+    const printWindow  = window.open('', '_blank', 'width=900,height=700');
     printWindow.document.write(printContent);
     printWindow.document.close();
     setTimeout(() => printWindow.print(), 500);
@@ -111,28 +108,360 @@ function generateAndPrint() {
 }
 
 function addRiskRow() {
-    const row = `<div class="row g-2 mb-2 risk-row">
+    document.getElementById('riskRows').insertAdjacentHTML('beforeend', `<div class="row g-2 mb-2 risk-row">
         <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Identified Risk"></div>
         <div class="col-md-2"><input type="text" class="form-control form-control-sm" placeholder="Risk Factors"></div>
         <div class="col-md-2"><select class="form-select form-select-sm"><option>High</option><option>Medium</option><option>Low</option></select></div>
         <div class="col-md-2"><input type="text" class="form-control form-control-sm" placeholder="Impact"></div>
         <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Action to be Taken"></div>
-    </div>`;
-    document.getElementById('riskRows').insertAdjacentHTML('beforeend', row);
+    </div>`);
 }
 
 function addBagRow() {
-    const row = `<div class="row g-2 mb-2 bag-row">
+    document.getElementById('bagRows').insertAdjacentHTML('beforeend', `<div class="row g-2 mb-2 bag-row">
         <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Grade Level"></div>
         <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Frequency"></div>
         <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Persons Responsible"></div>
         <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Resources"></div>
+    </div>`);
+}
+
+// ── getFormFields ──────────────────────────────────────────────────────────────
+function getFormFields(formId) {
+    const common = `<div class="row g-3">
+        <div class="col-md-6"><label class="form-label fw-semibold">Student Name <span class="text-danger">*</span></label><input type="text" class="form-control" id="ff_student_name" required></div>
+        <div class="col-md-6"><label class="form-label fw-semibold">Grade & Section <span class="text-danger">*</span></label><input type="text" class="form-control" id="ff_grade_section" required></div>
     </div>`;
-    document.getElementById('bagRows').insertAdjacentHTML('beforeend', row);
+
+    switch(formId) {
+        case 'confiscation-electronic': return common + `<div class="row g-3 mt-0">
+            <div class="col-md-6"><label class="form-label fw-semibold">School</label><input type="text" class="form-control" id="ff_school" value="Bulan National High School"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Adviser/Counselor</label><input type="text" class="form-control" id="ff_adviser" value="${teacherName}"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Reason for Confiscation</label>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_reason1" value="Unauthorized use of portable electronic device during class hours"><label class="form-check-label" for="ff_reason1">Unauthorized use of portable electronic device during class hours</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_reason2" value="Uploading/sharing photos, videos, or audio recordings of others during class hours"><label class="form-check-label" for="ff_reason2">Uploading/sharing photos, videos, or audio recordings of others during class hours</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_reason3" value="Unauthorized social media access during class hours"><label class="form-check-label" for="ff_reason3">Unauthorized social media access during class hours</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_reason4"><label class="form-check-label" for="ff_reason4">Others: </label><input type="text" class="form-control form-control-sm d-inline-block ms-2" style="width:200px" id="ff_reason_other"></div>
+            </div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Offense Level</label><select class="form-select" id="ff_offense"><option value="First Offense">First Offense</option><option value="Second Offense">Second Offense</option><option value="Third Offense">Third Offense</option></select></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Brand/Model</label><input type="text" class="form-control" id="ff_brand"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Serial Number (if available)</label><input type="text" class="form-control" id="ff_serial"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Description/Color</label><input type="text" class="form-control" id="ff_color"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Action Taken</label>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_action1"><label class="form-check-label" for="ff_action1">Device temporarily confiscated (First/Second Offense)</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_action2"><label class="form-check-label" for="ff_action2">Device deposited in the Office of the School Head (Third Offense)</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_action3"><label class="form-check-label" for="ff_action3">Return of device at the end class/day (First/Second Offense)</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_action4"><label class="form-check-label" for="ff_action4">Return of device only to parent/guardian (Third Offense)</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_action5"><label class="form-check-label" for="ff_action5">Parental notice issued</label></div>
+                <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_action6"><label class="form-check-label" for="ff_action6">Disciplinary action recommended (for Third Offense)</label></div>
+            </div></div>`;
+
+        case 'call-slip': return `<div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-semibold">Day of Appointment</label><input type="text" class="form-control" id="ff_day" placeholder="e.g. Lunes"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Date</label><input type="date" class="form-control" id="ff_date"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Time</label><input type="time" class="form-control" id="ff_time"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Guidance Counselor</label><input type="text" class="form-control" id="ff_adviser" value="${teacherName}"></div>
+        </div>`;
+
+        case 'risk-assessment': return common + `<div class="row g-3 mt-0">
+            <div class="col-12"><label class="form-label fw-semibold">Context</label><textarea class="form-control" id="ff_context" rows="2" placeholder="Describe the context..."></textarea></div>
+            <div class="col-12"><label class="form-label fw-semibold">Risk Assessment Entries</label>
+                <div id="riskRows"><div class="row g-2 mb-2 risk-row">
+                    <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Identified Risk"></div>
+                    <div class="col-md-2"><input type="text" class="form-control form-control-sm" placeholder="Risk Factors"></div>
+                    <div class="col-md-2"><select class="form-select form-select-sm"><option>High</option><option>Medium</option><option>Low</option></select></div>
+                    <div class="col-md-2"><input type="text" class="form-control form-control-sm" placeholder="Impact"></div>
+                    <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Action to be Taken"></div>
+                </div></div>
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-1" onclick="addRiskRow()"><i class="bi bi-plus"></i> Add Row</button>
+            </div></div>`;
+
+        case 'confiscation-prohibited': return common + `<div class="row g-3 mt-0">
+            <div class="col-md-6"><label class="form-label fw-semibold">Teacher/Counselor-in-Charge</label><input type="text" class="form-control" id="ff_teacher" value="${teacherName}"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Document No.</label><input type="text" class="form-control" id="ff_docno"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Item/s Confiscated</label>
+                <div class="row"><div class="col-md-6">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_item1"><label class="form-check-label" for="ff_item1">Pornographic Materials</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_item2"><label class="form-check-label" for="ff_item2">Unnecessary items that may cause harm</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_item3"><label class="form-check-label" for="ff_item3">Flammable &amp; hazardous chemicals</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_item4"><label class="form-check-label" for="ff_item4">Deadly Weapon/s</label></div>
+                </div><div class="col-md-6">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_item5"><label class="form-check-label" for="ff_item5">Cigarettes, Vape</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_item6"><label class="form-check-label" for="ff_item6">Gambling Paraphernalia</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_item7"><label class="form-check-label" for="ff_item7">Others</label></div>
+                </div></div>
+            </div>
+            <div class="col-12"><label class="form-label fw-semibold">Please specify item</label><input type="text" class="form-control" id="ff_specify"></div>
+        </div>`;
+
+        case 'bag-search': return `<div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-semibold">School Year</label><input type="text" class="form-control" id="ff_school_year" placeholder="e.g. 2025-2026"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Bag Search Plan Entries</label>
+                <div id="bagRows"><div class="row g-2 mb-2 bag-row">
+                    <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Grade Level"></div>
+                    <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Frequency"></div>
+                    <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Persons Responsible"></div>
+                    <div class="col-md-3"><input type="text" class="form-control form-control-sm" placeholder="Resources"></div>
+                </div></div>
+                <button type="button" class="btn btn-outline-secondary btn-sm mt-1" onclick="addBagRow()"><i class="bi bi-plus"></i> Add Row</button>
+            </div></div>`;
+
+        case 'good-moral': return common + `<div class="row g-3 mt-0">
+            <div class="col-md-6"><label class="form-label fw-semibold">LRN</label><input type="text" class="form-control" id="ff_lrn"></div>
+            <div class="col-md-3"><label class="form-label fw-semibold">Age</label><input type="text" class="form-control" id="ff_age"></div>
+            <div class="col-md-3"><label class="form-label fw-semibold">School Year</label><input type="text" class="form-control" id="ff_school_year"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Address</label><input type="text" class="form-control" id="ff_address"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Contact No.</label><input type="text" class="form-control" id="ff_contact"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Email Address (optional)</label><input type="text" class="form-control" id="ff_email"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Requestor</label><select class="form-select" id="ff_requestor"><option value="Learner">Learner</option><option value="Parent / Guardian">Parent / Guardian</option><option value="Adviser">Adviser</option></select></div>
+            <div class="col-12"><label class="form-label fw-semibold">Purpose of Request</label><select class="form-select" id="ff_purpose"><option value="Scholarship / Financial Assistance">Scholarship / Financial Assistance</option><option value="Transfer to Another School">Transfer to Another School</option><option value="Employment">Employment</option><option value="College / University Admission">College / University Admission</option><option value="Immigration / Travel">Immigration / Travel</option><option value="Barangay / Legal Requirement">Barangay / Legal Requirement</option></select></div>
+        </div>`;
+
+        case 'home-visitation': return common + `<div class="row g-3 mt-0">
+            <div class="col-md-4"><label class="form-label fw-semibold">LRN</label><input type="text" class="form-control" id="ff_lrn"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">Age</label><input type="text" class="form-control" id="ff_age"></div>
+            <div class="col-md-4"><label class="form-label fw-semibold">School Year</label><input type="text" class="form-control" id="ff_school_year"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Address</label><input type="text" class="form-control" id="ff_address"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Name of Parent/Guardian</label><input type="text" class="form-control" id="ff_parent"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Contact No.</label><input type="text" class="form-control" id="ff_contact"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Purpose / Reason for Home Visit</label>
+                <div class="row"><div class="col-md-6">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose1"><label class="form-check-label" for="ff_purpose1">Absences / Frequent Tardiness</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose2"><label class="form-check-label" for="ff_purpose2">Declining Academic Performance</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose3"><label class="form-check-label" for="ff_purpose3">Behavioral / Discipline Concern</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose4"><label class="form-check-label" for="ff_purpose4">Well-being / Psychosocial Support</label></div>
+                </div><div class="col-md-6">
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose5"><label class="form-check-label" for="ff_purpose5">Verification of Learner's Living Condition</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose6"><label class="form-check-label" for="ff_purpose6">Implementation of Individual Plan</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose7"><label class="form-check-label" for="ff_purpose7">Delivery of Learning Materials / Support</label></div>
+                    <div class="form-check"><input class="form-check-input" type="checkbox" id="ff_purpose8"><label class="form-check-label" for="ff_purpose8">Monitoring of Intervention</label></div>
+                </div></div>
+            </div>
+            <div class="col-12"><label class="form-label fw-semibold">Observations / Notes</label><textarea class="form-control" id="ff_observations" rows="3"></textarea></div>
+        </div>`;
+
+        case 'session-notes': return `<div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-semibold">Student Name</label><input type="text" class="form-control" id="ff_student_name"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Grade & Section</label><input type="text" class="form-control" id="ff_grade_section"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Session Date</label><input type="date" class="form-control" id="ff_session_date"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Session Type</label><select class="form-select" id="ff_session_type"><option value="Individual Counseling">Individual Counseling</option><option value="Group Counseling">Group Counseling</option><option value="Crisis Intervention">Crisis Intervention</option><option value="Follow-up Session">Follow-up Session</option><option value="Assessment">Assessment</option></select></div>
+            <div class="col-12"><label class="form-label fw-semibold">Session Notes</label><textarea class="form-control" id="ff_notes" rows="4" placeholder="Summarize what was discussed..."></textarea></div>
+            <div class="col-12"><label class="form-label fw-semibold">Recommendations / Next Steps</label><textarea class="form-control" id="ff_recommendations" rows="3" placeholder="Follow-up actions or referrals..."></textarea></div>
+        </div>`;
+
+        case 'case-summary': return `<div class="row g-3">
+            <div class="col-md-6"><label class="form-label fw-semibold">Student Name</label><input type="text" class="form-control" id="ff_student_name"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Grade & Section</label><input type="text" class="form-control" id="ff_grade_section"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Case Number</label><input type="text" class="form-control" id="ff_case_number"></div>
+            <div class="col-md-6"><label class="form-label fw-semibold">Date</label><input type="date" class="form-control" id="ff_date"></div>
+            <div class="col-12"><label class="form-label fw-semibold">Presenting Concern</label><textarea class="form-control" id="ff_concern" rows="3"></textarea></div>
+            <div class="col-12"><label class="form-label fw-semibold">Interventions Provided</label><textarea class="form-control" id="ff_interventions" rows="3"></textarea></div>
+            <div class="col-12"><label class="form-label fw-semibold">Outcome / Status</label><textarea class="form-control" id="ff_outcome" rows="2"></textarea></div>
+            <div class="col-12"><label class="form-label fw-semibold">Recommendations</label><textarea class="form-control" id="ff_recommendations" rows="2"></textarea></div>
+        </div>`;
+
+        default: return '<p class="text-muted">Form template not available.</p>';
+    }
+}
+
+// ── buildPrintContent ─────────────────────────────────────────────────────────
+function buildPrintContent(formId) {
+    const css = `<style>
+        body{font-family:'Times New Roman',serif;font-size:12pt;margin:40px;line-height:1.6;}
+        .form-title{text-align:center;font-size:18pt;font-weight:bold;margin-bottom:5px;}
+        .form-subtitle{text-align:center;font-style:italic;margin-bottom:20px;font-size:11pt;}
+        .field{border-bottom:1px solid #000;min-width:150px;display:inline-block;padding:0 5px;}
+        .field-long{border-bottom:1px solid #000;min-width:300px;display:inline-block;padding:0 5px;}
+        table{width:100%;border-collapse:collapse;margin:15px 0;}
+        table th,table td{border:1px solid #000;padding:6px 8px;text-align:left;font-size:10pt;}
+        table th{background:#000;color:#fff;font-weight:bold;}
+        .section-header{background:#000;color:#fff;font-weight:bold;padding:4px 8px;margin:15px 0 10px;display:inline-block;font-size:10pt;}
+        .signature-line{border-bottom:1px solid #000;width:250px;display:block;margin:30px auto 0;}
+        .signature-label{font-weight:bold;text-align:center;font-size:10pt;width:250px;display:block;margin:4px auto 0;}
+        .grid-row{display:flex;margin-bottom:8px;}
+        .grid-col{flex:1;padding:0 8px;}.sig-col{text-align:center;}
+        .header-bar{background:#ccc;padding:10px;text-align:center;margin-bottom:20px;border:2px solid #000;}
+        .dashed-line{border-top:2px dashed #000;margin:20px 0;}
+        .box{border:2px solid #000;padding:15px;margin:10px 0;}
+        @media print{body{margin:20px;}}
+    </style>`;
+
+    let html = `<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Print Form</title>${css}</head><body>`;
+
+    switch(formId) {
+        case 'confiscation-electronic': {
+            const reasons = [];
+            if(checked('ff_reason1')) reasons.push('Unauthorized use of portable electronic device during class hours');
+            if(checked('ff_reason2')) reasons.push('Uploading/sharing photos, videos, or audio recordings of others during class hours');
+            if(checked('ff_reason3')) reasons.push('Unauthorized social media access during class hours');
+            if(val('ff_reason_other')) reasons.push('Others: ' + val('ff_reason_other'));
+            const actions = [];
+            if(checked('ff_action1')) actions.push('Device temporarily confiscated (First/Second Offense)');
+            if(checked('ff_action2')) actions.push('Device deposited in the Office of the School Head (Third Offense)');
+            if(checked('ff_action3')) actions.push('Return of device at the end class/day (First/Second Offense)');
+            if(checked('ff_action4')) actions.push('Return of device only to parent/guardian (Third Offense)');
+            if(checked('ff_action5')) actions.push('Parental notice issued');
+            if(checked('ff_action6')) actions.push('Disciplinary action recommended (for Third Offense)');
+            html += `<div class="form-title">CONFISCATION SLIP</div>
+                <div class="form-subtitle">(For Violation of Responsible Use of Portable Electronic Device Policy)</div>
+                <div class="grid-row"><div class="grid-col">School: <span class="field-long">${val('ff_school')}</span></div><div class="grid-col">Date: <span class="field">${today}</span></div></div>
+                <div class="grid-row"><div class="grid-col">Student Name: <span class="field-long">${val('ff_student_name')}</span></div><div class="grid-col">Time: <span class="field">${new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})}</span></div></div>
+                <div class="grid-row"><div class="grid-col">Grade/Section: <span class="field-long">${val('ff_grade_section')}</span></div></div>
+                <div class="grid-row"><div class="grid-col">Adviser/Counselor: <span class="field-long">${val('ff_adviser')}</span></div></div>
+                <br><div class="grid-row"><div class="grid-col"><strong>*Reason for Confiscation</strong><br>${reasons.map(r=>`${checkbox(true)} ${r}`).join('<br>')}</div>
+                <div class="grid-col"><strong>*Offense Level</strong><br>${checkbox(true)} ${val('ff_offense')}</div></div>
+                <div class="box"><div class="grid-row">
+                    <div class="grid-col"><strong>*Action Taken</strong><br>${actions.map(a=>`${checkbox(true)} ${a}`).join('<br>')}</div>
+                    <div class="grid-col"><strong>*Device Details</strong><br>* Brand/Model: <span class="field">${val('ff_brand')}</span><br>* Serial Number: <span class="field">${val('ff_serial')}</span><br>* Description/Color: <span class="field">${val('ff_color')}</span></div>
+                </div></div>
+                <br><div class="grid-row"><div class="grid-col sig-col"><div class="signature-line"></div><div class="signature-label">Personnel Confiscating<br>Signature over Printed Name</div></div>
+                <div class="grid-col"><em>I acknowledge that my portable electronic device was confiscated in accordance with school policy.</em><br><br>Student Signature: <span class="field"></span><br>Date: <span class="field">${todayShort}</span></div></div>
+                <div class="dashed-line"></div>
+                <div style="text-align:center"><strong>*Parent/Guardian Acknowledgment (for 3rd Offense of Retrieval)</strong></div>
+                <br>Parent/Guardian Name: <span class="field-long"></span><br>Signature: <span class="field-long"></span> &nbsp;&nbsp; Date: <span class="field"></span>`;
+            break;
+        }
+        case 'call-slip':
+            html += `<div class="header-bar"><div class="form-title" style="margin:0;">CALL SLIP</div></div>
+                <div style="text-align:right"><strong>Petsa: <span class="field">${val('ff_date') || today}</span></strong></div>
+                <p>Magandang Araw!</p>
+                <p>Inaanyayahan po namin kayo sa Guidance Office ng paaralan sa darating na <span class="field">${val('ff_day')}</span> <em>araw at petsa</em> <span class="field">${val('ff_date')}</span>, sa oras na <span class="field">${val('ff_time')}</span> upang dumalo para sa isang pag-uusap na may kinalaman sa inyong anak.</p>
+                <p>Inaasahan namin ang inyong kooperasyon at positibong pagtugon.</p>
+                <p>Gumagalang,</p>
+                <br><div style="display:inline-block;text-align:center;min-width:260px;"><div class="signature-line"></div><br><div class="signature-label">Guidance Counselor / Designate</div></div>
+                <div style="float:right;text-align:center;margin-top:-60px;"><strong>Natanggap ni:</strong><br><br><div class="signature-line"></div><br><em>Pangalan at Lagda ng Magulang</em><br><br><div class="signature-line" style="width:150px"></div><br><div class="signature-label">Petsa</div></div>`;
+            break;
+        case 'risk-assessment': {
+            let riskRowsHtml = '';
+            document.querySelectorAll('.risk-row').forEach(row => {
+                const inputs = row.querySelectorAll('input, select');
+                if(inputs[0] && inputs[0].value) riskRowsHtml += `<tr><td>${inputs[0].value}</td><td>${inputs[1].value}</td><td>${inputs[2].value}</td><td>${inputs[3].value}</td><td>${inputs[4].value}</td><td></td><td></td></tr>`;
+            });
+            html += `<div class="box"><div class="form-title">INITIAL RISK ASSESSMENT FORM</div>
+                <p>Name of Learner: <span class="field-long">${val('ff_student_name')}</span> &nbsp;&nbsp; Grade & Section: <span class="field">${val('ff_grade_section')}</span></p>
+                <p>Context: <span class="field-long">${val('ff_context')}</span></p>
+                <table><tr><th>Identified Risk to Child</th><th>Analysis of Risk Factors</th><th>Probability</th><th>Impact</th><th>Action(s) to be Taken</th><th>By Whom</th><th>By When</th></tr>${riskRowsHtml || '<tr><td>&nbsp;</td><td></td><td></td><td></td><td></td><td></td><td></td></tr>'.repeat(3)}</table>
+                <br>Prepared by: <span class="field-long">${teacherName}</span><br><br><strong>SIGNATURE OVER PRINTED NAME OF THE REGISTERED GUIDANCE COUNSELOR/GUIDANCE DESIGNATE</strong><br><div class="signature-line"></div></div>`;
+            break;
+        }
+        case 'confiscation-prohibited': {
+            const items = [];
+            if(checked('ff_item1')) items.push('Pornographic Materials');
+            if(checked('ff_item2')) items.push('Unnecessary items that may cause harm');
+            if(checked('ff_item3')) items.push('Flammable & hazardous chemicals');
+            if(checked('ff_item4')) items.push('Deadly Weapon/s');
+            if(checked('ff_item5')) items.push('Cigarettes, Vape');
+            if(checked('ff_item6')) items.push('Gambling Paraphernalia');
+            if(checked('ff_item7')) items.push('Others');
+            html += `<div style="text-align:right">DOCUMENT NO. <span class="field">${val('ff_docno')}</span></div>
+                <div class="form-title">CONFISCATION SLIP</div>
+                <table><tr><td style="width:50%"><strong>NAME OF LEARNER:</strong> ${val('ff_student_name')}</td><td><strong>DATE:</strong> ${today}</td></tr>
+                <tr><td><strong>GRADE & SECTION:</strong> ${val('ff_grade_section')}</td><td><strong>TEACHER/COUNSELOR-IN-CHARGE:</strong> ${val('ff_teacher')}</td></tr></table>
+                <p><strong>ITEM/S CONFISCATED:</strong></p>
+                <div class="grid-row"><div class="grid-col">${['Pornographic Materials','Unnecessary items that may cause harm','Flammable & hazardous chemicals','Deadly Weapon/s'].map(i=>`${checkbox(items.includes(i))} <strong>${i}</strong><br>&nbsp;&nbsp;&nbsp;Pls. specify: <span class="field">${items.includes(i)&&val('ff_specify')?val('ff_specify'):''}</span>`).join('<br>')}</div>
+                <div class="grid-col">${['Cigarettes, Vape','Gambling Paraphernalia','Others'].map(i=>`${checkbox(items.includes(i))} <strong>${i}</strong><br>&nbsp;&nbsp;&nbsp;Pls. specify: <span class="field"></span>`).join('<br>')}</div></div>
+                <br><div class="grid-row"><div class="grid-col"><div class="signature-label" style="margin-bottom:0;font-weight:normal;">Confiscated by:</div><div class="signature-line"></div><br><div class="signature-label">TEACHER/COUNSELOR-IN-CHARGE</div></div>
+                <div class="grid-col"><div class="signature-label" style="margin-bottom:0;font-weight:normal;">Noted by:</div><div class="signature-line"></div><br><div class="signature-label">GUIDANCE COUNSELOR/DESIGNATE</div></div></div>`;
+            break;
+        }
+        case 'bag-search': {
+            let bagRowsHtml = '';
+            document.querySelectorAll('.bag-row').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                bagRowsHtml += `<tr><td>${inputs[0]?.value||'&nbsp;'}</td><td>${inputs[1]?.value||''}</td><td>${inputs[2]?.value||''}</td><td>${inputs[3]?.value||''}</td></tr>`;
+            });
+            html += `<div class="box" style="text-align:center"><div class="form-title">RANDOM ROUTINE BAG SEARCH SCHOOL PLAN</div>
+                <div style="font-size:14pt;font-weight:bold;">SCHOOL YEAR <span class="field">${val('ff_school_year')}</span></div></div>
+                <table><tr><th>GRADE LEVEL</th><th>FREQUENCY</th><th>PERSONS RESPONSIBLE</th><th>RESOURCES</th></tr>${bagRowsHtml}</table>
+                <br><div style="text-align:center">Prepared by:<br><br><strong><u>CHILD PROTECTION COMMITTEE</u></strong><br><br><br>Approved by:<br><div class="signature-line"></div><br><strong>SCHOOL HEAD</strong></div>`;
+            break;
+        }
+        case 'good-moral': {
+            html += `<div class="form-title">GOOD MORAL REQUEST FORM</div>
+                <div class="form-subtitle">(To be accomplished by Learner, Parent/Guardian or Adviser)</div>
+                <div style="text-align:right"><strong>DATE: <span class="field">${today}</span></strong></div>
+                <div class="section-header">I. REQUESTOR INFORMATION</div>
+                <table><tr><td style="width:70%">Name of Learner: <strong>${val('ff_student_name')}</strong></td><td>LRN: <strong>${val('ff_lrn')}</strong></td></tr>
+                <tr><td>Grade & Section: <strong>${val('ff_grade_section')}</strong></td><td>Age: ${val('ff_age')} &nbsp; School Year: ${val('ff_school_year')}</td></tr>
+                <tr><td colspan="2">Address: ${val('ff_address')}</td></tr>
+                <tr><td>Contact No.: ${val('ff_contact')}</td><td>Email: ${val('ff_email')}</td></tr></table>
+                <div class="section-header">II. REQUESTOR</div><p>${checkbox(true)} ${val('ff_requestor')}</p>
+                <div class="section-header">III. PURPOSE OF REQUEST</div><p>${checkbox(true)} ${val('ff_purpose')}</p>
+                <div class="section-header">IV. DECLARATION</div>
+                <p>I hereby request the issuance of a Good Moral Certificate for the above-stated purpose.</p>
+                <p>I certify that the information provided is true and correct to the best of my knowledge.</p>
+                <br><div class="grid-row"><div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Signature over Printed Name of Requestor</div></div>
+                <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Date Signed</div></div></div>
+                <div class="dashed-line"></div>
+                <div style="text-align:center"><strong>FOR OFFICIAL USE ONLY</strong></div>
+                <p>Action Taken: &nbsp; &#9744; Approved &nbsp; &#9744; Disapproved &nbsp;&nbsp; Date Processed: <span class="field"></span></p>
+                <p>Remarks: <span class="field-long" style="width:80%"></span></p>`;
+            break;
+        }
+        case 'home-visitation': {
+            const purposes = [];
+            if(checked('ff_purpose1')) purposes.push('Absences / Frequent Tardiness');
+            if(checked('ff_purpose2')) purposes.push('Declining Academic Performance');
+            if(checked('ff_purpose3')) purposes.push('Behavioral / Discipline Concern');
+            if(checked('ff_purpose4')) purposes.push('Well-being / Psychosocial Support');
+            if(checked('ff_purpose5')) purposes.push("Verification of Learner's Living Condition");
+            if(checked('ff_purpose6')) purposes.push('Implementation of Individual Plan');
+            if(checked('ff_purpose7')) purposes.push('Delivery of Learning Materials / Support');
+            if(checked('ff_purpose8')) purposes.push('Monitoring of Intervention');
+            html += `<div class="form-title">HOME VISITATION FORM</div>
+                <div style="text-align:right"><strong>DATE OF VISIT: <span class="field">${today}</span></strong></div>
+                <div class="section-header">I. LEARNER INFORMATION</div>
+                <table><tr><td style="width:60%">Name of Learner: <strong>${val('ff_student_name')}</strong></td><td>LRN: ${val('ff_lrn')}</td></tr>
+                <tr><td>Grade & Section: <strong>${val('ff_grade_section')}</strong></td><td>Age: ${val('ff_age')} &nbsp; SY: ${val('ff_school_year')}</td></tr>
+                <tr><td colspan="2">Address: ${val('ff_address')}</td></tr>
+                <tr><td>Name of Parent/Guardian: ${val('ff_parent')}</td><td>Contact No.: ${val('ff_contact')}</td></tr></table>
+                <div class="section-header">II. PURPOSE / REASON FOR HOME VISIT</div>
+                <div class="grid-row"><div class="grid-col">${['Absences / Frequent Tardiness','Declining Academic Performance','Behavioral / Discipline Concern','Well-being / Psychosocial Support','Monitoring of Intervention'].map(p=>`${checkbox(purposes.includes(p))} ${p}`).join('<br>')}</div>
+                <div class="grid-col">${["Verification of Learner's Living Condition",'Implementation of Individual Plan','Delivery of Learning Materials / Support'].map(p=>`${checkbox(purposes.includes(p))} ${p}`).join('<br>')}</div></div>
+                <div class="section-header">III. OBSERVATIONS / INFORMATION GATHERED</div>
+                <p>${val('ff_observations') || '<span class="field-long" style="width:100%">&nbsp;</span>'}</p>
+                <br><div class="grid-row">
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">School Counselor</div></div>
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Conducted by: ${teacherName}</div></div>
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Parent/Guardian</div></div>
+                </div>`;
+            break;
+        }
+        case 'session-notes':
+            html += `<div class="form-title">COUNSELING SESSION NOTES</div>
+                <div style="text-align:right"><strong>DATE: <span class="field">${val('ff_session_date') || today}</span></strong></div>
+                <table><tr><td style="width:60%">Student Name: <strong>${val('ff_student_name')}</strong></td><td>Grade & Section: <strong>${val('ff_grade_section')}</strong></td></tr>
+                <tr><td>Session Type: <strong>${val('ff_session_type')}</strong></td><td>Counselor: <strong>${teacherName}</strong></td></tr></table>
+                <div class="section-header">SESSION NOTES</div>
+                <p style="min-height:80px;">${val('ff_notes') || '&nbsp;'}</p>
+                <div class="section-header">RECOMMENDATIONS / NEXT STEPS</div>
+                <p style="min-height:60px;">${val('ff_recommendations') || '&nbsp;'}</p>
+                <br><div class="grid-row">
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Guidance Counselor<br>Signature over Printed Name</div></div>
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Date</div></div>
+                </div>
+                <br><p style="font-size:9pt;font-style:italic;">CONFIDENTIAL — This document is protected and intended only for authorized personnel.</p>`;
+            break;
+        case 'case-summary':
+            html += `<div class="form-title">CASE SUMMARY REPORT</div>
+                <div style="text-align:right"><strong>DATE: <span class="field">${val('ff_date') || today}</span></strong></div>
+                <table><tr><td style="width:60%">Student Name: <strong>${val('ff_student_name')}</strong></td><td>Case No.: <strong>${val('ff_case_number')}</strong></td></tr>
+                <tr><td>Grade & Section: <strong>${val('ff_grade_section')}</strong></td><td>Counselor: <strong>${teacherName}</strong></td></tr></table>
+                <div class="section-header">PRESENTING CONCERN</div><p style="min-height:60px;">${val('ff_concern') || '&nbsp;'}</p>
+                <div class="section-header">INTERVENTIONS PROVIDED</div><p style="min-height:60px;">${val('ff_interventions') || '&nbsp;'}</p>
+                <div class="section-header">OUTCOME / STATUS</div><p style="min-height:40px;">${val('ff_outcome') || '&nbsp;'}</p>
+                <div class="section-header">RECOMMENDATIONS</div><p style="min-height:40px;">${val('ff_recommendations') || '&nbsp;'}</p>
+                <br><div class="grid-row">
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Guidance Counselor<br>Signature over Printed Name</div></div>
+                    <div class="grid-col sig-col"><div class="signature-line"></div><br><div class="signature-label">Noted by: School Head</div></div>
+                </div>`;
+            break;
+        default:
+            html += '<p>Form not available.</p>';
+    }
+    html += '</body></html>';
+    return html;
 }
 </script>
-
-{{-- Include getFormFields and buildPrintContent from teacher forms --}}
-<script src="{{ asset('js/form-generator.js') }}"></script>
 
 @endsection

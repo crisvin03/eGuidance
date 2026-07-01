@@ -75,10 +75,13 @@ class TeacherController extends Controller
     {
         $data = $request->validate([
             'student_name'           => 'required|string|max:255',
+            'student_address'        => 'nullable|string|max:500',
+            'student_age'            => 'nullable|integer|min:1|max:30',
             'grade_section'          => 'required|string|max:100',
             'date_of_referral'       => 'required|date',
+            'time_of_incident'       => 'nullable|date_format:H:i',
             'incident_category'      => 'required|in:bullying,behavioral_concern,mental_health,academic_risk,child_protection,classroom_incident',
-            'concern_type'           => 'required|in:academic,emotional_mental,social_peer,family,behavioral,relationships_personal,safety_protection,career_future,counseling_support,other',
+            'concern_type'           => 'required|in:academic,emotional_mental,social_peer,family,behavioral,personal_relationship,bullying_safety,career_future,counseling_support',
             'incident_description'   => 'required|string',
             'initial_intervention'   => 'nullable|string',
             'parent_guardian_name'   => 'nullable|string|max:255',
@@ -101,8 +104,11 @@ class TeacherController extends Controller
             'case_number'            => IncidentReport::generateCaseNumber(),
             'teacher_id'             => Auth::id(),
             'student_name'           => $data['student_name'],
+            'student_address'        => $data['student_address'] ?? null,
+            'student_age'            => $data['student_age'] ?? null,
             'grade_section'          => $data['grade_section'],
             'date_of_referral'       => $data['date_of_referral'],
+            'time_of_incident'       => $data['time_of_incident'] ?? null,
             'incident_category'      => $data['incident_category'],
             'concern_type'           => $data['concern_type'],
             'incident_description'   => $data['incident_description'],
@@ -125,6 +131,28 @@ class TeacherController extends Controller
     {
         if ($incidentReport->teacher_id !== Auth::id()) abort(403);
         return view('teacher.incident-reports.show', compact('incidentReport'));
+    }
+
+    public function destroyIncidentReport(IncidentReport $incidentReport)
+    {
+        if ($incidentReport->teacher_id !== Auth::id()) abort(403);
+
+        // Only allow deletion of pending reports
+        if ($incidentReport->status !== 'pending') {
+            return redirect()->route('teacher.incident-reports.index')
+                ->with('error', 'Only pending reports can be deleted.');
+        }
+
+        // Delete attachment if exists
+        if ($incidentReport->attachment_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($incidentReport->attachment_path);
+        }
+
+        $caseNumber = $incidentReport->case_number;
+        $incidentReport->delete();
+
+        return redirect()->route('teacher.incident-reports.index')
+            ->with('success', "Incident report {$caseNumber} has been deleted.");
     }
 
     // ─── Student Referrals ────────────────────────────────────────────────────
@@ -159,6 +187,8 @@ class TeacherController extends Controller
     {
         $data = $request->validate([
             'student_name'       => 'required|string|max:255',
+            'student_address'    => 'nullable|string|max:500',
+            'student_age'        => 'nullable|integer|min:1|max:30',
             'grade_section'      => 'required|string|max:100',
             'referral_category'  => 'required|string|max:255',
             'reason_for_referral'=> 'required|string',
@@ -172,6 +202,8 @@ class TeacherController extends Controller
             'referral_number'    => StudentReferral::generateReferralNumber(),
             'teacher_id'         => Auth::id(),
             'student_name'       => $data['student_name'],
+            'student_address'    => $data['student_address'] ?? null,
+            'student_age'        => $data['student_age'] ?? null,
             'grade_section'      => $data['grade_section'],
             'referral_category'  => $data['referral_category'],
             'reason_for_referral'=> $data['reason_for_referral'],
@@ -317,26 +349,51 @@ class TeacherController extends Controller
     {
         $counselors = User::whereHas('role', fn($q) => $q->where('name', 'counselor'))->where('is_active', true)->get();
         $appointments = Appointment::where('student_id', Auth::id())
+            ->where('requester_type', 'teacher')
             ->with('counselor')
             ->orderByDesc('appointment_date')
             ->get();
         return view('teacher.talk-to-counselor', compact('counselors', 'appointments'));
     }
 
+    public function myAppointments(Request $request)
+    {
+        $query = Appointment::where('student_id', Auth::id())
+            ->where('requester_type', 'teacher')
+            ->with('counselor');
+
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        $appointments = $query->orderByDesc('appointment_date')
+            ->paginate(15)->appends($request->query());
+
+        return view('teacher.appointments.index', compact('appointments'));
+    }
+
+    public function showAppointment(Appointment $appointment)
+    {
+        if ($appointment->student_id !== Auth::id()) abort(403);
+        $appointment->load('counselor');
+        return view('teacher.appointments.show', compact('appointment'));
+    }
+
     public function storeAppointment(Request $request)
     {
         $request->validate([
-            'counselor_id' => 'required|exists:users,id',
+            'counselor_id'     => 'required|exists:users,id',
             'appointment_date' => 'required|date|after:now',
-            'notes' => 'nullable|string|max:500',
+            'notes'            => 'nullable|string|max:500',
         ]);
 
         Appointment::create([
-            'student_id' => Auth::id(),
-            'counselor_id' => $request->counselor_id,
-            'appointment_date' => $request->appointment_date,
-            'notes' => $request->notes,
-            'status' => 'scheduled',
+            'student_id'      => Auth::id(),
+            'counselor_id'    => $request->counselor_id,
+            'appointment_date'=> $request->appointment_date,
+            'notes'           => $request->notes,
+            'status'          => 'scheduled',
+            'requester_type'  => 'teacher',
         ]);
 
         return redirect()->route('teacher.talk-to-counselor')

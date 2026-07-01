@@ -32,10 +32,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-3">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted d-block mb-1"><i class="bi bi-123 me-1"></i>Age</small>
+                            <strong>{{ $studentReferral->student_age ?? '—' }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
                         <div class="p-3 bg-light rounded">
                             <small class="text-muted d-block mb-1"><i class="bi bi-book me-1"></i>Grade & Section</small>
                             <strong>{{ $studentReferral->grade_section }}</strong>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="p-3 bg-light rounded">
+                            <small class="text-muted d-block mb-1"><i class="bi bi-geo-alt me-1"></i>Address</small>
+                            <strong>{{ $studentReferral->student_address ?? '—' }}</strong>
                         </div>
                     </div>
                     <div class="col-md-6">

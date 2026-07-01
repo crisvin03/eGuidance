@@ -7,13 +7,6 @@
     <small class="text-muted">Schedule an appointment with a guidance counselor for consultation, referral discussions, or student concerns.</small>
 </div>
 
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show mb-4">
-        <i class="bi bi-check-circle me-2"></i>{{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-@endif
-
 <!-- Schedule Appointment Section -->
 <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
     <div class="card-header bg-white border-0 pt-4 px-4">
@@ -57,63 +50,26 @@
     </div>
 </div>
 
-<!-- My Appointments -->
-@if($appointments->count() > 0)
+<!-- My Appointments Link -->
 <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-    <div class="card-header bg-white border-0 pt-4 px-4">
-        <h6 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2" style="color:#20B2AA;"></i>My Appointments</h6>
-    </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead style="background:#f8fafc;">
-                    <tr>
-                        <th class="px-4 py-3 fw-semibold text-muted small">Counselor</th>
-                        <th class="py-3 fw-semibold text-muted small">Date & Time</th>
-                        <th class="py-3 fw-semibold text-muted small">Purpose</th>
-                        <th class="py-3 fw-semibold text-muted small">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($appointments as $appointment)
-                        <tr>
-                            <td class="px-4 py-3">
-                                <div class="d-flex align-items-center gap-2">
-                                    <div class="rounded-circle d-flex align-items-center justify-content-center text-white fw-bold"
-                                         style="width:32px;height:32px;min-width:32px;font-size:0.75rem;background:linear-gradient(135deg,#20B2AA,#008B8B);">
-                                        {{ strtoupper(substr($appointment->counselor->name, 0, 2)) }}
-                                    </div>
-                                    <span class="fw-semibold small">{{ $appointment->counselor->name }}</span>
-                                </div>
-                            </td>
-                            <td class="py-3">
-                                <div class="small">
-                                    <i class="bi bi-calendar3 text-muted me-1"></i>
-                                    {{ $appointment->appointment_date->format('M d, Y h:i A') }}
-                                </div>
-                            </td>
-                            <td class="py-3">
-                                <small class="text-muted">{{ $appointment->notes ?? '-' }}</small>
-                            </td>
-                            <td class="py-3">
-                                @if($appointment->status == 'completed')
-                                    <span class="badge bg-success">Completed</span>
-                                @elseif($appointment->status == 'cancelled')
-                                    <span class="badge bg-danger">Cancelled</span>
-                                @elseif($appointment->status == 'confirmed')
-                                    <span class="badge bg-info">Confirmed</span>
-                                @else
-                                    <span class="badge bg-warning text-dark">Scheduled</span>
-                                @endif
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+    <div class="card-body px-4 py-3 d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center justify-content-center rounded-circle"
+                 style="width:46px;height:46px;min-width:46px;background:rgba(32,178,170,0.10);">
+                <i class="bi bi-calendar3 fs-5" style="color:#20B2AA;"></i>
+            </div>
+            <div>
+                <div class="fw-bold mb-0" style="font-size:0.95rem;">My Appointments</div>
+                <small class="text-muted">View all your scheduled and past counselor appointments.</small>
+            </div>
         </div>
+        <a href="{{ route('teacher.appointments.index') }}"
+           class="btn btn-sm text-white fw-semibold flex-shrink-0"
+           style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:10px;">
+            <i class="bi bi-arrow-right me-1"></i> View Appointments
+        </a>
     </div>
 </div>
-@endif
 
 <!-- Available Counselors -->
 <h6 class="fw-bold text-muted mb-3"><i class="bi bi-people me-2"></i>Available Counselors</h6>

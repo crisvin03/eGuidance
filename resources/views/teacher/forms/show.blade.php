@@ -79,7 +79,7 @@
     ksort($riskRows);
     ksort($bagRows);
 
-    $skipKeys = ['ff_student_name','ff_grade_section'];
+    $skipKeys = ['ff_student_name', 'ff_grade_section'];
     $displayFields = array_filter($fields, function($v, $k) use ($skipKeys) {
         return !in_array($k, $skipKeys)
             && !preg_match('/^ff_(risk|bag)_\d+_\d+$/', $k)
@@ -93,12 +93,13 @@
 @endphp
 
 <div class="mb-3">
-    <a href="{{ route('counselor.forms.submitted') }}" class="btn btn-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i> Back to Submitted Forms
+    <a href="{{ route('teacher.forms.submissions') }}" class="btn btn-secondary btn-sm">
+        <i class="bi bi-arrow-left me-1"></i> Back to My Submitted Forms
     </a>
 </div>
 
 <div class="row g-4">
+
     {{-- Left: Form content --}}
     <div class="col-md-8">
         <div class="card border-0 shadow-sm" style="border-radius:16px;">
@@ -106,8 +107,7 @@
                  style="background:#f8fafc;border-radius:16px 16px 0 0;">
                 <div>
                     <h5 class="fw-bold mb-0">{{ $submission->form_title }}</h5>
-                    <small class="text-muted">Submitted by <strong>{{ $submission->teacher->name ?? 'Unknown' }}</strong>
-                        on {{ $submission->created_at->format('F d, Y \a\t h:i A') }}</small>
+                    <small class="text-muted">Submitted on {{ $submission->created_at->format('F d, Y \a\t h:i A') }}</small>
                 </div>
                 <span class="badge fs-6 px-3 py-2 fw-semibold text-capitalize"
                       style="background:{{ $statusColor['bg'] }};color:{{ $statusColor['text'] }};border:1px solid {{ $statusColor['border'] }};">
@@ -149,7 +149,7 @@
                     @foreach($displayFields as $key => $value)
                         @php
                             $label = $labelMap[$key] ?? ucwords(str_replace(['ff_', '_'], ['', ' '], $key));
-                            $isCb = in_array($key, $checkboxKeys) || is_bool($value);
+                            $isCb  = in_array($key, $checkboxKeys) || is_bool($value);
                         @endphp
                         @if($isCb)
                             @if($value && $value !== '0' && $value !== 'false' && $value !== false)
@@ -215,54 +215,20 @@
                 </div>
                 @endif
 
-                {{-- Existing counselor notes --}}
+                {{-- Counselor notes (if reviewed) --}}
                 @if($submission->counselor_notes)
                 <hr class="my-4">
                 <div class="alert mb-0" style="background:#eff6ff;border:1px solid #93c5fd;border-radius:12px;">
-                    <h6 class="fw-bold mb-1" style="color:#1e40af;"><i class="bi bi-chat-left-text me-1"></i>Your Notes</h6>
+                    <h6 class="fw-bold mb-1" style="color:#1e40af;"><i class="bi bi-chat-left-text me-1"></i>Counselor Notes</h6>
                     <p class="mb-1 small" style="color:#1e40af;">{{ $submission->counselor_notes }}</p>
                     @if($submission->reviewed_at)
                         <small class="text-muted">Reviewed on {{ $submission->reviewed_at->format('F d, Y \a\t h:i A') }}</small>
                     @endif
                 </div>
                 @endif
-            </div>
-        </div>
 
-        {{-- Review form (only if not yet reviewed) --}}
-        @if(!$isReviewed)
-        <div class="card border-0 shadow-sm mt-4" style="border-radius:16px;border:2px solid #20B2AA !important;">
-            <div class="card-header py-3 px-4" style="background:#f0fdfa;border-radius:16px 16px 0 0;">
-                <h6 class="fw-bold mb-0" style="color:#0f766e;">
-                    <i class="bi bi-pencil-square me-1"></i>Mark as Reviewed
-                </h6>
-            </div>
-            <div class="card-body p-4">
-                <form method="POST" action="{{ route('counselor.forms.submitted.review', $submission->id) }}">
-                    @csrf
-                    <div class="row g-3">
-                        <div class="col-md-4">
-                            <label class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
-                            <select class="form-select" name="status" required>
-                                <option value="reviewed">Reviewed</option>
-                                <option value="acknowledged">Acknowledged</option>
-                            </select>
-                        </div>
-                        <div class="col-md-8">
-                            <label class="form-label fw-semibold">Notes (optional)</label>
-                            <textarea class="form-control" name="counselor_notes" rows="2"
-                                      placeholder="Add your notes or feedback for the teacher..."></textarea>
-                        </div>
-                    </div>
-                    <div class="mt-3">
-                        <button type="submit" class="btn fw-semibold text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
-                            <i class="bi bi-check-circle me-1"></i> Save Review
-                        </button>
-                    </div>
-                </form>
             </div>
         </div>
-        @endif
     </div>
 
     {{-- Right sidebar --}}
@@ -271,10 +237,6 @@
             <div class="card-body p-4">
                 <h6 class="fw-bold mb-3">Form Information</h6>
                 <div class="d-flex flex-column gap-3">
-                    <div>
-                        <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Submitted By</small>
-                        <span class="fw-semibold small">{{ $submission->teacher->name ?? '—' }}</span>
-                    </div>
                     <div>
                         <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Form Type</small>
                         <span class="fw-semibold small">{{ $submission->form_title }}</span>
@@ -300,6 +262,7 @@
             </div>
         </div>
 
+        {{-- Print card --}}
         <div class="card border-0 shadow-sm"
              style="border-radius:16px;{{ $isReviewed ? 'border:2px solid #99f6e4 !important;' : '' }}">
             <div class="card-body p-4 text-center">
@@ -310,16 +273,16 @@
                     </div>
                 </div>
                 @if($isReviewed)
-                <h6 class="fw-bold mb-1">Print This Form</h6>
-                <p class="text-muted small mb-3">Prints in the exact same official format as the original.</p>
-                <button class="btn w-100 fw-semibold text-white"
-                        style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
-                        onclick="printStoredForm()">
-                    <i class="bi bi-printer me-1"></i> Print Form
-                </button>
+                    <h6 class="fw-bold mb-1">Print This Form</h6>
+                    <p class="text-muted small mb-3">Your form has been reviewed. You can now print it.</p>
+                    <button class="btn w-100 fw-semibold text-white"
+                            style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                            onclick="printStoredForm()">
+                        <i class="bi bi-printer me-1"></i> Print Form
+                    </button>
                 @else
-                <h6 class="fw-bold mb-1">Print Not Yet Available</h6>
-                <p class="text-muted small mb-0">Review the form first to enable printing.</p>
+                    <h6 class="fw-bold mb-1">Awaiting Review</h6>
+                    <p class="text-muted small mb-0">Printing will be available once the counselor reviews this form.</p>
                 @endif
             </div>
         </div>
@@ -332,7 +295,7 @@
 <script>
 const storedFormData    = @json($fields);
 const storedFormId      = @json($submission->form_type);
-const storedTeacherName = @json($submission->teacher->name ?? 'Teacher');
+const storedTeacherName = @json(Auth::user()->name);
 const storedSubmittedAt = @json($submission->created_at->format('F d, Y'));
 
 function printStoredForm() {

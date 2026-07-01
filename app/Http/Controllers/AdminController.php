@@ -148,6 +148,26 @@ class AdminController extends Controller
         return redirect()->back()->with('success', 'User activated successfully.');
     }
 
+    public function destroyUser(User $user)
+    {
+        // Prevent deleting your own account
+        if ($user->id === Auth::id()) {
+            return redirect()->route('admin.users.index')
+                ->with('error', 'You cannot delete your own account.');
+        }
+
+        // Delete profile photo if exists
+        if ($user->profile_photo) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($user->profile_photo);
+        }
+
+        $name = $user->name;
+        $user->delete();
+
+        return redirect()->route('admin.users.index')
+            ->with('success', "Account for \"{$name}\" has been permanently deleted.");
+    }
+
     public function categories()
     {
         $categories = ConcernCategory::all();

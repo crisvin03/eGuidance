@@ -151,23 +151,37 @@ class CounselorController extends Controller
 
     public function appointments(Request $request)
     {
-        $query = Appointment::where('counselor_id', Auth::id())->with(['student', 'concern']);
-        
+        // Student appointments
+        $studentQuery = Appointment::where('counselor_id', Auth::id())
+            ->where('requester_type', 'student')
+            ->with(['student', 'concern']);
+
+        // Teacher appointments
+        $teacherQuery = Appointment::where('counselor_id', Auth::id())
+            ->where('requester_type', 'teacher')
+            ->with(['student', 'concern']);
+
         if ($request->filled('search')) {
             $search = $request->search;
-            $query->where(function($q) use ($search) {
+            $studentQuery->where(function($q) use ($search) {
+                $q->whereHas('student', fn($s) => $s->where('name', 'like', "%{$search}%"))
+                  ->orWhere('notes', 'like', "%{$search}%");
+            });
+            $teacherQuery->where(function($q) use ($search) {
                 $q->whereHas('student', fn($s) => $s->where('name', 'like', "%{$search}%"))
                   ->orWhere('notes', 'like', "%{$search}%");
             });
         }
-        
+
         if ($request->filled('status')) {
-            $query->where('status', $request->status);
+            $studentQuery->where('status', $request->status);
+            $teacherQuery->where('status', $request->status);
         }
-        
-        $appointments = $query->orderBy('appointment_date', 'desc')->paginate(15)->appends($request->query());
-        
-        return view('counselor.appointments.index', compact('appointments'));
+
+        $appointments        = $studentQuery->orderBy('appointment_date', 'desc')->paginate(15, ['*'], 'students_page')->appends($request->query());
+        $teacherAppointments = $teacherQuery->orderBy('appointment_date', 'desc')->paginate(15, ['*'], 'teachers_page')->appends($request->query());
+
+        return view('counselor.appointments.index', compact('appointments', 'teacherAppointments'));
     }
 
     public function showAppointment(Appointment $appointment)
@@ -387,8 +401,7 @@ class CounselorController extends Controller
 
     public function formGenerator()
     {
-        // Redirect counselors directly to submitted forms list
-        return redirect()->route('counselor.forms.submitted');
+        return view('counselor.forms.index');
     }
 
     public function submittedForms(Request $request)
@@ -472,5 +485,35 @@ class CounselorController extends Controller
         $concern->update($data);
 
         return redirect()->back()->with('success', 'Concern updated successfully.');
+    }
+
+    public function destroyConcern(Concern $concern)
+    {
+        // Delete attachment if exists
+        if ($concern->attachment_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($concern->attachment_path);
+        }
+        $concern->delete();
+        return redirect()->route('counselor.concerns.index')
+            ->with('success', 'Concern deleted successfully.');
+    }
+
+    public function destroyIncidentReport(IncidentReport $incidentReport)
+    {
+        if ($incidentReport->attachment_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($incidentReport->attachment_path);
+        }
+        $caseNumber = $incidentReport->case_number;
+        $incidentReport->delete();
+        return redirect()->route('counselor.incident-reports.index')
+            ->with('success', "Incident report {$caseNumber} deleted successfully.");
+    }
+
+    public function destroyReferral(StudentReferral $studentReferral)
+    {
+        $refNumber = $studentReferral->referral_number;
+        $studentReferral->delete();
+        return redirect()->route('counselor.referrals.index')
+            ->with('success', "Referral {$refNumber} deleted successfully.");
     }
 }

@@ -846,14 +846,25 @@
                         <a href="{{ route('counselor.appointments.index') }}" class="nav-link @if(request()->is('counselor/appointments*')) active @endif">
                             <i class="bi bi-calendar3"></i>
                             <span class="nav-link-text">Appointments</span>
+                            @php
+                                $pendingTeacherAppts = \App\Models\Appointment::where('counselor_id', Auth::id())
+                                    ->where('requester_type', 'teacher')
+                                    ->where('status', 'scheduled')
+                                    ->count();
+                            @endphp
+                            @if($pendingTeacherAppts > 0)
+                                <span class="nav-link-badge" style="background:#6366f1;" title="{{ $pendingTeacherAppts }} pending teacher appointment(s)">
+                                    {{ $pendingTeacherAppts }}
+                                </span>
+                            @endif
                         </a>
                     </div>
                     
                     <div class="nav-section">
                         <div class="nav-section-title">Resources</div>
-                        <a href="{{ route('counselor.forms.submitted') }}" class="nav-link @if(request()->is('counselor/forms*')) active @endif">
-                            <i class="bi bi-inbox-fill"></i>
-                            <span class="nav-link-text">Submitted Forms</span>
+                        <a href="{{ route('counselor.forms.index') }}" class="nav-link @if(request()->is('counselor/forms*')) active @endif">
+                            <i class="bi bi-file-earmark-arrow-down"></i>
+                            <span class="nav-link-text">Forms/Downloads</span>
                             @php $pendingForms = \App\Models\TeacherFormSubmission::where('status','submitted')->count(); @endphp
                             @if($pendingForms > 0)
                                 <span class="nav-link-badge">{{ $pendingForms }}</span>
@@ -921,9 +932,18 @@
                     
                     <div class="nav-section" style="margin-bottom:0.75rem;">
                         <div class="nav-section-title">Support</div>
-                        <a href="{{ route('teacher.talk-to-counselor') }}" class="nav-link @if(request()->is('teacher/talk-to-counselor')) active @endif" style="padding:0.5rem 1.5rem;font-size:0.83rem;">
+                        <a href="{{ route('teacher.talk-to-counselor') }}" class="nav-link @if(request()->is('teacher/talk-to-counselor') || request()->is('teacher/appointments*')) active @endif" style="padding:0.5rem 1.5rem;font-size:0.83rem;">
                             <i class="bi bi-chat-heart"></i>
                             <span class="nav-link-text">Talk to Counselor</span>
+                            @php
+                                $myUpcoming = \App\Models\Appointment::where('student_id', Auth::id())
+                                    ->where('requester_type','teacher')
+                                    ->whereIn('status',['scheduled','confirmed'])
+                                    ->count();
+                            @endphp
+                            @if($myUpcoming > 0)
+                                <span class="nav-link-badge">{{ $myUpcoming }}</span>
+                            @endif
                         </a>
                     </div>
 
@@ -1026,6 +1046,141 @@
     <div class="sidebar-backdrop" id="sidebarBackdrop" onclick="closeSidebar()"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    {{-- ── GLOBAL TOAST SYSTEM ── --}}
+    <style>
+        .toast-container-custom {
+            position: fixed;
+            top: 1.5rem;
+            right: 1.5rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.65rem;
+            max-width: 400px;
+            width: calc(100vw - 3rem);
+        }
+        .toast-custom {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.9rem;
+            padding: 1rem 1.15rem;
+            border-radius: 14px;
+            background: #fff;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.13), 0 2px 8px rgba(0,0,0,0.07);
+            border-left: 4px solid transparent;
+            opacity: 0;
+            transform: translateX(110%);
+            transition: opacity 0.35s cubic-bezier(0.4,0,0.2,1), transform 0.35s cubic-bezier(0.4,0,0.2,1);
+            pointer-events: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        .toast-custom.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .toast-custom.hide {
+            opacity: 0;
+            transform: translateX(110%);
+        }
+        .toast-custom::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: currentColor;
+            animation: toastTimer 4s linear forwards;
+        }
+        @keyframes toastTimer {
+            from { width: 100%; }
+            to   { width: 0%; }
+        }
+        .toast-custom.toast-success { border-color: #22c55e; color: #16a34a; }
+        .toast-custom.toast-error   { border-color: #ef4444; color: #dc2626; }
+        .toast-custom.toast-warning { border-color: #f59e0b; color: #d97706; }
+        .toast-custom.toast-info    { border-color: #3b82f6; color: #2563eb; }
+        .toast-icon {
+            font-size: 1.35rem;
+            flex-shrink: 0;
+            margin-top: 0.05rem;
+        }
+        .toast-body { flex: 1; }
+        .toast-title {
+            font-size: 0.82rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.2rem;
+        }
+        .toast-msg {
+            font-size: 0.92rem;
+            color: #334155;
+            line-height: 1.45;
+            font-weight: 500;
+        }
+        .toast-close {
+            background: none;
+            border: none;
+            font-size: 1rem;
+            color: #94a3b8;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            flex-shrink: 0;
+            transition: color 0.2s;
+        }
+        .toast-close:hover { color: #475569; }
+    </style>
+
+    <div class="toast-container-custom" id="toastContainer"></div>
+
+    <script>
+        /* ── Toast helper ── */
+        function showToast(type, message) {
+            const cfg = {
+                success: { icon: 'bi-check-circle-fill', title: 'Success' },
+                error:   { icon: 'bi-x-circle-fill',    title: 'Error'   },
+                warning: { icon: 'bi-exclamation-triangle-fill', title: 'Warning' },
+                info:    { icon: 'bi-info-circle-fill',  title: 'Info'    },
+            };
+            const c = cfg[type] || cfg.info;
+            const t = document.createElement('div');
+            t.className = `toast-custom toast-${type}`;
+            t.innerHTML = `
+                <i class="bi ${c.icon} toast-icon"></i>
+                <div class="toast-body">
+                    <div class="toast-title">${c.title}</div>
+                    <div class="toast-msg">${message}</div>
+                </div>
+                <button class="toast-close" onclick="dismissToast(this.parentElement)">&times;</button>`;
+            document.getElementById('toastContainer').appendChild(t);
+            requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+            setTimeout(() => dismissToast(t), 4000);
+        }
+
+        function dismissToast(el) {
+            if (!el || el.classList.contains('hide')) return;
+            el.classList.add('hide');
+            el.style.animation = 'none'; /* stop timer bar */
+            setTimeout(() => el.remove(), 380);
+        }
+
+        /* ── Fire session flashes ── */
+        @if(session('success'))
+            showToast('success', @json(session('success')));
+        @endif
+        @if(session('error'))
+            showToast('error', @json(session('error')));
+        @endif
+        @if(session('warning'))
+            showToast('warning', @json(session('warning')));
+        @endif
+        @if(session('info'))
+            showToast('info', @json(session('info')));
+        @endif
+    </script>
     <script>
         function toggleSidebar() {
             const sidebar  = document.getElementById('sidebar');

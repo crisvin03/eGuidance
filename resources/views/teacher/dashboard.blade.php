@@ -2,13 +2,6 @@
 @section('title', 'Teacher Dashboard')
 
 @section('content')
-@if(session('success'))
-    <div class="alert alert-success alert-dismissible fade show mb-4" role="alert">
-        {{ session('success') }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-    </div>
-@endif
-
 <!-- Welcome Banner -->
 <div class="card border-0 mb-4" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:16px;">
     <div class="card-body p-4 text-white">

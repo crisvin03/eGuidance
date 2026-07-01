@@ -13,8 +13,11 @@ class IncidentReport extends Model
         'case_number',
         'teacher_id',
         'student_name',
+        'student_address',
+        'student_age',
         'grade_section',
         'date_of_referral',
+        'time_of_incident',
         'incident_category',
         'concern_type',
         'incident_description',
@@ -75,12 +78,11 @@ class IncidentReport extends Model
             'social_peer'           => 'Social and Peer',
             'family'                => 'Family',
             'behavioral'            => 'Behavioral',
-            'relationships_personal'=> 'Relationships and Personal',
-            'safety_protection'     => 'Safety and Protection',
+            'personal_relationship' => 'Personal and Relationship',
+            'bullying_safety'       => 'Bullying/Safety',
             'career_future'         => 'Career and Future',
-            'counseling_support'    => 'Counseling and Support Requests',
-            'other'                 => 'Other',
-            default                 => ucfirst($this->concern_type),
+            'counseling_support'    => 'Counseling and Support',
+            default                 => ucfirst(str_replace('_', ' ', $this->concern_type)),
         };
     }
 

@@ -104,8 +104,7 @@
                             </td>
                             <td class="py-3">
                                 <a href="{{ route('teacher.forms.submissions.show', $submission->id) }}"
-                                   class="btn btn-sm btn-outline-secondary">
-                                    <i class="bi bi-eye me-1"></i> View
+                                   class="btn btn-primary btn-sm py-1 px-2" style="font-size:.78rem;"><i class="bi bi-eye me-1"></i>View
                                 </a>
                             </td>
                         </tr>

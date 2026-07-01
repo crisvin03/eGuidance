@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
@@ -20,7 +20,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Instrument Sans', system-ui, sans-serif; color: var(--text-dark); overflow-x: hidden; }
 
-        /* ── NAV ── */
+        /* ΓöÇΓöÇ NAV ΓöÇΓöÇ */
         .navbar {
             position: fixed; top: 0; left: 0; right: 0; z-index: 100;
             display: flex; align-items: center; justify-content: space-between;
@@ -69,7 +69,7 @@
         .nav-toggle { display: none; background: none; border: none; font-size: 1.5rem; color: #fff; cursor: pointer; }
         .navbar.scrolled .nav-toggle { color: var(--text-dark); }
 
-        /* ── HERO ── */
+        /* ΓöÇΓöÇ HERO ΓöÇΓöÇ */
         .hero {
             min-height: 100vh; display: flex; align-items: center; justify-content: center;
             position: relative; overflow: hidden;
@@ -133,13 +133,13 @@
         }
         .hero-curve svg { display: block; width: 100%; }
 
-        /* ── TRUST BAR ── */
+        /* ΓöÇΓöÇ TRUST BAR ΓöÇΓöÇ */
         .trust-bar { background: var(--bg-light); padding: 2.5rem 2rem; }
         .trust-inner { max-width: 900px; margin: 0 auto; display: flex; justify-content: center; gap: 3rem; flex-wrap: wrap; }
         .trust-item { display: flex; align-items: center; gap: .6rem; color: var(--text-muted); font-size: .9rem; font-weight: 500; }
         .trust-item i { color: var(--primary); font-size: 1.15rem; }
 
-        /* ── SERVICES ── */
+        /* ΓöÇΓöÇ SERVICES ΓöÇΓöÇ */
         .services { padding: 6rem 2rem; background: #fff; }
         .section-head { text-align: center; margin-bottom: 3.5rem; }
         .section-label {
@@ -168,7 +168,7 @@
         .service-card h3 { font-size: 1.15rem; font-weight: 600; margin-bottom: .6rem; }
         .service-card p { font-size: .9rem; color: var(--text-muted); line-height: 1.65; }
 
-        /* ── HOW IT WORKS ── */
+        /* ΓöÇΓöÇ HOW IT WORKS ΓöÇΓöÇ */
         .how-it-works { padding: 6rem 2rem; background: var(--bg-light); }
         .steps-grid { max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: repeat(3,1fr); gap: 2.5rem; position: relative; }
         .steps-grid::before {
@@ -185,7 +185,7 @@
         .step-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: .5rem; }
         .step-card p { font-size: .88rem; color: var(--text-muted); line-height: 1.6; }
 
-        /* ── ABOUT / MISSION ── */
+        /* ΓöÇΓöÇ ABOUT / MISSION ΓöÇΓöÇ */
         .about { padding: 6rem 2rem; background: #fff; }
         .about-grid { max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
         .about-content h2 { font-size: 2.25rem; font-weight: 700; margin-bottom: 1.5rem; position: relative; }
@@ -209,7 +209,7 @@
         .stat-num { font-size: 2.2rem; font-weight: 700; color: var(--primary); display: block; margin-bottom: .25rem; }
         .stat-lbl { font-size: .8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .5px; }
 
-        /* ── CTA ── */
+        /* ΓöÇΓöÇ CTA ΓöÇΓöÇ */
         .cta-section {
             padding: 6rem 2rem;
             background: linear-gradient(160deg, #1a3a3a 0%, #2d5a5a 60%, #20B2AA 100%);
@@ -230,11 +230,11 @@
         }
         .btn-cta:hover { transform: translateY(-3px); box-shadow: 0 12px 40px rgba(0,0,0,.3); }
 
-        /* ── FOOTER ── */
+        /* ΓöÇΓöÇ FOOTER ΓöÇΓöÇ */
         .footer { background: #0f1f1f; color: rgba(255,255,255,.5); padding: 2.5rem 2rem; text-align: center; font-size: .85rem; }
         .footer a { color: var(--primary); text-decoration: none; }
 
-        /* ── RESPONSIVE ── */
+        /* ΓöÇΓöÇ RESPONSIVE ΓöÇΓöÇ */
         @media (max-width: 992px) {
             .navbar { padding: 1rem 1.5rem; }
             .navbar.scrolled { padding: .75rem 1.5rem; }
@@ -261,7 +261,7 @@
             .stats-grid { grid-template-columns: 1fr 1fr; gap: .75rem; }
         }
 
-        /* ── ANIMATIONS ── */
+        /* ΓöÇΓöÇ ANIMATIONS ΓöÇΓöÇ */
         .fade-up { opacity: 0; transform: translateY(30px); transition: opacity .7s ease, transform .7s ease; }
         .fade-up.visible { opacity: 1; transform: translateY(0); }
     </style>
@@ -300,7 +300,7 @@
             </div>
             <h1 class="hero-h1">Your Concerns <span>Matter</span></h1>
             <p class="hero-desc">
-                A safe, confidential space for students to share concerns, connect with counselors, and get the guidance support they need — anytime.
+                A safe, confidential space for students to share concerns, connect with counselors, and get the guidance support they need ΓÇö anytime.
             </p>
             <div class="hero-btns">
                 <a href="{{ route('login') }}" class="btn-hero-primary">
@@ -385,12 +385,12 @@
             <div class="step-card fade-up">
                 <div class="step-num">2</div>
                 <h3>Submit or Schedule</h3>
-                <p>Share a concern, book a counseling appointment, or file an incident report — all done securely online.</p>
+                <p>Share a concern, book a counseling appointment, or file an incident report ΓÇö all done securely online.</p>
             </div>
             <div class="step-card fade-up">
                 <div class="step-num">3</div>
                 <h3>Get Support</h3>
-                <p>A counselor reviews your submission, responds, and schedules a session if needed — with full confidentiality.</p>
+                <p>A counselor reviews your submission, responds, and schedules a session if needed ΓÇö with full confidentiality.</p>
             </div>
         </div>
     </section>

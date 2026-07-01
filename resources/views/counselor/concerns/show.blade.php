@@ -125,12 +125,6 @@
                 <h6 class="card-title mb-0"><i class="bi bi-reply me-1"></i>Update Concern</h6>
             </div>
             <div class="card-body">
-                @if(session('success'))
-                    <div class="alert alert-success alert-dismissible fade show">
-                        {{ session('success') }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
                 <form method="POST" action="{{ route('counselor.concerns.update', $concern) }}">
                     @csrf
                     @method('PUT')

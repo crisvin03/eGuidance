@@ -30,13 +30,21 @@
             </div>
             <div class="card-body px-4 pb-4">
                 <div class="row g-3">
-                    <div class="col-md-8">
+                    <div class="col-md-6">
                         <label class="form-label fw-semibold">Student Name <span class="text-danger">*</span></label>
                         <input type="text" name="student_name" class="form-control" value="{{ old('student_name') }}" placeholder="Full name of student" required>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Age</label>
+                        <input type="number" name="student_age" class="form-control" value="{{ old('student_age') }}" placeholder="e.g. 15" min="1" max="30">
                     </div>
                     <div class="col-md-4">
                         <label class="form-label fw-semibold">Grade & Section <span class="text-danger">*</span></label>
                         <input type="text" name="grade_section" class="form-control" value="{{ old('grade_section') }}" placeholder="e.g. Grade 9 - Mabini" required>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label fw-semibold">Address</label>
+                        <input type="text" name="student_address" class="form-control" value="{{ old('student_address') }}" placeholder="Home address of student">
                     </div>
                 </div>
             </div>

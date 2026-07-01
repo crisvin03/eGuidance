@@ -21,18 +21,32 @@
             </div>
             <div class="card-body px-4 pb-4">
                 <div class="row g-3">
-                    <div class="col-sm-6">
+                    <div class="col-sm-5">
                         <div class="text-muted small mb-1">Student Name</div>
                         <div class="fw-semibold">{{ $incidentReport->student_name }}</div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-2">
+                        <div class="text-muted small mb-1">Age</div>
+                        <div class="fw-semibold">{{ $incidentReport->student_age ?? '—' }}</div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="text-muted small mb-1">Address</div>
+                        <div class="fw-semibold">{{ $incidentReport->student_address ?? '—' }}</div>
+                    </div>
+                    <div class="col-sm-4">
                         <div class="text-muted small mb-1">Grade & Section</div>
                         <div class="fw-semibold">{{ $incidentReport->grade_section }}</div>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-4">
                         <div class="text-muted small mb-1">Date of Referral</div>
                         <div class="fw-semibold">{{ $incidentReport->date_of_referral->format('M d, Y') }}</div>
                     </div>
+                    @if($incidentReport->time_of_incident)
+                    <div class="col-sm-4">
+                        <div class="text-muted small mb-1">Time of Incident</div>
+                        <div class="fw-semibold">{{ \Carbon\Carbon::parse($incidentReport->time_of_incident)->format('h:i A') }}</div>
+                    </div>
+                    @endif
                 </div>
             </div>
         </div>

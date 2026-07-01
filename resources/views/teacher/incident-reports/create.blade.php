@@ -31,17 +31,29 @@
             </div>
             <div class="card-body px-4 pb-4">
                 <div class="row g-3">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <label class="form-label fw-semibold">Student Name <span class="text-danger">*</span></label>
                         <input type="text" name="student_name" class="form-control" value="{{ old('student_name') }}" placeholder="Full name of student" required>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-2">
+                        <label class="form-label fw-semibold">Age</label>
+                        <input type="number" name="student_age" class="form-control" value="{{ old('student_age') }}" placeholder="e.g. 15" min="1" max="30">
+                    </div>
+                    <div class="col-md-5">
+                        <label class="form-label fw-semibold">Address</label>
+                        <input type="text" name="student_address" class="form-control" value="{{ old('student_address') }}" placeholder="Home address of student">
+                    </div>
+                    <div class="col-md-4">
                         <label class="form-label fw-semibold">Grade & Section <span class="text-danger">*</span></label>
                         <input type="text" name="grade_section" class="form-control" value="{{ old('grade_section') }}" placeholder="e.g. Grade 10 - Rizal" required>
                     </div>
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label class="form-label fw-semibold">Date of Referral <span class="text-danger">*</span></label>
                         <input type="date" name="date_of_referral" class="form-control" value="{{ old('date_of_referral', date('Y-m-d')) }}" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-semibold">Time of Incident</label>
+                        <input type="time" name="time_of_incident" class="form-control" value="{{ old('time_of_incident') }}">
                     </div>
                 </div>
             </div>
@@ -77,11 +89,10 @@
                             <option value="social_peer" {{ old('concern_type')=='social_peer'?'selected':'' }}>Social and Peer</option>
                             <option value="family" {{ old('concern_type')=='family'?'selected':'' }}>Family</option>
                             <option value="behavioral" {{ old('concern_type')=='behavioral'?'selected':'' }}>Behavioral</option>
-                            <option value="relationships_personal" {{ old('concern_type')=='relationships_personal'?'selected':'' }}>Relationships and Personal</option>
-                            <option value="safety_protection" {{ old('concern_type')=='safety_protection'?'selected':'' }}>Safety and Protection</option>
+                            <option value="personal_relationship" {{ old('concern_type')=='personal_relationship'?'selected':'' }}>Personal and Relationship</option>
+                            <option value="bullying_safety" {{ old('concern_type')=='bullying_safety'?'selected':'' }}>Bullying/Safety</option>
                             <option value="career_future" {{ old('concern_type')=='career_future'?'selected':'' }}>Career and Future</option>
-                            <option value="counseling_support" {{ old('concern_type')=='counseling_support'?'selected':'' }}>Counseling and Support Requests</option>
-                            <option value="other" {{ old('concern_type')=='other'?'selected':'' }}>Other</option>
+                            <option value="counseling_support" {{ old('concern_type')=='counseling_support'?'selected':'' }}>Counseling and Support</option>
                         </select>
                     </div>
                     <div class="col-12">

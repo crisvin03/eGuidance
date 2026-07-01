@@ -85,7 +85,7 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('student.concerns.show', $concern->id) }}" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-eye"></i> View
+                                        <i class="bi bi-eye me-1"></i> View
                                     </a>
                                 </td>
                             </tr>

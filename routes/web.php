@@ -55,6 +55,7 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/concerns/{concern}', [CounselorController::class, 'showConcern'])->name('concerns.show');
     Route::post('/concerns/{concern}/respond', [CounselorController::class, 'respondToConcern'])->name('concerns.respond');
     Route::put('/concerns/{concern}/update', [CounselorController::class, 'updateConcern'])->name('concerns.update');
+    Route::delete('/concerns/{concern}', [CounselorController::class, 'destroyConcern'])->name('concerns.destroy');
     Route::get('/appointments', [CounselorController::class, 'appointments'])->name('appointments.index');
     Route::get('/appointments/{appointment}', [CounselorController::class, 'showAppointment'])->name('appointments.show');
     Route::post('/appointments/{appointment}/respond', [CounselorController::class, 'respondToAppointment'])->name('appointments.respond');
@@ -63,9 +64,11 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/incident-reports', [CounselorController::class, 'incidentReports'])->name('incident-reports.index');
     Route::get('/incident-reports/{incidentReport}', [CounselorController::class, 'showIncidentReport'])->name('incident-reports.show');
     Route::post('/incident-reports/{incidentReport}/update', [CounselorController::class, 'updateIncidentReport'])->name('incident-reports.update');
+    Route::delete('/incident-reports/{incidentReport}', [CounselorController::class, 'destroyIncidentReport'])->name('incident-reports.destroy');
     Route::get('/referrals', [CounselorController::class, 'referrals'])->name('referrals.index');
     Route::get('/referrals/{studentReferral}', [CounselorController::class, 'showReferral'])->name('referrals.show');
     Route::post('/referrals/{studentReferral}/update', [CounselorController::class, 'updateReferral'])->name('referrals.update');
+    Route::delete('/referrals/{studentReferral}', [CounselorController::class, 'destroyReferral'])->name('referrals.destroy');
     Route::get('/forms', [CounselorController::class, 'formGenerator'])->name('forms.index');
     Route::get('/forms/submitted', [CounselorController::class, 'submittedForms'])->name('forms.submitted');
     Route::get('/forms/submitted/{submission}', [CounselorController::class, 'showSubmittedForm'])->name('forms.submitted.show');
@@ -79,6 +82,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::get('/incident-reports/create', [App\Http\Controllers\TeacherController::class, 'createIncidentReport'])->name('incident-reports.create');
     Route::post('/incident-reports', [App\Http\Controllers\TeacherController::class, 'storeIncidentReport'])->name('incident-reports.store');
     Route::get('/incident-reports/{incidentReport}', [App\Http\Controllers\TeacherController::class, 'showIncidentReport'])->name('incident-reports.show');
+    Route::delete('/incident-reports/{incidentReport}', [App\Http\Controllers\TeacherController::class, 'destroyIncidentReport'])->name('incident-reports.destroy');
     Route::get('/referrals', [App\Http\Controllers\TeacherController::class, 'referrals'])->name('referrals.index');
     Route::get('/referrals/create', [App\Http\Controllers\TeacherController::class, 'createReferral'])->name('referrals.create');
     Route::post('/referrals', [App\Http\Controllers\TeacherController::class, 'storeReferral'])->name('referrals.store');
@@ -91,6 +95,8 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::get('/intervention-guides', [App\Http\Controllers\TeacherController::class, 'interventionGuides'])->name('intervention-guides.index');
     Route::get('/talk-to-counselor', [App\Http\Controllers\TeacherController::class, 'talkToCounselor'])->name('talk-to-counselor');
     Route::post('/appointments', [App\Http\Controllers\TeacherController::class, 'storeAppointment'])->name('appointments.store');
+    Route::get('/appointments', [App\Http\Controllers\TeacherController::class, 'myAppointments'])->name('appointments.index');
+    Route::get('/appointments/{appointment}', [App\Http\Controllers\TeacherController::class, 'showAppointment'])->name('appointments.show');
     Route::get('/virtual-id', [App\Http\Controllers\TeacherController::class, 'virtualId'])->name('virtual-id');
 });
 
@@ -104,6 +110,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
     Route::post('/users/{user}/deactivate', [AdminController::class, 'deactivateUser'])->name('users.deactivate');
     Route::post('/users/{user}/activate', [AdminController::class, 'activateUser'])->name('users.activate');
+    Route::delete('/users/{user}', [AdminController::class, 'destroyUser'])->name('users.destroy');
     Route::get('/categories', [AdminController::class, 'categories'])->name('categories.index');
     Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
     Route::put('/categories/{category}', [AdminController::class, 'updateCategory'])->name('categories.update');

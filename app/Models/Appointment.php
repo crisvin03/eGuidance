@@ -10,6 +10,7 @@ class Appointment extends Model
         'student_id',
         'counselor_id',
         'concern_id',
+        'requester_type',
         'appointment_date',
         'status',
         'notes',

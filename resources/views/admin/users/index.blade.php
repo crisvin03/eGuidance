@@ -107,20 +107,37 @@
                                 </td>
                                 <td>
                                     <div class="btn-group" role="group">
-                                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary btn-sm">
+                                        <a href="{{ route('admin.users.edit', $user) }}" class="btn btn-primary btn-sm" title="Edit user">
                                             <i class="bi bi-pencil"></i>
                                             <span class="btn-label">Edit</span>
                                         </a>
                                         @if($user->is_active)
-                                            <button class="btn btn-warning btn-sm" onclick="deactivateUser({{ $user->id }})">
+                                            <button class="btn btn-warning btn-sm" onclick="deactivateUser({{ $user->id }})" title="Deactivate user">
                                                 <i class="bi bi-pause"></i>
                                                 <span class="btn-label">Deactivate</span>
                                             </button>
                                         @else
-                                            <button class="btn btn-success btn-sm" onclick="activateUser({{ $user->id }})">
+                                            <button class="btn btn-success btn-sm" onclick="activateUser({{ $user->id }})" title="Activate user">
                                                 <i class="bi bi-play"></i>
                                                 <span class="btn-label">Activate</span>
                                             </button>
+                                        @endif
+                                        @if($user->id !== Auth::id())
+                                        <button class="btn btn-danger btn-sm" title="Delete account"
+                                                onclick="confirmDeleteUser(
+                                                    {{ $user->id }},
+                                                    '{{ addslashes($user->name) }}',
+                                                    '{{ addslashes($user->email) }}',
+                                                    '{{ strtoupper(substr($user->name,0,2)) }}',
+                                                    '{{ $user->role->name ?? 'user' }}'
+                                                )">
+                                            <i class="bi bi-trash3"></i>
+                                            <span class="btn-label">Delete</span>
+                                        </button>
+                                        @else
+                                        <button class="btn btn-outline-secondary btn-sm opacity-50" disabled title="Cannot delete your own account">
+                                            <i class="bi bi-trash3"></i>
+                                        </button>
                                         @endif
                                     </div>
                                 </td>
@@ -153,41 +170,115 @@
     </div>
 @endif
 
+{{-- Professional Delete Confirmation Modal --}}
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="max-width:460px;">
+        <div class="modal-content border-0" style="border-radius:20px;box-shadow:0 25px 60px rgba(0,0,0,.18);">
+
+            {{-- Danger stripe --}}
+            <div style="height:5px;border-radius:20px 20px 0 0;background:linear-gradient(90deg,#ef4444,#dc2626);"></div>
+
+            <div class="modal-body p-4">
+                {{-- Icon --}}
+                <div class="text-center mb-4">
+                    <div class="d-inline-flex align-items-center justify-content-center rounded-circle mb-3"
+                         style="width:64px;height:64px;background:rgba(239,68,68,.1);">
+                        <i class="bi bi-person-x-fill" style="font-size:1.75rem;color:#ef4444;"></i>
+                    </div>
+                    <h5 class="fw-bold mb-1" style="color:#1e293b;">Delete User Account?</h5>
+                    <p class="text-muted small mb-0">This will permanently remove the account and all associated data.</p>
+                </div>
+
+                {{-- User details card --}}
+                <div class="rounded-3 p-3 mb-4" style="background:#f8fafc;border:1px solid #e2e8f0;">
+                    <div class="d-flex align-items-center gap-3">
+                        <div class="d-flex align-items-center justify-content-center rounded-circle fw-bold text-white"
+                             id="del_avatar"
+                             style="width:44px;height:44px;min-width:44px;background:linear-gradient(135deg,#ef4444,#dc2626);font-size:.9rem;"></div>
+                        <div>
+                            <div class="fw-bold" id="del_name" style="color:#1e293b;"></div>
+                            <div class="small text-muted" id="del_email"></div>
+                            <span class="badge mt-1 text-capitalize" id="del_role"
+                                  style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24;font-size:.7rem;"></span>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- Warning list --}}
+                <div class="rounded-3 p-3" style="background:#fef2f2;border:1px solid #fecaca;">
+                    <div class="d-flex align-items-start gap-2 mb-2">
+                        <i class="bi bi-exclamation-triangle-fill text-danger mt-1" style="font-size:.85rem;"></i>
+                        <div class="small text-danger fw-semibold">This action cannot be undone. The following will be deleted:</div>
+                    </div>
+                    <ul class="small text-danger mb-0 ps-4" style="line-height:1.8;">
+                        <li>User account and login credentials</li>
+                        <li>Profile photo and personal information</li>
+                        <li>All associated records and submissions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="modal-footer border-0 px-4 pb-4 pt-0 gap-2">
+                <button type="button" class="btn btn-secondary flex-fill" style="border-radius:10px;" data-bs-dismiss="modal">
+                    <i class="bi bi-x-lg me-1"></i> Cancel
+                </button>
+                <form id="deleteUserForm" method="POST" class="flex-fill">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger w-100 fw-semibold" style="border-radius:10px;">
+                        <i class="bi bi-trash3 me-1"></i> Yes, Delete Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script>
+function confirmDeleteUser(id, name, email, initials, role) {
+    document.getElementById('del_name').textContent     = name;
+    document.getElementById('del_email').textContent    = email;
+    document.getElementById('del_avatar').textContent   = initials;
+    document.getElementById('del_role').textContent     = role.charAt(0).toUpperCase() + role.slice(1);
+    document.getElementById('deleteUserForm').action    = '/admin/users/' + id;
+    new bootstrap.Modal(document.getElementById('deleteUserModal')).show();
+}
+
 function deactivateUser(userId) {
-    if (confirm('Are you sure you want to deactivate this user?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/admin/users/${userId}/deactivate`;
-        
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = '_token';
-        csrfInput.value = csrfToken;
-        
-        form.appendChild(csrfInput);
-        document.body.appendChild(form);
-        form.submit();
-    }
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/admin/users/${userId}/deactivate`;
+    const csrf = document.createElement('input');
+    csrf.type = 'hidden'; csrf.name = '_token';
+    csrf.value = document.querySelector('meta[name="csrf-token"]').content;
+    form.appendChild(csrf);
+    document.body.appendChild(form);
+    form.submit();
 }
 
 function activateUser(userId) {
-    if (confirm('Are you sure you want to activate this user?')) {
-        const form = document.createElement('form');
-        form.method = 'POST';
-        form.action = `/admin/users/${userId}/activate`;
-        
-        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-        const csrfInput = document.createElement('input');
-        csrfInput.type = 'hidden';
-        csrfInput.name = '_token';
-        csrfInput.value = csrfToken;
-        
-        form.appendChild(csrfInput);
-        document.body.appendChild(form);
-        form.submit();
-    }
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = `/admin/users/${userId}/activate`;
+    const csrf = document.createElement('input');
+    csrf.type = 'hidden'; csrf.name = '_token';
+    csrf.value = document.querySelector('meta[name="csrf-token"]').content;
+    form.appendChild(csrf);
+    document.body.appendChild(form);
+    form.submit();
 }
+
+// Auto-dismiss toast
+function dismissToast() {
+    const t = document.getElementById('flashToast');
+    if (!t) return;
+    t.style.animation = 'slideOutRight .35s ease forwards';
+    setTimeout(() => t.remove(), 350);
+}
+// Auto-dismiss after 4 seconds
+window.addEventListener('DOMContentLoaded', () => {
+    const t = document.getElementById('flashToast');
+    if (t) setTimeout(() => dismissToast(), 4000);
+});
 </script>
 @endsection
