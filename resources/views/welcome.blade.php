@@ -201,6 +201,7 @@
         }
         .about-callout p { margin: 0; font-weight: 500; color: var(--text-dark); font-size: .9rem; }
         .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+        .stats-cover { grid-column: 1 / -1; }
         .stat-card {
             background: var(--bg-light); border-radius: 16px; padding: 1.75rem 1.5rem; text-align: center;
             border: 1px solid #e8ecf0; transition: all .3s;
@@ -380,7 +381,7 @@
             <div class="step-card fade-up">
                 <div class="step-num">1</div>
                 <h3>Log In</h3>
-                <p>Access the portal using your school credentials. Students, teachers, and counselors each have their own dashboard.</p>
+                <p>Access the portal using your school credentials to get started.</p>
             </div>
             <div class="step-card fade-up">
                 <div class="step-num">2</div>
@@ -411,6 +412,9 @@
                 </div>
             </div>
             <div class="stats-grid fade-up">
+                <div class="stats-cover">
+                    <img src="{{ asset('cover.jpg') }}" alt="BNHS Care Corner" style="width:100%;height:200px;object-fit:cover;border-radius:18px;margin-bottom:1.25rem;box-shadow:0 8px 28px rgba(13,45,82,0.13);">
+                </div>
                 <div class="stat-card">
                     <div class="stat-num">200+</div>
                     <div class="stat-lbl">Students Helped</div>
