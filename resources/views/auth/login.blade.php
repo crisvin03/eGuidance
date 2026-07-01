@@ -359,6 +359,14 @@
             .form-group { margin-bottom: 1rem; }
             .form-input { padding: 0.75rem; font-size: 0.95rem; }
         }
+
+        .password-toggle { position: relative; }
+        .password-toggle-btn {
+            position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+            background: none; border: none; color: #64748b; cursor: pointer;
+            padding: 0.25rem; border-radius: 4px; transition: color 0.2s;
+        }
+        .password-toggle-btn:hover { color: #1a3a3a; }
     </style>
 </head>
 <body>
@@ -427,13 +435,18 @@
                 
                 <div class="form-group">
                     <label for="password" class="form-label">Password</label>
-                    <input id="password" 
-                           type="password" 
-                           class="form-input @error('password') is-invalid @enderror" 
-                           name="password" 
-                           required 
-                           autocomplete="current-password"
-                           placeholder="Enter your password">
+                    <div class="password-toggle">
+                        <input id="password"
+                               type="password"
+                               class="form-input @error('password') is-invalid @enderror"
+                               name="password"
+                               required
+                               autocomplete="current-password"
+                               placeholder="Enter your password">
+                        <button type="button" class="password-toggle-btn" onclick="togglePassword('password')">
+                            <i class="bi bi-eye" id="password-toggle-icon"></i>
+                        </button>
+                    </div>
                     @error('password')
                         <span class="invalid-feedback" role="alert">
                             <strong>{{ $message }}</strong>
@@ -462,5 +475,18 @@
             </form>
         </div>
     </div>
+        <script>
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const icon  = document.getElementById(fieldId + '-toggle-icon');
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.replace('bi-eye', 'bi-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+        </script>
 </body>
 </html>

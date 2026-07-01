@@ -297,26 +297,41 @@
                     <div class="row">
                         <div class="col-md-4 mb-3">
                             <label for="current_password" class="form-label">Current Password</label>
-                            <input type="password"
-                                   class="form-control @error('current_password') is-invalid @enderror"
-                                   id="current_password" name="current_password" required>
+                            <div class="input-group">
+                                <input type="password"
+                                       class="form-control @error('current_password') is-invalid @enderror"
+                                       id="current_password" name="current_password" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('current_password','ico-cur')" tabindex="-1">
+                                    <i class="bi bi-eye" id="ico-cur"></i>
+                                </button>
+                            </div>
                             @error('current_password')
-                                <span class="invalid-feedback">{{ $message }}</span>
+                                <span class="invalid-feedback d-block">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="password" class="form-label">New Password</label>
-                            <input type="password"
-                                   class="form-control @error('password') is-invalid @enderror"
-                                   id="password" name="password" required>
+                            <div class="input-group">
+                                <input type="password"
+                                       class="form-control @error('password') is-invalid @enderror"
+                                       id="password" name="password" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password','ico-new')" tabindex="-1">
+                                    <i class="bi bi-eye" id="ico-new"></i>
+                                </button>
+                            </div>
                             @error('password')
-                                <span class="invalid-feedback">{{ $message }}</span>
+                                <span class="invalid-feedback d-block">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="password_confirmation" class="form-label">Confirm New Password</label>
-                            <input type="password" class="form-control"
-                                   id="password_confirmation" name="password_confirmation" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control"
+                                       id="password_confirmation" name="password_confirmation" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password_confirmation','ico-conf')" tabindex="-1">
+                                    <i class="bi bi-eye" id="ico-conf"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-warning">
@@ -327,5 +342,14 @@
         </div>
     </div>
 </div>
+
+<script>
+function togglePwd(fieldId, iconId) {
+    const f = document.getElementById(fieldId);
+    const i = document.getElementById(iconId);
+    if (f.type === 'password') { f.type = 'text';     i.classList.replace('bi-eye','bi-eye-slash'); }
+    else                       { f.type = 'password'; i.classList.replace('bi-eye-slash','bi-eye'); }
+}
+</script>
 
 @endsection

@@ -40,11 +40,12 @@
                     <div class="row mb-3">
                         <label for="password" class="col-md-4 col-form-label text-md-end">Password</label>
                         <div class="col-md-6">
-                            <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                            <div class="input-group">
+                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password','ico-pw')" tabindex="-1"><i class="bi bi-eye" id="ico-pw"></i></button>
+                            </div>
                             @error('password')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
                     </div>
@@ -52,11 +53,12 @@
                     <div class="row mb-3">
                         <label for="password_confirmation" class="col-md-4 col-form-label text-md-end">Confirm Password</label>
                         <div class="col-md-6">
-                            <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required>
+                            <div class="input-group">
+                                <input id="password_confirmation" type="password" class="form-control @error('password_confirmation') is-invalid @enderror" name="password_confirmation" required>
+                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password_confirmation','ico-pc')" tabindex="-1"><i class="bi bi-eye" id="ico-pc"></i></button>
+                            </div>
                             @error('password_confirmation')
-                                <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                <span class="invalid-feedback d-block" role="alert"><strong>{{ $message }}</strong></span>
                             @enderror
                         </div>
                     </div>
@@ -195,6 +197,11 @@ function toggleStudentFields() {
     } else {
         studentFields.style.display = 'none';
     }
+}
+function togglePwd(f, i) {
+    const el = document.getElementById(f), ic = document.getElementById(i);
+    el.type === 'password' ? (el.type='text', ic.classList.replace('bi-eye','bi-eye-slash'))
+                           : (el.type='password', ic.classList.replace('bi-eye-slash','bi-eye'));
 }
 </script>
 @endsection

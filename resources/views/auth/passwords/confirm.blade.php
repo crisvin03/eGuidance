@@ -17,10 +17,12 @@
                             <label for="password" class="col-md-4 col-form-label text-md-end">{{ __('Password') }}</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
-
+                                <div class="input-group">
+                                    <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="current-password">
+                                    <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password','ico-pw')" tabindex="-1"><i class="bi bi-eye" id="ico-pw"></i></button>
+                                </div>
                                 @error('password')
-                                    <span class="invalid-feedback" role="alert">
+                                    <span class="invalid-feedback d-block" role="alert">
                                         <strong>{{ $message }}</strong>
                                     </span>
                                 @enderror
@@ -47,3 +49,11 @@
     </div>
 </div>
 @endsection
+
+<script>
+function togglePwd(f, i) {
+    const el = document.getElementById(f), ic = document.getElementById(i);
+    el.type === 'password' ? (el.type='text', ic.classList.replace('bi-eye','bi-eye-slash'))
+                           : (el.type='password', ic.classList.replace('bi-eye-slash','bi-eye'));
+}
+</script>
