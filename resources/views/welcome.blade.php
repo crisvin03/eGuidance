@@ -301,7 +301,7 @@
             </div>
             <h1 class="hero-h1">Your Concerns <span>Matter</span></h1>
             <p class="hero-desc">
-                A safe, confidential space for students to share concerns, connect with counselors, and get the guidance support they need ΓÇö anytime.
+                A safe, confidential space for students to share concerns, connect with counselors, and get the guidance support they need — anytime.
             </p>
             <div class="hero-btns">
                 <a href="{{ route('login') }}" class="btn-hero-primary">
@@ -386,12 +386,12 @@
             <div class="step-card fade-up">
                 <div class="step-num">2</div>
                 <h3>Submit or Schedule</h3>
-                <p>Share a concern, book a counseling appointment, or file an incident report ΓÇö all done securely online.</p>
+                <p>Share a concern, book a counseling appointment, or file an incident report — all done securely online.</p>
             </div>
             <div class="step-card fade-up">
                 <div class="step-num">3</div>
                 <h3>Get Support</h3>
-                <p>A counselor reviews your submission, responds, and schedules a session if needed ΓÇö with full confidentiality.</p>
+                <p>A counselor reviews your submission, responds, and schedules a session if needed — with full confidentiality.</p>
             </div>
         </div>
     </section>
