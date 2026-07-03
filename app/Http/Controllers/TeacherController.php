@@ -89,7 +89,7 @@ class TeacherController extends Controller
             'referred_by_name'       => 'required|string|max:255',
             'referred_by_designation'=> 'required|string|max:255',
             'urgency_level'          => 'required|in:low,moderate,high',
-            'attachment'             => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|max:2048',
+            'attachment'             => 'nullable|file|mimes:jpg,jpeg,png,pdf,doc,docx|mimetypes:image/jpeg,image/png,image/gif,application/pdf,application/msword,application/vnd.openxmlformats-officedocument.wordprocessingml.document|max:2048',
         ]);
 
         $attachmentPath = null;

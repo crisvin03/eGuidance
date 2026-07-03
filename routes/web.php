@@ -73,6 +73,7 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/forms/submitted', [CounselorController::class, 'submittedForms'])->name('forms.submitted');
     Route::get('/forms/submitted/{submission}', [CounselorController::class, 'showSubmittedForm'])->name('forms.submitted.show');
     Route::post('/forms/submitted/{submission}/review', [CounselorController::class, 'reviewForm'])->name('forms.submitted.review');
+    Route::delete('/forms/submitted/{submission}', [CounselorController::class, 'destroySubmission'])->name('forms.submitted.destroy');
 });
 
 // Teacher routes
@@ -115,8 +116,8 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::post('/categories', [AdminController::class, 'storeCategory'])->name('categories.store');
     Route::put('/categories/{category}', [AdminController::class, 'updateCategory'])->name('categories.update');
     Route::get('/reports', [AdminController::class, 'reports'])->name('reports.index');
-    Route::get('/reports/export/concerns', [AdminController::class, 'exportConcerns'])->name('reports.export.concerns');
-    Route::get('/reports/export/appointments', [AdminController::class, 'exportAppointments'])->name('reports.export.appointments');
-    Route::get('/reports/export/users', [AdminController::class, 'exportUsers'])->name('reports.export.users');
-    Route::get('/reports/export/full', [AdminController::class, 'exportFullReport'])->name('reports.export.full');
+    Route::get('/reports/export/concerns', [AdminController::class, 'exportConcerns'])->name('reports.export.concerns')->middleware('throttle:10,1');
+    Route::get('/reports/export/appointments', [AdminController::class, 'exportAppointments'])->name('reports.export.appointments')->middleware('throttle:10,1');
+    Route::get('/reports/export/users', [AdminController::class, 'exportUsers'])->name('reports.export.users')->middleware('throttle:10,1');
+    Route::get('/reports/export/full', [AdminController::class, 'exportFullReport'])->name('reports.export.full')->middleware('throttle:10,1');
 });

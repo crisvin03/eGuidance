@@ -101,11 +101,11 @@
 <div id="printContainer" style="display:none;"></div>
 
 <script>
-const teacherName = @json(Auth::user()->name);
-const today = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-const todayShort = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
-const submitFormUrl = @json(route('teacher.forms.submit'));
-const csrfToken = @json(csrf_token());
+const teacherName    = @json(Auth::user()->name);
+const today          = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+const todayShort     = new Date().toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' });
+const submitFormUrl  = @json(route('teacher.forms.submit'));
+const csrfToken      = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 let currentFormId = '';
 let currentFormTitle = '';
 

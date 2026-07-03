@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use App\Models\User;
 use App\Models\Role;
 use App\Models\Concern;
@@ -80,7 +82,7 @@ class AdminController extends Controller
         User::create([
             'name' => $request->name,
             'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'password' => Hash::make($request->password),
             'role_id' => $role->id,
             'student_id' => $request->student_id,
             'phone' => $request->phone,
@@ -129,7 +131,7 @@ class AdminController extends Controller
 
         if ($request->filled('password')) {
             $request->validate(['password' => 'required|string|min:8|confirmed']);
-            $user->update(['password' => bcrypt($request->password)]);
+            $user->update(['password' => Hash::make($request->password)]);
         }
 
         return redirect()->route('admin.users.index')
@@ -139,12 +141,14 @@ class AdminController extends Controller
     public function deactivateUser(User $user)
     {
         $user->update(['is_active' => false]);
+        Log::info("Admin " . Auth::user()->name . " deactivated user: {$user->name} (ID: {$user->id})");
         return redirect()->back()->with('success', 'User deactivated successfully.');
     }
 
     public function activateUser(User $user)
     {
         $user->update(['is_active' => true]);
+        Log::info("Admin " . Auth::user()->name . " activated user: {$user->name} (ID: {$user->id})");
         return redirect()->back()->with('success', 'User activated successfully.');
     }
 
@@ -163,6 +167,7 @@ class AdminController extends Controller
 
         $name = $user->name;
         $user->delete();
+        Log::info("Admin " . Auth::user()->name . " deleted user: {$name} (ID: {$user->id})");
 
         return redirect()->route('admin.users.index')
             ->with('success', "Account for \"{$name}\" has been permanently deleted.");

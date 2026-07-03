@@ -315,49 +315,50 @@
         }
         
         @media (max-width: 768px) {
-            body {
-                align-items: flex-start;
-                padding: 1rem;
-                overflow-y: auto;
-            }
+            body { align-items: center; justify-content: center; padding: 0; overflow: hidden; }
             .login-container {
-                flex-direction: column;
-                width: 100%;
-                max-width: 480px;
-                margin: 1rem auto;
-                border-radius: 16px;
-                min-height: auto;
+                flex-direction: column; width: 100%; max-width: 100%; height: 100vh;
+                border-radius: 0; margin: 0; overflow: hidden;
             }
             .brand-panel {
-                padding: 2rem 1.5rem;
-                text-align: center;
-                min-height: auto;
+                flex: 0 0 auto; padding: 1.5rem 2rem;
+                display: flex; flex-direction: column;
+                align-items: center; justify-content: center;
+                text-align: center; min-height: auto;
             }
-            .brand-logo {
-                justify-content: center;
-                margin-bottom: 1rem;
+            .brand-logo { justify-content: center; margin-bottom: .5rem; }
+            .brand-logo img { width: 42px; height: 42px; }
+            .brand-name { font-size: 1.25rem; }
+            .brand-subtitle { font-size: .62rem; }
+            .brand-heading { display: block; font-size: .9rem; font-weight: 500; margin-bottom: .6rem; }
+            .brand-description { display: none; }
+            .brand-features {
+                margin-top: 0; flex-direction: row;
+                justify-content: center; gap: .6rem; flex-wrap: wrap;
             }
-            .brand-heading { font-size: 1.4rem; margin-bottom: 0.5rem; }
-            .brand-description { font-size: 0.9rem; margin-bottom: 1rem; }
-            .brand-features { display: none; }
+            .brand-feature {
+                font-size: .78rem; font-weight: 500;
+                background: rgba(255,255,255,.18);
+                padding: .45rem 1rem; border-radius: 50px; gap: .4rem;
+            }
+            .brand-feature:nth-child(3) { display: none; }
+            .brand-feature i { font-size: .9rem; }
             .login-panel {
-                padding: 2rem 1.5rem;
+                flex: 1; padding: 1.5rem 1.75rem 1.25rem;
+                overflow-y: auto; display: flex; flex-direction: column; justify-content: center;
             }
-            .login-title { font-size: 1.4rem; }
-            .back-link { position: static; margin-bottom: 1rem; display: inline-flex; }
+            .back-link { display: none !important; }
+            .login-header { margin-bottom: 1.1rem; }
+            .login-title { font-size: 1.35rem; }
+            .login-subtitle { font-size: .85rem; }
+            .form-group { margin-bottom: .9rem; }
+            .form-input { padding: .75rem .9rem; font-size: .95rem; }
+            .form-options { margin-bottom: 1rem; }
+            .btn-login { padding: .85rem; }
+            .register-prompt { margin-top: 1rem; padding-top: 1rem; }
         }
         @media (max-width: 480px) {
-            body { padding: 0; overflow-y: auto; align-items: flex-start; }
-            .login-container {
-                border-radius: 0;
-                min-height: 100vh;
-                max-width: 100%;
-                margin: 0;
-            }
-            .brand-panel { padding: 1.25rem 1.5rem; }
-            .login-panel { padding: 1.5rem; }
-            .form-group { margin-bottom: 1rem; }
-            .form-input { padding: 0.75rem; font-size: 0.95rem; }
+            .login-panel { padding: 1.25rem; }
         }
 
         .password-toggle { position: relative; }

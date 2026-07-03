@@ -294,42 +294,40 @@
         
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            body {
-                align-items: flex-start;
-                overflow: auto !important;
-                height: auto;
-                min-height: 100vh;
-                padding: 0;
-            }
+            body { align-items: center; justify-content: center; padding: 0; overflow: hidden; }
             .register-container {
-                flex-direction: column;
-                width: 100%;
-                border-radius: 0;
-                min-height: 100vh;
-                overflow: visible;
+                flex-direction: column; width: 100%; border-radius: 0;
+                height: 100vh; overflow: hidden;
             }
             .brand-panel {
-                padding: 1.25rem 1.5rem;
-                text-align: center;
-                min-height: auto;
+                flex: 0 0 auto; padding: 1.4rem 2rem;
+                display: flex; flex-direction: column;
+                align-items: center; justify-content: center;
+                text-align: center; min-height: auto;
             }
-            .brand-logo {
-                justify-content: center;
-                margin-bottom: 0.5rem;
-            }
-            .brand-logo img { width: 36px; height: 36px; }
+            .brand-logo { justify-content: center; margin-bottom: .45rem; }
+            .brand-logo img { width: 40px; height: 40px; }
             .brand-logo-text h2 { font-size: 1.2rem; }
-            .brand-heading { font-size: 1.1rem; margin-bottom: 0.3rem; }
-            .brand-description { font-size: 0.8rem; margin-bottom: 0; }
+            .brand-logo-text p  { font-size: .6rem; }
+            .brand-heading { font-size: .9rem; font-weight: 500; margin-bottom: .5rem; }
+            .brand-description { display: none; }
+            /* Show only 2 features as pills, hide Personalized Guidance & 24/7 Support */
             .brand-features { display: none; }
-            .register-panel { padding: 1.25rem 1.5rem; justify-content: flex-start; }
-            .register-title { font-size: 1.3rem; margin-bottom: 0.2rem; }
-            .register-subtitle { margin-bottom: 0.75rem; font-size: 0.85rem; }
-            .form-group { margin-bottom: 0.6rem; }
-            .form-label { margin-bottom: 0.3rem; font-size: 0.85rem; }
-            .form-input { padding: 0.55rem 0.875rem; font-size: 0.9rem; border-radius: 10px; }
-            .submit-btn { padding: 0.7rem; font-size: 0.95rem; margin-top: 0.25rem; }
-            .login-link { margin-top: 0.75rem; padding-top: 0.75rem; font-size: 0.85rem; }
+            .register-panel {
+                flex: 1; padding: 1rem 1.5rem .75rem;
+                overflow: hidden; display: flex; flex-direction: column; justify-content: center;
+            }
+            .back-link { display: none !important; }
+            .register-title { font-size: 1.2rem; margin-bottom: .15rem; }
+            .register-subtitle { font-size: .82rem; margin-bottom: .5rem; }
+            .form-group { margin-bottom: .45rem; }
+            .form-label { margin-bottom: .2rem; font-size: .82rem; }
+            .form-input { padding: .5rem .85rem; font-size: .88rem; border-radius: 10px; }
+            .submit-btn { padding: .6rem; margin-top: .15rem; font-size: .92rem; }
+            .login-link { margin-top: .5rem; padding-top: .5rem; font-size: .82rem; }
+        }
+        @media (max-width: 480px) {
+            .register-panel { padding: 1.1rem 1.25rem .9rem; }
         }
     </style>
 </head>

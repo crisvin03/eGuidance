@@ -293,54 +293,50 @@
         
         /* Mobile Responsive */
         @media (max-width: 768px) {
-            body {
-                align-items: stretch;
-                padding: 0;
-                min-height: 100vh;
-            }
+            body { align-items: center; justify-content: center; padding: 0; overflow: hidden; }
             .reset-container {
-                flex-direction: column;
-                width: 100%;
-                max-width: 100%;
-                margin: 0;
-                border-radius: 0;
-                min-height: 100vh;
+                flex-direction: column; width: 100%; max-width: 100%; height: 100vh;
+                border-radius: 0; margin: 0; overflow: hidden;
             }
             .brand-panel {
-                padding: 1.5rem 1rem;
-                text-align: center;
-                min-height: auto;
+                flex: 0 0 auto; padding: 1.5rem 2rem;
+                display: flex; flex-direction: column;
+                align-items: center; justify-content: center;
+                text-align: center; min-height: auto;
             }
-            .brand-logo {
-                justify-content: center;
-                margin-bottom: 0.75rem;
+            .brand-logo { justify-content: center; margin-bottom: .5rem; }
+            .brand-logo img { width: 42px; height: 42px; }
+            .brand-logo-text h2 { font-size: 1.25rem; }
+            .brand-logo-text p  { font-size: .62rem; }
+            .brand-heading { font-size: 1rem; font-weight: 600; margin-bottom: .75rem; }
+            .brand-description { display: none; }
+            /* Show all 4 features as vertical pills */
+            .brand-features {
+                margin-top: 0;
+                flex-direction: column;
+                align-items: center;
+                gap: .45rem;
             }
-            .brand-heading { font-size: 1.3rem; margin-bottom: 0.5rem; }
-            .brand-description { font-size: 0.85rem; margin-bottom: 0.75rem; }
-            .brand-features { display: none; }
+            .brand-features li {
+                font-size: .78rem; font-weight: 500;
+                background: rgba(255,255,255,.18);
+                padding: .45rem 1.25rem; border-radius: 50px; gap: .4rem;
+                width: fit-content;
+            }
+            .brand-features i { font-size: .9rem; }
             .reset-panel {
-                padding: 1.5rem 1rem;
-                flex: 1;
+                flex: 1; padding: 1.5rem 1.75rem 1.25rem;
+                overflow: hidden; display: flex; flex-direction: column; justify-content: center;
             }
-            .reset-title { font-size: 1.3rem; }
-            .reset-subtitle { margin-bottom: 1rem; }
+            .back-link { display: none !important; }
+            .reset-title { font-size: 1.35rem; }
+            .reset-subtitle { margin-bottom: 1.25rem; }
             .form-group { margin-bottom: 1rem; }
-            .back-link { position: static; margin-bottom: 0.75rem; display: inline-flex; }
+            .form-input { padding: .75rem .9rem; font-size: .95rem; }
+            .login-link { margin-top: 1rem; padding-top: 1rem; }
         }
-        
         @media (max-width: 480px) {
-            body { padding: 0; align-items: stretch; }
-            .reset-container {
-                border-radius: 0;
-                min-height: 100vh;
-                max-width: 100%;
-            }
-            .brand-panel { padding: 1rem; }
-            .reset-panel { padding: 1rem; }
-            .form-group { margin-bottom: 0.875rem; }
-            .form-input { padding: 0.625rem; font-size: 0.9rem; }
-            .reset-title { font-size: 1.2rem; }
-            .reset-subtitle { margin-bottom: 0.75rem; }
+            .reset-panel { padding: 1.25rem; }
         }
     </style>
 </head>

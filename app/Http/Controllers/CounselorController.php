@@ -454,6 +454,15 @@ class CounselorController extends Controller
             ->with('success', 'Form marked as ' . $request->status . '.');
     }
 
+    public function destroySubmission(\App\Models\TeacherFormSubmission $submission)
+    {
+        $formTitle = $submission->form_title;
+        $submission->delete();
+
+        return redirect()->route('counselor.forms.submitted')
+            ->with('success', "Form \"{$formTitle}\" has been deleted.");
+    }
+
     public function updateConcern(Request $request, Concern $concern)
     {
         $request->validate([
