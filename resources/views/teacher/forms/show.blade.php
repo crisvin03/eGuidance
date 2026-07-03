@@ -4,7 +4,6 @@
 @section('content')
 
 @php
-    $isReviewed = in_array($submission->status, ['reviewed', 'acknowledged']);
     $statusColor = match($submission->status) {
         'submitted'    => ['bg' => '#fef3c7', 'text' => '#92400e', 'border' => '#fbbf24'],
         'reviewed'     => ['bg' => '#eff6ff', 'text' => '#1e40af', 'border' => '#93c5fd'],
@@ -263,33 +262,26 @@
         </div>
 
         {{-- Print card --}}
-        <div class="card border-0 shadow-sm"
-             style="border-radius:16px;{{ $isReviewed ? 'border:2px solid #99f6e4 !important;' : '' }}">
+        <div class="card border-0 shadow-sm" style="border-radius:16px;border:2px solid #99f6e4 !important;">
             <div class="card-body p-4 text-center">
                 <div class="mb-3">
                     <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle"
-                         style="width:52px;height:52px;background:{{ $isReviewed ? 'rgba(32,178,170,0.12)' : '#fef3c7' }};">
-                        <i class="bi bi-printer fs-4" style="color:{{ $isReviewed ? '#20B2AA' : '#d97706' }};"></i>
+                         style="width:52px;height:52px;background:rgba(32,178,170,0.12);">
+                        <i class="bi bi-printer fs-4" style="color:#20B2AA;"></i>
                     </div>
                 </div>
-                @if($isReviewed)
-                    <h6 class="fw-bold mb-1">Print This Form</h6>
-                    <p class="text-muted small mb-3">Your form has been reviewed. You can now print it.</p>
-                    <button class="btn w-100 fw-semibold text-white"
-                            style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
-                            onclick="printStoredForm()">
-                        <i class="bi bi-printer me-1"></i> Print Form
-                    </button>
-                @else
-                    <h6 class="fw-bold mb-1">Awaiting Review</h6>
-                    <p class="text-muted small mb-0">Printing will be available once the counselor reviews this form.</p>
-                @endif
+                <h6 class="fw-bold mb-1">Print This Form</h6>
+                <p class="text-muted small mb-3">Print the official format of this form.</p>
+                <button class="btn w-100 fw-semibold text-white"
+                        style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                        onclick="printStoredForm()">
+                    <i class="bi bi-printer me-1"></i> Print Form
+                </button>
             </div>
         </div>
     </div>
 </div>
 
-@if($isReviewed)
 @include('partials.form-print-builder')
 
 <script>
@@ -306,6 +298,5 @@ function printStoredForm() {
     setTimeout(() => w.print(), 600);
 }
 </script>
-@endif
 
 @endsection

@@ -103,9 +103,15 @@
                                 {{ $submission->counselor_notes ? \Str::limit($submission->counselor_notes, 50) : '—' }}
                             </td>
                             <td class="py-3">
-                                <a href="{{ route('teacher.forms.submissions.show', $submission->id) }}"
-                                   class="btn btn-primary btn-sm py-1 px-2" style="font-size:.78rem;"><i class="bi bi-eye me-1"></i>View
-                                </a>
+                                <div class="d-flex gap-1">
+                                    <a href="{{ route('teacher.forms.submissions.show', $submission->id) }}"
+                                       class="btn btn-primary btn-sm py-1 px-2" style="font-size:.78rem;"><i class="bi bi-eye me-1"></i>View
+                                    </a>
+                                    <button type="button" class="btn btn-danger btn-sm py-1 px-2" style="font-size:.78rem;"
+                                        onclick="confirmDelete('{{ route('teacher.forms.submissions.destroy', $submission->id) }}', '{{ addslashes($submission->form_title) }}')">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     @empty
@@ -151,5 +157,43 @@
 .pagination .page-item.active .page-link { background: #20B2AA; border-color: #20B2AA; color: #fff; }
 .pagination .page-item.disabled .page-link { opacity: .5; }
 </style>
+
+{{-- Delete Confirmation Modal --}}
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content border-0" style="border-radius:20px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);">
+            <div class="modal-body text-center p-4">
+                <div class="mb-3">
+                    <div style="width:60px;height:60px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;">
+                        <i class="bi bi-trash3-fill text-danger fs-4"></i>
+                    </div>
+                </div>
+                <h6 class="fw-bold mb-1">Delete Form?</h6>
+                <p class="text-muted small mb-3">
+                    <strong id="deleteFormTitle" class="text-dark"></strong><br>
+                    This action cannot be undone.
+                </p>
+                <div class="d-flex gap-2 justify-content-center">
+                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
+                    <form id="deleteForm" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger btn-sm px-3">
+                            <i class="bi bi-trash me-1"></i> Delete
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function confirmDelete(url, title) {
+    document.getElementById('deleteForm').action = url;
+    document.getElementById('deleteFormTitle').textContent = title;
+    new bootstrap.Modal(document.getElementById('deleteModal')).show();
+}
+</script>
 
 @endsection

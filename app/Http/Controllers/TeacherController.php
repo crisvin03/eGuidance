@@ -287,6 +287,17 @@ class TeacherController extends Controller
         return view('teacher.forms.show', compact('submission'));
     }
 
+    public function destroyFormSubmission(\App\Models\TeacherFormSubmission $submission)
+    {
+        if ($submission->teacher_id !== Auth::id()) abort(403);
+
+        $formTitle = $submission->form_title;
+        $submission->delete();
+
+        return redirect()->route('teacher.forms.submissions')
+            ->with('success', "Form \"{$formTitle}\" has been deleted.");
+    }
+
     // ─── Case Tracking ────────────────────────────────────────────────────────
 
     public function caseTracking(Request $request)

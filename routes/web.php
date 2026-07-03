@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role:teacher'])->prefix('teacher')->name('teacher.')
     Route::post('/forms/submit', [App\Http\Controllers\TeacherController::class, 'submitForm'])->name('forms.submit');
     Route::get('/forms/my-submissions', [App\Http\Controllers\TeacherController::class, 'myFormSubmissions'])->name('forms.submissions');
     Route::get('/forms/my-submissions/{submission}', [App\Http\Controllers\TeacherController::class, 'showFormSubmission'])->name('forms.submissions.show');
+    Route::delete('/forms/my-submissions/{submission}', [App\Http\Controllers\TeacherController::class, 'destroyFormSubmission'])->name('forms.submissions.destroy');
     Route::get('/case-tracking', [App\Http\Controllers\TeacherController::class, 'caseTracking'])->name('case-tracking.index');
     Route::get('/intervention-guides', [App\Http\Controllers\TeacherController::class, 'interventionGuides'])->name('intervention-guides.index');
     Route::get('/talk-to-counselor', [App\Http\Controllers\TeacherController::class, 'talkToCounselor'])->name('talk-to-counselor');
