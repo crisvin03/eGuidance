@@ -31,9 +31,5 @@ class ConcernCategorySeeder extends Seeder
                 ['description' => $category['description'], 'is_active' => true]
             );
         }
-
-        // Remove any old categories that are no longer used
-        $validNames = array_column($categories, 'name');
-        ConcernCategory::whereNotIn('name', $validNames)->delete();
     }
 }
