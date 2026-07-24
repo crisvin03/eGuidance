@@ -13,7 +13,7 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-start gap-3 mb-3">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:45px;height:45px;min-width:45px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-award fs-5" style="color:#20B2AA;"></i>
+                        <i class="bi bi-award fs-5" style="color:#1e7a4a;"></i>
                     </div>
                     <div>
                         <h6 class="fw-bold mb-1">Good Moral Certificate Request</h6>
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="mt-auto pt-3 border-top">
-                    <button class="btn btn-sm text-white w-100 fw-semibold" style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                    <button class="btn btn-sm text-white w-100 fw-semibold" style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
                             onclick="openGoodMoralForm()">
                         <i class="bi bi-file-earmark-plus me-1"></i> Request Form
                     </button>
@@ -106,7 +106,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn text-white" style="background:#20B2AA;" onclick="generateGoodMoral()">
+                <button type="button" class="btn text-white" style="background:#1e7a4a;" onclick="generateGoodMoral()">
                     <i class="bi bi-printer me-1"></i> Generate & Print
                 </button>
             </div>

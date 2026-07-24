@@ -33,12 +33,12 @@
 @endphp
 
 <!-- Welcome Banner -->
-<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:16px;">
+<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:16px;">
     <div class="card-body p-4 text-white">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div>
                 <h4 class="fw-bold mb-1">Admin Dashboard 🛡️</h4>
-                <p class="mb-0 opacity-75">BNHS Care Corner Admin Dashboard &mdash; {{ now()->format('l, F d, Y') }}</p>
+                <p class="mb-0 opacity-75">BNHS Care Konek Admin Dashboard &mdash; {{ now()->format('l, F d, Y') }}</p>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <a href="{{ route('admin.users.create') }}" class="btn btn-light btn-sm fw-semibold">
@@ -59,9 +59,9 @@
             <div class="card-body text-center p-3">
                 <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
                      style="width:48px;height:48px;background:rgba(32,178,170,0.1);">
-                    <i class="bi bi-chat-dots-fill fs-5" style="color:#20B2AA;"></i>
+                    <i class="bi bi-chat-dots-fill fs-5" style="color:#1e7a4a;"></i>
                 </div>
-                <div class="fs-3 fw-bold" style="color:#20B2AA;">{{ $totalConcerns }}</div>
+                <div class="fs-3 fw-bold" style="color:#1e7a4a;">{{ $totalConcerns }}</div>
                 <div class="text-muted small">Total Concerns</div>
                 <div class="{{ $concernsChange >= 0 ? 'text-success' : 'text-danger' }}" style="font-size:0.75rem;">
                     <i class="bi bi-arrow-{{ $concernsChange >= 0 ? 'up' : 'down' }}"></i> {{ abs($concernsChange) }}% vs last month
@@ -167,14 +167,14 @@
 <!-- Quick Actions -->
 <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
     <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
-        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#20B2AA;"></i>Quick Actions</h6>
+        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#1e7a4a;"></i>Quick Actions</h6>
     </div>
     <div class="card-body px-4 pb-4">
         <div class="row g-3">
             <div class="col-6 col-md-3">
                 <a href="{{ route('admin.users.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-people-fill fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-people-fill fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Manage Users</div>
                     </div>
                 </a>
@@ -182,7 +182,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('admin.categories.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-tags-fill fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-tags-fill fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Categories</div>
                     </div>
                 </a>
@@ -190,7 +190,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('admin.reports.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-bar-chart-fill fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-bar-chart-fill fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Reports &amp; Analytics</div>
                     </div>
                 </a>
@@ -198,7 +198,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('admin.reports.export.full') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-download fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-download fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Export Full Report</div>
                     </div>
                 </a>
@@ -212,7 +212,7 @@
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
-                <h6 class="fw-bold mb-0"><i class="bi bi-graph-up me-2" style="color:#20B2AA;"></i>Monthly Concerns (Last 6 Months)</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-graph-up me-2" style="color:#1e7a4a;"></i>Monthly Concerns (Last 6 Months)</h6>
             </div>
             <div class="card-body px-4 pb-4">
                 <canvas id="monthlyChart" style="max-height:250px;"></canvas>
@@ -222,13 +222,13 @@
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
-                <h6 class="fw-bold mb-0"><i class="bi bi-pie-chart me-2" style="color:#20B2AA;"></i>Concerns by Category</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-pie-chart me-2" style="color:#1e7a4a;"></i>Concerns by Category</h6>
             </div>
             <div class="card-body px-4 pb-4">
                 <canvas id="categoryChart" style="max-height:220px;" class="mb-3"></canvas>
                 <div class="d-flex flex-column gap-1" style="font-size:0.78rem;">
                     @foreach($concernsByCategory->take(5) as $i => $row)
-                        @php $colors = ['#20B2AA','#3b82f6','#f59e0b','#22c55e','#ef4444','#8b5cf6','#ec4899']; @endphp
+                        @php $colors = ['#1e7a4a','#3b82f6','#f59e0b','#22c55e','#ef4444','#8b5cf6','#ec4899']; @endphp
                         <div class="d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center gap-2">
                                 <span class="rounded-circle d-inline-block" style="width:8px;height:8px;background:{{ $colors[$i % count($colors)] }};"></span>
@@ -248,7 +248,7 @@
     <div class="col-lg-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
-                <h6 class="fw-bold mb-0"><i class="bi bi-bar-chart me-2" style="color:#20B2AA;"></i>Incident Reports by Category</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-bar-chart me-2" style="color:#1e7a4a;"></i>Incident Reports by Category</h6>
             </div>
             <div class="card-body px-4 pb-4">
                 @forelse($incidentsByCategory as $row)
@@ -271,7 +271,7 @@
                             <small class="text-muted">{{ $row->total }}</small>
                         </div>
                         <div class="progress" style="height:6px;border-radius:4px;">
-                            <div class="progress-bar" style="width:{{ $pct }}%;background:#20B2AA;"></div>
+                            <div class="progress-bar" style="width:{{ $pct }}%;background:#1e7a4a;"></div>
                         </div>
                     </div>
                 @empty
@@ -286,7 +286,7 @@
     <div class="col-lg-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
-                <h6 class="fw-bold mb-0"><i class="bi bi-server me-2" style="color:#20B2AA;"></i>System Overview</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-server me-2" style="color:#1e7a4a;"></i>System Overview</h6>
             </div>
             <div class="card-body px-4 pb-4">
                 @php $totalUsers = App\Models\User::count(); @endphp
@@ -299,14 +299,14 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-database-fill me-1" style="color:#20B2AA;"></i>
+                        <i class="bi bi-database-fill me-1" style="color:#1e7a4a;"></i>
                         <span class="small fw-semibold">Database</span>
                     </div>
                     <span class="badge bg-success">Connected</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
                     <span class="small fw-semibold"><i class="bi bi-people me-2 text-muted"></i>Total Users</span>
-                    <span class="fw-bold" style="color:#20B2AA;">{{ $totalUsers }}</span>
+                    <span class="fw-bold" style="color:#1e7a4a;">{{ $totalUsers }}</span>
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
                     <span class="small fw-semibold"><i class="bi bi-calendar me-2 text-muted"></i>Today's Appointments</span>
@@ -318,7 +318,7 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-3">
                     <span class="small fw-semibold"><i class="bi bi-info-circle me-2 text-muted"></i>Version</span>
-                    <span class="badge" style="background:rgba(32,178,170,0.1);color:#20B2AA;">v1.0.0</span>
+                    <span class="badge" style="background:rgba(32,178,170,0.1);color:#1e7a4a;">v1.0.0</span>
                 </div>
             </div>
         </div>
@@ -327,7 +327,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <script>
-const accentColor = '#20B2AA';
+const accentColor = '#1e7a4a';
 new Chart(document.getElementById('monthlyChart'), {
     type: 'bar',
     data: {
@@ -354,7 +354,7 @@ new Chart(document.getElementById('categoryChart'), {
         labels: {!! json_encode($concernsByCategory->pluck('label')) !!},
         datasets: [{
             data: {!! json_encode($concernsByCategory->pluck('total')) !!},
-            backgroundColor: ['#20B2AA','#3b82f6','#f59e0b','#22c55e','#ef4444','#8b5cf6','#ec4899'],
+            backgroundColor: ['#1e7a4a','#3b82f6','#f59e0b','#22c55e','#ef4444','#8b5cf6','#ec4899'],
             borderWidth: 0
         }]
     },
@@ -364,6 +364,6 @@ new Chart(document.getElementById('categoryChart'), {
 
 <style>
 .quick-action-card { transition:all 0.2s ease; cursor:pointer; color:#334155; background:#f8fafc; }
-.quick-action-card:hover { background:rgba(32,178,170,0.06); border-color:#20B2AA !important; transform:translateY(-3px); box-shadow:0 8px 20px rgba(32,178,170,0.15); }
+.quick-action-card:hover { background:rgba(32,178,170,0.06); border-color:#1e7a4a !important; transform:translateY(-3px); box-shadow:0 8px 20px rgba(32,178,170,0.15); }
 </style>
 @endsection

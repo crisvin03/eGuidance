@@ -36,7 +36,7 @@
                     @foreach ($element as $page => $url)
                         @if ($page == $paginator->currentPage())
                             <li>
-                                <span style="display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:34px; padding:0 0.5rem; border-radius:8px; border:1px solid #20B2AA; background:linear-gradient(135deg,#20B2AA,#008B8B); color:#fff; font-size:0.8rem; font-weight:600;">
+                                <span style="display:inline-flex; align-items:center; justify-content:center; min-width:34px; height:34px; padding:0 0.5rem; border-radius:8px; border:1px solid #1e7a4a; background:linear-gradient(135deg,#1e7a4a,#145e38); color:#fff; font-size:0.8rem; font-weight:600;">
                                     {{ $page }}
                                 </span>
                             </li>

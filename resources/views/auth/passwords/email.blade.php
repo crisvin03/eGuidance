@@ -3,428 +3,338 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Forgot Password - BNHS Care Corner</title>
-    
+    <title>Forgot Password - BNHS Care Konek</title>
+
     @vite(['resources/css/app.css'])
-    
+
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
-    
+
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
             font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #3d7a7a 100%);
             position: relative;
-            overflow-y: auto;
-            padding: 1.5rem 0;
-        }
-        
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: 
-                radial-gradient(circle at 80% 20%, rgba(255,180,120,0.15) 0%, transparent 40%),
-                radial-gradient(circle at 20% 80%, rgba(255,200,150,0.1) 0%, transparent 50%);
-            pointer-events: none;
-        }
-        
-        .reset-container {
-            display: flex;
-            width: 900px;
-            max-width: 95vw;
-            min-height: 500px;
-            background: white;
-            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 25px 80px rgba(0,0,0,0.3);
-            position: relative;
-            z-index: 1;
+            background: #e8f0f7;
         }
-        
-        .brand-panel {
-            flex: 1;
-            background: linear-gradient(180deg, #20B2AA 0%, #008B8B 100%);
-            color: white;
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            position: relative;
+
+        .bg-photo {
+            position: absolute;
+            inset: 0;
+            background: url('{{ asset("background1.png") }}') center / cover no-repeat;
+            z-index: 0;
         }
-        
-        .brand-panel::before {
+        .bg-photo::after {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(circle at 30% 70%, rgba(255,200,150,0.2) 0%, transparent 50%);
-            pointer-events: none;
+            inset: 0;
+            background: rgba(220, 235, 248, 0.45);
         }
-        
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(120deg); }
-            66% { transform: translate(-20px, 20px) rotate(240deg); }
+
+        .dot-grid {
+            position: absolute;
+            z-index: 1;
+            opacity: .55;
+            background-image: radial-gradient(circle, #a0b4cc 1px, transparent 1px);
+            background-size: 18px 18px;
         }
-        
-        .brand-logo {
+        .dot-grid-tl { width: 140px; height: 160px; top: 6%; left: 2%; }
+        .dot-grid-br { width: 140px; height: 160px; bottom: 6%; right: 2%; }
+
+        .wave-blob { position: absolute; z-index: 1; }
+        .wave-blue {
+            width: 420px; height: 220px;
+            bottom: -40px; left: -60px;
+            background: linear-gradient(135deg, rgba(100,160,220,.55) 0%, rgba(140,190,240,.35) 100%);
+            border-radius: 60% 40% 50% 50% / 40% 50% 50% 60%;
+        }
+        .wave-gold {
+            width: 200px; height: 130px;
+            bottom: -20px; right: 8%;
+            background: linear-gradient(135deg, rgba(245,197,24,.75) 0%, rgba(255,210,60,.55) 100%);
+            border-radius: 50% 50% 40% 60% / 60% 40% 60% 40%;
+        }
+
+        .leaf {
+            position: absolute; z-index: 2;
+            opacity: .7; font-size: 5rem;
+            color: rgba(80,160,100,.5);
+            pointer-events: none; user-select: none;
+        }
+        .leaf-left  { bottom: 18%; left: 6%; transform: rotate(-20deg); }
+        .leaf-right { bottom: 18%; right: 6%; transform: rotate(15deg) scaleX(-1); }
+
+        /* ── CARD ── */
+        .reset-container {
+            position: relative;
+            z-index: 10;
             display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
+            width: min(860px, 94vw);
+            background: #fff;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 24px 70px rgba(10,40,80,.18), 0 4px 16px rgba(10,40,80,.08);
         }
-        
-        .brand-logo img {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: white;
-            padding: 8px;
-        }
-        
-        .brand-logo-text h2 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
-            letter-spacing: 2px;
-        }
-        
-        .brand-logo-text p {
-            font-size: 0.7rem;
-            margin: 0;
-            opacity: 0.9;
-            letter-spacing: 0.5px;
-        }
-        
-        .brand-heading {
-            font-size: 2rem;
-            font-weight: 600;
-            line-height: 1.3;
-            margin-bottom: 1rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .brand-description {
-            font-size: 1rem;
-            opacity: 0.9;
-            line-height: 1.6;
-            margin-bottom: 2rem;
-            position: relative;
-            z-index: 1;
-        }
-        
-        .brand-features {
-            margin-top: 2rem;
+
+        /* ── LEFT BRAND PANEL ── */
+        .brand-panel {
+            flex: 0 0 42%;
+            background: linear-gradient(170deg, #f4f9f4 0%, #e8f5ec 60%, #d4eeda 100%);
+            padding: 2.75rem 2.25rem 0;
             display: flex;
             flex-direction: column;
-            gap: 0.8rem;
             position: relative;
-            z-index: 1;
+            overflow: hidden;
         }
-        
-        .brand-features li {
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
-            font-size: 0.9rem;
+
+        .brand-wave {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            height: 90px; overflow: hidden;
         }
-        
-        .brand-features i {
-            font-size: 1.2rem;
-            opacity: 0.9;
+        .brand-wave svg { width: 100%; height: 100%; }
+
+        .brand-logo {
+            display: flex; align-items: center;
+            gap: .85rem; margin-bottom: 1.6rem;
         }
-        
+        .brand-logo img {
+            width: 52px; height: 52px;
+            border-radius: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,.12);
+        }
+        .brand-logo-name { font-size: 1.3rem; font-weight: 700; color: #0d2d52; line-height: 1.1; }
+        .brand-logo-sub  { font-size: .62rem; font-weight: 700; letter-spacing: 1.2px; text-transform: uppercase; color: #1e7a4a; }
+
+        .brand-divider { width: 38px; height: 3px; background: #1e7a4a; border-radius: 3px; margin-bottom: 1.4rem; }
+
+        .brand-heading { font-size: 1.75rem; font-weight: 700; color: #0d2d52; line-height: 1.2; margin-bottom: .85rem; }
+        .brand-heading span { color: #1e7a4a; }
+
+        .brand-desc { font-size: .87rem; color: #475569; line-height: 1.65; margin-bottom: 1.75rem; }
+
+        .brand-features { display: flex; flex-direction: column; gap: .9rem; margin-bottom: 6rem; }
+        .brand-feature  { display: flex; align-items: flex-start; gap: .85rem; }
+        .bf-icon {
+            width: 38px; height: 38px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; flex-shrink: 0;
+        }
+        .bf-icon.green { background: rgba(30,122,74,.12); color: #1e7a4a; }
+        .bf-icon.blue  { background: rgba(46,123,207,.12); color: #2e7bcf; }
+        .bf-icon.gold  { background: rgba(245,197,24,.20); color: #c8960a; }
+        .bf-icon.teal  { background: rgba(32,178,170,.12); color: #0e9e97; }
+        .bf-title { font-size: .88rem; font-weight: 700; color: #1e293b; line-height: 1.2; }
+        .bf-sub   { font-size: .78rem; color: #64748b; margin-top: .1rem; }
+
+        /* ── RIGHT PANEL ── */
         .reset-panel {
             flex: 1;
-            padding: 3rem;
+            padding: 2.75rem 2.5rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
-            position: relative;
         }
-        
-        .back-link {
-            position: absolute;
-            top: 1.5rem;
-            left: 2.5rem;
-            color: #64748b;
-            text-decoration: none;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: color 0.3s ease;
+
+        .reset-title { font-size: 1.9rem; font-weight: 700; color: #0d2d52; margin-bottom: .3rem; }
+        .reset-title::after {
+            content: ''; display: block;
+            width: 42px; height: 3px;
+            background: #1e7a4a; border-radius: 3px; margin-top: .45rem;
         }
-        
-        .back-link:hover {
-            color: #1a3a3a;
+        .reset-subtitle { font-size: .88rem; color: #64748b; margin-top: .65rem; margin-bottom: 1.75rem; }
+
+        /* Alert */
+        .alert {
+            padding: .85rem 1rem;
+            border-radius: 10px;
+            margin-bottom: 1.4rem;
+            font-size: .88rem;
+            display: flex; align-items: center; gap: .75rem;
         }
-        
-        .reset-title {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: #2C3E50;
-            margin-bottom: 0.5rem;
-        }
-        
-        .reset-subtitle {
-            color: #666;
-            margin-bottom: 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-label {
-            display: block;
-            font-weight: 500;
-            color: #2C3E50;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-        }
-        
+        .alert-success { background: #f0fdf4; color: #166534; border: 1px solid #bbf7d0; }
+        .alert-success i { color: #22c55e; font-size: 1.1rem; }
+
+        .form-group { margin-bottom: 1.2rem; }
+        .form-label { display: block; font-size: .85rem; font-weight: 600; color: #1e293b; margin-bottom: .45rem; }
+
+        .input-wrap { position: relative; display: flex; align-items: center; }
+        .input-icon { position: absolute; left: .95rem; font-size: 1rem; color: #1e7a4a; pointer-events: none; }
         .form-input {
             width: 100%;
-            padding: 0.9rem 1rem;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #f8f9fa;
+            padding: .75rem 1rem .75rem 2.6rem;
+            border: 1.5px solid #d1dbe8;
+            border-radius: 10px;
+            font-size: .93rem; font-family: inherit;
+            background: #fff; color: #1e293b;
+            transition: border-color .25s, box-shadow .25s;
         }
-        
-        .form-input:focus {
-            outline: none;
-            border-color: #20B2AA;
-            background: white;
-            box-shadow: 0 0 0 4px rgba(32,178,170,0.1);
-        }
-        
-        .form-input.is-invalid {
-            border-color: #e74c3c;
-            background: #fef2f2;
-        }
-        
-        .invalid-feedback {
-            color: #e74c3c;
-            font-size: 0.85rem;
-            margin-top: 0.4rem;
-            display: block;
-        }
-        
-        .alert {
-            padding: 0.875rem 1rem;
-            border-radius: 12px;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-        
-        .alert-success {
-            background: #f0fdf4;
-            color: #166534;
-            border: 1px solid #bbf7d0;
-        }
-        
-        .alert-success i {
-            color: #22c55e;
-        }
-        
+        .form-input::placeholder { color: #a0aec0; }
+        .form-input:focus { outline: none; border-color: #1e7a4a; box-shadow: 0 0 0 3px rgba(30,122,74,.12); }
+        .form-input.is-invalid { border-color: #e74c3c; }
+        .invalid-feedback { color: #e74c3c; font-size: .82rem; margin-top: .35rem; display: block; }
+
         .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
+            width: 100%; padding: .85rem;
+            background: #1e7a4a; color: #fff;
+            border: none; border-radius: 10px;
+            font-size: .97rem; font-weight: 700; font-family: inherit;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(32,178,170,0.3);
+            display: flex; align-items: center; justify-content: center; gap: .55rem;
+            transition: background .25s, transform .2s, box-shadow .25s;
+            box-shadow: 0 4px 16px rgba(30,122,74,.3);
         }
-        
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(32,178,170,0.4);
+        .submit-btn:hover { background: #145e38; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(30,122,74,.38); }
+
+        .or-divider {
+            display: flex; align-items: center; gap: .85rem;
+            margin: 1.2rem 0; color: #94a3b8; font-size: .82rem;
         }
-        
-        .login-link {
-            text-align: center;
-            margin-top: 1.5rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid #eee;
-            color: #666;
-            font-size: 0.9rem;
-        }
-        
-        .login-link a {
-            color: #20B2AA;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.3s ease;
-        }
-        
-        .login-link a:hover {
-            color: #008B8B;
-        }
-        
-        /* Mobile Responsive */
+        .or-divider::before, .or-divider::after { content: ''; flex: 1; height: 1px; background: #e2e8f0; }
+
+        .login-link { text-align: center; font-size: .88rem; color: #475569; }
+        .login-link a { color: #1e7a4a; text-decoration: none; font-weight: 700; transition: color .2s; }
+        .login-link a:hover { color: #145e38; }
+
+        /* ── MOBILE ── */
         @media (max-width: 768px) {
-            body { align-items: center; justify-content: center; padding: 0; overflow: hidden; }
-            .reset-container {
-                flex-direction: column; width: 100%; max-width: 100%; height: 100vh;
-                border-radius: 0; margin: 0; overflow: hidden;
-            }
-            .brand-panel {
-                flex: 0 0 auto; padding: 1.5rem 2rem;
-                display: flex; flex-direction: column;
-                align-items: center; justify-content: center;
-                text-align: center; min-height: auto;
-            }
-            .brand-logo { justify-content: center; margin-bottom: .5rem; }
-            .brand-logo img { width: 42px; height: 42px; }
-            .brand-logo-text h2 { font-size: 1.25rem; }
-            .brand-logo-text p  { font-size: .62rem; }
-            .brand-heading { font-size: 1rem; font-weight: 600; margin-bottom: .75rem; }
-            .brand-description { display: none; }
-            /* Show all 4 features as vertical pills */
-            .brand-features {
-                margin-top: 0;
-                flex-direction: column;
+            body {
+                min-height: 100vh;
+                padding: 2.5rem 1.25rem 3rem;
+                overflow-y: auto;
                 align-items: center;
-                gap: .45rem;
+                justify-content: center;
+                background: linear-gradient(160deg, #d4ede8 0%, #cce8f4 60%, #d6eee6 100%);
             }
-            .brand-features li {
-                font-size: .78rem; font-weight: 500;
-                background: rgba(255,255,255,.18);
-                padding: .45rem 1.25rem; border-radius: 50px; gap: .4rem;
-                width: fit-content;
-            }
-            .brand-features i { font-size: .9rem; }
-            .reset-panel {
-                flex: 1; padding: 1.5rem 1.75rem 1.25rem;
-                overflow: hidden; display: flex; flex-direction: column; justify-content: center;
-            }
-            .back-link { display: none !important; }
-            .reset-title { font-size: 1.35rem; }
-            .reset-subtitle { margin-bottom: 1.25rem; }
-            .form-group { margin-bottom: 1rem; }
-            .form-input { padding: .75rem .9rem; font-size: .95rem; }
-            .login-link { margin-top: 1rem; padding-top: 1rem; }
+            .bg-photo, .dot-grid, .wave-blob, .leaf { display: none; }
+            .reset-container { flex-direction: column; width: 100%; max-width: 420px; margin: 0 auto; border-radius: 24px; box-shadow: 0 8px 40px rgba(13,45,82,.14), 0 2px 10px rgba(13,45,82,.08); }
+            .brand-panel { display: none; }
+            .reset-panel { padding: 2.25rem 1.75rem 2rem; }
         }
         @media (max-width: 480px) {
-            .reset-panel { padding: 1.25rem; }
+            body { padding: 1.5rem 1rem 2.5rem; }
+            .reset-panel { padding: 2rem 1.25rem 1.75rem; }
         }
     </style>
 </head>
 <body>
+
+    <div class="bg-photo"></div>
+    <div class="dot-grid dot-grid-tl"></div>
+    <div class="dot-grid dot-grid-br"></div>
+    <div class="wave-blob wave-blue"></div>
+    <div class="wave-blob wave-gold"></div>
+    <div class="leaf leaf-left"><i class="bi bi-flower1"></i></div>
+    <div class="leaf leaf-right"><i class="bi bi-flower1"></i></div>
+
     <div class="reset-container">
-        <!-- Brand Panel -->
+
+        {{-- LEFT BRAND PANEL --}}
         <div class="brand-panel">
             <div class="brand-logo">
-                <img src="{{ asset('logo.png') }}" alt="BNHS Care Corner">
-                <div class="brand-logo-text">
-                    <h2>Care Corner</h2>
-                    <p>BNHS Guidance & Support</p>
+                <img src="{{ asset('logo.png') }}" alt="BNHS Care Konek">
+                <div>
+                    <div class="brand-logo-name">Care Konek</div>
+                    <div class="brand-logo-sub">BNHS Referral &amp; Case Management</div>
                 </div>
             </div>
-            
-            <h1 class="brand-heading">Forgot Password?</h1>
-            <p class="brand-description">
-                No worries! Enter your email address and we'll send you a link to reset your password.
+
+            <div class="brand-divider"></div>
+
+            <h2 class="brand-heading">Forgot Your <span>Password?</span></h2>
+            <p class="brand-desc">
+                No worries! Enter your email and we'll send you a secure link to reset your password.
             </p>
-            
-            <ul class="brand-features">
-                <li>
-                    <i class="bi bi-shield-check"></i>
-                    <span>Secure Password Reset</span>
-                </li>
-                <li>
-                    <i class="bi bi-envelope-check"></i>
-                    <span>Instant Email Delivery</span>
-                </li>
-                <li>
-                    <i class="bi bi-clock-history"></i>
-                    <span>Link Valid for 60 Minutes</span>
-                </li>
-                <li>
-                    <i class="bi bi-headset"></i>
-                    <span>24/7 Support Available</span>
-                </li>
-            </ul>
+
+            <div class="brand-features">
+                <div class="brand-feature">
+                    <div class="bf-icon green"><i class="bi bi-shield-lock"></i></div>
+                    <div>
+                        <div class="bf-title">Secure Reset</div>
+                        <div class="bf-sub">Your account stays protected.</div>
+                    </div>
+                </div>
+                <div class="brand-feature">
+                    <div class="bf-icon blue"><i class="bi bi-envelope-check"></i></div>
+                    <div>
+                        <div class="bf-title">Instant Email Delivery</div>
+                        <div class="bf-sub">Check your inbox right away.</div>
+                    </div>
+                </div>
+                <div class="brand-feature">
+                    <div class="bf-icon gold"><i class="bi bi-clock-history"></i></div>
+                    <div>
+                        <div class="bf-title">Link Valid 60 Minutes</div>
+                        <div class="bf-sub">Use it before it expires.</div>
+                    </div>
+                </div>
+                <div class="brand-feature">
+                    <div class="bf-icon teal"><i class="bi bi-headset"></i></div>
+                    <div>
+                        <div class="bf-title">24/7 Support</div>
+                        <div class="bf-sub">We're here if you need help.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="brand-wave">
+                <svg viewBox="0 0 400 90" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0,40 C80,80 160,0 240,50 C320,100 360,30 400,50 L400,90 L0,90 Z"
+                          fill="rgba(100,160,220,0.35)"/>
+                    <path d="M0,60 C60,20 140,80 220,40 C300,0 360,60 400,40 L400,90 L0,90 Z"
+                          fill="rgba(100,160,220,0.20)"/>
+                </svg>
+            </div>
         </div>
-        
-        <!-- Reset Panel -->
+
+        {{-- RIGHT PANEL --}}
         <div class="reset-panel">
-            <a href="{{ route('login') }}" class="back-link">
-                <i class="bi bi-arrow-left"></i>
-                Back to Login
-            </a>
-            
-            <h2 class="reset-title">Reset Password</h2>
+            <h1 class="reset-title">Reset Password</h1>
             <p class="reset-subtitle">We'll send reset instructions to your email</p>
-            
+
             @if (session('status'))
                 <div class="alert alert-success">
                     <i class="bi bi-check-circle-fill"></i>
                     {{ session('status') }}
                 </div>
             @endif
-            
+
             <form method="POST" action="{{ route('password.email') }}">
                 @csrf
-                
+
                 <div class="form-group">
                     <label for="email" class="form-label">Email Address</label>
-                    <input id="email" type="email" 
-                           class="form-input @error('email') is-invalid @enderror" 
-                           name="email" 
-                           value="{{ old('email') }}" 
-                           required 
-                           autocomplete="email" 
-                           autofocus 
-                           placeholder="your.email@example.com">
+                    <div class="input-wrap">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <input id="email" type="email"
+                               class="form-input @error('email') is-invalid @enderror"
+                               name="email" value="{{ old('email') }}"
+                               required autocomplete="email" autofocus
+                               placeholder="your.email@example.com">
+                    </div>
                     @error('email')
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $message }}</strong>
-                        </span>
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
                     @enderror
                 </div>
-                
+
                 <button type="submit" class="submit-btn">
-                    <i class="bi bi-send"></i>
-                    Send Reset Link
+                    <i class="bi bi-send"></i> Send Reset Link
                 </button>
             </form>
-            
+
+            <div class="or-divider">or</div>
             <div class="login-link">
-                Remember your password? 
-                <a href="{{ route('login') }}">Sign In</a>
+                Remember your password? <a href="{{ route('login') }}">Sign In</a>
             </div>
         </div>
+
     </div>
+
 </body>
 </html>

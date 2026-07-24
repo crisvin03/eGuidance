@@ -11,6 +11,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+// Pending approval page (public, no auth required)
+Route::get('/approval-pending', fn() => view('auth.approval-pending'))->name('approval.pending');
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -74,6 +77,10 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/forms/submitted/{submission}', [CounselorController::class, 'showSubmittedForm'])->name('forms.submitted.show');
     Route::post('/forms/submitted/{submission}/review', [CounselorController::class, 'reviewForm'])->name('forms.submitted.review');
     Route::delete('/forms/submitted/{submission}', [CounselorController::class, 'destroySubmission'])->name('forms.submitted.destroy');
+    // Account approvals
+    Route::get('/pending-accounts', [CounselorController::class, 'pendingAccounts'])->name('pending-accounts');
+    Route::post('/pending-accounts/{user}/approve', [CounselorController::class, 'approveAccount'])->name('pending-accounts.approve');
+    Route::delete('/pending-accounts/{user}/reject', [CounselorController::class, 'rejectAccount'])->name('pending-accounts.reject');
 });
 
 // Teacher routes

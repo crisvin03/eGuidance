@@ -128,7 +128,7 @@
                     {{-- Step 1 --}}
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center justify-content-center rounded-circle"
-                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['scheduled','confirmed','completed']) ? 'linear-gradient(135deg,#20B2AA,#008B8B)' : '#e2e8f0' }};">
+                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['scheduled','confirmed','completed']) ? 'linear-gradient(135deg,#1e7a4a,#145e38)' : '#e2e8f0' }};">
                             <i class="bi bi-send-fill" style="font-size:.65rem;color:{{ in_array($appointment->status, ['scheduled','confirmed','completed']) ? '#fff' : '#94a3b8' }};"></i>
                         </div>
                         <div>
@@ -139,12 +139,12 @@
                         </div>
                     </div>
 
-                    <div style="width:2px;height:20px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? 'linear-gradient(#20B2AA,#20B2AA)' : '#e2e8f0' }};margin-left:13px;"></div>
+                    <div style="width:2px;height:20px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? 'linear-gradient(#1e7a4a,#1e7a4a)' : '#e2e8f0' }};margin-left:13px;"></div>
 
                     {{-- Step 2 --}}
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center justify-content-center rounded-circle"
-                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? 'linear-gradient(135deg,#20B2AA,#008B8B)' : '#e2e8f0' }};">
+                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? 'linear-gradient(135deg,#1e7a4a,#145e38)' : '#e2e8f0' }};">
                             <i class="bi bi-check-circle-fill" style="font-size:.65rem;color:{{ in_array($appointment->status, ['confirmed','completed']) ? '#fff' : '#94a3b8' }};"></i>
                         </div>
                         <div>
@@ -161,7 +161,7 @@
                         </div>
                     </div>
 
-                    <div style="width:2px;height:20px;background:{{ $appointment->status === 'completed' ? 'linear-gradient(#20B2AA,#20B2AA)' : '#e2e8f0' }};margin-left:13px;"></div>
+                    <div style="width:2px;height:20px;background:{{ $appointment->status === 'completed' ? 'linear-gradient(#1e7a4a,#1e7a4a)' : '#e2e8f0' }};margin-left:13px;"></div>
 
                     {{-- Step 3 --}}
                     <div class="d-flex align-items-center gap-3">

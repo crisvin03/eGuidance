@@ -6,7 +6,7 @@
 <style>
 .user-avatar-sm {
     width:32px;height:32px;font-size:0.75rem;
-    background:linear-gradient(135deg,#20B2AA,#008B8B);
+    background:linear-gradient(135deg,#1e7a4a,#145e38);
     border-radius:50%;display:flex;align-items:center;
     justify-content:center;color:white;font-weight:600;
     flex-shrink:0;
@@ -18,7 +18,7 @@
             <h5 class="fw-bold mb-1">User Management</h5>
             <small class="text-muted">Manage all user accounts, roles, and access levels.</small>
         </div>
-        <a href="{{ route('admin.users.create') }}" class="btn btn-sm text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+        <a href="{{ route('admin.users.create') }}" class="btn btn-sm text-white" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
             <i class="bi bi-plus-circle me-1"></i> Add New User
         </a>
     </div>
@@ -52,7 +52,7 @@
             </select>
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+            <button type="submit" class="btn w-100 text-white" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                 <i class="bi bi-funnel me-1"></i> Filter
             </button>
         </div>
@@ -163,7 +163,7 @@
             <p class="text-muted">No users match your filters. <a href="{{ route('admin.users.index') }}">Clear filters</a></p>
         @else
             <p class="text-muted">Get started by creating your first user account.</p>
-            <a href="{{ route('admin.users.create') }}" class="btn text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+            <a href="{{ route('admin.users.create') }}" class="btn text-white" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                 <i class="bi bi-plus-circle me-1"></i> Create First User
             </a>
         @endif

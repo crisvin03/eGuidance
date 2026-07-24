@@ -28,7 +28,7 @@
             </select>
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+            <button type="submit" class="btn w-100 text-white" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                 <i class="bi bi-funnel me-1"></i>Filter
             </button>
         </div>
@@ -48,7 +48,7 @@
                 <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
                     <div class="card-body p-4 d-flex flex-column">
                         <div class="d-flex align-items-start gap-2 mb-2">
-                            <i class="bi {{ $guide->category_icon }} fs-5 mt-1" style="color:#20B2AA;"></i>
+                            <i class="bi {{ $guide->category_icon }} fs-5 mt-1" style="color:#1e7a4a;"></i>
                             <h6 class="fw-semibold mb-0">{{ $guide->title }}</h6>
                         </div>
                         @if($guide->description)
@@ -63,7 +63,7 @@
                         <div class="mt-auto pt-2 d-flex gap-2">
                             @if($guide->file_path)
                                 <a href="{{ asset('storage/' . $guide->file_path) }}" target="_blank"
-                                   class="btn btn-sm text-white flex-fill" style="background:#20B2AA;">
+                                   class="btn btn-sm text-white flex-fill" style="background:#1e7a4a;">
                                     <i class="bi bi-download me-1"></i>Download
                                 </a>
                             @else
@@ -112,7 +112,7 @@
                             </div>
                         </div>
                         <div class="mt-auto pt-2">
-                            <button type="button" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                            <button type="button" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                                 <i class="bi bi-book me-1"></i>Read Full Guide
                             </button>
                         </div>
@@ -535,10 +535,10 @@
                         <div class="mb-4">
                             <h6 class="fw-bold mb-2" style="color:#27ae60;"><i class="bi bi-globe me-2"></i>Free Online Resources</h6>
                             <div class="row g-2">
-                                <div class="col-md-6"><a href="https://e-tesda.gov.ph" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#20B2AA,#008B8B);"><i class="bi bi-box-arrow-up-right me-1"></i>TESDA Online Program</a></div>
-                                <div class="col-md-6"><a href="https://www.mynextmove.org/explore/ip" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#20B2AA,#008B8B);"><i class="bi bi-box-arrow-up-right me-1"></i>O*NET Career Interest Tool</a></div>
-                                <div class="col-md-6"><a href="https://deped.gov.ph/k-to-12/senior-high-school/" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#20B2AA,#008B8B);"><i class="bi bi-box-arrow-up-right me-1"></i>DepEd SHS Guide</a></div>
-                                <div class="col-md-6"><a href="https://www.16personalities.com" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#20B2AA,#008B8B);"><i class="bi bi-box-arrow-up-right me-1"></i>16Personalities Free Test</a></div>
+                                <div class="col-md-6"><a href="https://e-tesda.gov.ph" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#1e7a4a,#145e38);"><i class="bi bi-box-arrow-up-right me-1"></i>TESDA Online Program</a></div>
+                                <div class="col-md-6"><a href="https://www.mynextmove.org/explore/ip" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#1e7a4a,#145e38);"><i class="bi bi-box-arrow-up-right me-1"></i>O*NET Career Interest Tool</a></div>
+                                <div class="col-md-6"><a href="https://deped.gov.ph/k-to-12/senior-high-school/" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#1e7a4a,#145e38);"><i class="bi bi-box-arrow-up-right me-1"></i>DepEd SHS Guide</a></div>
+                                <div class="col-md-6"><a href="https://www.16personalities.com" target="_blank" class="btn btn-sm text-white w-100" style="background:linear-gradient(135deg,#1e7a4a,#145e38);"><i class="bi bi-box-arrow-up-right me-1"></i>16Personalities Free Test</a></div>
                             </div>
                         </div>
                     </div>
@@ -562,7 +562,7 @@
 <hr class="my-5" style="border-color:rgba(32,178,170,0.2);">
 
 <div class="mb-4">
-    <h5 class="fw-bold mb-1"><i class="bi bi-globe2 me-2" style="color:#20B2AA;"></i>Online Resources</h5>
+    <h5 class="fw-bold mb-1"><i class="bi bi-globe2 me-2" style="color:#1e7a4a;"></i>Online Resources</h5>
     <small class="text-muted">Curated online resources for guidance counseling, mental health support, and student intervention strategies.</small>
 </div>
 
@@ -576,12 +576,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-mortarboard" style="color:#20B2AA;"></i>
+                        <i class="bi bi-mortarboard" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">DepEd Learning Portal</h6>
                 </div>
                 <p class="text-muted small mb-3">Official DepEd portal with training modules, learning resources, and policy guidelines for educators.</p>
-                <a href="https://lrmds.deped.gov.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://lrmds.deped.gov.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -592,12 +592,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-shield-check" style="color:#20B2AA;"></i>
+                        <i class="bi bi-shield-check" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">DepEd Child Protection Policy</h6>
                 </div>
                 <p class="text-muted small mb-3">DepEd Order No. 40 s. 2012 - Child Protection Policy and related guidelines for school personnel.</p>
-                <a href="https://www.deped.gov.ph/category/issuances/deped-orders/" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.deped.gov.ph/category/issuances/deped-orders/" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -608,12 +608,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-heart-pulse" style="color:#20B2AA;"></i>
+                        <i class="bi bi-heart-pulse" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">DOH National Mental Health Program</h6>
                 </div>
                 <p class="text-muted small mb-3">Department of Health resources on mental health awareness, programs, and helplines in the Philippines.</p>
-                <a href="https://doh.gov.ph/national-mental-health-program" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://doh.gov.ph/national-mental-health-program" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -631,12 +631,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-telephone" style="color:#20B2AA;"></i>
+                        <i class="bi bi-telephone" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">NCMH Crisis Hotline</h6>
                 </div>
                 <p class="text-muted small mb-3">National Center for Mental Health 24/7 crisis hotline (0917-899-8727) and mental health support services.</p>
-                <a href="https://ncmh.gov.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://ncmh.gov.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -647,12 +647,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-chat-heart" style="color:#20B2AA;"></i>
+                        <i class="bi bi-chat-heart" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">MindNation Philippines</h6>
                 </div>
                 <p class="text-muted small mb-3">Mental wellness platform offering teletherapy, peer support, and wellness tools for Filipino communities.</p>
-                <a href="https://www.mindnation.com" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.mindnation.com" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -663,12 +663,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-journal-medical" style="color:#20B2AA;"></i>
+                        <i class="bi bi-journal-medical" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">Philippine Mental Health Association</h6>
                 </div>
                 <p class="text-muted small mb-3">PMHA provides mental health services, counseling, and educational programs for awareness and prevention.</p>
-                <a href="https://www.pmha.org.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.pmha.org.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -686,12 +686,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-diagram-3" style="color:#20B2AA;"></i>
+                        <i class="bi bi-diagram-3" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">PBIS World</h6>
                 </div>
                 <p class="text-muted small mb-3">Positive Behavioral Interventions & Supports - free resources for Tier 1, 2, and 3 interventions in schools.</p>
-                <a href="https://www.pbisworld.com" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.pbisworld.com" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -702,12 +702,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-lightbulb" style="color:#20B2AA;"></i>
+                        <i class="bi bi-lightbulb" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">Intervention Central</h6>
                 </div>
                 <p class="text-muted small mb-3">Free tools and resources for RTI/MTSS including academic and behavioral intervention strategies for educators.</p>
-                <a href="https://www.interventioncentral.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.interventioncentral.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -718,12 +718,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-person-check" style="color:#20B2AA;"></i>
+                        <i class="bi bi-person-check" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">Understood.org</h6>
                 </div>
                 <p class="text-muted small mb-3">Resources for educators supporting students with learning and thinking differences including ADHD and dyslexia.</p>
-                <a href="https://www.understood.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.understood.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -741,12 +741,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-briefcase" style="color:#20B2AA;"></i>
+                        <i class="bi bi-briefcase" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">TESDA Online Program</h6>
                 </div>
                 <p class="text-muted small mb-3">Free online courses for technical-vocational education to help students explore career pathways and skills training.</p>
-                <a href="https://e-tesda.gov.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://e-tesda.gov.ph" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -757,12 +757,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-book" style="color:#20B2AA;"></i>
+                        <i class="bi bi-book" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">Coursera for Campus</h6>
                 </div>
                 <p class="text-muted small mb-3">Free professional development courses and certifications from top universities for career readiness programs.</p>
-                <a href="https://www.coursera.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.coursera.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -773,12 +773,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-compass" style="color:#20B2AA;"></i>
+                        <i class="bi bi-compass" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">O*NET Interest Profiler</h6>
                 </div>
                 <p class="text-muted small mb-3">Free career interest assessment tool that helps students discover occupations matching their interests and strengths.</p>
-                <a href="https://www.mynextmove.org/explore/ip" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.mynextmove.org/explore/ip" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -796,12 +796,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-hand-thumbs-up" style="color:#20B2AA;"></i>
+                        <i class="bi bi-hand-thumbs-up" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">StopBullying.gov</h6>
                 </div>
                 <p class="text-muted small mb-3">Comprehensive resource on bullying prevention with training modules, classroom activities, and intervention strategies.</p>
-                <a href="https://www.stopbullying.gov" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.stopbullying.gov" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -812,12 +812,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-pc-display" style="color:#20B2AA;"></i>
+                        <i class="bi bi-pc-display" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">Common Sense Education</h6>
                 </div>
                 <p class="text-muted small mb-3">Digital citizenship resources, cyberbullying prevention lessons, and online safety tools for school use.</p>
-                <a href="https://www.commonsense.org/education" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.commonsense.org/education" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -828,12 +828,12 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-center gap-2 mb-2">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:36px;height:36px;background:rgba(32,178,170,0.1);">
-                        <i class="bi bi-people-fill" style="color:#20B2AA;"></i>
+                        <i class="bi bi-people-fill" style="color:#1e7a4a;"></i>
                     </div>
                     <h6 class="fw-semibold mb-0">KidSmart Philippines</h6>
                 </div>
                 <p class="text-muted small mb-3">Philippine-based child safety program with resources on online safety, anti-bullying, and responsible digital use.</p>
-                <a href="https://www.stairwayfoundation.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                <a href="https://www.stairwayfoundation.org" target="_blank" class="btn btn-sm text-white mt-auto" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-box-arrow-up-right me-1"></i>Visit Site
                 </a>
             </div>
@@ -844,41 +844,41 @@
 <!-- Helpful Hotlines Quick Reference -->
 <div class="card border-0 shadow-sm mt-4" style="border-radius:16px;background:linear-gradient(135deg,rgba(32,178,170,0.05),rgba(0,139,139,0.05));">
     <div class="card-body p-4">
-        <h6 class="fw-bold mb-3"><i class="bi bi-telephone-fill me-2" style="color:#20B2AA;"></i>Emergency Hotlines Quick Reference</h6>
+        <h6 class="fw-bold mb-3"><i class="bi bi-telephone-fill me-2" style="color:#1e7a4a;"></i>Emergency Hotlines Quick Reference</h6>
         <div class="row g-3">
             <div class="col-md-4">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge text-white px-2 py-1" style="background:#20B2AA;">NCMH</span>
+                    <span class="badge text-white px-2 py-1" style="background:#1e7a4a;">NCMH</span>
                     <span class="small">0917-899-8727 (24/7)</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge text-white px-2 py-1" style="background:#20B2AA;">DSWD</span>
+                    <span class="badge text-white px-2 py-1" style="background:#1e7a4a;">DSWD</span>
                     <span class="small">Hotline 163</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge text-white px-2 py-1" style="background:#20B2AA;">PNP</span>
+                    <span class="badge text-white px-2 py-1" style="background:#1e7a4a;">PNP</span>
                     <span class="small">Emergency 911</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge text-white px-2 py-1" style="background:#20B2AA;">Bantay Bata</span>
+                    <span class="badge text-white px-2 py-1" style="background:#1e7a4a;">Bantay Bata</span>
                     <span class="small">Hotline 163</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge text-white px-2 py-1" style="background:#20B2AA;">Hopeline</span>
+                    <span class="badge text-white px-2 py-1" style="background:#1e7a4a;">Hopeline</span>
                     <span class="small">0917-558-4673</span>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="d-flex align-items-center gap-2">
-                    <span class="badge text-white px-2 py-1" style="background:#20B2AA;">DOH</span>
+                    <span class="badge text-white px-2 py-1" style="background:#1e7a4a;">DOH</span>
                     <span class="small">1555 (Mental Health)</span>
                 </div>
             </div>

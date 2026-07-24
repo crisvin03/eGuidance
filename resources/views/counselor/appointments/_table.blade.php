@@ -25,7 +25,7 @@
                                 @if($type === 'teacher')
                                     <span class="badge" style="background:#ede9fe;color:#4f46e5;font-size:.65rem;">Teacher</span>
                                 @else
-                                    <span class="badge" style="background:rgba(32,178,170,.1);color:#20B2AA;font-size:.65rem;">Student</span>
+                                    <span class="badge" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#1e7a4a;font-size:.65rem;">Student</span>
                                 @endif
                             </div>
                         </div>
@@ -37,11 +37,11 @@
                 </td>
                 <td class="py-3 table-hide-mobile">
                     @if($appointment->concern_id)
-                        <span class="badge mb-1" style="background:rgba(32,178,170,.12);color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
+                        <span class="badge mb-1" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
                             <i class="bi bi-chat-left-heart me-1"></i>From Concern
                         </span>
                     @elseif($type === 'teacher')
-                        <span class="badge mb-1" style="background:rgba(32,178,170,.12);color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
+                        <span class="badge mb-1" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
                             <i class="bi bi-person-badge me-1"></i>Teacher Request
                         </span>
                     @else
@@ -77,7 +77,7 @@
                         </a>
                         @if($appointment->status === 'scheduled')
                             <button class="btn btn-sm text-white fw-semibold"
-                                    style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                                    style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
                                     onclick="openConfirm({{ $appointment->id }})">
                                 <i class="bi bi-check-circle me-1"></i>Confirm
                             </button>

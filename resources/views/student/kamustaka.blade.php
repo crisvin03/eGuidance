@@ -18,7 +18,7 @@
             <div class="card-body p-5 text-center">
                 <div class="mb-2">
                     <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-3"
-                         style="width:70px;height:70px;background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                         style="width:70px;height:70px;background:linear-gradient(135deg,#1e7a4a,#145e38);">
                         <i class="bi bi-heart-pulse-fill text-white fs-3"></i>
                     </div>
                 </div>
@@ -64,7 +64,7 @@
                     </div>
 
                     <button type="submit" id="submitBtn" class="btn text-white px-5 py-2 fw-semibold d-none"
-                            style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:50px;">
+                            style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:50px;">
                         <i class="bi bi-arrow-right-circle me-2"></i>Continue
                     </button>
                 </form>
@@ -82,8 +82,8 @@
 
 <style>
 .mood-card { background: #f8fafc; }
-.mood-card:hover { background: rgba(32,178,170,0.06); border-color: #20B2AA !important; transform: translateY(-4px); box-shadow: 0 8px 20px rgba(32,178,170,0.15); }
-.mood-card.selected { background: rgba(32,178,170,0.1) !important; border-color: #20B2AA !important; box-shadow: 0 0 0 3px rgba(32,178,170,0.3); }
+.mood-card:hover { background: rgba(32,178,170,0.06); border-color: #1e7a4a !important; transform: translateY(-4px); box-shadow: 0 8px 20px rgba(32,178,170,0.15); }
+.mood-card.selected { background: rgba(32,178,170,0.1) !important; border-color: #1e7a4a !important; box-shadow: 0 0 0 3px rgba(32,178,170,0.3); }
 </style>
 
 <script>

@@ -50,7 +50,7 @@
                     @forelse($reports as $report)
                         <tr>
                             <td class="px-4 py-3">
-                                <span class="fw-semibold small" style="color:#20B2AA;">{{ $report->case_number }}</span>
+                                <span class="fw-semibold small" style="color:#1e7a4a;">{{ $report->case_number }}</span>
                             </td>
                             <td class="py-3">
                                 <div class="fw-semibold small">{{ $report->student_name }}</div>
@@ -111,7 +111,7 @@
                     @forelse($referrals as $referral)
                         <tr>
                             <td class="px-4 py-3">
-                                <span class="fw-semibold small" style="color:#20B2AA;">{{ $referral->referral_number }}</span>
+                                <span class="fw-semibold small" style="color:#1e7a4a;">{{ $referral->referral_number }}</span>
                             </td>
                             <td class="py-3">
                                 <div class="fw-semibold small">{{ $referral->student_name }}</div>

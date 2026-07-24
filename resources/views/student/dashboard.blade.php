@@ -4,12 +4,12 @@
 
 @section('content')
 <!-- Welcome Banner -->
-<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:16px;">
+<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:16px;">
     <div class="card-body p-4 text-white">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div>
                 <h4 class="fw-bold mb-1">Good day, {{ Auth::user()->name }}! 👋</h4>
-                <p class="mb-0 opacity-75">BNHS Care Corner Student Portal &mdash; {{ now()->format('l, F d, Y') }}</p>
+                <p class="mb-0 opacity-75">BNHS Care Konek Student Portal &mdash; {{ now()->format('l, F d, Y') }}</p>
             </div>
             <div class="d-flex gap-2 flex-wrap">
                 <a href="{{ route('student.concerns.create') }}" class="btn btn-light btn-sm fw-semibold">
@@ -30,9 +30,9 @@
             <div class="card-body text-center p-3">
                 <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
                      style="width:48px;height:48px;background:rgba(32,178,170,0.1);">
-                    <i class="bi bi-chat-dots-fill fs-5" style="color:#20B2AA;"></i>
+                    <i class="bi bi-chat-dots-fill fs-5" style="color:#1e7a4a;"></i>
                 </div>
-                <div class="fs-3 fw-bold" style="color:#20B2AA;">{{ $concerns->count() }}</div>
+                <div class="fs-3 fw-bold" style="color:#1e7a4a;">{{ $concerns->count() }}</div>
                 <div class="text-muted small">Total Concerns</div>
                 <div class="text-success" style="font-size:0.75rem;">{{ $concerns->where('status','resolved')->count() }} resolved</div>
             </div>
@@ -85,7 +85,7 @@
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div class="d-flex align-items-center gap-3">
                 <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:52px;height:52px;background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                     style="width:52px;height:52px;background:linear-gradient(135deg,#1e7a4a,#145e38);">
                     <i class="bi bi-heart-pulse-fill text-white fs-4"></i>
                 </div>
                 <div>
@@ -94,7 +94,7 @@
                 </div>
             </div>
             <a href="{{ route('student.kamustaka') }}" class="btn fw-semibold text-white flex-shrink-0"
-               style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:50px;">
+               style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:50px;">
                 <i class="bi bi-emoji-smile me-1"></i> Check In Now
             </a>
         </div>
@@ -104,14 +104,14 @@
 <!-- Quick Actions -->
 <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
     <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
-        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#20B2AA;"></i>Quick Actions</h6>
+        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#1e7a4a;"></i>Quick Actions</h6>
     </div>
     <div class="card-body px-4 pb-4">
         <div class="row g-3">
             <div class="col-6 col-md-3">
                 <a href="{{ route('student.concerns.create') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-plus-circle fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-plus-circle fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Submit Concern</div>
                     </div>
                 </a>
@@ -119,7 +119,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('student.appointments.create') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-calendar-plus fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-calendar-plus fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Book Appointment</div>
                     </div>
                 </a>
@@ -127,7 +127,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('student.forms.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-file-earmark-text fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-file-earmark-text fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Request Forms</div>
                     </div>
                 </a>
@@ -135,7 +135,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('student.concerns.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-chat-dots fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-chat-dots fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">My Concerns</div>
                     </div>
                 </a>
@@ -143,7 +143,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('student.resources') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-journal-bookmark fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-journal-bookmark fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Resources</div>
                     </div>
                 </a>
@@ -157,7 +157,7 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-chat-dots me-2" style="color:#20B2AA;"></i>My Concerns</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-chat-dots me-2" style="color:#1e7a4a;"></i>My Concerns</h6>
                 <a href="{{ route('student.concerns.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
             </div>
             <div class="card-body px-4 pb-4">
@@ -187,7 +187,7 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2" style="color:#20B2AA;"></i>My Appointments</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2" style="color:#1e7a4a;"></i>My Appointments</h6>
                 <a href="{{ route('student.appointments.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
             </div>
             <div class="card-body px-4 pb-4">
@@ -218,6 +218,6 @@
 
 <style>
 .quick-action-card { transition:all 0.2s ease; cursor:pointer; color:#334155; background:#f8fafc; }
-.quick-action-card:hover { background:rgba(32,178,170,0.06); border-color:#20B2AA !important; transform:translateY(-3px); box-shadow:0 8px 20px rgba(32,178,170,0.15); }
+.quick-action-card:hover { background:rgba(32,178,170,0.06); border-color:#1e7a4a !important; transform:translateY(-3px); box-shadow:0 8px 20px rgba(32,178,170,0.15); }
 </style>
 @endsection

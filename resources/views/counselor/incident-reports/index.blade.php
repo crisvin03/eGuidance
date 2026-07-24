@@ -51,7 +51,7 @@
                         @foreach($reports as $report)
                             <tr>
                                 <td>
-                                    <strong style="color:#20B2AA;">{{ $report->case_number }}</strong>
+                                    <strong style="color:#1e7a4a;">{{ $report->case_number }}</strong>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center gap-2">

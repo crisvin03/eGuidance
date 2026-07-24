@@ -9,7 +9,7 @@
         <small class="text-muted">All appointments you have scheduled with the counselor</small>
     </div>
     <a href="{{ route('teacher.talk-to-counselor') }}" class="btn text-white fw-semibold"
-       style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+       style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
         <i class="bi bi-calendar-plus me-1"></i> Schedule New
     </a>
 </div>
@@ -104,7 +104,7 @@
                         <td colspan="5" class="text-center py-5 text-muted">
                             <i class="bi bi-calendar-x fs-2 d-block mb-2 opacity-50"></i>
                             No appointments found.
-                            <a href="{{ route('teacher.talk-to-counselor') }}" style="color:#20B2AA;">Schedule one now.</a>
+                            <a href="{{ route('teacher.talk-to-counselor') }}" style="color:#1e7a4a;">Schedule one now.</a>
                         </td>
                     </tr>
                     @endforelse
@@ -131,8 +131,8 @@
 <style>
 .pagination { margin:0; gap:3px; }
 .pagination .page-link { border-radius:8px !important; border:1px solid #e2e8f0; color:#475569; font-size:.875rem; padding:.4rem .75rem; transition:all .2s; }
-.pagination .page-link:hover { background:rgba(32,178,170,.1); border-color:#20B2AA; color:#20B2AA; }
-.pagination .page-item.active .page-link { background:#20B2AA; border-color:#20B2AA; color:#fff; }
+.pagination .page-link:hover { background:rgba(32,178,170,.1); border-color:#1e7a4a; color:#1e7a4a; }
+.pagination .page-item.active .page-link { background:#1e7a4a; border-color:#1e7a4a; color:#fff; }
 .pagination .page-item.disabled .page-link { opacity:.5; }
 </style>
 

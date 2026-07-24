@@ -143,7 +143,7 @@
                 {{-- Form fields --}}
                 @if(count($displayFields))
                 <h6 class="fw-bold mb-3" style="color:#1e293b;">
-                    <i class="bi bi-list-ul me-1" style="color:#20B2AA;"></i>Filled-out Details
+                    <i class="bi bi-list-ul me-1" style="color:#1e7a4a;"></i>Filled-out Details
                 </h6>
                 <div class="row g-3">
                     @foreach($displayFields as $key => $value)
@@ -156,7 +156,7 @@
                             <div class="col-md-12">
                                 <div class="p-3 rounded-3 d-flex align-items-center gap-2"
                                      style="background:#f0fdfa;border:1px solid #99f6e4;">
-                                    <i class="bi bi-check-circle-fill" style="color:#20B2AA;"></i>
+                                    <i class="bi bi-check-circle-fill" style="color:#1e7a4a;"></i>
                                     <span class="small fw-semibold">{{ $label }}</span>
                                     @if(!is_bool($value) && !in_array((string)$value, ['true','1']))
                                         <span class="text-muted small ms-1">— {{ $value }}</span>
@@ -180,7 +180,7 @@
                 {{-- Risk rows --}}
                 @if(count($riskRows))
                 <div class="mt-4">
-                    <h6 class="fw-bold mb-2" style="color:#1e293b;"><i class="bi bi-table me-1" style="color:#20B2AA;"></i>Risk Assessment Entries</h6>
+                    <h6 class="fw-bold mb-2" style="color:#1e293b;"><i class="bi bi-table me-1" style="color:#1e7a4a;"></i>Risk Assessment Entries</h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered mb-0" style="font-size:0.82rem;">
                             <thead style="background:#f8fafc;">
@@ -199,7 +199,7 @@
                 {{-- Bag rows --}}
                 @if(count($bagRows))
                 <div class="mt-4">
-                    <h6 class="fw-bold mb-2" style="color:#1e293b;"><i class="bi bi-table me-1" style="color:#20B2AA;"></i>Bag Search Plan Entries</h6>
+                    <h6 class="fw-bold mb-2" style="color:#1e293b;"><i class="bi bi-table me-1" style="color:#1e7a4a;"></i>Bag Search Plan Entries</h6>
                     <div class="table-responsive">
                         <table class="table table-sm table-bordered mb-0" style="font-size:0.82rem;">
                             <thead style="background:#f8fafc;">
@@ -231,7 +231,7 @@
 
         {{-- Review form (only if not yet reviewed) --}}
         @if(!$isReviewed)
-        <div class="card border-0 shadow-sm mt-4" style="border-radius:16px;border:2px solid #20B2AA !important;">
+        <div class="card border-0 shadow-sm mt-4" style="border-radius:16px;border:2px solid #1e7a4a !important;">
             <div class="card-header py-3 px-4" style="background:#f0fdfa;border-radius:16px 16px 0 0;">
                 <h6 class="fw-bold mb-0" style="color:#0f766e;">
                     <i class="bi bi-pencil-square me-1"></i>Mark as Reviewed
@@ -255,7 +255,7 @@
                         </div>
                     </div>
                     <div class="mt-3">
-                        <button type="submit" class="btn fw-semibold text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                        <button type="submit" class="btn fw-semibold text-white" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                             <i class="bi bi-check-circle me-1"></i> Save Review
                         </button>
                     </div>
@@ -305,15 +305,15 @@
             <div class="card-body p-4 text-center">
                 <div class="mb-3">
                     <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle"
-                         style="width:52px;height:52px;background:{{ $isReviewed ? 'rgba(32,178,170,0.12)' : '#fef3c7' }};">
-                        <i class="bi bi-printer fs-4" style="color:{{ $isReviewed ? '#20B2AA' : '#d97706' }};"></i>
+                         style="width:52px;height:52px;background:{{ $isReviewed ? ' "rgba(30,122,74,$($args[0].Groups[1].Value))" ' : '#fef3c7' }};">
+                        <i class="bi bi-printer fs-4" style="color:{{ $isReviewed ? '#1e7a4a' : '#d97706' }};"></i>
                     </div>
                 </div>
                 @if($isReviewed)
                 <h6 class="fw-bold mb-1">Print This Form</h6>
                 <p class="text-muted small mb-3">Prints in the exact same official format as the original.</p>
                 <button class="btn w-100 fw-semibold text-white"
-                        style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                        style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
                         onclick="printStoredForm()">
                     <i class="bi bi-printer me-1"></i> Print Form
                 </button>

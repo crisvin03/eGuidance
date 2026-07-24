@@ -123,7 +123,7 @@
                         $active = $curOrder >= $thisOrder && $appointment->status !== 'cancelled';
                     @endphp
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ $active ? '#20B2AA' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:{{ $active ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
                         <small class="{{ $active ? 'fw-semibold' : 'text-muted' }}">{{ $label }}</small>
                     </div>
                     @endforeach

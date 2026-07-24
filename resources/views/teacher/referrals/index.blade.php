@@ -8,7 +8,7 @@
         <small class="text-muted">All referrals you have submitted</small>
     </div>
     <a href="{{ route('teacher.referrals.create') }}" class="btn text-white fw-semibold"
-       style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+       style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
         <i class="bi bi-plus-lg me-1"></i> New Referral
     </a>
 </div>
@@ -49,7 +49,7 @@
                     @forelse($referrals as $referral)
                         <tr>
                             <td class="px-4 py-3">
-                                <span class="fw-semibold small" style="color:#20B2AA;">{{ $referral->referral_number }}</span>
+                                <span class="fw-semibold small" style="color:#1e7a4a;">{{ $referral->referral_number }}</span>
                             </td>
                             <td class="py-3">
                                 <div class="fw-semibold small">{{ $referral->student_name }}</div>

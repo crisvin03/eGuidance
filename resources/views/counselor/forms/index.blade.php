@@ -12,7 +12,7 @@
         <h5 class="fw-bold mb-0">Forms & Downloads</h5>
         <small class="text-muted">Fill in and generate official forms directly from here.</small>
     </div>
-    <a href="{{ route('counselor.forms.submitted') }}" class="btn text-white fw-semibold position-relative" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+    <a href="{{ route('counselor.forms.submitted') }}" class="btn text-white fw-semibold position-relative" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
         <i class="bi bi-inbox me-1"></i> Submitted Forms by Teachers
         @if($pendingCount > 0)
             <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">{{ $pendingCount }}</span>
@@ -40,8 +40,8 @@
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-start gap-3 mb-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:45px;height:45px;min-width:45px;background:rgba(32,178,170,0.1);">
-                        <i class="bi {{ $form['icon'] }} fs-5" style="color:#20B2AA;"></i>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:45px;height:45px;min-width:45px;background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;">
+                        <i class="bi {{ $form['icon'] }} fs-5" style="color:#1e7a4a;"></i>
                     </div>
                     <div>
                         <h6 class="fw-bold mb-1">{{ $form['title'] }}</h6>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
                 <div class="mt-auto pt-3 border-top">
-                    <button class="btn btn-sm text-white w-100 fw-semibold" style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                    <button class="btn btn-sm text-white w-100 fw-semibold" style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
                             onclick="openFormGenerator('{{ $form['id'] }}', '{{ $form['title'] }}')">
                         <i class="bi bi-file-earmark-plus me-1"></i> Generate Form
                     </button>
@@ -71,7 +71,7 @@
             <div class="modal-body" id="formModalBody"></div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn text-white fw-semibold" style="background:linear-gradient(135deg,#20B2AA,#008B8B);" onclick="generateAndPrint()">
+                <button type="button" class="btn text-white fw-semibold" style="background:linear-gradient(135deg,#1e7a4a,#145e38);" onclick="generateAndPrint()">
                     <i class="bi bi-printer me-1"></i> Generate & Print
                 </button>
             </div>

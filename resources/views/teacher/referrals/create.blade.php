@@ -26,7 +26,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-sm" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h6 class="fw-bold mb-0"><i class="bi bi-person me-2" style="color:#20B2AA;"></i>Student Information</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-person me-2" style="color:#1e7a4a;"></i>Student Information</h6>
             </div>
             <div class="card-body px-4 pb-4">
                 <div class="row g-3">
@@ -54,7 +54,7 @@
     <div class="col-12">
         <div class="card border-0 shadow-sm" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 px-4">
-                <h6 class="fw-bold mb-0"><i class="bi bi-card-text me-2" style="color:#20B2AA;"></i>Referral Details</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-card-text me-2" style="color:#1e7a4a;"></i>Referral Details</h6>
             </div>
             <div class="card-body px-4 pb-4">
                 <div class="row g-3">
@@ -109,7 +109,7 @@
     <div class="col-12">
         <div class="d-flex gap-2 justify-content-end">
             <a href="{{ route('teacher.dashboard') }}" class="btn btn-outline-secondary">Cancel</a>
-            <button type="submit" class="btn text-white px-4 fw-semibold" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+            <button type="submit" class="btn text-white px-4 fw-semibold" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                 <i class="bi bi-send me-2"></i>Submit Referral
             </button>
         </div>

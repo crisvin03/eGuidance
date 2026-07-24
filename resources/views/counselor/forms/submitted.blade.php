@@ -63,7 +63,7 @@
                     @forelse($submissions as $submission)
                         <tr>
                             <td class="px-4 py-3">
-                                <div class="fw-semibold small" style="color:#20B2AA;">{{ $submission->form_title }}</div>
+                                <div class="fw-semibold small" style="color:#1e7a4a;">{{ $submission->form_title }}</div>
                             </td>
                             <td class="py-3">
                                 @if($submission->student_name)
@@ -127,8 +127,8 @@
 <style>
 .pagination { margin: 0; gap: 3px; }
 .pagination .page-link { border-radius: 8px !important; border: 1px solid #e2e8f0; color: #475569; font-size: 0.875rem; padding: 0.4rem 0.75rem; transition: all .2s; }
-.pagination .page-link:hover { background: rgba(32,178,170,.1); border-color: #20B2AA; color: #20B2AA; }
-.pagination .page-item.active .page-link { background: #20B2AA; border-color: #20B2AA; color: #fff; }
+.pagination .page-link:hover { background:  "rgba(30,122,74,$($args[0].Groups[1].Value))" ; border-color: #1e7a4a; color: #1e7a4a; }
+.pagination .page-item.active .page-link { background: #1e7a4a; border-color: #1e7a4a; color: #fff; }
 .pagination .page-item.disabled .page-link { opacity: .5; }
 </style>
 

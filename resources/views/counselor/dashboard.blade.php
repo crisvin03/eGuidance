@@ -5,7 +5,7 @@
 @section('content')
 
 <!-- Welcome Banner -->
-<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:16px;">
+<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:16px;">
     <div class="card-body p-4 text-white">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div>
@@ -46,10 +46,10 @@
         <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
             <div class="card-body text-center p-3">
                 <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                     style="width:48px;height:48px;background:rgba(32,178,170,0.1);">
-                    <i class="bi bi-calendar-check fs-5" style="color:#20B2AA;"></i>
+                     style="width:48px;height:48px;background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;">
+                    <i class="bi bi-calendar-check fs-5" style="color:#1e7a4a;"></i>
                 </div>
-                <div class="fs-3 fw-bold" style="color:#20B2AA;">{{ $todayAppointments }}</div>
+                <div class="fs-3 fw-bold" style="color:#1e7a4a;">{{ $todayAppointments }}</div>
                 <div class="text-muted small">Today's Appointments</div>
                 <div class="text-muted" style="font-size:0.75rem;">{{ $todayAppointments > 0 ? 'scheduled today' : 'no sessions today' }}</div>
             </div>
@@ -87,14 +87,14 @@
 <!-- Quick Actions -->
 <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
     <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
-        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#20B2AA;"></i>Quick Actions</h6>
+        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#1e7a4a;"></i>Quick Actions</h6>
     </div>
     <div class="card-body px-4 pb-4">
         <div class="row g-3">
             <div class="col-6 col-md-3">
                 <a href="{{ route('counselor.concerns.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card position-relative">
-                        <i class="bi bi-chat-dots-fill fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-chat-dots-fill fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Student Concerns</div>
                         @if($pendingConcerns > 0)
                             <span class="position-absolute top-0 end-0 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem;">{{ $pendingConcerns }}</span>
@@ -105,7 +105,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('counselor.appointments.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-calendar3 fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-calendar3 fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Appointments</div>
                     </div>
                 </a>
@@ -113,7 +113,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('counselor.incident-reports.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card position-relative">
-                        <i class="bi bi-file-earmark-text fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-file-earmark-text fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Incident Reports</div>
                         @php $pendingIR = App\Models\IncidentReport::where('status','pending')->count(); @endphp
                         @if($pendingIR > 0)
@@ -125,7 +125,7 @@
             <div class="col-6 col-md-3">
                 <a href="{{ route('counselor.referrals.index') }}" class="text-decoration-none">
                     <div class="border rounded-3 p-3 text-center quick-action-card position-relative">
-                        <i class="bi bi-person-check fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                        <i class="bi bi-person-check fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                         <div class="fw-semibold small">Student Referrals</div>
                         @php $pendingRef = App\Models\StudentReferral::where('status','pending')->count(); @endphp
                         @if($pendingRef > 0)
@@ -143,7 +143,7 @@
     <div class="col-lg-8">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2" style="color:#20B2AA;"></i>Upcoming Appointments</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2" style="color:#1e7a4a;"></i>Upcoming Appointments</h6>
                 <a href="{{ route('counselor.appointments.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
             </div>
             <div class="card-body px-4 pb-4">
@@ -151,7 +151,7 @@
                     <div class="d-flex align-items-center justify-content-between py-3 border-bottom">
                         <div class="d-flex align-items-center gap-3">
                             <div class="rounded-circle d-flex align-items-center justify-content-center fw-bold text-white flex-shrink-0"
-                                 style="width:38px;height:38px;background:linear-gradient(135deg,#20B2AA,#008B8B);font-size:0.75rem;">
+                                 style="width:38px;height:38px;background:linear-gradient(135deg,#1e7a4a,#145e38);font-size:0.75rem;">
                                 {{ strtoupper(substr($appointment->student->name, 0, 2)) }}
                             </div>
                             <div>
@@ -182,7 +182,7 @@
     <div class="col-lg-4">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4">
-                <h6 class="fw-bold mb-0"><i class="bi bi-pie-chart me-2" style="color:#20B2AA;"></i>Concerns by Status</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-pie-chart me-2" style="color:#1e7a4a;"></i>Concerns by Status</h6>
             </div>
             <div class="card-body px-4 pb-4">
                 @php
@@ -216,7 +216,7 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2" style="color:#20B2AA;"></i>Teacher Incident Reports</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2" style="color:#1e7a4a;"></i>Teacher Incident Reports</h6>
                 <div class="d-flex gap-2 align-items-center">
                     @php $pendingReports = App\Models\IncidentReport::where('status','pending')->count(); @endphp
                     @if($pendingReports > 0)
@@ -253,7 +253,7 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-person-check me-2" style="color:#20B2AA;"></i>Student Referrals</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-person-check me-2" style="color:#1e7a4a;"></i>Student Referrals</h6>
                 <div class="d-flex gap-2 align-items-center">
                     @php $pendingRefs = App\Models\StudentReferral::where('status','pending')->count(); @endphp
                     @if($pendingRefs > 0)
@@ -303,7 +303,7 @@ new Chart(document.getElementById('counselorDonut'), {
 
 <style>
 .quick-action-card { transition:all 0.2s ease; cursor:pointer; color:#334155; background:#f8fafc; }
-.quick-action-card:hover { background:rgba(32,178,170,0.06); border-color:#20B2AA !important; transform:translateY(-3px); box-shadow:0 8px 20px rgba(32,178,170,0.15); }
+.quick-action-card:hover { background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ; border-color:#1e7a4a !important; transform:translateY(-3px); box-shadow:0 8px 20px  "rgba(30,122,74,$($args[0].Groups[1].Value))" ; }
 </style>
 
 <style>

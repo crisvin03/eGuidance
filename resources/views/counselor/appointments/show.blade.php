@@ -23,7 +23,7 @@
         <div class="d-flex gap-2 flex-wrap">
             @if($appointment->status === 'scheduled')
                 <button class="btn btn-sm text-white fw-semibold"
-                        style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                        style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
                         onclick="updateStatus('confirmed')">
                     <i class="bi bi-check-circle me-1"></i> Confirm
                 </button>
@@ -100,11 +100,11 @@
                         <div class="p-3 bg-light rounded">
                             <small class="text-muted d-block mb-1">Source</small>
                             @if($appointment->concern_id)
-                                <span class="badge" style="background:rgba(32,178,170,.12);color:#0f766e;border:1px solid #99f6e4;">
+                                <span class="badge" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;">
                                     <i class="bi bi-chat-left-heart me-1"></i>From Concern
                                 </span>
                             @elseif($isTeacher)
-                                <span class="badge" style="background:rgba(32,178,170,.12);color:#0f766e;border:1px solid #99f6e4;">
+                                <span class="badge" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;">
                                     <i class="bi bi-person-badge me-1"></i>Teacher Request
                                 </span>
                             @else
@@ -184,12 +184,12 @@
                     </div>
                     @foreach($appointment->sessionNotes as $note)
                     <div class="card border-0 mb-3"
-                         style="border-left:4px solid #20B2AA !important;border-radius:0 12px 12px 0;background:#f0fdfa;">
+                         style="border-left:4px solid #1e7a4a !important;border-radius:0 12px 12px 0;background:#f0fdfa;">
                         <div class="card-body p-3">
                             <div class="d-flex justify-content-between align-items-start mb-2">
                                 <div>
                                     <span class="badge fw-semibold"
-                                          style="background:rgba(32,178,170,.15);color:#0f766e;">
+                                          style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;">
                                         <i class="bi bi-calendar-event me-1"></i>
                                         {{ ucfirst(str_replace('_',' ',$note->session_type)) }} Session
                                     </span>
@@ -205,7 +205,7 @@
                             </div>
                             <p class="mb-0 small" style="white-space:pre-wrap;">{{ $note->notes }}</p>
                             @if($note->recommendations)
-                            <div class="mt-2 p-2 rounded" style="background:rgba(32,178,170,.08);">
+                            <div class="mt-2 p-2 rounded" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;">
                                 <strong class="small"><i class="bi bi-lightbulb me-1"></i>Recommendations:</strong>
                                 <p class="mb-0 small mt-1" style="white-space:pre-wrap;">{{ $note->recommendations }}</p>
                             </div>
@@ -216,11 +216,11 @@
                 </div>
                 @elseif(in_array($appointment->status, ['confirmed','completed']))
                 <div class="alert border-0 mb-0"
-                     style="background:#f0fdfa;border-left:4px solid #20B2AA !important;border-radius:0 12px 12px 0;">
-                    <i class="bi bi-info-circle me-2" style="color:#20B2AA;"></i>
+                     style="background:#f0fdfa;border-left:4px solid #1e7a4a !important;border-radius:0 12px 12px 0;">
+                    <i class="bi bi-info-circle me-2" style="color:#1e7a4a;"></i>
                     No session notes yet.
                     <a href="{{ route('counselor.appointments.session-notes.create', $appointment) }}"
-                       class="fw-semibold" style="color:#20B2AA;">Add a session note.</a>
+                       class="fw-semibold" style="color:#1e7a4a;">Add a session note.</a>
                 </div>
                 @endif
 
@@ -239,7 +239,7 @@
 
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center justify-content-center rounded-circle"
-                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['scheduled','confirmed','completed']) ? 'linear-gradient(135deg,#20B2AA,#008B8B)' : '#e2e8f0' }};">
+                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['scheduled','confirmed','completed']) ? 'linear-gradient(135deg,#1e7a4a,#145e38)' : '#e2e8f0' }};">
                             <i class="bi bi-send-fill" style="font-size:.65rem;color:{{ in_array($appointment->status, ['scheduled','confirmed','completed']) ? '#fff' : '#94a3b8' }};"></i>
                         </div>
                         <div>
@@ -248,11 +248,11 @@
                         </div>
                     </div>
 
-                    <div style="width:2px;height:20px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? '#20B2AA' : '#e2e8f0' }};margin-left:13px;"></div>
+                    <div style="width:2px;height:20px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? '#1e7a4a' : '#e2e8f0' }};margin-left:13px;"></div>
 
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center justify-content-center rounded-circle"
-                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? 'linear-gradient(135deg,#20B2AA,#008B8B)' : '#e2e8f0' }};">
+                             style="width:28px;height:28px;min-width:28px;background:{{ in_array($appointment->status, ['confirmed','completed']) ? 'linear-gradient(135deg,#1e7a4a,#145e38)' : '#e2e8f0' }};">
                             <i class="bi bi-check-circle-fill" style="font-size:.65rem;color:{{ in_array($appointment->status, ['confirmed','completed']) ? '#fff' : '#94a3b8' }};"></i>
                         </div>
                         <div>
@@ -266,7 +266,7 @@
                         </div>
                     </div>
 
-                    <div style="width:2px;height:20px;background:{{ $appointment->status === 'completed' ? '#20B2AA' : '#e2e8f0' }};margin-left:13px;"></div>
+                    <div style="width:2px;height:20px;background:{{ $appointment->status === 'completed' ? '#1e7a4a' : '#e2e8f0' }};margin-left:13px;"></div>
 
                     <div class="d-flex align-items-center gap-3">
                         <div class="d-flex align-items-center justify-content-center rounded-circle"
@@ -367,7 +367,7 @@ function updateStatus(status) {
     document.getElementById('notes_div').style.display = status === 'completed' ? 'block' : 'none';
     const titles  = { confirmed:'Confirm Appointment', completed:'Mark as Completed', cancelled:'Cancel Appointment' };
     const stripes = { confirmed:'linear-gradient(90deg,#10b981,#059669)', completed:'linear-gradient(90deg,#f59e0b,#d97706)', cancelled:'linear-gradient(90deg,#ef4444,#dc2626)' };
-    const btnBgs  = { confirmed:'linear-gradient(135deg,#20B2AA,#008B8B)', completed:'linear-gradient(135deg,#f59e0b,#d97706)', cancelled:'linear-gradient(135deg,#ef4444,#dc2626)' };
+    const btnBgs  = { confirmed:'linear-gradient(135deg,#1e7a4a,#145e38)', completed:'linear-gradient(135deg,#f59e0b,#d97706)', cancelled:'linear-gradient(135deg,#ef4444,#dc2626)' };
     const labels  = { confirmed:'<i class="bi bi-check-circle me-1"></i>Yes, Confirm', completed:'<i class="bi bi-check2-all me-1"></i>Mark Completed', cancelled:'<i class="bi bi-x-circle me-1"></i>Yes, Cancel' };
     document.getElementById('statusModalTitle').textContent = titles[status];
     document.getElementById('statusStripe').style.background = stripes[status];

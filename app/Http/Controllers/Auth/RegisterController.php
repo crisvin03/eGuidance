@@ -64,14 +64,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $studentRole = \App\Models\Role::where('name', 'student')->first();
+        $teacherRole = \App\Models\Role::where('name', 'teacher')->first();
 
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role_id' => $studentRole->id,
+            'role_id' => $teacherRole->id,
             'student_id' => $data['student_id'] ?? null,
             'password' => Hash::make($data['password']),
+            'is_active' => false, // pending counselor approval
         ]);
+    }
+
+    /**
+     * After registration, log the user out and redirect to pending approval page.
+     */
+    protected function registered(\Illuminate\Http\Request $request, $user)
+    {
+        auth()->logout();
+        return redirect()->route('approval.pending');
     }
 }

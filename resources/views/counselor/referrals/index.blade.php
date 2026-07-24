@@ -42,7 +42,7 @@
                         @foreach($referrals as $referral)
                             <tr>
                                 <td>
-                                    <strong style="color:#20B2AA;">{{ $referral->referral_number }}</strong>
+                                    <strong style="color:#1e7a4a;">{{ $referral->referral_number }}</strong>
                                 </td>
                                 <td>
                                     <div class="d-flex align-items-center gap-2">

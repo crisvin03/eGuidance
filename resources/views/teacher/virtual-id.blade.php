@@ -25,7 +25,7 @@
             </div>
             <div class="card-body">
                 <!-- Virtual ID Card -->
-                <div id="teacherVirtualIdCard" style="background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #20B2AA 100%); border-radius:16px; padding:30px; color:#fff; position:relative; overflow:hidden;">
+                <div id="teacherVirtualIdCard" style="background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #1e7a4a 100%); border-radius:16px; padding:30px; color:#fff; position:relative; overflow:hidden;">
                     <!-- Background Pattern -->
                     <div style="position:absolute; top:0; left:0; right:0; bottom:0; background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px); background-size: 20px 20px; opacity:0.5;"></div>
                     
@@ -103,7 +103,7 @@
                     <button class="btn btn-outline-primary" onclick="downloadTeacherVirtualId()">
                         <i class="bi bi-download me-1"></i> Download as Image
                     </button>
-                    <button class="btn btn-primary" style="background:#20B2AA; border-color:#20B2AA;" onclick="printTeacherVirtualId()">
+                    <button class="btn btn-primary" style="background:#1e7a4a; border-color:#1e7a4a;" onclick="printTeacherVirtualId()">
                         <i class="bi bi-printer me-1"></i> Print ID
                     </button>
                 </div>

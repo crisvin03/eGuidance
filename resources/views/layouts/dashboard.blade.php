@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'BNHS Care Corner') - Guidance & Monitoring Assistance</title>
+    <title>@yield('title', 'BNHS Care Konek') - Referral & Case Management System</title>
     
     @vite(['resources/css/app.css'])
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -74,8 +74,8 @@
         }
         
         .sidebar-nav {
-            padding: 1rem 0;
-            overflow-y: auto;
+            padding: 0.5rem 0;
+            overflow-y: hidden;
             overflow-x: hidden;
             height: calc(100vh - 81px);
         }
@@ -86,8 +86,8 @@
         
         .nav-section-title {
             padding: 0 1.5rem;
-            margin-bottom: 0.5rem;
-            font-size: 0.7rem;
+            margin-bottom: 0.35rem;
+            font-size: 0.65rem;
             font-weight: 600;
             color: #64748b;
             text-transform: uppercase;
@@ -111,13 +111,13 @@
         .nav-link:hover {
             background: #f8fafc;
             color: #1e293b;
-            border-left-color: #20B2AA;
+            border-left-color: #1e7a4a;
         }
         
         .nav-link.active {
-            background: rgba(32, 178, 170, 0.15);
-            color: #20B2AA;
-            border-left-color: #20B2AA;
+            background: rgba(30,122,74,0.15);
+            color: #1e7a4a;
+            border-left-color: #1e7a4a;
             font-weight: 600;
         }
         
@@ -134,7 +134,7 @@
         }
         
         .nav-link-badge {
-            background: #20B2AA;
+            background: #1e7a4a;
             color: white;
             padding: 0.125rem 0.4rem;
             border-radius: 10px;
@@ -216,8 +216,8 @@
         }
         
         .dropdown-item:hover {
-            background: rgba(32, 178, 170, 0.1);
-            color: #20B2AA;
+            background: rgba(30,122,74,0.1);
+            color: #1e7a4a;
         }
         
         .dropdown-divider {
@@ -228,7 +228,7 @@
         .user-avatar {
             width: 36px;
             height: 36px;
-            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%);
+            background: linear-gradient(135deg, #1e7a4a 0%, #145e38 100%);
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -315,13 +315,13 @@
             left: 0;
             width: 4px;
             height: 100%;
-            background: linear-gradient(180deg, #20B2AA 0%, #008B8B 100%);
+            background: linear-gradient(180deg, #1e7a4a 0%, #145e38 100%);
         }
         
         .stat-icon {
             width: 48px;
             height: 48px;
-            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%);
+            background: linear-gradient(135deg, #1e7a4a 0%, #145e38 100%);
             border-radius: 12px;
             display: flex;
             align-items: center;
@@ -381,13 +381,13 @@
         }
         
         .btn-primary {
-            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%);
+            background: linear-gradient(135deg, #1e7a4a 0%, #145e38 100%);
             color: white;
         }
         
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(32,178,170,0.3);
+            box-shadow: 0 4px 12px rgba(30,122,74,0.3);
         }
         
         .btn-secondary {
@@ -696,8 +696,8 @@
             box-shadow: none !important;
         }
         .pagination .page-item.active .page-link {
-            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%) !important;
-            border-color: #20B2AA !important;
+            background: linear-gradient(135deg, #1e7a4a 0%, #145e38 100%) !important;
+            border-color: #1e7a4a !important;
             color: #fff !important;
         }
         .pagination .page-item.disabled .page-link {
@@ -709,7 +709,7 @@
             color: #1e293b !important;
         }
         .pagination .page-item.active .page-link:hover {
-            background: linear-gradient(135deg, #20B2AA 0%, #008B8B 100%) !important;
+            background: linear-gradient(135deg, #1e7a4a 0%, #145e38 100%) !important;
             color: #fff !important;
         }
         /* Pagination wrapper */
@@ -736,7 +736,7 @@
         .sidebar-close:hover { background: #f1f5f9; }
         @media (max-width: 992px) {
             .sidebar-header { position: relative; padding-right: 3rem; }
-            .sidebar-close { display: block; }
+            .sidebar-close { display: none; }
         }
     </style>
 </head>
@@ -745,10 +745,10 @@
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <a href="{{ url('/') }}" class="sidebar-logo">
-                <img src="{{ asset('logo.png') }}" alt="BNHS Care Corner">
+                <img src="{{ asset('logo.png') }}" alt="BNHS Care Konek">
                 <div class="sidebar-logo-text">
-                    <span class="sidebar-logo-name">Care Corner</span>
-                    <span class="sidebar-logo-subtitle">BNHS Guidance & Support</span>
+                    <span class="sidebar-logo-name">Care Konek</span>
+                    <span class="sidebar-logo-subtitle">BNHS Referral & Case Management</span>
                 </div>
             </a>
             <button class="sidebar-close" onclick="closeSidebar()" aria-label="Close menu">
@@ -808,22 +808,22 @@
                     </div>
                     
                 @elseif(Auth::user()->isCounselor())
-                    <div class="nav-section">
+                    <div class="nav-section" style="margin-bottom:.6rem;">
                         <div class="nav-section-title">Dashboard</div>
-                        <a href="{{ route('counselor.dashboard') }}" class="nav-link @if(request()->is('counselor/dashboard')) active @endif">
+                        <a href="{{ route('counselor.dashboard') }}" class="nav-link @if(request()->is('counselor/dashboard')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-speedometer2"></i>
                             <span class="nav-link-text">Dashboard</span>
                         </a>
                     </div>
                     
-                    <div class="nav-section">
+                    <div class="nav-section" style="margin-bottom:.6rem;">
                         <div class="nav-section-title">Cases & Referrals</div>
-                        <a href="{{ route('counselor.concerns.index') }}" class="nav-link @if(request()->is('counselor/concerns*')) active @endif">
+                        <a href="{{ route('counselor.concerns.index') }}" class="nav-link @if(request()->is('counselor/concerns*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-chat-dots"></i>
                             <span class="nav-link-text">Student Concerns</span>
                             <span class="nav-link-badge">{{ App\Models\Concern::where('status', 'submitted')->count() }}</span>
                         </a>
-                        <a href="{{ route('counselor.incident-reports.index') }}" class="nav-link @if(request()->is('counselor/incident-reports*')) active @endif">
+                        <a href="{{ route('counselor.incident-reports.index') }}" class="nav-link @if(request()->is('counselor/incident-reports*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-file-earmark-text"></i>
                             <span class="nav-link-text">Incident Reports</span>
                             @php $pendingIR = App\Models\IncidentReport::where('status','pending')->count(); @endphp
@@ -831,7 +831,7 @@
                                 <span class="nav-link-badge">{{ $pendingIR }}</span>
                             @endif
                         </a>
-                        <a href="{{ route('counselor.referrals.index') }}" class="nav-link @if(request()->is('counselor/referrals*')) active @endif">
+                        <a href="{{ route('counselor.referrals.index') }}" class="nav-link @if(request()->is('counselor/referrals*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-person-check"></i>
                             <span class="nav-link-text">Teacher Referrals</span>
                             @php $pendingRef = App\Models\StudentReferral::where('status','pending')->count(); @endphp
@@ -841,9 +841,9 @@
                         </a>
                     </div>
                     
-                    <div class="nav-section">
+                    <div class="nav-section" style="margin-bottom:.6rem;">
                         <div class="nav-section-title">Sessions & Appointments</div>
-                        <a href="{{ route('counselor.appointments.index') }}" class="nav-link @if(request()->is('counselor/appointments*')) active @endif">
+                        <a href="{{ route('counselor.appointments.index') }}" class="nav-link @if(request()->is('counselor/appointments*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-calendar3"></i>
                             <span class="nav-link-text">Appointments</span>
                             @php
@@ -853,16 +853,14 @@
                                     ->count();
                             @endphp
                             @if($pendingTeacherAppts > 0)
-                                <span class="nav-link-badge" style="background:#6366f1;" title="{{ $pendingTeacherAppts }} pending teacher appointment(s)">
-                                    {{ $pendingTeacherAppts }}
-                                </span>
+                                <span class="nav-link-badge" style="background:#6366f1;">{{ $pendingTeacherAppts }}</span>
                             @endif
                         </a>
                     </div>
                     
-                    <div class="nav-section">
+                    <div class="nav-section" style="margin-bottom:.6rem;">
                         <div class="nav-section-title">Resources</div>
-                        <a href="{{ route('counselor.forms.index') }}" class="nav-link @if(request()->is('counselor/forms*')) active @endif">
+                        <a href="{{ route('counselor.forms.index') }}" class="nav-link @if(request()->is('counselor/forms*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-file-earmark-arrow-down"></i>
                             <span class="nav-link-text">Forms/Downloads</span>
                             @php $pendingForms = \App\Models\TeacherFormSubmission::where('status','submitted')->count(); @endphp
@@ -872,14 +870,26 @@
                         </a>
                     </div>
 
-                    <div class="nav-section">
+                    <div class="nav-section" style="margin-bottom:.6rem;">
+                        <div class="nav-section-title">Account Management</div>
+                        <a href="{{ route('counselor.pending-accounts') }}" class="nav-link @if(request()->is('counselor/pending-accounts*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
+                            <i class="bi bi-person-check"></i>
+                            <span class="nav-link-text">Pending Approvals</span>
+                            @php $pendingApprovals = \App\Models\User::where('is_active', false)->whereHas('role', fn($q) => $q->whereIn('name', ['teacher','student']))->count(); @endphp
+                            @if($pendingApprovals > 0)
+                                <span class="nav-link-badge">{{ $pendingApprovals }}</span>
+                            @endif
+                        </a>
+                    </div>
+
+                    <div class="nav-section" style="margin-bottom:.6rem;">
                         <div class="nav-section-title">Account</div>
-                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif">
+                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-gear"></i>
                             <span class="nav-link-text">Settings</span>
                         </a>
                     </div>
-                    
+
                 @elseif(Auth::user()->isTeacher())
                     {{-- Compact nav for teachers: more items need to fit --}}
                     <div class="nav-section" style="margin-bottom:0.75rem;">

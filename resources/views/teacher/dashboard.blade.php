@@ -3,7 +3,7 @@
 
 @section('content')
 <!-- Welcome Banner -->
-<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:16px;">
+<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:16px;">
     <div class="card-body p-4 text-white">
         <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
             <div>
@@ -29,9 +29,9 @@
             <div class="card-body text-center p-3">
                 <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
                      style="width:48px;height:48px;background:rgba(32,178,170,0.1);">
-                    <i class="bi bi-file-earmark-text fs-5" style="color:#20B2AA;"></i>
+                    <i class="bi bi-file-earmark-text fs-5" style="color:#1e7a4a;"></i>
                 </div>
-                <div class="fs-3 fw-bold" style="color:#20B2AA;">{{ $totalReports }}</div>
+                <div class="fs-3 fw-bold" style="color:#1e7a4a;">{{ $totalReports }}</div>
                 <div class="text-muted small">Total Reports</div>
             </div>
         </div>
@@ -77,7 +77,7 @@
 <!-- Quick Access Buttons -->
 <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
     <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
-        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#20B2AA;"></i>Quick Actions</h6>
+        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#1e7a4a;"></i>Quick Actions</h6>
     </div>
     <div class="card-body px-4 pb-4">
         <div class="row g-3">
@@ -138,7 +138,7 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2" style="color:#20B2AA;"></i>Recent Incident Reports</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-file-earmark-text me-2" style="color:#1e7a4a;"></i>Recent Incident Reports</h6>
                 <a href="{{ route('teacher.incident-reports.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
             </div>
             <div class="card-body px-4 pb-4">
@@ -168,7 +168,7 @@
     <div class="col-md-6">
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-person-check me-2" style="color:#20B2AA;"></i>Recent Referrals</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-person-check me-2" style="color:#1e7a4a;"></i>Recent Referrals</h6>
                 <a href="{{ route('teacher.referrals.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
             </div>
             <div class="card-body px-4 pb-4">
@@ -203,7 +203,7 @@
 }
 .quick-action-card:hover {
     background: rgba(32,178,170,0.06);
-    border-color: #20B2AA !important;
+    border-color: #1e7a4a !important;
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(32,178,170,0.15);
 }

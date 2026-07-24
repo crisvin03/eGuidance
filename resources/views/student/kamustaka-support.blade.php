@@ -6,7 +6,7 @@
     <div class="col-lg-8">
 
         <!-- Header Banner -->
-        <div class="card border-0 mb-4" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:20px;">
+        <div class="card border-0 mb-4" style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:20px;">
             <div class="card-body p-5 text-white text-center">
                 <div class="fs-1 mb-3">💙</div>
                 <h3 class="fw-bold mb-2">We're Here For You</h3>
@@ -56,12 +56,12 @@
         <!-- Recommended Actions -->
         <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
             <div class="card-body p-4">
-                <h6 class="fw-bold mb-3"><i class="bi bi-lightbulb me-2" style="color:#20B2AA;"></i>Recommended Steps</h6>
+                <h6 class="fw-bold mb-3"><i class="bi bi-lightbulb me-2" style="color:#1e7a4a;"></i>Recommended Steps</h6>
                 <div class="row g-3">
                     <div class="col-md-4">
                         <a href="{{ route('student.appointments.create') }}" class="text-decoration-none">
-                            <div class="p-3 rounded-3 h-100 text-center border" style="transition:all 0.2s;" onmouseover="this.style.borderColor='#20B2AA'" onmouseout="this.style.borderColor='#dee2e6'">
-                                <i class="bi bi-calendar-heart fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                            <div class="p-3 rounded-3 h-100 text-center border" style="transition:all 0.2s;" onmouseover="this.style.borderColor='#1e7a4a'" onmouseout="this.style.borderColor='#dee2e6'">
+                                <i class="bi bi-calendar-heart fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                                 <div class="fw-semibold small">Book a Counseling Session</div>
                                 <div class="text-muted" style="font-size:0.75rem;">Talk to a professional counselor</div>
                             </div>
@@ -69,8 +69,8 @@
                     </div>
                     <div class="col-md-4">
                         <a href="{{ route('student.concerns.create') }}" class="text-decoration-none">
-                            <div class="p-3 rounded-3 h-100 text-center border" style="transition:all 0.2s;" onmouseover="this.style.borderColor='#20B2AA'" onmouseout="this.style.borderColor='#dee2e6'">
-                                <i class="bi bi-chat-heart fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                            <div class="p-3 rounded-3 h-100 text-center border" style="transition:all 0.2s;" onmouseover="this.style.borderColor='#1e7a4a'" onmouseout="this.style.borderColor='#dee2e6'">
+                                <i class="bi bi-chat-heart fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                                 <div class="fw-semibold small">Submit a Concern</div>
                                 <div class="text-muted" style="font-size:0.75rem;">Share what's bothering you</div>
                             </div>
@@ -78,8 +78,8 @@
                     </div>
                     <div class="col-md-4">
                         <a href="{{ route('student.resources') }}" class="text-decoration-none">
-                            <div class="p-3 rounded-3 h-100 text-center border" style="transition:all 0.2s;" onmouseover="this.style.borderColor='#20B2AA'" onmouseout="this.style.borderColor='#dee2e6'">
-                                <i class="bi bi-journal-heart fs-2 mb-2 d-block" style="color:#20B2AA;"></i>
+                            <div class="p-3 rounded-3 h-100 text-center border" style="transition:all 0.2s;" onmouseover="this.style.borderColor='#1e7a4a'" onmouseout="this.style.borderColor='#dee2e6'">
+                                <i class="bi bi-journal-heart fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                                 <div class="fw-semibold small">Self-Help Resources</div>
                                 <div class="text-muted" style="font-size:0.75rem;">Guides and coping strategies</div>
                             </div>
@@ -93,7 +93,7 @@
             <a href="{{ route('student.dashboard') }}" class="btn btn-outline-secondary me-2">
                 <i class="bi bi-house me-1"></i>Back to Dashboard
             </a>
-            <a href="{{ route('student.kamustaka') }}" class="btn text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);border-radius:50px;">
+            <a href="{{ route('student.kamustaka') }}" class="btn text-white" style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:50px;">
                 <i class="bi bi-arrow-repeat me-1"></i>Check In Again
             </a>
         </div>

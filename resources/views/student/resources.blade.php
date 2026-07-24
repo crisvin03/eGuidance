@@ -81,7 +81,7 @@
                 <div class="d-flex flex-column gap-3">
                     @php
                     $tools = [
-                        ['icon'=>'bi-wind','title'=>'4-7-8 Breathing Exercise','desc'=>'Calm anxiety instantly with this breathing technique.','url'=>'https://www.healthline.com/health/4-7-8-breathing','color'=>'#20B2AA'],
+                        ['icon'=>'bi-wind','title'=>'4-7-8 Breathing Exercise','desc'=>'Calm anxiety instantly with this breathing technique.','url'=>'https://www.healthline.com/health/4-7-8-breathing','color'=>'#1e7a4a'],
                         ['icon'=>'bi-journal-text','title'=>'Mood Journal Template','desc'=>'Free printable mood tracking journal for students.','url'=>'https://www.therapistaid.com/therapy-worksheet/mood-journal','color'=>'#6366f1'],
                         ['icon'=>'bi-camera-video','title'=>'Guided Meditation (YouTube)','desc'=>'5-minute guided meditation for stress relief.','url'=>'https://www.youtube.com/watch?v=inpok4MKVLM','color'=>'#ef4444'],
                         ['icon'=>'bi-phone','title'=>'Calm App (Free)','desc'=>'Meditations, sleep stories, and breathing exercises.','url'=>'https://www.calm.com','color'=>'#0ea5e9'],
@@ -119,7 +119,7 @@
                         ['icon'=>'bi-heart-pulse','name'=>'NCMH Hope Line','detail'=>'0917-899-8727 / (02) 8989-8727','note'=>'24/7 Crisis & Mental Health Support','color'=>'#ef4444','href'=>'tel:09178998727'],
                         ['icon'=>'bi-chat-heart','name'=>'In Touch Crisis Line','detail'=>'(02) 8893-7603','note'=>'Mon–Fri, 9am–5pm','color'=>'#f97316','href'=>'tel:028893-7603'],
                         ['icon'=>'bi-globe','name'=>'iCall (Online Counseling)','detail'=>'icallhelpline.org','note'=>'Free online counseling sessions','color'=>'#6366f1','href'=>'https://icallhelpline.org'],
-                        ['icon'=>'bi-shield-check','name'=>'DepEd Student Protection','detail'=>'(02) 8633-7208','note'=>'Student welfare and protection','color'=>'#20B2AA','href'=>'tel:028633-7208'],
+                        ['icon'=>'bi-shield-check','name'=>'DepEd Student Protection','detail'=>'(02) 8633-7208','note'=>'Student welfare and protection','color'=>'#1e7a4a','href'=>'tel:028633-7208'],
                         ['icon'=>'bi-hospital','name'=>'Emergency Services','detail'=>'911','note'=>'Immediate danger or medical emergency','color'=>'#b91c1c','href'=>'tel:911'],
                     ];
                     @endphp

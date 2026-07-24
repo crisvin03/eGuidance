@@ -525,4 +525,31 @@ class CounselorController extends Controller
         return redirect()->route('counselor.referrals.index')
             ->with('success', "Referral {$refNumber} deleted successfully.");
     }
+
+    // ─── Account Approvals ────────────────────────────────────────────────────
+
+    public function pendingAccounts()
+    {
+        $pending = \App\Models\User::where('is_active', false)
+            ->whereHas('role', fn($q) => $q->whereIn('name', ['teacher', 'student']))
+            ->orderByDesc('created_at')
+            ->get();
+
+        return view('counselor.pending-accounts', compact('pending'));
+    }
+
+    public function approveAccount(\App\Models\User $user)
+    {
+        $user->update(['is_active' => true]);
+        return redirect()->route('counselor.pending-accounts')
+            ->with('success', "{$user->name}'s account has been approved.");
+    }
+
+    public function rejectAccount(\App\Models\User $user)
+    {
+        $name = $user->name;
+        $user->delete();
+        return redirect()->route('counselor.pending-accounts')
+            ->with('success', "{$name}'s account has been rejected and removed.");
+    }
 }

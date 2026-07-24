@@ -188,18 +188,18 @@
             <div class="card-body">
                 <div class="d-flex flex-column gap-2">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:#20B2AA; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:#1e7a4a; font-size:.5rem;"></i>
                         <small class="fw-semibold">Submitted — {{ $concern->created_at->format('M d, Y') }}</small>
                     </div>
                     @if(in_array($concern->status, ['under_review','scheduled','resolved']))
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:#20B2AA; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:#1e7a4a; font-size:.5rem;"></i>
                         <small class="fw-semibold">Under Review</small>
                     </div>
                     @endif
                     @if(in_array($concern->status, ['scheduled','resolved']) && $concern->counseling_date)
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:#20B2AA; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:#1e7a4a; font-size:.5rem;"></i>
                         <small class="fw-semibold">Scheduled — {{ $concern->counseling_date->format('M d, Y') }}</small>
                     </div>
                     @endif

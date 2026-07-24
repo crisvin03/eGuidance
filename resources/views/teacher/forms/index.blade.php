@@ -9,16 +9,16 @@
         gap: 0.4rem;
         padding: 0.5rem 1.1rem;
         border-radius: 8px;
-        border: 2px solid #20B2AA;
+        border: 2px solid #1e7a4a;
         cursor: pointer;
         font-size: 0.875rem;
         font-weight: 600;
-        color: #20B2AA;
+        color: #1e7a4a;
         background: #ffffff;
         transition: all 0.2s;
     }
     .btn-send-counselor:hover {
-        background: #20B2AA;
+        background: #1e7a4a;
         color: #ffffff;
     }
     .btn-send-counselor:hover { opacity: 0.88; }
@@ -29,11 +29,11 @@
         <h5 class="fw-bold mb-0">Generate Forms</h5>
         <small class="text-muted">Select a form, fill in the details, then send to the counselor for review.</small>
     </div>
-    <a href="{{ route('teacher.forms.submissions') }}" class="btn text-white fw-semibold btn-sm" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+    <a href="{{ route('teacher.forms.submissions') }}" class="btn text-white fw-semibold btn-sm" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
         <i class="bi bi-clock-history me-1"></i> My Submitted Forms
         @php $pendingCount = \App\Models\TeacherFormSubmission::where('teacher_id', Auth::id())->count(); @endphp
         @if($pendingCount > 0)
-            <span class="badge rounded-pill bg-white ms-1" style="color:#20B2AA;font-size:0.7rem;">{{ $pendingCount }}</span>
+            <span class="badge rounded-pill bg-white ms-1" style="color:#1e7a4a;font-size:0.7rem;">{{ $pendingCount }}</span>
         @endif
     </a>
 </div>
@@ -57,7 +57,7 @@
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-start gap-3 mb-3">
                     <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:45px;height:45px;min-width:45px;background:rgba(32,178,170,0.1);">
-                        <i class="bi {{ $form['icon'] }} fs-5" style="color:#20B2AA;"></i>
+                        <i class="bi {{ $form['icon'] }} fs-5" style="color:#1e7a4a;"></i>
                     </div>
                     <div>
                         <h6 class="fw-bold mb-1">{{ $form['title'] }}</h6>
@@ -65,7 +65,7 @@
                     </div>
                 </div>
                 <div class="mt-auto pt-3 border-top">
-                    <button class="btn btn-sm text-white w-100 fw-semibold" style="background:linear-gradient(135deg,#20B2AA,#008B8B);"
+                    <button class="btn btn-sm text-white w-100 fw-semibold" style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
                             onclick="openFormGenerator('{{ $form['id'] }}', '{{ $form['title'] }}')">
                         <i class="bi bi-file-earmark-plus me-1"></i> Generate Form
                     </button>
@@ -448,7 +448,7 @@ function sendToCounselor() {
             const toast = document.createElement('div');
             toast.className = 'position-fixed bottom-0 end-0 p-3';
             toast.style.zIndex = 9999;
-            toast.innerHTML = `<div class="toast show align-items-center text-white border-0" style="background:#20B2AA;border-radius:12px;" role="alert">
+            toast.innerHTML = `<div class="toast show align-items-center text-white border-0" style="background:#1e7a4a;border-radius:12px;" role="alert">
                 <div class="d-flex"><div class="toast-body"><i class="bi bi-check-circle me-2"></i>${data.message}</div>
                 <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast"></button></div></div>`;
             document.body.appendChild(toast);

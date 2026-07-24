@@ -78,7 +78,7 @@
         {{-- Referral Details --}}
         <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
             <div class="card-header py-3 px-4" style="background:#f8fafc;border-radius:16px 16px 0 0;">
-                <h6 class="fw-bold mb-0"><i class="bi bi-card-text me-2" style="color:#20B2AA;"></i>Referral Details</h6>
+                <h6 class="fw-bold mb-0"><i class="bi bi-card-text me-2" style="color:#1e7a4a;"></i>Referral Details</h6>
             </div>
             <div class="card-body p-4">
                 <div class="mb-4">
@@ -127,7 +127,7 @@
                 <div class="d-flex flex-column gap-3">
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">Referral Number</small>
-                        <span class="fw-bold" style="color:#20B2AA;">{{ $studentReferral->referral_number }}</span>
+                        <span class="fw-bold" style="color:#1e7a4a;">{{ $studentReferral->referral_number }}</span>
                     </div>
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">Status</small>

@@ -129,7 +129,7 @@
             </div>
             <div class="card-body">
                 <div class="text-center mb-3">
-                    <i class="bi bi-people" style="font-size: 2rem; color: #20B2AA;"></i>
+                    <i class="bi bi-people" style="font-size: 2rem; color: #1e7a4a;"></i>
                 </div>
                 <p class="text-center text-muted">
                     <strong>{{ App\Models\User::whereHas('role', fn($q) => $q->where('name', 'counselor'))->where('is_active', 1)->count() }}</strong><br>

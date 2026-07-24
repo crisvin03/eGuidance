@@ -8,7 +8,7 @@
         <small class="text-muted">All incident reports you have submitted</small>
     </div>
     <a href="{{ route('teacher.incident-reports.create') }}" class="btn text-white fw-semibold"
-       style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+       style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
         <i class="bi bi-plus-lg me-1"></i> New Report
     </a>
 </div>
@@ -58,7 +58,7 @@
                     @forelse($reports as $report)
                         <tr>
                             <td class="px-4 py-3">
-                                <span class="fw-semibold small" style="color:#20B2AA;">{{ $report->case_number }}</span>
+                                <span class="fw-semibold small" style="color:#1e7a4a;">{{ $report->case_number }}</span>
                             </td>
                             <td class="py-3">
                                 <div class="fw-semibold small">{{ $report->student_name }}</div>
@@ -144,7 +144,7 @@
                 <div class="rounded-3 p-3 mb-4" style="background:#f8fafc;border:1px solid #e2e8f0;">
                     <div class="d-flex justify-content-between align-items-start mb-2">
                         <div>
-                            <div class="fw-bold small" style="color:#20B2AA;" id="del_case_no"></div>
+                            <div class="fw-bold small" style="color:#1e7a4a;" id="del_case_no"></div>
                             <div class="fw-semibold" id="del_student" style="font-size:.95rem;color:#1e293b;"></div>
                         </div>
                         <span class="badge" style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24;">Pending</span>
@@ -189,8 +189,8 @@ function confirmDelete(id, caseNo, student, date) {
 <style>
 .pagination { margin: 0; gap: 3px; }
 .pagination .page-link { border-radius: 8px !important; border: 1px solid #e2e8f0; color: #475569; font-size: 0.875rem; padding: 0.4rem 0.75rem; transition: all .2s; }
-.pagination .page-link:hover { background: rgba(32,178,170,.1); border-color: #20B2AA; color: #20B2AA; }
-.pagination .page-item.active .page-link { background: #20B2AA; border-color: #20B2AA; color: #fff; }
+.pagination .page-link:hover { background: rgba(32,178,170,.1); border-color: #1e7a4a; color: #1e7a4a; }
+.pagination .page-item.active .page-link { background: #1e7a4a; border-color: #1e7a4a; color: #fff; }
 .pagination .page-item.disabled .page-link { opacity: .5; }
 </style>
 

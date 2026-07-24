@@ -99,7 +99,7 @@
                         <a href="{{ route('counselor.appointments.show', $appointment) }}" class="btn btn-outline-secondary">
                             <i class="bi bi-x-circle me-1"></i>Cancel
                         </a>
-                        <button type="submit" class="btn text-white fw-semibold" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                        <button type="submit" class="btn text-white fw-semibold" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
                             <i class="bi bi-check-circle me-1"></i>Save Session Note
                         </button>
                     </div>
@@ -110,7 +110,7 @@
         <!-- Appointment Info Card -->
         <div class="card mt-3 border-0 shadow-sm" style="border-radius:16px;">
             <div class="card-body p-4">
-                <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2" style="color:#20B2AA;"></i>Appointment Information</h6>
+                <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2" style="color:#1e7a4a;"></i>Appointment Information</h6>
                 <div class="row g-3">
                     <div class="col-md-6">
                         <small class="text-muted d-block">Student</small>

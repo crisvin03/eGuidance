@@ -147,19 +147,19 @@
             <div class="card-body">
                 <div class="d-flex flex-column gap-2">
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['submitted','under_review','scheduled','resolved']) ? '#20B2AA' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['submitted','under_review','scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
                         <small class="{{ in_array($concern->status, ['submitted','under_review','scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Submitted</small>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['under_review','scheduled','resolved']) ? '#20B2AA' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['under_review','scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
                         <small class="{{ in_array($concern->status, ['under_review','scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Under Review</small>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['scheduled','resolved']) ? '#20B2AA' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
                         <small class="{{ in_array($concern->status, ['scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Counseling Scheduled</small>
                     </div>
                     <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ $concern->status == 'resolved' ? '#20B2AA' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                        <i class="bi bi-circle-fill" style="color:{{ $concern->status == 'resolved' ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
                         <small class="{{ $concern->status == 'resolved' ? 'fw-semibold text-success' : 'text-muted' }}">Resolved</small>
                     </div>
                 </div>

@@ -45,7 +45,7 @@
                 <a class="nav-link active fw-semibold px-3" href="#" data-tab="students"
                    style="border-radius:8px 8px 0 0;font-size:.875rem;">
                     <i class="bi bi-person me-1"></i>Student Appointments
-                    <span class="badge rounded-pill ms-1" style="background:#20B2AA;color:#fff;font-size:.65rem;">
+                    <span class="badge rounded-pill ms-1" style="background:#1e7a4a;color:#fff;font-size:.65rem;">
                         {{ $appointments->total() }}
                     </span>
                 </a>
@@ -54,7 +54,7 @@
                 <a class="nav-link fw-semibold px-3" href="#" data-tab="teachers"
                    style="border-radius:8px 8px 0 0;font-size:.875rem;">
                     <i class="bi bi-person-badge me-1"></i>Teacher Appointments
-                    <span class="badge rounded-pill ms-1" style="background:#20B2AA;color:#fff;font-size:.65rem;">
+                    <span class="badge rounded-pill ms-1" style="background:#1e7a4a;color:#fff;font-size:.65rem;">
                         {{ $teacherAppointments->total() }}
                     </span>
                 </a>
@@ -94,12 +94,12 @@ document.querySelectorAll('#apptTabs .nav-link').forEach(link => {
 
 <style>
 #apptTabs .nav-link { color:#475569; border:none; border-bottom:2px solid transparent; border-radius:0 !important; padding:.5rem 1rem; transition:all .2s; }
-#apptTabs .nav-link:hover { color:#20B2AA; background:rgba(32,178,170,.07); }
-#apptTabs .nav-link.active { color:#20B2AA; border-bottom-color:#20B2AA; background:transparent; font-weight:700; }
+#apptTabs .nav-link:hover { color:#1e7a4a; background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ; }
+#apptTabs .nav-link.active { color:#1e7a4a; border-bottom-color:#1e7a4a; background:transparent; font-weight:700; }
 .pagination { margin:0; gap:3px; }
 .pagination .page-link { border-radius:8px !important; border:1px solid #e2e8f0; color:#475569; font-size:.875rem; padding:.4rem .75rem; transition:all .2s; }
-.pagination .page-link:hover { background:rgba(32,178,170,.1); border-color:#20B2AA; color:#20B2AA; }
-.pagination .page-item.active .page-link { background:#20B2AA; border-color:#20B2AA; color:#fff; }
+.pagination .page-link:hover { background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ; border-color:#1e7a4a; color:#1e7a4a; }
+.pagination .page-item.active .page-link { background:#1e7a4a; border-color:#1e7a4a; color:#fff; }
 .pagination .page-item.disabled .page-link { opacity:.5; }
 </style>
 
