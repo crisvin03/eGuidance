@@ -199,7 +199,7 @@
         .footer-deco-tl{top:-40px;left:-30px;width:180px;height:180px;border-radius:50%;background:radial-gradient(ellipse,rgba(30,122,74,.12) 0%,transparent 70%);}
         .footer-deco-br{bottom:60px;right:-20px;width:140px;height:140px;border-radius:50%;background:rgba(46,123,207,.08);}
         .footer-deco-circle{top:30px;right:38%;width:80px;height:80px;border-radius:50%;background:rgba(30,122,74,.07);border:2px solid rgba(30,122,74,.12);}
-        .footer-main{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:3.5rem;align-items:start;position:relative;z-index:2;padding-bottom:3rem;}
+        .footer-main{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:3.5rem;align-items:end;position:relative;z-index:2;padding-bottom:3rem;}
         .footer-logo-row{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;}
         .footer-logo-img{width:64px;height:64px;border-radius:16px;}
         .footer-brand-bnhs{font-size:1.5rem;font-weight:800;color:#0d2d52;line-height:1;}
@@ -288,7 +288,7 @@
             <img src="{{ asset('logo.png') }}" alt="BNHS Care Konek">
             <div>
                 <div class="nav-brand-name">Care Konek</div>
-                <div class="nav-brand-sub">BNHS Referral &amp; Case Management</div>
+                <div class="nav-brand-sub" style="color:var(--green);">BNHS Referral &amp; Case Management</div>
             </div>
         </a>
         <button class="nav-toggle" onclick="document.getElementById('navActions').classList.toggle('open')" aria-label="Menu">
@@ -319,7 +319,7 @@
                 Matter <i class="bi bi-heart heart-icon"></i>
             </div>
             <p class="hero-desc">
-                A safe, confidential space for students to share concerns, connect with counselors, and get the guidance support they need &mdash; anytime.
+                See a learner who needs support? Refer their concern through Care Konek for timely, confidential, and appropriate assistance.
             </p>
             <div class="hero-btns">
                 <a href="{{ route('login') }}" class="btn-hero-primary">
@@ -472,18 +472,18 @@
 
             {{-- LEFT: text --}}
             <div class="about-content fade-up">
-                <h2 class="about-h2">                    About Bulan NHS<br>
-                    <span class="green">Care Konek</span> Online
+                <h2 class="about-h2">About BNHS<br>
+                    <span class="green">Care Konek</span>
                 </h2>
                 <div class="about-divider"></div>
 
-                <p>The Bulan NHS Care Konek Online is a modern digital support hub designed to make help more accessible, responsive, and student-centered for the entire Bulan National High School community. Through one secure platform, learners and school personnel can easily access counseling services, psychosocial support, child protection assistance, referrals, wellness resources, and other support programs.</p>
+                <p>BNHS Care Konek is a digital referral and case management system of Bulan National High School designed to help teachers efficiently identify, refer, and coordinate support for learners who may require guidance, psychosocial, child protection, or other appropriate interventions.</p>
 
-                <p>Whether you're a student seeking guidance, a teacher needing professional support, or someone concerned about a learner's well-being, the platform provides a safe and confidential space to connect with the right services. It also streamlines documentation, referrals, monitoring, and case management to ensure timely, coordinated, and compassionate support for everyone.</p>
+                <p>Through the platform, teachers can submit learner referrals, document relevant concerns, and connect learners with the appropriate school personnel and support services. It also supports organized case documentation, monitoring, follow-up, and coordination to help ensure that learner concerns are addressed in a timely, confidential, and systematic manner.</p>
 
                 <div class="about-callout">
                     <span class="about-callout-icon"><i class="bi bi-quote"></i></span>
-                    <p>Because at Bulan NHS,<br>no one should have to face challenges alone.</p>
+                    <p>BNHS Care Konek strengthens the link between teachers and learner support services, providing a more accessible and coordinated process for ensuring that learners who need help are identified, referred, and supported.</p>
                 </div>
             </div>
 
@@ -546,8 +546,9 @@
                         <div class="footer-brand-cc">Care <span>Konek</span></div>
                     </div>
                 </div>
-                <div class="footer-subtitle">Referral &amp; Case Management System</div>
-                <p class="footer-desc">Empowering students through safe, confidential, and accessible digital guidance services. Our platform connects learners, teachers, parents, and guidance counselors in one secure environment.</p>
+                <div class="footer-subtitle" style="color:var(--green);">Referral &amp; Case Management System</div>
+                <p class="footer-desc">Connecting teachers to learner support.
+BNHS Care Konek provides teachers with a secure and accessible platform to refer learners who may need guidance, psychosocial, child protection, or other support services. It enables organized referral, case monitoring, follow-up, and coordination to help ensure that every learner concern receives timely and appropriate attention.</p>
                 <div class="footer-pills">
                     <span class="footer-pill green"><i class="bi bi-lock-fill"></i> Confidential</span>
                     <span class="footer-pill blue"><i class="bi bi-shield-fill"></i> Secure Platform</span>
