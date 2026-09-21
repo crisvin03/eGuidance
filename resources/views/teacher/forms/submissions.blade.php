@@ -2,61 +2,117 @@
 @section('title', 'My Submitted Forms')
 
 @section('content')
+@include('student.partials.modern-styles')
 
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-        <h5 class="fw-bold mb-0">My Submitted Forms</h5>
-        <small class="text-muted">All forms you have generated and sent to the counselor</small>
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    
+    /* Filter Form - Stack Vertically */
+    .filter-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+        grid-template-columns: unset !important;
+    }
+    .filter-form > div {
+        width: 100% !important;
+    }
+    .filter-form .form-control,
+    .filter-form .form-select {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    .filter-form .modern-btn,
+    .filter-form button[type="submit"] {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    /* Table Action Buttons - Icon Only */
+    .btn span:not([class*="bi"]),
+    .btn-sm span:not([class*="bi"]) { 
+        display: none !important; 
+    }
+    .btn i.bi,
+    .btn-sm i.bi { 
+        margin: 0 !important; 
+    }
+    .btn-sm { 
+        padding: 0.5rem 0.75rem !important; 
+        min-width: auto !important; 
+    }
+    
+    .table-hide-mobile { display: none !important; }
+    .modern-btn { width: 100% !important; justify-content: center !important; }
+}
+.pagination { margin: 0; gap: 3px; }
+.pagination .page-link { border-radius: 8px !important; border: 1px solid #e2e8f0; color: #475569; font-size: 0.875rem; padding: 0.4rem 0.75rem; transition: all .2s; }
+.pagination .page-link:hover { background: rgba(32,178,170,.1); border-color: #1e7a4a; color: #1e7a4a; }
+.pagination .page-item.active .page-link { background: #1e7a4a; border-color: #1e7a4a; color: #fff; }
+.pagination .page-item.disabled .page-link { opacity: .5; }
+</style>
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-clock-history"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">My Submitted Forms</h1>
+            <p class="modern-page-subtitle">All forms you have generated and sent to the counselor</p>
+        </div>
+        <a href="{{ route('teacher.forms.index') }}" class="modern-btn modern-btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
+            <i class="bi bi-file-earmark-plus"></i>
+            <span>Generate New Form</span>
+        </a>
     </div>
-    <a href="{{ route('teacher.forms.index') }}" class="btn text-white fw-semibold btn-sm" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
-        <i class="bi bi-file-earmark-plus me-1"></i> Generate New Form
-    </a>
 </div>
 
-{{-- Filters --}}
-<div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-    <div class="card-body py-3">
-        <form method="GET" class="row g-2 align-items-end">
-            <div class="col-md-4">
-                <label class="form-label form-label-sm text-muted mb-1">Search</label>
-                <input type="text" name="search" class="form-control form-control-sm"
-                       placeholder="Student name or form title..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <label class="form-label form-label-sm text-muted mb-1">Form Type</label>
-                <select name="form_type" class="form-select form-select-sm">
-                    <option value="">All Form Types</option>
-                    <option value="confiscation-electronic" {{ request('form_type') == 'confiscation-electronic' ? 'selected' : '' }}>Confiscation Slip (Electronic)</option>
-                    <option value="call-slip"               {{ request('form_type') == 'call-slip'               ? 'selected' : '' }}>Call Slip</option>
-                    <option value="risk-assessment"         {{ request('form_type') == 'risk-assessment'         ? 'selected' : '' }}>Initial Risk Assessment</option>
-                    <option value="confiscation-prohibited" {{ request('form_type') == 'confiscation-prohibited' ? 'selected' : '' }}>Confiscation Slip (Prohibited)</option>
-                    <option value="bag-search"              {{ request('form_type') == 'bag-search'              ? 'selected' : '' }}>Random Bag Search Plan</option>
-                    <option value="good-moral"              {{ request('form_type') == 'good-moral'              ? 'selected' : '' }}>Good Moral Request</option>
-                    <option value="home-visitation"         {{ request('form_type') == 'home-visitation'         ? 'selected' : '' }}>Home Visitation</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <label class="form-label form-label-sm text-muted mb-1">Status</label>
-                <select name="status" class="form-select form-select-sm">
-                    <option value="">All Statuses</option>
-                    <option value="submitted"    {{ request('status') == 'submitted'    ? 'selected' : '' }}>Submitted</option>
-                    <option value="reviewed"     {{ request('status') == 'reviewed'     ? 'selected' : '' }}>Reviewed</option>
-                    <option value="acknowledged" {{ request('status') == 'acknowledged' ? 'selected' : '' }}>Acknowledged</option>
-                </select>
-            </div>
-            <div class="col-md-2 d-flex gap-2 align-items-end">
-                <button type="submit" class="btn btn-primary btn-sm flex-fill"><i class="bi bi-search me-1"></i> Filter</button>
-                @if(request('search') || request('status') || request('form_type'))
-                <a href="{{ route('teacher.forms.submissions') }}" class="btn btn-secondary btn-sm flex-fill">Clear</a>
-                @endif
-            </div>
-        </form>
-    </div>
+<!-- Filter Section -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <form method="GET" class="filter-form" style="display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 1rem; align-items: end;">
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Search</label>
+            <input type="text" name="search" class="form-control" placeholder="Student name or form title..." value="{{ request('search') }}" style="border-radius: 10px;">
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Form Type</label>
+            <select name="form_type" class="form-select" style="border-radius: 10px;">
+                <option value="">All Form Types</option>
+                <option value="confiscation-electronic" {{ request('form_type') == 'confiscation-electronic' ? 'selected' : '' }}>Confiscation (Electronic)</option>
+                <option value="call-slip"               {{ request('form_type') == 'call-slip'               ? 'selected' : '' }}>Call Slip</option>
+                <option value="risk-assessment"         {{ request('form_type') == 'risk-assessment'         ? 'selected' : '' }}>Risk Assessment</option>
+                <option value="confiscation-prohibited" {{ request('form_type') == 'confiscation-prohibited' ? 'selected' : '' }}>Confiscation (Prohibited)</option>
+                <option value="bag-search"              {{ request('form_type') == 'bag-search'              ? 'selected' : '' }}>Bag Search Plan</option>
+                <option value="good-moral"              {{ request('form_type') == 'good-moral'              ? 'selected' : '' }}>Good Moral</option>
+                <option value="home-visitation"         {{ request('form_type') == 'home-visitation'         ? 'selected' : '' }}>Home Visitation</option>
+            </select>
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Status</label>
+            <select name="status" class="form-select" style="border-radius: 10px;">
+                <option value="">All Statuses</option>
+                <option value="submitted"    {{ request('status') == 'submitted'    ? 'selected' : '' }}>Submitted</option>
+                <option value="reviewed"     {{ request('status') == 'reviewed'     ? 'selected' : '' }}>Reviewed</option>
+                <option value="acknowledged" {{ request('status') == 'acknowledged' ? 'selected' : '' }}>Acknowledged</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; white-space: nowrap;">
+                <i class="bi bi-funnel-fill"></i> Filter
+            </button>
+        </div>
+    </form>
 </div>
 
 {{-- Submissions list --}}
-<div class="card border-0 shadow-sm" style="border-radius:16px;">
-    <div class="card-body p-0">
+<div class="modern-card">
+    <div class="p-0">
         <div class="table-responsive">
             <table class="table table-hover mb-0">
                 <thead style="background:#f8fafc;">
@@ -88,15 +144,15 @@
                             </td>
                             <td class="py-3">
                                 @php
-                                    $badgeColor = match($submission->status) {
-                                        'submitted'    => 'warning',
-                                        'reviewed'     => 'info',
-                                        'acknowledged' => 'success',
-                                        default        => 'secondary',
+                                    $badgeStyle = match($submission->status) {
+                                        'submitted'    => 'background:#fef3c7;color:#92400e;border:1px solid #fbbf24',
+                                        'reviewed'     => 'background:#eff6ff;color:#1e40af;border:1px solid #93c5fd',
+                                        'acknowledged' => 'background:#ecfdf5;color:#065f46;border:1px solid #6ee7b7',
+                                        default        => 'background:#f1f5f9;color:#475569;border:1px solid #cbd5e1',
                                     };
                                 @endphp
-                                <span class="badge bg-{{ $badgeColor }} text-capitalize">
-                                    {{ $submission->status }}
+                                <span class="modern-badge" style="{{ $badgeStyle }}">
+                                    {{ ucfirst($submission->status) }}
                                 </span>
                             </td>
                             <td class="py-3 small text-muted">
@@ -105,7 +161,7 @@
                             <td class="py-3">
                                 <div class="d-flex gap-1">
                                     <a href="{{ route('teacher.forms.submissions.show', $submission->id) }}"
-                                       class="btn btn-primary btn-sm py-1 px-2" style="font-size:.78rem;"><i class="bi bi-eye me-1"></i>View
+                                       class="btn btn-sm py-1 px-2 text-white" style="font-size:.78rem;background:#1e7a4a;"><i class="bi bi-eye me-1"></i>View
                                     </a>
                                     <button type="button" class="btn btn-danger btn-sm py-1 px-2" style="font-size:.78rem;"
                                         onclick="confirmDelete('{{ route('teacher.forms.submissions.destroy', $submission->id) }}', '{{ addslashes($submission->form_title) }}')">
@@ -119,7 +175,7 @@
                             <td colspan="6" class="text-center py-5 text-muted">
                                 <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
                                 No submitted forms yet.
-                                <a href="{{ route('teacher.forms.index') }}">Generate one now.</a>
+                                <a href="{{ route('teacher.forms.index') }}" style="color:#1e7a4a;">Generate one now.</a>
                             </td>
                         </tr>
                     @endforelse
@@ -145,18 +201,10 @@
 
 {{-- Legend --}}
 <div class="d-flex gap-3 mt-3 flex-wrap">
-    <small class="text-muted"><span class="badge bg-warning me-1">Submitted</span> Sent, awaiting counselor review</small>
-    <small class="text-muted"><span class="badge bg-info me-1">Reviewed</span> Counselor has reviewed it</small>
-    <small class="text-muted"><span class="badge bg-success me-1">Acknowledged</span> Counselor has acknowledged and acted on it</small>
+    <small class="text-muted"><span class="modern-badge" style="background:#fef3c7;color:#92400e;border:1px solid #fbbf24">Submitted</span> <span class="ms-1">Sent, awaiting counselor review</span></small>
+    <small class="text-muted"><span class="modern-badge" style="background:#eff6ff;color:#1e40af;border:1px solid #93c5fd">Reviewed</span> <span class="ms-1">Counselor has reviewed it</span></small>
+    <small class="text-muted"><span class="modern-badge" style="background:#ecfdf5;color:#065f46;border:1px solid #6ee7b7">Acknowledged</span> <span class="ms-1">Counselor has acknowledged and acted on it</span></small>
 </div>
-
-<style>
-.pagination { margin: 0; gap: 3px; }
-.pagination .page-link { border-radius: 8px !important; border: 1px solid #e2e8f0; color: #475569; font-size: 0.875rem; padding: 0.4rem 0.75rem; transition: all .2s; }
-.pagination .page-link:hover { background: rgba(32,178,170,.1); border-color: #1e7a4a; color: #1e7a4a; }
-.pagination .page-item.active .page-link { background: #1e7a4a; border-color: #1e7a4a; color: #fff; }
-.pagination .page-item.disabled .page-link { opacity: .5; }
-</style>
 
 {{-- Delete Confirmation Modal --}}
 <div class="modal fade" id="deleteModal" tabindex="-1">

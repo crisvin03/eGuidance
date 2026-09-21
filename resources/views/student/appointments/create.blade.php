@@ -3,14 +3,13 @@
 @section('title', 'Schedule Appointment')
 
 @section('content')
+@include('student.partials.modern-styles')
+
 <div class="row">
     <div class="col-md-8">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Schedule an Appointment</h5>
-                <p class="card-text text-muted">Book a counseling session with one of our guidance counselors.</p>
-            </div>
-            <div class="card-body">
+        <div class="modern-card" style="padding: 1.5rem;">
+            <h5 class="fw-semibold mb-2" style="font-size: 1.15rem;">Schedule an Appointment</h5>
+            <p class="text-muted mb-4" style="font-size: 0.9rem;">Book a counseling session with one of our guidance counselors.</p>
                 @if($errors->any())
                     <div class="alert alert-danger">
                         <ul class="mb-0">
@@ -81,14 +80,10 @@
                 </form>
             </div>
         </div>
-    </div>
 
     <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h6 class="card-title">Appointment Guidelines</h6>
-            </div>
-            <div class="card-body">
+        <div class="modern-card" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;">Appointment Guidelines</h6>
                 <div class="d-flex align-items-start mb-3">
                     <i class="bi bi-check-circle text-success me-2 mt-1"></i>
                     <small class="text-muted">Choose a counselor that best fits your needs</small>
@@ -108,11 +103,8 @@
             </div>
         </div>
 
-        <div class="card mt-3">
-            <div class="card-header">
-                <h6 class="card-title">Available Counselors</h6>
-            </div>
-            <div class="card-body">
+        <div class="modern-card mt-3" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;">Available Counselors</h6>
                 @foreach($counselors as $counselor)
                     <div class="d-flex align-items-center gap-2 mb-3">
                         <div class="user-avatar">

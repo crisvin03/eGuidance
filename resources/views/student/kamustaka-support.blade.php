@@ -77,7 +77,7 @@
                         </a>
                     </div>
                     <div class="col-md-4">
-                        <a href="{{ route('student.resources') }}" class="text-decoration-none">
+                        <a href="{{ route('student.resources.index') }}" class="text-decoration-none">
                             <div class="p-3 rounded-3 h-100 text-center border" style="transition:all 0.2s;" onmouseover="this.style.borderColor='#1e7a4a'" onmouseout="this.style.borderColor='#dee2e6'">
                                 <i class="bi bi-journal-heart fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
                                 <div class="fw-semibold small">Self-Help Resources</div>

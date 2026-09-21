@@ -3,308 +3,213 @@
 @section('title', 'My Concerns')
 
 @section('content')
-<div class="card">
-    <div class="card-header d-flex justify-content-between align-items-center">
-        <h5 class="card-title">My Concerns</h5>
-        <a href="{{ route('student.concerns.create') }}" class="btn btn-primary">
+@include('student.partials.modern-styles')
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-chat-dots-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">My Concerns</h1>
+            <p class="modern-page-subtitle">Track and manage your submitted concerns</p>
+        </div>
+        <a href="{{ route('student.spill-tea') }}" class="modern-btn modern-btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
             <i class="bi bi-plus-circle"></i>
-            Submit New Concern
+            <span>New Concern</span>
         </a>
-    </div>
-    <div class="card-body">
-        <form method="GET" class="row g-3 mb-4">
-            <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Search by title or description..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <select name="status" class="form-select">
-                    <option value="">All Statuses</option>
-                    <option value="submitted" {{ request('status')=='submitted' ? 'selected' : '' }}>Submitted</option>
-                    <option value="under_review" {{ request('status')=='under_review' ? 'selected' : '' }}>Under Review</option>
-                    <option value="scheduled" {{ request('status')=='scheduled' ? 'selected' : '' }}>Scheduled</option>
-                    <option value="resolved" {{ request('status')=='resolved' ? 'selected' : '' }}>Resolved</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select name="category" class="form-select">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ request('category')==$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
-            </div>
-        </form>
-        
-        @if($concerns->count() > 0)
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th class="table-hide-mobile">Description</th>
-                            <th>Status</th>
-                            <th class="table-hide-mobile">Submitted</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($concerns as $concern)
-                            <tr>
-                                <td>
-                                    <strong>{{ $concern->title }}</strong>
-                                    @if($concern->is_anonymous)
-                                        <div class="mt-1">
-                                            <span class="badge bg-secondary">
-                                                <i class="bi bi-incognito"></i>
-                                                Anonymous
-                                            </span>
-                                        </div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <span class="badge bg-info">{{ $concern->category->name }}</span>
-                                </td>
-                                <td class="table-hide-mobile">
-                                    <small class="text-muted">{{ Str::limit($concern->description, 80) }}</small>
-                                </td>
-                                <td>
-                                    @if($concern->status == 'resolved')
-                                        <span class="badge badge-success">Resolved</span>
-                                    @elseif($concern->status == 'scheduled')
-                                        <span class="badge badge-info">Scheduled</span>
-                                    @else
-                                        <span class="badge badge-warning">Pending</span>
-                                    @endif
-                                </td>
-                                <td class="table-hide-mobile">
-                                    <small class="text-muted">{{ $concern->created_at->format('M d, Y') }}</small>
-                                </td>
-                                <td>
-                                    <a href="{{ route('student.concerns.show', $concern->id) }}" class="btn btn-primary btn-sm">
-                                        <i class="bi bi-eye me-1"></i> View
-                                    </a>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @if($concerns->hasPages())
-                <div class="mt-3">{{ $concerns->links() }}</div>
-            @endif
-        @else
-            <div class="text-center py-5">
-                <i class="bi bi-chat-dots" style="font-size: 4rem; color: #cbd5e1;"></i>
-                <h4 class="mt-3 text-muted">No Concerns Submitted</h4>
-                <p class="text-muted">You haven't submitted any concerns yet.</p>
-                <a href="{{ route('student.concerns.create') }}" class="btn btn-primary">
-                    <i class="bi bi-plus-circle"></i>
-                    Submit Your First Concern
-                </a>
-            </div>
-        @endif
     </div>
 </div>
 
-<script>
-function showDetails(concernId) {
-    // Show loading state
-    const modal = new bootstrap.Modal(document.getElementById('concernModal'));
-    document.querySelector('#concernModal .modal-body').innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-            </div>
-            <p class="mt-2 text-muted">Loading concern details...</p>
+<!-- Filters Card -->
+<div class="modern-card modern-card-compact mb-4" style="padding: 1.5rem;">
+    <form method="GET" style="display: grid; grid-template-columns: 2fr 1fr 1fr 140px; gap: 1rem; align-items: end;">
+        <div>
+            <input type="text" name="search" class="form-control modern-form-control" 
+                   placeholder="Search concerns..." value="{{ request('search') }}">
         </div>
-    `;
-    modal.show();
+        <div>
+            <select name="status" class="form-select modern-form-control">
+                <option value="">All Statuses</option>
+                <option value="submitted" {{ request('status')=='submitted' ? 'selected' : '' }}>Submitted</option>
+                <option value="under_review" {{ request('status')=='under_review' ? 'selected' : '' }}>Under Review</option>
+                <option value="scheduled" {{ request('status')=='scheduled' ? 'selected' : '' }}>Scheduled</option>
+                <option value="resolved" {{ request('status')=='resolved' ? 'selected' : '' }}>Resolved</option>
+            </select>
+        </div>
+        <div>
+            <select name="category" class="form-select modern-form-control">
+                <option value="">All Categories</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ request('category')==$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="modern-btn modern-btn-primary" style="width: 100%; padding: 0.75rem 1rem; font-size: 0.95rem;">
+                <i class="bi bi-funnel-fill"></i>
+                <span>Filter</span>
+            </button>
+        </div>
+    </form>
+</div>
 
-    // Fetch concern details via AJAX
-    fetch(`/student/concerns/${concernId}`, {
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            const concern = data.concern;
-            
-            // Format the status badge
-            let statusBadge = '';
-            if (concern.status === 'resolved') {
-                statusBadge = '<span class="badge bg-success">Resolved</span>';
-            } else if (concern.status === 'scheduled') {
-                statusBadge = '<span class="badge bg-info">Scheduled</span>';
-            } else if (concern.status === 'under_review') {
-                statusBadge = '<span class="badge bg-warning">Under Review</span>';
-            } else {
-                statusBadge = '<span class="badge bg-secondary">Submitted</span>';
-            }
-
-            // Build the concern details HTML
-            let detailsHTML = `
-                <div class="concern-details">
-                    <div class="row mb-3">
-                        <div class="col-md-8">
-                            <h5 class="mb-2">${concern.title}</h5>
-                            ${concern.is_anonymous ? '<span class="badge bg-secondary"><i class="bi bi-incognito"></i> Anonymous</span>' : ''}
+<!-- Concerns List -->
+<div class="modern-card" style="padding: 1.5rem;">
+    @if($concerns->count() > 0)
+        <div class="modern-list">
+            @foreach($concerns as $concern)
+                <div class="modern-list-item" style="padding: 1rem 0;">
+                    <div class="modern-list-item-main">
+                        <div class="modern-list-item-title" style="font-size: 1rem;">
+                            {{ $concern->title }}
+                            @if($concern->is_anonymous)
+                                <span class="modern-badge modern-badge-info" style="margin-left: 0.5rem; font-size: 0.75rem;">
+                                    <i class="bi bi-incognito"></i>
+                                    Anonymous
+                                </span>
+                            @endif
                         </div>
-                        <div class="col-md-4 text-md-end">
-                            ${statusBadge}
+                        <div class="modern-list-item-meta" style="font-size: 0.85rem; margin-top: 0.5rem;">
+                            <span class="modern-badge" style="background: rgba(30, 122, 74, 0.12); color: var(--green); font-size: 0.8rem;">
+                                <i class="bi bi-tag-fill"></i>
+                                {{ $concern->category->name }}
+                            </span>
+                            <span style="color: var(--text-muted);">
+                                <i class="bi bi-clock"></i>
+                                {{ $concern->created_at->diffForHumans() }}
+                            </span>
+                            <span style="color: var(--text-muted);">
+                                <i class="bi bi-calendar3"></i>
+                                {{ $concern->created_at->format('M d, Y') }}
+                            </span>
                         </div>
+                        @if($concern->description)
+                            <p style="margin-top: 0.5rem; margin-bottom: 0; color: var(--text-muted); font-size: 0.9rem;">
+                                {{ Str::limit($concern->description, 120) }}
+                            </p>
+                        @endif
                     </div>
-                    
-                    <div class="row mb-3">
-                        <div class="col-md-6">
-                            <small class="text-muted"><strong>Category:</strong></small>
-                            <div><span class="badge bg-info">${concern.category.name}</span></div>
-                        </div>
-                        <div class="col-md-6 text-md-end">
-                            <small class="text-muted"><strong>Submitted:</strong></small>
-                            <div>${new Date(concern.created_at).toLocaleDateString('en-US', { 
-                                year: 'numeric', 
-                                month: 'short', 
-                                day: 'numeric',
-                                hour: '2-digit',
-                                minute: '2-digit'
-                            })}</div>
-                        </div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        @if($concern->status == 'resolved')
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.8rem;">
+                                <i class="bi bi-check-circle-fill"></i>
+                                Resolved
+                            </span>
+                        @elseif($concern->status == 'scheduled')
+                            <span class="modern-badge modern-badge-info" style="font-size: 0.8rem;">
+                                <i class="bi bi-calendar-check"></i>
+                                Scheduled
+                            </span>
+                        @elseif($concern->status == 'under_review')
+                            <span class="modern-badge modern-badge-purple" style="font-size: 0.8rem;">
+                                <i class="bi bi-eye-fill"></i>
+                                Under Review
+                            </span>
+                        @else
+                            <span class="modern-badge modern-badge-warning" style="font-size: 0.8rem;">
+                                <i class="bi bi-hourglass-split"></i>
+                                Pending
+                            </span>
+                        @endif
+                        
+                        <a href="{{ route('student.concerns.show', $concern->id) }}" 
+                           class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                            <i class="bi bi-eye"></i>
+                            <span>View</span>
+                        </a>
                     </div>
-                    
-                    <div class="mb-4">
-                        <h6 class="text-muted">Description</h6>
-                        <p class="mb-0">${concern.description.replace(/\n/g, '<br>')}</p>
-                    </div>
-            `;
-
-            // Add counselor response if it exists
-            if (concern.counselor_response) {
-                detailsHTML += `
-                    <div class="alert alert-info">
-                        <h6 class="alert-heading">
-                            <i class="bi bi-person-check-fill"></i>
-                            Counselor Response
-                        </h6>
-                        <p class="mb-0">${concern.counselor_response.replace(/\n/g, '<br>')}</p>
-                    </div>
-                `;
-            }
-
-            // Add resolved timestamp if resolved
-            if (concern.resolved_at) {
-                detailsHTML += `
-                    <div class="text-success">
-                        <small><i class="bi bi-check-circle-fill"></i> 
-                        Resolved on ${new Date(concern.resolved_at).toLocaleDateString('en-US', { 
-                            year: 'numeric', 
-                            month: 'long', 
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                        })}</small>
-                    </div>
-                `;
-            }
-
-            // Add counseling date if status is scheduled and date is provided
-            if (concern.status === 'scheduled' && concern.counseling_date) {
-                const counselingDate = new Date(concern.counseling_date);
-                
-                detailsHTML += `
-                    <div class="alert alert-warning mt-3">
-                        <h6 class="alert-heading">
-                            <i class="bi bi-calendar-check"></i>
-                            Counseling Session Scheduled
-                        </h6>
-                        <div class="row">
-                            <div class="col-md-12">
-                                <strong>Date & Time:</strong><br>
-                                ${counselingDate.toLocaleDateString('en-US', { 
-                                    weekday: 'long',
-                                    year: 'numeric', 
-                                    month: 'long', 
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-
-            // Add scheduled appointment date if exists (additional info)
-            if (concern.appointments && concern.appointments.length > 0) {
-                const appointment = concern.appointments[0]; // Get the most recent appointment
-                const appointmentDate = new Date(appointment.appointment_date);
-                
-                let appointmentStatus = '';
-                if (appointment.status === 'scheduled') {
-                    appointmentStatus = '<span class="badge bg-warning">Scheduled</span>';
-                } else if (appointment.status === 'confirmed') {
-                    appointmentStatus = '<span class="badge bg-info">Confirmed</span>';
-                } else if (appointment.status === 'completed') {
-                    appointmentStatus = '<span class="badge bg-success">Completed</span>';
-                }
-
-                detailsHTML += `
-                    <div class="alert alert-info mt-2">
-                        <h6 class="alert-heading">
-                            <i class="bi bi-calendar-event"></i>
-                            Appointment Details
-                        </h6>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <strong>Date & Time:</strong><br>
-                                ${appointmentDate.toLocaleDateString('en-US', { 
-                                    weekday: 'long',
-                                    year: 'numeric', 
-                                    month: 'long', 
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}
-                            </div>
-                            <div class="col-md-6 text-md-end">
-                                <strong>Status:</strong><br>
-                                ${appointmentStatus}
-                            </div>
-                        </div>
-                        ${appointment.notes ? `
-                            <div class="mt-2">
-                                <strong>Notes:</strong><br>
-                                <small>${appointment.notes.replace(/\n/g, '<br>')}</small>
-                            </div>
-                        ` : ''}
-                    </div>
-                `;
-            }
-
-            detailsHTML += '</div>';
-            
-            // Update modal content
-            document.querySelector('#concernModal .modal-body').innerHTML = detailsHTML;
-        } else {
-            throw new Error('Failed to load concern details');
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.querySelector('#concernModal .modal-body').innerHTML = `
-            <div class="alert alert-danger">
-                <i class="bi bi-exclamation-triangle"></i>
-                <strong>Error:</strong> Failed to load concern details. Please try again.
+                </div>
+            @endforeach
+        </div>
+        
+        @if($concerns->hasPages())
+            <div class="mt-4">
+                {{ $concerns->links() }}
             </div>
-        `;
-    });
+        @endif
+    @else
+        <div class="modern-empty-state" style="padding: 3rem 2rem;">
+            <div class="modern-empty-icon" style="width: 80px; height: 80px; font-size: 2.5rem;">
+                <i class="bi bi-chat-heart"></i>
+            </div>
+            <h3 class="modern-empty-title" style="font-size: 1.15rem;">No Concerns Found</h3>
+            <p class="modern-empty-text" style="font-size: 0.95rem;">
+                @if(request()->has('search') || request()->has('status') || request()->has('category'))
+                    No concerns match your filters. Try adjusting your search criteria.
+                @else
+                    You haven't submitted any concerns yet. When you're ready to talk, we're here to listen.
+                @endif
+            </p>
+            <a href="{{ route('student.spill-tea') }}" class="modern-btn modern-btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
+                <i class="bi bi-plus-circle"></i>
+                <span>Submit Your First Concern</span>
+            </a>
+        </div>
+    @endif
+</div>
+
+<style>
+/* Filter form responsive */
+.modern-card-compact form {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 140px;
+    gap: 1rem;
+    align-items: end;
 }
-</script>
+
+/* Page header responsive adjustments */
+@media (max-width: 768px) {
+    .modern-page-header-compact {
+        flex-wrap: wrap;
+    }
+    
+    .modern-page-header-compact > a {
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    /* Filters grid - single column on mobile */
+    .modern-card-compact form {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .modern-card-compact form button {
+        width: 100% !important;
+    }
+    
+    /* List item adjustments */
+    .modern-list-item {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .modern-list-item > div:last-child {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        margin-top: 0.75rem;
+    }
+    
+    .modern-list-item > div:last-child .modern-btn {
+        width: 100%;
+    }
+}
+
+@media (max-width: 1200px) and (min-width: 769px) {
+    /* Tablet: 2 columns then button on second row */
+    .modern-card-compact form {
+        grid-template-columns: 1fr 1fr;
+    }
+    
+    .modern-card-compact form > div:first-child {
+        grid-column: span 2;
+    }
+    
+    .modern-card-compact form > div:last-child {
+        grid-column: span 2;
+    }
+}
+</style>
 @endsection
-{{-- Note: showDetails JS kept for legacy but View now redirects to show page --}}

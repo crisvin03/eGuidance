@@ -51,6 +51,7 @@ class RegisterController extends Controller
         return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'role_type' => ['required', 'string', 'in:student,teacher'],
             'student_id' => ['nullable', 'string', 'max:255'],
             'password' => ['required', 'string', 'min:8', 'confirmed', \Illuminate\Validation\Rules\Password::min(8)],
         ]);
@@ -64,12 +65,14 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        $teacherRole = \App\Models\Role::where('name', 'teacher')->first();
+        // Get the role based on user selection
+        $roleName = $data['role_type'] ?? 'student'; // default to student if not provided
+        $role = \App\Models\Role::where('name', $roleName)->first();
 
         return User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role_id' => $teacherRole->id,
+            'role_id' => $role->id,
             'student_id' => $data['student_id'] ?? null,
             'password' => Hash::make($data['password']),
             'is_active' => false, // pending counselor approval

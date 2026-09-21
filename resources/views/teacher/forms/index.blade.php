@@ -1,53 +1,74 @@
 @extends('layouts.dashboard')
-@section('title', 'Generate Forms')
+@section('title', 'Forms & Downloads')
 
 @section('content')
+@include('student.partials.modern-styles')
+
 <style>
-    .btn-send-counselor {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.4rem;
-        padding: 0.5rem 1.1rem;
-        border-radius: 8px;
-        border: 2px solid #1e7a4a;
-        cursor: pointer;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: #1e7a4a;
-        background: #ffffff;
-        transition: all 0.2s;
-    }
-    .btn-send-counselor:hover {
-        background: #1e7a4a;
-        color: #ffffff;
-    }
-    .btn-send-counselor:hover { opacity: 0.88; }
-    .btn-send-counselor:disabled { opacity: 0.6; cursor: not-allowed; }
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    div[style*="display: grid"][style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    .badge { font-size: 0.75rem !important; }
+    .modern-btn { width: 100% !important; justify-content: center !important; }
+}
+.btn-send-counselor {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 8px;
+    border: 2px solid #1e7a4a;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #1e7a4a;
+    background: #ffffff;
+    transition: all 0.2s;
+}
+.btn-send-counselor:hover {
+    background: #1e7a4a;
+    color: #ffffff;
+}
+.btn-send-counselor:hover { opacity: 0.88; }
+.btn-send-counselor:disabled { opacity: 0.6; cursor: not-allowed; }
 </style>
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-        <h5 class="fw-bold mb-0">Generate Forms</h5>
-        <small class="text-muted">Select a form, fill in the details, then send to the counselor for review.</small>
+
+@php
+    $pendingCount = \App\Models\TeacherFormSubmission::where('teacher_id', Auth::id())->count();
+@endphp
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-file-earmark-text-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Forms & Downloads</h1>
+            <p class="modern-page-subtitle">Fill in and generate official forms directly from here</p>
+        </div>
+        <a href="{{ route('teacher.forms.submissions') }}" class="modern-btn modern-btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.95rem; position: relative;">
+            <i class="bi bi-clock-history"></i>
+            <span>My Submissions</span>
+            @if($pendingCount > 0)
+                <span style="position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">{{ $pendingCount }}</span>
+            @endif
+        </a>
     </div>
-    <a href="{{ route('teacher.forms.submissions') }}" class="btn text-white fw-semibold btn-sm" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
-        <i class="bi bi-clock-history me-1"></i> My Submitted Forms
-        @php $pendingCount = \App\Models\TeacherFormSubmission::where('teacher_id', Auth::id())->count(); @endphp
-        @if($pendingCount > 0)
-            <span class="badge rounded-pill bg-white ms-1" style="color:#1e7a4a;font-size:0.7rem;">{{ $pendingCount }}</span>
-        @endif
-    </a>
 </div>
 
 <div class="row g-4">
     @php
         $forms = [
-            ['icon' => 'bi-phone', 'title' => 'Confiscation Slip (Electronic Device)', 'desc' => 'For confiscation of portable electronic devices per school policy.', 'id' => 'confiscation-electronic'],
-            ['icon' => 'bi-envelope-paper', 'title' => 'Call Slip', 'desc' => 'For summoning parents/guardians to the Guidance Office.', 'id' => 'call-slip'],
-            ['icon' => 'bi-shield-exclamation', 'title' => 'Initial Risk Assessment Form', 'desc' => 'For initial risk assessment of students with safety concerns.', 'id' => 'risk-assessment'],
-            ['icon' => 'bi-slash-circle', 'title' => 'Confiscation Slip (Prohibited Items)', 'desc' => 'For confiscation of prohibited or dangerous items from students.', 'id' => 'confiscation-prohibited'],
-            ['icon' => 'bi-backpack', 'title' => 'Random Routine Bag Search Plan', 'desc' => 'For documenting routine bag search activities per school year.', 'id' => 'bag-search'],
-            ['icon' => 'bi-award', 'title' => 'Good Moral Request Form', 'desc' => 'For requesting good moral character certification for students.', 'id' => 'good-moral'],
-            ['icon' => 'bi-house-heart', 'title' => 'Home Visitation Form', 'desc' => 'For documenting home visitation activities and observations.', 'id' => 'home-visitation'],
+            ['icon' => 'bi-phone',             'title' => 'Confiscation Slip (Electronic Device)', 'desc' => 'For confiscation of portable electronic devices per school policy.',   'id' => 'confiscation-electronic'],
+            ['icon' => 'bi-envelope-paper',    'title' => 'Call Slip',                             'desc' => 'For summoning parents/guardians to the Guidance Office.',             'id' => 'call-slip'],
+            ['icon' => 'bi-shield-exclamation','title' => 'Initial Risk Assessment Form',          'desc' => 'For initial risk assessment of students with safety concerns.',        'id' => 'risk-assessment'],
+            ['icon' => 'bi-slash-circle',      'title' => 'Confiscation Slip (Prohibited Items)',  'desc' => 'For confiscation of prohibited or dangerous items from students.',    'id' => 'confiscation-prohibited'],
+            ['icon' => 'bi-backpack',          'title' => 'Random Routine Bag Search Plan',        'desc' => 'For documenting routine bag search activities per school year.',      'id' => 'bag-search'],
+            ['icon' => 'bi-award',             'title' => 'Good Moral Request Form',               'desc' => 'For requesting good moral character certification for students.',     'id' => 'good-moral'],
+            ['icon' => 'bi-house-heart',       'title' => 'Home Visitation Form',                  'desc' => 'For documenting home visitation activities and observations.',       'id' => 'home-visitation'],
         ];
     @endphp
 
@@ -56,7 +77,7 @@
         <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
             <div class="card-body p-4 d-flex flex-column">
                 <div class="d-flex align-items-start gap-3 mb-3">
-                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:45px;height:45px;min-width:45px;background:rgba(32,178,170,0.1);">
+                    <div class="rounded-circle d-flex align-items-center justify-content-center" style="width:45px;height:45px;min-width:45px;background:rgba(30,122,74,0.1);">
                         <i class="bi {{ $form['icon'] }} fs-5" style="color:#1e7a4a;"></i>
                     </div>
                     <div>
@@ -79,9 +100,9 @@
 <!-- Form Generator Modal -->
 <div class="modal fade" id="formModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="formModalTitle">Generate Form</h5>
+        <div class="modal-content" style="border-radius:16px;">
+            <div class="modal-header" style="border-radius:16px 16px 0 0;">
+                <h5 class="modal-title fw-bold" id="formModalTitle">Generate Form</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body" id="formModalBody">

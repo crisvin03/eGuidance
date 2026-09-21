@@ -2,14 +2,34 @@
 @section('title', 'Pending Account Approvals')
 
 @section('content')
-<div class="d-flex align-items-center justify-content-between mb-4 flex-wrap gap-3">
-    <div>
-        <h4 class="fw-bold mb-1" style="color:#0d2d52;">Pending Account Approvals</h4>
-        <p class="text-muted mb-0" style="font-size:.9rem;">Review and approve new teacher accounts before they can access the portal.</p>
+@include('student.partials.modern-styles')
+
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    .modern-stats-grid { grid-template-columns: 1fr !important; gap: 0.75rem !important; }
+    .table-responsive { font-size: 0.875rem !important; }
+    .badge { font-size: 0.7rem !important; padding: 0.25rem 0.5rem !important; }
+    .btn { font-size: 0.875rem !important; padding: 0.5rem 1rem !important; }
+}
+</style>
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-person-check-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Pending Account Approvals</h1>
+            <p class="modern-page-subtitle">Review and approve new teacher accounts before they can access the portal</p>
+        </div>
+        <span class="modern-badge modern-badge-info" style="font-size: 0.9rem; padding: 0.5rem 1rem;">
+            <i class="bi bi-hourglass-split"></i> {{ $pending->count() }} Pending
+        </span>
     </div>
-    <span class="badge rounded-pill px-3 py-2" style="background:rgba(30,122,74,.12);color:#1e7a4a;font-size:.85rem;font-weight:600;">
-        <i class="bi bi-hourglass-split me-1"></i> {{ $pending->count() }} Pending
-    </span>
 </div>
 
 @if($pending->isEmpty())

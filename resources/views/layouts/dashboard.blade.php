@@ -7,20 +7,45 @@
     <title>@yield('title', 'BNHS Care Konek') - Referral & Case Management System</title>
     
     @vite(['resources/css/app.css'])
+    @stack('styles')
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
     
     <style>
+        :root {
+            --navy: #0d2d52;
+            --green: #1e7a4a;
+            --green-dark: #145e38;
+            --gold: #f5c518;
+            --accent: #1a3a3a;
+            --text-dark: #0d2d52;
+            --text-body: #3d5a7a;
+            --text-muted: #64748b;
+            --bg-page: #edf2f7;
+            --bg-light: #f8fafc;
+        }
+        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
         
+        html {
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+        }
+        
         body {
             font-family: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
-            background: #f8fafc;
-            color: #334155;
+            background: linear-gradient(160deg, #eaf6f0 0%, #e8f4fb 50%, #eef6f0 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100vw;
+            position: relative;
         }
         
         /* Sidebar */
@@ -30,30 +55,32 @@
             left: 0;
             height: 100vh;
             width: 280px;
-            background: #ffffff;
+            background: linear-gradient(180deg, #eaf6f0 0%, #e8f4fb 50%, #eef6f0 100%);
             z-index: 1000;
             transition: all 0.3s ease;
             overflow-y: hidden;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            box-shadow: 2px 0 16px rgba(13, 45, 82, 0.06);
+            border-right: 1px solid rgba(30, 122, 74, 0.1);
         }
         
         .sidebar-header {
             padding: 1.5rem;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(30, 122, 74, 0.15);
+            background: linear-gradient(135deg, rgba(30, 122, 74, 0.08) 0%, rgba(30, 122, 74, 0.04) 100%);
         }
         
         .sidebar-logo {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            color: #1e293b;
+            color: var(--navy);
             text-decoration: none;
         }
         
         .sidebar-logo img {
             width: 40px;
             height: 40px;
-            border-radius: 8px;
+            border-radius: 10px;
         }
         
         .sidebar-logo-text {
@@ -64,13 +91,16 @@
         .sidebar-logo-name {
             font-size: 1.25rem;
             font-weight: 700;
-            letter-spacing: 1px;
+            letter-spacing: -0.3px;
+            color: var(--navy);
         }
         
         .sidebar-logo-subtitle {
             font-size: 0.65rem;
             opacity: 0.9;
             letter-spacing: 0.5px;
+            color: var(--green);
+            font-weight: 600;
         }
         
         .sidebar-nav {
@@ -78,20 +108,66 @@
             overflow-y: hidden;
             overflow-x: hidden;
             height: calc(100vh - 81px);
+            position: relative;
+        }
+        
+        /* Subtle botanical decoration in sidebar */
+        .sidebar-nav::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 150px;
+            background: linear-gradient(to top, rgba(30, 122, 74, 0.04) 0%, transparent 100%);
+            pointer-events: none;
+        }
+        
+        /* Decorative leaves in sidebar */
+        .sidebar-leaf {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.08;
+            color: var(--green);
+            z-index: 1;
+        }
+        
+        .sidebar-leaf-top {
+            top: 120px;
+            right: 20px;
+            font-size: 4rem;
+            transform: rotate(25deg);
+        }
+        
+        .sidebar-leaf-bottom {
+            bottom: 80px;
+            left: 15px;
+            font-size: 3.5rem;
+            transform: rotate(-35deg);
+        }
+        
+        .sidebar-leaf-middle {
+            top: 50%;
+            right: 15px;
+            font-size: 2.5rem;
+            transform: translateY(-50%) rotate(15deg);
+            opacity: 0.05;
         }
         
         .nav-section {
             margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
         }
         
         .nav-section-title {
             padding: 0 1.5rem;
             margin-bottom: 0.35rem;
             font-size: 0.65rem;
-            font-weight: 600;
-            color: #64748b;
+            font-weight: 700;
+            color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -102,23 +178,27 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.65rem 1.5rem;
-            color: #475569;
+            color: var(--text-body);
             text-decoration: none;
             transition: all 0.3s ease;
             border-left: 3px solid transparent;
             font-size: 0.875rem;
+            font-weight: 500;
+            position: relative;
+            z-index: 2;
         }        
         .nav-link:hover {
-            background: #f8fafc;
-            color: #1e293b;
-            border-left-color: #1e7a4a;
+            background: rgba(255, 255, 255, 0.7);
+            color: var(--green);
+            border-left-color: var(--green);
         }
         
         .nav-link.active {
-            background: rgba(30,122,74,0.15);
-            color: #1e7a4a;
-            border-left-color: #1e7a4a;
+            background: rgba(255, 255, 255, 0.9);
+            color: var(--green);
+            border-left-color: var(--green);
             font-weight: 600;
+            box-shadow: 0 2px 8px rgba(30, 122, 74, 0.15);
         }
         
         .nav-link i {
@@ -149,37 +229,120 @@
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            position: relative;
+            overflow-x: hidden;
+            width: calc(100vw - 280px);
+            max-width: calc(100vw - 280px);
+        }
+        
+        /* Decorative botanical elements */
+        .main-content::before {
+            content: '';
+            position: fixed;
+            top: -80px;
+            left: 280px;
+            width: 320px;
+            height: 320px;
+            border-radius: 50%;
+            background: radial-gradient(ellipse, rgba(30, 122, 74, 0.08) 0%, transparent 70%);
+            pointer-events: none;
+            z-index: 0;
         }
         
         /* Top Header */
         .top-header {
-            background: white;
+            background: linear-gradient(90deg, #eaf6f0 0%, #e8f4fb 50%, #eef6f0 100%);
             padding: 1rem 2rem;
-            border-bottom: 1px solid #e2e8f0;
+            border-bottom: 1px solid rgba(30, 122, 74, 0.15);
             display: flex;
             align-items: center;
             justify-content: space-between;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 2px 16px rgba(13, 45, 82, 0.06);
+        }
+        
+        .top-header > * {
+            position: relative;
+        }
+        
+        /* Decorative leaves in header */
+        .header-leaf {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.06;
+            color: var(--green);
+            z-index: 1;
+        }
+        
+        .header-leaf-left {
+            top: 50%;
+            left: 320px;
+            font-size: 3rem;
+            transform: translateY(-50%) rotate(-25deg);
+        }
+        
+        .header-leaf-right {
+            top: 50%;
+            right: 40px;
+            font-size: 2.5rem;
+            transform: translateY(-50%) rotate(35deg);
         }
         
         .header-left {
             display: flex;
             align-items: center;
             gap: 1rem;
+            position: relative;
+            z-index: 2;
         }
         
         .page-title {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: #1e293b;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: -0.3px;
         }
         
         .header-right {
             display: flex;
             align-items: center;
             gap: 1rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header-icon-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12));
+            border-radius: 50%;
+            color: #1e7a4a;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 2px 8px rgba(30, 122, 74, 0.1);
+        }
+        
+        .header-icon-link:hover {
+            background: linear-gradient(135deg, #1e7a4a, #145e38);
+            color: white;
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(30, 122, 74, 0.3);
+        }
+        
+        .header-icon-link .badge {
+            font-size: 0.65rem;
+            padding: 0.25em 0.5em;
+            min-width: 18px;
+            height: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .user-dropdown {
@@ -187,14 +350,16 @@
             align-items: center;
             gap: 0.75rem;
             padding: 0.5rem 1rem;
-            background: #f8fafc;
+            background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12));
             border-radius: 12px;
             cursor: pointer;
             transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(30, 122, 74, 0.1);
         }
         
         .user-dropdown:hover {
-            background: #f1f5f9;
+            background: linear-gradient(135deg, rgba(30, 122, 74, 0.18), rgba(20, 94, 56, 0.18));
+            box-shadow: 0 4px 12px rgba(30, 122, 74, 0.15);
         }
         
         .dropdown-menu {
@@ -258,20 +423,27 @@
         .content-area {
             flex: 1;
             padding: 2rem;
+            position: relative;
+            z-index: 1;
+            overflow-x: hidden;
+            width: 100%;
+            max-width: 100%;
         }
         
         /* Cards */
         .card {
-            background: white;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(6px);
             border-radius: 16px;
-            border: 1px solid #e2e8f0;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 2px 16px rgba(13, 45, 82, 0.06);
+            transition: all 0.35s ease;
         }
         
         .card:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            transform: translateY(-2px);
+            box-shadow: 0 20px 50px rgba(13, 45, 82, 0.1);
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.95);
         }
         
         .card-header {
@@ -469,16 +641,26 @@
         /* Hamburger button - hidden on desktop */
         .sidebar-toggle {
             display: none;
-            background: none;
+            background: rgba(255, 255, 255, 0.9);
             border: none;
             font-size: 1.5rem;
-            color: #475569;
+            color: var(--green);
             cursor: pointer;
-            padding: 0.25rem 0.5rem;
-            border-radius: 8px;
+            padding: 0.5rem;
+            border-radius: 10px;
             line-height: 1;
+            width: 44px;
+            height: 44px;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(13, 45, 82, 0.08);
+            transition: all 0.3s ease;
         }
-        .sidebar-toggle:hover { background: #f1f5f9; }
+        .sidebar-toggle:hover { 
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0 4px 12px rgba(13, 45, 82, 0.12);
+            transform: scale(1.05);
+        }
 
         /* Responsive tables */
         .table-responsive { overflow-x: auto; -webkit-overflow-scrolling: touch; }
@@ -495,6 +677,9 @@
             }
             .main-content {
                 margin-left: 0;
+                width: 100vw;
+                max-width: 100vw;
+                overflow-x: hidden;
             }
             .sidebar-toggle {
                 display: inline-flex;
@@ -509,6 +694,9 @@
             }
             .content-area {
                 padding: 1.25rem;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
             }
         }
 
@@ -535,7 +723,10 @@
                 margin-bottom: 0.5rem;
             }
             .content-area {
-                padding: 0.875rem;
+                padding: 1rem;
+                width: 100%;
+                max-width: 100%;
+                overflow-x: hidden;
             }
             .top-header {
                 padding: 0.75rem 1rem;
@@ -738,9 +929,91 @@
             .sidebar-header { position: relative; padding-right: 3rem; }
             .sidebar-close { display: none; }
         }
+        
+        /* Botanical Decorations */
+        .botanical-decoration {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.12;
+            color: var(--green);
+        }
+        
+        .botanical-top-right {
+            top: 100px;
+            right: 50px;
+            font-size: 6rem;
+            transform: rotate(25deg);
+        }
+        
+        .botanical-bottom-left {
+            bottom: 50px;
+            left: 350px;
+            font-size: 5rem;
+            transform: rotate(-15deg);
+        }
+        
+        .botanical-middle {
+            top: 50%;
+            right: 150px;
+            font-size: 4rem;
+            transform: translateY(-50%) rotate(45deg);
+        }
+        
+        /* Fade up animation for content */
+        .fade-up {
+            animation: fadeUp 0.6s ease-out forwards;
+        }
+        
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ═══════════════════════════════════════════════════════════════
+           MODAL Z-INDEX FIX - Ensure modals are always clickable
+           ═══════════════════════════════════════════════════════════════ */
+        .modal-backdrop {
+            z-index: 10000 !important;
+        }
+        .modal {
+            z-index: 10001 !important;
+        }
+        .modal-dialog {
+            z-index: 10002 !important;
+            pointer-events: auto !important;
+        }
+        .modal-content {
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 10003 !important;
+        }
+        .modal-body, .modal-header, .modal-footer {
+            pointer-events: auto !important;
+        }
+        .modal-body *, .modal-header *, .modal-footer * {
+            pointer-events: auto !important;
+        }
     </style>
 </head>
 <body>
+    <!-- Botanical Decorations -->
+    <div class="botanical-decoration botanical-top-right">
+        <i class="bi bi-flower1"></i>
+    </div>
+    <div class="botanical-decoration botanical-bottom-left">
+        <i class="bi bi-flower2"></i>
+    </div>
+    <div class="botanical-decoration botanical-middle">
+        <i class="bi bi-flower3"></i>
+    </div>
+    
     <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
@@ -757,55 +1030,67 @@
         </div>
         
         <nav class="sidebar-nav" style="display:flex; flex-direction:column; height:calc(100vh - 81px);">
+            <!-- Decorative Leaves -->
+            <div class="sidebar-leaf sidebar-leaf-top">
+                <i class="bi bi-flower1"></i>
+            </div>
+            <div class="sidebar-leaf sidebar-leaf-middle">
+                <i class="bi bi-flower2"></i>
+            </div>
+            <div class="sidebar-leaf sidebar-leaf-bottom">
+                <i class="bi bi-flower3"></i>
+            </div>
+            
             @auth
                 @if(Auth::user()->isStudent())
                     <div class="nav-section">
                         <div class="nav-section-title">Main</div>
                         <a href="{{ route('student.dashboard') }}" class="nav-link @if(request()->is('student/dashboard')) active @endif">
-                            <i class="bi bi-speedometer2"></i>
-                            <span class="nav-link-text">Dashboard</span>
-                        </a>
-                        <a href="{{ route('student.kamustaka') }}" class="nav-link @if(request()->is('student/kamusta-ka*')) active @endif">
-                            <i class="bi bi-heart-pulse"></i>
-                            <span class="nav-link-text">Kamusta Ka?</span>
+                            <i class="bi bi-house-heart-fill"></i>
+                            <span class="nav-link-text">Tambayan</span>
                         </a>
                     </div>
 
                     <div class="nav-section">
-                        <div class="nav-section-title">My Concerns</div>
-                        <a href="{{ route('student.concerns.create') }}" class="nav-link @if(request()->is('student/concerns/create')) active @endif">
-                            <i class="bi bi-plus-circle"></i>
-                            <span class="nav-link-text">Submit Concern</span>
+                        <div class="nav-section-title">BNHS Care Konek</div>
+                        <a href="{{ route('student.new-here') }}" class="nav-link @if(request()->is('student/new-here*')) active @endif">
+                            <i class="bi bi-person-plus-fill"></i>
+                            <span class="nav-link-text">New Here?</span>
                         </a>
+                        <a href="{{ route('student.spill-tea') }}" class="nav-link @if(request()->is('student/spill-tea*')) active @endif">
+                            <i class="bi bi-chat-heart-fill"></i>
+                            <span class="nav-link-text">Spill the Tea</span>
+                        </a>
+                        <a href="{{ route('student.connect') }}" class="nav-link @if(request()->is('student/connect*')) active @endif">
+                            <i class="bi bi-people-fill"></i>
+                            <span class="nav-link-text">Connect with Ate/Kuya</span>
+                        </a>
+                        <a href="{{ route('student.mind-check') }}" class="nav-link @if(request()->is('student/mind-check*')) active @endif">
+                            <i class="bi bi-heart-pulse-fill"></i>
+                            <span class="nav-link-text">Mind Check</span>
+                        </a>
+                        <a href="{{ route('student.resources.index') }}" class="nav-link @if(request()->is('student/resources*') || request()->is('student/real-talk*') || request()->is('student/unfiltered*') || request()->is('student/find-people*') || request()->is('student/exit-check*') || request()->is('student/future-me*')) active @endif">
+                            <i class="bi bi-bookmark-star-fill"></i>
+                            <span class="nav-link-text">Resources & Community</span>
+                        </a>
+                    </div>
+
+                    <div class="nav-section">
+                        <div class="nav-section-title">My Activity</div>
                         <a href="{{ route('student.concerns.index') }}" class="nav-link @if(request()->is('student/concerns') && !request()->is('student/concerns/create')) active @endif">
                             <i class="bi bi-chat-dots"></i>
                             <span class="nav-link-text">My Concerns</span>
                         </a>
                         <a href="{{ route('student.appointments.index') }}" class="nav-link @if(request()->is('student/appointments*')) active @endif">
                             <i class="bi bi-calendar3"></i>
-                            <span class="nav-link-text">Appointments</span>
-                        </a>
-                    </div>
-
-                    <div class="nav-section">
-                        <div class="nav-section-title">Support</div>
-                        <a href="{{ route('student.resources') }}" class="nav-link @if(request()->is('student/resources')) active @endif">
-                            <i class="bi bi-journal-bookmark"></i>
-                            <span class="nav-link-text">Resources</span>
+                            <span class="nav-link-text">My Appointments</span>
                         </a>
                         <a href="{{ route('student.forms.index') }}" class="nav-link @if(request()->is('student/forms*')) active @endif">
                             <i class="bi bi-file-earmark-text"></i>
-                            <span class="nav-link-text">Forms/Downloads</span>
+                            <span class="nav-link-text">My Forms</span>
                         </a>
                     </div>
 
-                    <div class="nav-section">
-                        <div class="nav-section-title">Account</div>
-                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif">
-                            <i class="bi bi-gear"></i>
-                            <span class="nav-link-text">Settings</span>
-                        </a>
-                    </div>
                     
                 @elseif(Auth::user()->isCounselor())
                     <div class="nav-section" style="margin-bottom:.6rem;">
@@ -839,11 +1124,27 @@
                                 <span class="nav-link-badge">{{ $pendingRef }}</span>
                             @endif
                         </a>
+                        <a href="{{ route('counselor.mental-health.index') }}" class="nav-link @if(request()->is('counselor/mental-health*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
+                            <i class="bi bi-heart-pulse-fill"></i>
+                            <span class="nav-link-text">Mental Health Assessments</span>
+                            @php $highRisk = App\Models\MentalHealthAssessment::whereIn('risk_level', ['high', 'moderately-high'])->where('follow_up_scheduled', false)->count(); @endphp
+                            @if($highRisk > 0)
+                                <span class="nav-link-badge bg-danger">{{ $highRisk }}</span>
+                            @endif
+                        </a>
+                        <a href="{{ route('counselor.student-forms.index') }}" class="nav-link @if(request()->is('counselor/student-forms*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
+                            <i class="bi bi-file-earmark-check"></i>
+                            <span class="nav-link-text">Student Forms</span>
+                            @php $pendingForms = App\Models\StudentFormSubmission::where('status', 'submitted')->count(); @endphp
+                            @if($pendingForms > 0)
+                                <span class="nav-link-badge">{{ $pendingForms }}</span>
+                            @endif
+                        </a>
                     </div>
                     
                     <div class="nav-section" style="margin-bottom:.6rem;">
                         <div class="nav-section-title">Sessions & Appointments</div>
-                        <a href="{{ route('counselor.appointments.index') }}" class="nav-link @if(request()->is('counselor/appointments*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
+                        <a href="{{ route('counselor.appointments.index') }}" class="nav-link @if(request()->is('counselor/appointments*') && !request()->is('counselor/calendar*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-calendar3"></i>
                             <span class="nav-link-text">Appointments</span>
                             @php
@@ -856,10 +1157,26 @@
                                 <span class="nav-link-badge" style="background:#6366f1;">{{ $pendingTeacherAppts }}</span>
                             @endif
                         </a>
+                        <a href="{{ route('counselor.calendar') }}" class="nav-link @if(request()->is('counselor/calendar*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
+                            <i class="bi bi-calendar-week"></i>
+                            <span class="nav-link-text">Calendar View</span>
+                        </a>
                     </div>
                     
                     <div class="nav-section" style="margin-bottom:.6rem;">
-                        <div class="nav-section-title">Resources</div>
+                        <div class="nav-section-title">Resources & Community</div>
+                        <a href="{{ route('counselor.resources-community') }}" class="nav-link @if(request()->is('counselor/resources-community*') || request()->is('counselor/resources/*') || request()->is('counselor/student-submissions*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
+                            <i class="bi bi-collection-fill"></i>
+                            <span class="nav-link-text">Resources & Community</span>
+                            @php $pendingSubmissions = \App\Models\StudentSubmission::where('status', 'pending')->count(); @endphp
+                            @if($pendingSubmissions > 0)
+                                <span class="nav-link-badge" style="background:var(--green);">{{ $pendingSubmissions }}</span>
+                            @endif
+                        </a>
+                    </div>
+                    
+                    <div class="nav-section" style="margin-bottom:.6rem;">
+                        <div class="nav-section-title">Forms & Downloads</div>
                         <a href="{{ route('counselor.forms.index') }}" class="nav-link @if(request()->is('counselor/forms*')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
                             <i class="bi bi-file-earmark-arrow-down"></i>
                             <span class="nav-link-text">Forms/Downloads</span>
@@ -879,14 +1196,6 @@
                             @if($pendingApprovals > 0)
                                 <span class="nav-link-badge">{{ $pendingApprovals }}</span>
                             @endif
-                        </a>
-                    </div>
-
-                    <div class="nav-section" style="margin-bottom:.6rem;">
-                        <div class="nav-section-title">Account</div>
-                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif" style="padding:.5rem 1.5rem;font-size:.83rem;">
-                            <i class="bi bi-gear"></i>
-                            <span class="nav-link-text">Settings</span>
                         </a>
                     </div>
 
@@ -930,6 +1239,10 @@
                     
                     <div class="nav-section" style="margin-bottom:0.75rem;">
                         <div class="nav-section-title">Resources</div>
+                        <a href="{{ route('teacher.resources') }}" class="nav-link @if(request()->is('teacher/resources*')) active @endif" style="padding:0.5rem 1.5rem;font-size:0.83rem;">
+                            <i class="bi bi-book-half"></i>
+                            <span class="nav-link-text">Teacher Resources</span>
+                        </a>
                         <a href="{{ route('teacher.forms.index') }}" class="nav-link @if(request()->is('teacher/forms')) active @endif" style="padding:0.5rem 1.5rem;font-size:0.83rem;">
                             <i class="bi bi-file-earmark-text"></i>
                             <span class="nav-link-text">Forms/Downloads</span>
@@ -960,10 +1273,6 @@
                     <div class="nav-section" style="margin-bottom:0.75rem;">
                         <div class="nav-section-title">Account</div>
                         <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif" style="padding:0.5rem 1.5rem;font-size:0.83rem;">
-                            <i class="bi bi-gear"></i>
-                            <span class="nav-link-text">Settings</span>
-                        </a>
-                    </div>
 
                 @elseif(Auth::user()->isAdmin())
                     <div class="nav-section">
@@ -996,6 +1305,14 @@
     <main class="main-content">
         <!-- Top Header -->
         <header class="top-header">
+            <!-- Decorative Leaves -->
+            <div class="header-leaf header-leaf-left">
+                <i class="bi bi-flower2"></i>
+            </div>
+            <div class="header-leaf header-leaf-right">
+                <i class="bi bi-flower1"></i>
+            </div>
+            
             <div class="header-left">
                 <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" aria-label="Toggle menu">
                     <i class="bi bi-list"></i>
@@ -1005,6 +1322,18 @@
             
             <div class="header-right">
                 @auth
+                    <!-- Messages Icon -->
+                    <a href="{{ route('messages.index') }}" class="header-icon-link position-relative me-3" title="Messages">
+                        <i class="bi bi-chat-dots-fill fs-5"></i>
+                        @php $unreadCount = Auth::user()->unreadMessagesCount(); @endphp
+                        @if($unreadCount > 0)
+                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.65rem;">
+                                {{ $unreadCount > 9 ? '9+' : $unreadCount }}
+                            </span>
+                        @endif
+                    </a>
+                    
+                    <!-- User Dropdown -->
                     <div class="user-dropdown dropdown-toggle" data-bs-toggle="dropdown">
                         @if(Auth::user()->profile_photo)
                             <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
@@ -1026,11 +1355,11 @@
                                 @endif
                             </span>
                         </div>
-                        <i class="bi bi-chevron-down"></i>
                     </div>
                     
                     <ul class="dropdown-menu dropdown-menu-end" style="margin-top: 0.5rem;">
                         <li><a class="dropdown-item" href="{{ route('profile') }}"><i class="bi bi-person me-2"></i>Profile</a></li>
+                        <li><a class="dropdown-item" href="{{ route('settings') }}"><i class="bi bi-gear me-2"></i>Settings</a></li>
                         <li><hr class="dropdown-divider"></li>
                         <li>
                             <a class="dropdown-item" href="{{ route('logout') }}"
@@ -1047,7 +1376,7 @@
         </header>
         
         <!-- Content Area -->
-        <div class="content-area">
+        <div class="content-area fade-up">
             @yield('content')
         </div>
     </main>
@@ -1218,5 +1547,7 @@
             if (window.innerWidth > 992) closeSidebar();
         });
     </script>
+
+    @stack('scripts')
 </body>
 </html>

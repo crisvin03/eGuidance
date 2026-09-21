@@ -2,466 +2,270 @@
 
 @section('title', 'Student Concerns')
 
+@section('content')
+@include('student.partials.modern-styles')
+
 <style>
-.success-icon {
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-size: 1.8rem;
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
-    animation: successPulse 0.6s ease-out;
-    position: relative;
-    overflow: hidden;
-}
-
-.success-icon::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -50%;
-    width: 200%;
-    height: 200%;
-    background: linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent);
-    transform: rotate(45deg);
-    animation: shimmer 2s infinite;
-}
-
-@keyframes successPulse {
-    0% {
-        transform: scale(0);
-        opacity: 0;
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-btn { width: 100% !important; justify-content: center !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    .modern-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
+    .modern-stat-card { padding: 1rem !important; }
+    .modern-stat-value { font-size: 1.5rem !important; }
+    
+    /* Filter Form - Stack Vertically */
+    .filter-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+        grid-template-columns: unset !important;
     }
-    50% {
-        transform: scale(1.1);
+    .filter-form > div {
+        width: 100% !important;
     }
-    100% {
-        transform: scale(1);
-        opacity: 1;
+    .filter-form .form-control,
+    .filter-form .form-select {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
     }
-}
-
-@keyframes shimmer {
-    0% {
-        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    .filter-form .modern-btn,
+    .filter-form button[type="submit"] {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
     }
-    100% {
-        transform: translateX(100%) translateY(100%) rotate(45deg);
+    
+    /* Table Action Buttons - Icon Only */
+    .btn span:not([class*="bi"]),
+    .btn-sm span:not([class*="bi"]) { 
+        display: none !important; 
     }
-}
-
-.detail-item {
-    background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
-    border-radius: 6px;
-    padding: 6px 10px;
-    margin-bottom: 6px;
-    border-left: 2px solid #007bff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-
-.detail-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, rgba(0,123,255,0.05) 0%, transparent 100%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.detail-item:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.detail-item:hover::before {
-    opacity: 1;
-}
-
-.detail-item:last-child {
-    margin-bottom: 0;
-}
-
-.detail-label {
-    font-weight: 600;
-    color: #495057;
-    font-size: 0.75rem;
-    margin-bottom: 2px;
-    text-transform: uppercase;
-    letter-spacing: 0.2px;
-}
-
-.detail-value {
-    color: #212529;
-    font-size: 0.8rem;
-    line-height: 1.2;
-}
-
-.status-badge {
-    display: inline-block;
-    padding: 3px 10px;
-    border-radius: 15px;
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.3px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    position: relative;
-    overflow: hidden;
-}
-
-.status-badge::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-    transition: left 0.5s ease;
-}
-
-.status-badge:hover::before {
-    left: 100%;
-}
-
-.status-scheduled {
-    background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
-    color: white;
-}
-
-.status-resolved {
-    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
-    color: white;
-}
-
-.status-review {
-    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
-    color: #212529;
-}
-
-.counseling-date {
-    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
-    border-radius: 4px;
-    padding: 4px 8px;
-    display: inline-block;
-    margin-top: 2px;
-    border: 1px solid #90caf9;
-    position: relative;
-}
-
-.counseling-date i {
-    color: #1976d2;
-    margin-right: 4px;
-    font-size: 0.8rem;
-}
-
-.action-buttons {
-    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-    border-radius: 6px;
-    padding: 8px;
-    margin-top: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
-}
-
-.btn-enhanced {
-    border-radius: 15px;
-    padding: 4px 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.2px;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    font-size: 0.75rem;
-}
-
-.btn-enhanced::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 0;
-    height: 0;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    transform: translate(-50%, -50%);
-    transition: width 0.6s ease, height 0.6s ease;
-}
-
-.btn-enhanced:hover::before {
-    width: 150px;
-    height: 150px;
-}
-
-.btn-enhanced:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 3px 8px rgba(0,0,0,0.15);
-}
-
-.confetti {
-    position: absolute;
-    width: 4px;
-    height: 4px;
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    animation: confetti-fall 3s ease-out forwards;
-}
-
-@keyframes confetti-fall {
-    0% {
-        transform: translateY(-100vh) rotate(0deg);
-        opacity: 1;
+    .btn i.bi,
+    .btn-sm i.bi { 
+        margin: 0 !important; 
     }
-    100% {
-        transform: translateY(100vh) rotate(720deg);
-        opacity: 0;
+    .btn-sm { 
+        padding: 0.5rem 0.75rem !important; 
+        min-width: auto !important; 
     }
-}
-
-.progress-indicator {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 8px;
-    gap: 4px;
-}
-
-.progress-dot {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #dee2e6;
-    transition: all 0.3s ease;
-}
-
-.progress-dot.active {
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    transform: scale(1.2);
-}
-
-.timestamp {
-    font-size: 0.65rem;
-    color: #6c757d;
-    text-align: center;
-    margin-top: 6px;
-    font-style: italic;
-}
-
-/* Prevent scrollbars on confirmation modal */
-#confirmationModal {
-    overflow: hidden !important;
-}
-
-#confirmationModal .modal-dialog {
-    overflow: hidden !important;
-}
-
-#confirmationModal .modal-content {
-    overflow: hidden !important;
-}
-
-#confirmationModal .modal-body {
-    overflow: hidden !important;
-}
-
-#confirmationModal * {
-    overflow: hidden !important;
+    
+    div[style*="display: grid"][style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    .table-responsive { font-size: 0.875rem !important; }
+    .badge { font-size: 0.7rem !important; padding: 0.25rem 0.5rem !important; }
 }
 </style>
 
-@section('content')
-<div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Student Concerns</h5>
-    </div>
-    <div class="card-body">
-        <form method="GET" class="row g-3 mb-4">
-            <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Search by title, description, or student..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <select name="status" class="form-select">
-                    <option value="">All Statuses</option>
-                    <option value="submitted" {{ request('status')=='submitted' ? 'selected' : '' }}>Submitted</option>
-                    <option value="under_review" {{ request('status')=='under_review' ? 'selected' : '' }}>Under Review</option>
-                    <option value="scheduled" {{ request('status')=='scheduled' ? 'selected' : '' }}>Scheduled</option>
-                    <option value="resolved" {{ request('status')=='resolved' ? 'selected' : '' }}>Resolved</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select name="category" class="form-select">
-                    <option value="">All Categories</option>
-                    @foreach($categories as $cat)
-                        <option value="{{ $cat->id }}" {{ request('category')==$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
-            </div>
-        </form>
-        
-        @if($concerns->count() > 0)
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Student</th>
-                            <th>Title</th>
-                            <th>Category</th>
-                            <th class="table-hide-mobile">Description</th>
-                            <th>Status</th>
-                            <th class="table-hide-mobile">Counseling Date</th>
-                            <th class="table-hide-mobile">Submitted</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($concerns as $concern)
-                            <tr>
-                                <td>
-                                    @if($concern->is_anonymous)
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="user-avatar">
-                                                <i class="bi bi-incognito"></i>
-                                            </div>
-                                            <span class="text-muted">Anonymous</span>
-                                        </div>
-                                    @else
-                                        <div class="d-flex align-items-center gap-2">
-                                            <div class="user-avatar">
-                                                {{ strtoupper(substr($concern->student->name, 0, 2)) }}
-                                            </div>
-                                            <span>{{ $concern->student->name }}</span>
-                                        </div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <strong>{{ $concern->title }}</strong>
-                                </td>
-                                <td>
-                                    <span class="badge bg-info">{{ $concern->category->name }}</span>
-                                </td>
-                                <td class="table-hide-mobile">
-                                    <small class="text-muted">{{ Str::limit($concern->description, 80) }}</small>
-                                </td>
-                                <td>
-                                    @if($concern->status == 'resolved')
-                                        <span class="badge badge-success">Resolved</span>
-                                    @elseif($concern->status == 'scheduled')
-                                        <span class="badge badge-info">Scheduled</span>
-                                    @else
-                                        <span class="badge badge-warning">Pending</span>
-                                    @endif
-                                </td>
-                                <td class="table-hide-mobile">
-                                    @if($concern->counseling_date)
-                                        <small class="text-muted">
-                                            <i class="bi bi-calendar-check"></i>
-                                            {{ $concern->counseling_date->format('M d, Y h:i A') }}
-                                        </small>
-                                    @else
-                                        <small class="text-muted">Not scheduled</small>
-                                    @endif
-                                </td>
-                                <td class="table-hide-mobile">
-                                    <small class="text-muted">{{ $concern->created_at->format('M d, Y') }}</small>
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ route('counselor.concerns.show', $concern->id) }}" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-eye me-1"></i> View
-                                        </a>
-                                        @if(!in_array($concern->status, ['resolved', 'scheduled']))
-                                            <button class="btn btn-success btn-sm" onclick="respondToConcern({{ $concern->id }})">
-                                                <i class="bi bi-reply"></i>
-                                                Respond
-                                            </button>
-                                        @endif
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="confirmDelete('{{ route('counselor.concerns.destroy', $concern->id) }}', '{{ addslashes($concern->title) }}', 'concern')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @if($concerns->hasPages())
-                <div class="mt-3">{{ $concerns->links() }}</div>
-            @endif
-        @else
-            <div class="text-center py-5">
-                <i class="bi bi-chat-dots" style="font-size: 4rem; color: #cbd5e1;"></i>
-                <h4 class="mt-3 text-muted">No Student Concerns</h4>
-                <p class="text-muted">No student concerns have been submitted yet.</p>
-            </div>
-        @endif
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-chat-dots-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Student Concerns</h1>
+            <p class="modern-page-subtitle">Manage and respond to student concerns</p>
+        </div>
     </div>
 </div>
 
-<!-- Modal for concern details -->
-<div class="modal fade" id="concernModal" tabindex="-1">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Concern Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <!-- Content will be loaded dynamically -->
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+<!-- Filter Section -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <form method="GET" class="filter-form" style="display: grid; grid-template-columns: repeat(4, 1fr) auto; gap: 1rem; align-items: end;">
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Search</label>
+            <input type="text" name="search" class="form-control" placeholder="Title, description, or student..." value="{{ request('search') }}" style="border-radius: 10px;">
         </div>
-    </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Status</label>
+            <select name="status" class="form-select" style="border-radius: 10px;">
+                <option value="">All Statuses</option>
+                <option value="submitted" {{ request('status')=='submitted' ? 'selected' : '' }}>Submitted</option>
+                <option value="under_review" {{ request('status')=='under_review' ? 'selected' : '' }}>Under Review</option>
+                <option value="scheduled" {{ request('status')=='scheduled' ? 'selected' : '' }}>Scheduled</option>
+                <option value="resolved" {{ request('status')=='resolved' ? 'selected' : '' }}>Resolved</option>
+            </select>
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Category</label>
+            <select name="category" class="form-select" style="border-radius: 10px;">
+                <option value="">All Categories</option>
+                @foreach($categories as $cat)
+                    <option value="{{ $cat->id }}" {{ request('category')==$cat->id ? 'selected' : '' }}>{{ $cat->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Sort By</label>
+            <select name="sort" class="form-select" style="border-radius: 10px;">
+                <option value="newest" {{ request('sort')=='newest' ? 'selected' : '' }}>Newest First</option>
+                <option value="oldest" {{ request('sort')=='oldest' ? 'selected' : '' }}>Oldest First</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; white-space: nowrap;">
+                <i class="bi bi-funnel-fill"></i> Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Concerns List -->
+<div class="modern-card" style="padding: 1.5rem;">
+    @if($concerns->count() > 0)
+        <div class="modern-list">
+            @foreach($concerns as $concern)
+                <div class="modern-list-item" style="padding: 1.25rem; border-bottom: 1px solid #e5e7eb; display: block;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;">
+                        <!-- Left: Concern Info -->
+                        <div style="display: flex; gap: 1rem;">
+                            <!-- Student Avatar -->
+                            <div>
+                                @if($concern->is_anonymous)
+                                    <div class="modern-section-icon" style="width: 48px; height: 48px; background: rgba(107, 114, 128, 0.1); color: #6b7280;">
+                                        <i class="bi bi-incognito"></i>
+                                    </div>
+                                @else
+                                    <div class="modern-section-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: white; font-size: 0.9rem; font-weight: 700;">
+                                        {{ strtoupper(substr($concern->student->name, 0, 2)) }}
+                                    </div>
+                                @endif
+                            </div>
+                            
+                            <!-- Content -->
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem;">
+                                    <h3 style="font-size: 1rem; font-weight: 700; color: var(--navy); margin: 0;">{{ $concern->title }}</h3>
+                                    @if($concern->status == 'resolved')
+                                        <span class="modern-badge modern-badge-success" style="font-size: 0.75rem;"><i class="bi bi-check-circle-fill"></i> Resolved</span>
+                                    @elseif($concern->status == 'scheduled')
+                                        <span class="modern-badge modern-badge-info" style="font-size: 0.75rem;"><i class="bi bi-calendar-check"></i> Scheduled</span>
+                                    @elseif($concern->status == 'under_review')
+                                        <span class="modern-badge modern-badge-warning" style="font-size: 0.75rem;"><i class="bi bi-eye-fill"></i> Under Review</span>
+                                    @else
+                                        <span class="modern-badge modern-badge-secondary" style="font-size: 0.75rem;"><i class="bi bi-clock-fill"></i> Submitted</span>
+                                    @endif
+                                </div>
+                                
+                                <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                                    <span>
+                                        <i class="bi bi-person-fill"></i> 
+                                        {{ $concern->is_anonymous ? 'Anonymous' : $concern->student->name }}
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-tag-fill"></i> 
+                                        {{ $concern->category->name }}
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-clock"></i> 
+                                        {{ $concern->created_at->diffForHumans() }}
+                                    </span>
+                                    @if($concern->counseling_date)
+                                        <span style="color: var(--green); font-weight: 600;">
+                                            <i class="bi bi-calendar-check"></i> 
+                                            {{ $concern->counseling_date->format('M d, Y h:i A') }}
+                                        </span>
+                                    @endif
+                                </div>
+                                
+                                <p style="font-size: 0.875rem; color: #6b7280; margin: 0; line-height: 1.6;">
+                                    {{ Str::limit($concern->description, 120) }}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Actions -->
+                        <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+                            <a href="{{ route('counselor.concerns.show', $concern->id) }}" 
+                               class="modern-btn modern-btn-secondary" 
+                               style="padding: 0.5rem 1rem; font-size: 0.875rem; white-space: nowrap;">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                            @if(!in_array($concern->status, ['resolved', 'scheduled']))
+                                <button class="modern-btn modern-btn-primary" 
+                                        style="padding: 0.5rem 1rem; font-size: 0.875rem; white-space: nowrap;"
+                                        onclick="respondToConcern({{ $concern->id }})">
+                                    <i class="bi bi-reply-fill"></i> Respond
+                                </button>
+                            @endif
+                            <button type="button" class="modern-btn" 
+                                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 0.5rem 1rem; font-size: 0.875rem;"
+                                    onclick="confirmDelete('{{ route('counselor.concerns.destroy', $concern->id) }}', '{{ addslashes($concern->title) }}', 'concern')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+        
+        @if($concerns->hasPages())
+            <div style="margin-top: 1.5rem;">{{ $concerns->links() }}</div>
+        @endif
+    @else
+        <div class="modern-empty-state" style="padding: 3rem 1.5rem;">
+            <div class="modern-empty-icon" style="width: 80px; height: 80px; font-size: 2rem;">
+                <i class="bi bi-chat-dots"></i>
+            </div>
+            <h3 class="modern-empty-title">No concerns found</h3>
+            <p class="modern-empty-text">
+                @if(request()->hasAny(['search', 'status', 'category']))
+                    No concerns match your filter criteria. Try adjusting your filters.
+                @else
+                    No student concerns have been submitted yet.
+                @endif
+            </p>
+            @if(request()->hasAny(['search', 'status', 'category']))
+                <a href="{{ route('counselor.concerns.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
+                    <i class="bi bi-x-circle"></i> Clear Filters
+                </a>
+            @endif
+        </div>
+    @endif
 </div>
 
 <!-- Modal for responding to concern -->
 <div class="modal fade" id="responseModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Respond to Concern</h5>
+        <div class="modal-content" style="border-radius: 16px; border: none;">
+            <div class="modal-header" style="border-bottom: 1px solid #e5e7eb; padding: 1.5rem;">
+                <h5 class="modal-title" style="font-weight: 700; color: var(--navy);">
+                    <i class="bi bi-reply-fill me-2" style="color: var(--green);"></i>Respond to Concern
+                </h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <form method="POST" id="responseForm">
                 @csrf
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 1.5rem;">
                     <input type="hidden" name="concern_id" id="response_concern_id">
-                    
                     <input type="hidden" name="status" value="scheduled">
 
-                    <div class="mb-3">
-                        <label for="counseling_date" class="form-label">
-                            <i class="bi bi-calendar3 me-1"></i>Counseling Date & Time <span class="text-danger">*</span>
+                    <div style="margin-bottom: 1.25rem;">
+                        <label for="counseling_date" style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">
+                            <i class="bi bi-calendar3 me-1"></i>Counseling Date & Time <span style="color: #ef4444;">*</span>
                         </label>
                         <input type="datetime-local" class="form-control" name="counseling_date" id="counseling_date"
-                            min="{{ now()->format('Y-m-d\TH:i') }}" required>
-                        <small class="text-muted">Select the date and time for the counseling session</small>
+                            min="{{ now()->format('Y-m-d\TH:i') }}" required style="border-radius: 10px; padding: 0.75rem;">
+                        <small style="color: var(--text-muted); font-size: 0.8rem;">Select the date and time for the counseling session</small>
                     </div>
                     
-                    <div class="mb-3">
-                        <label for="response" class="form-label">Response</label>
-                        <textarea class="form-control" name="response" id="response" rows="4" required placeholder="Enter your response to the student..."></textarea>
+                    <div style="margin-bottom: 1.25rem;">
+                        <label for="response" style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">
+                            <i class="bi bi-chat-text me-1"></i>Response Message <span style="color: #ef4444;">*</span>
+                        </label>
+                        <textarea class="form-control" name="response" id="response" rows="5" required 
+                                  placeholder="Enter your response to the student..." 
+                                  style="border-radius: 10px; padding: 0.75rem;"></textarea>
+                        <small style="color: var(--text-muted); font-size: 0.8rem;">This message will be sent to the student</small>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-primary">
-                        <i class="bi bi-send"></i>
-                        Submit Response
+                <div class="modal-footer" style="border-top: 1px solid #e5e7eb; padding: 1.5rem;">
+                    <button type="button" class="modern-btn modern-btn-secondary" data-bs-dismiss="modal" style="padding: 0.625rem 1.25rem;">
+                        <i class="bi bi-x-circle"></i> Cancel
+                    </button>
+                    <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem;">
+                        <i class="bi bi-send-fill"></i> Submit Response
                     </button>
                 </div>
             </form>
@@ -469,164 +273,37 @@
     </div>
 </div>
 
-<!-- Professional Confirmation Modal -->
+<!-- Success Modal -->
 <div class="modal fade" id="confirmationModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content border-0 shadow-lg">
-            <div class="modal-body text-center p-3">
-                <div class="progress-indicator">
-                    <div class="progress-dot active"></div>
-                    <div class="progress-dot active"></div>
-                    <div class="progress-dot active"></div>
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none;">
+            <div class="modal-body text-center" style="padding: 2rem;">
+                <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--green), var(--green-dark)); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 8px 24px rgba(30, 122, 74, 0.2);">
+                    <i class="bi bi-check-circle-fill" style="font-size: 2.5rem; color: white;"></i>
                 </div>
                 
-                <div class="mb-2">
-                    <div class="success-icon mx-auto">
-                        <i class="bi bi-check-circle-fill"></i>
-                    </div>
-                </div>
+                <h4 style="font-weight: 700; color: var(--navy); margin-bottom: 0.5rem;">Response Submitted!</h4>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem;">The student will be notified about the scheduled counseling session</p>
                 
-                <h5 class="mb-1 text-success fw-bold">Response Submitted!</h5>
-                <p class="text-muted mb-2 small">Student will be notified</p>
+                <div id="confirmationDetails" style="background: #f9fafb; border-radius: 12px; padding: 1rem; margin-bottom: 1.5rem; text-align: left;"></div>
                 
-                <div id="confirmationDetails" class="text-start mb-2">
-                    <!-- Details will be inserted here -->
-                </div>
-                
-                <div class="action-buttons">
-                    <div class="d-flex gap-2 justify-content-center">
-                        <button type="button" class="btn btn-primary btn-enhanced btn-sm" onclick="closeConfirmationModal()">
-                            <i class="bi bi-check2 me-1"></i>
-                            Done
-                        </button>
-                        <button type="button" class="btn btn-outline-primary btn-enhanced btn-sm" onclick="viewAnotherConcern()">
-                            <i class="bi bi-plus me-1"></i>
-                            Another
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="timestamp" id="timestamp">
-                    <!-- Timestamp will be inserted here -->
-                </div>
+                <button type="button" class="modern-btn modern-btn-primary" onclick="closeConfirmationModal()" style="padding: 0.625rem 1.5rem;">
+                    <i class="bi bi-check2"></i> Done
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-function showDetails(concernId) {
-    const modal = new bootstrap.Modal(document.getElementById('concernModal'));
-    document.querySelector('#concernModal .modal-body').innerHTML = `
-        <div class="text-center py-4">
-            <div class="spinner-border text-primary" role="status"></div>
-            <p class="mt-2 text-muted">Loading concern details...</p>
-        </div>`;
-    modal.show();
-
-    fetch(`/counselor/concerns/${concernId}`, {
-        headers: { 'X-Requested-With': 'XMLHttpRequest', 'Accept': 'application/json' }
-    })
-    .then(r => r.json().then(data => ({ ok: r.ok, data })))
-    .then(({ ok, data }) => {
-        if (!ok || !data.success) throw new Error('Failed to load');
-        const c = data.concern;
-
-        let statusBadge = '';
-        if (c.status === 'resolved')      statusBadge = '<span class="badge bg-success">Resolved</span>';
-        else if (c.status === 'scheduled') statusBadge = '<span class="badge bg-info">Scheduled</span>';
-        else if (c.status === 'under_review') statusBadge = '<span class="badge bg-warning text-dark">Under Review</span>';
-        else statusBadge = '<span class="badge bg-secondary">Submitted</span>';
-
-        const submitted = new Date(c.created_at).toLocaleDateString('en-US', {
-            year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
-        });
-
-        let html = `
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1">Student</small>
-                        <strong>${c.is_anonymous ? '<i class="bi bi-incognito me-1"></i>Anonymous' : c.student.name}</strong>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1">Status</small>
-                        ${statusBadge}
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1">Category</small>
-                        <span class="badge bg-info">${c.category.name}</span>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1">Submitted</small>
-                        <small>${submitted}</small>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1"><i class="bi bi-chat-dots me-1"></i>Title</small>
-                        <strong>${c.title}</strong>
-                    </div>
-                </div>
-                <div class="col-12">
-                    <div class="p-3 bg-light rounded">
-                        <small class="text-muted d-block mb-1"><i class="bi bi-text-paragraph me-1"></i>Description</small>
-                        <p class="mb-0">${c.description.replace(/\n/g, '<br>')}</p>
-                    </div>
-                </div>`;
-
-        if (c.counseling_date) {
-            const cDate = new Date(c.counseling_date).toLocaleDateString('en-US', {
-                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit'
-            });
-            html += `
-                <div class="col-12">
-                    <div class="alert alert-warning mb-0">
-                        <i class="bi bi-calendar-check me-2"></i>
-                        <strong>Counseling Scheduled:</strong> ${cDate}
-                    </div>
-                </div>`;
-        }
-
-        if (c.counselor_response) {
-            html += `
-                <div class="col-12">
-                    <div class="alert alert-info mb-0">
-                        <h6 class="alert-heading"><i class="bi bi-person-check-fill me-1"></i>Counselor Response</h6>
-                        <p class="mb-0">${c.counselor_response.replace(/\n/g, '<br>')}</p>
-                    </div>
-                </div>`;
-        }
-
-        html += `</div>`;
-        document.querySelector('#concernModal .modal-body').innerHTML = html;
-    })
-    .catch(() => {
-        document.querySelector('#concernModal .modal-body').innerHTML = `
-            <div class="alert alert-danger">
-                <i class="bi bi-exclamation-triangle me-2"></i>Failed to load concern details. Please try again.
-            </div>`;
-    });
-}
-
 function respondToConcern(concernId) {
     document.getElementById('response_concern_id').value = concernId;
-    
-    // Set the correct form action with the concern ID
     document.getElementById('responseForm').action = `/counselor/concerns/${concernId}/respond`;
     
-    // Set minimum date to current date/time
     const now = new Date();
     const localDateTime = new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
     document.getElementById('counseling_date').min = localDateTime;
     
-    // Reset form
     document.getElementById('counseling_date').value = '';
     document.getElementById('response').value = '';
     
@@ -634,31 +311,25 @@ function respondToConcern(concernId) {
     modal.show();
 }
 
-
 document.getElementById('responseForm').addEventListener('submit', function(e) {
     e.preventDefault();
     
     const formData = new FormData(this);
-
-    // Validate counseling date
     if (!formData.get('counseling_date')) {
         alert('Please select a counseling date and time.');
         return;
     }
 
-    // Get form data
     const concernId = formData.get('concern_id');
     const response = formData.get('response');
     const counselingDate = formData.get('counseling_date');
     
-    // Show loading state
     const submitBtn = this.querySelector('button[type="submit"]');
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Submitting...';
     submitBtn.disabled = true;
     
-    // Submit the form via AJAX/Fetch
-    fetch(this.action || '/counselor/concerns/respond', {
+    fetch(this.action, {
         method: 'POST',
         body: formData,
         headers: {
@@ -669,91 +340,41 @@ document.getElementById('responseForm').addEventListener('submit', function(e) {
     .then(response => response.json())
     .then(data => {
         if (data.success) {
-            // Generate professional confirmation details
-            let statusClass = '';
-            let statusText = status.replace('_', ' ').toUpperCase();
-            
-            if (status === 'scheduled') {
-                statusClass = 'status-scheduled';
-            } else if (status === 'resolved') {
-                statusClass = 'status-resolved';
-            } else {
-                statusClass = 'status-review';
-            }
-            
-            let detailsHTML = `
-                <div class="detail-item">
-                    <div class="detail-label">Status Update</div>
-                    <div class="detail-value">
-                        <span class="status-badge ${statusClass}">${statusText}</span>
-                    </div>
-                </div>
-            `;
-            
-            if (status === 'scheduled' && counselingDate) {
-                const date = new Date(counselingDate);
-                const formattedDate = date.toLocaleDateString('en-US', { 
-                    weekday: 'short', 
-                    year: 'numeric', 
-                    month: 'short', 
-                    day: 'numeric' 
-                });
-                const formattedTime = date.toLocaleTimeString('en-US', { 
-                    hour: '2-digit', 
-                    minute: '2-digit' 
-                });
-                
-                detailsHTML += `
-                    <div class="detail-item">
-                        <div class="detail-label">Counseling Session</div>
-                        <div class="detail-value">
-                            <div class="counseling-date">
-                                <i class="bi bi-calendar-check"></i>
-                                ${formattedDate} at ${formattedTime}
-                            </div>
-                        </div>
-                    </div>
-                `;
-            }
-            
-            detailsHTML += `
-                <div class="detail-item">
-                    <div class="detail-label">Response Message</div>
-                    <div class="detail-value">${response}</div>
-                </div>
-            `;
-            
-            // Add timestamp
-            const now = new Date();
-            const timestamp = now.toLocaleString('en-US', {
+            const date = new Date(counselingDate);
+            const formattedDate = date.toLocaleDateString('en-US', { 
                 weekday: 'long',
-                year: 'numeric',
-                month: 'long',
+                year: 'numeric', 
+                month: 'long', 
                 day: 'numeric',
                 hour: '2-digit',
                 minute: '2-digit'
             });
             
-            // Update confirmation modal with details
-            document.getElementById('confirmationDetails').innerHTML = detailsHTML;
-            document.getElementById('timestamp').innerHTML = `<i class="bi bi-clock me-1"></i>Submitted on ${timestamp}`;
+            const detailsHTML = `
+                <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
+                        <span style="color: var(--text-muted);">Status:</span>
+                        <span style="font-weight: 600; color: var(--green);">Scheduled</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.875rem;">
+                        <span style="color: var(--text-muted);">Session Date:</span>
+                        <span style="font-weight: 600; color: var(--navy);">${formattedDate}</span>
+                    </div>
+                    <div style="font-size: 0.875rem;">
+                        <div style="color: var(--text-muted); margin-bottom: 0.25rem;">Message:</div>
+                        <div style="color: var(--navy);">${response}</div>
+                    </div>
+                </div>
+            `;
             
-            // Close response modal and show confirmation
+            document.getElementById('confirmationDetails').innerHTML = detailsHTML;
+            
             bootstrap.Modal.getInstance(document.getElementById('responseModal')).hide();
             
             setTimeout(() => {
                 const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
                 confirmationModal.show();
-                
-                // Create confetti effect
-                createConfetti();
-                
-                // Animate progress dots
-                animateProgressDots();
             }, 300);
-            
-            // Update the table row to reflect changes
-            updateConcernRow(concernId, status, counselingDate);
             
         } else {
             alert('Error: ' + (data.message || 'Failed to submit response'));
@@ -764,157 +385,61 @@ document.getElementById('responseForm').addEventListener('submit', function(e) {
         alert('An error occurred while submitting your response. Please try again.');
     })
     .finally(() => {
-        // Reset button state
         submitBtn.innerHTML = originalText;
         submitBtn.disabled = false;
     });
 });
 
-function updateConcernRow(concernId, status, counselingDate) {
-    // Find the table row for this concern
-    const rows = document.querySelectorAll('tbody tr');
-    let targetRow = null;
-    
-    rows.forEach(row => {
-        const respondBtn = row.querySelector('button[onclick*="' + concernId + '"]');
-        if (respondBtn) {
-            targetRow = row;
-        }
-    });
-    
-    if (targetRow) {
-        // Update status badge
-        const statusCell = targetRow.cells[4]; // Status column
-        let statusClass = '';
-        let statusText = '';
-        
-        if (status === 'scheduled') {
-            statusClass = 'badge-info';
-            statusText = 'Scheduled';
-        } else if (status === 'resolved') {
-            statusClass = 'badge-success';
-            statusText = 'Resolved';
-        } else {
-            statusClass = 'badge-warning';
-            statusText = 'Pending';
-        }
-        
-        statusCell.innerHTML = `<span class="badge ${statusClass}">${statusText}</span>`;
-        
-        // Update counseling date column
-        const counselingDateCell = targetRow.cells[5]; // Counseling Date column
-        if (status === 'scheduled' && counselingDate) {
-            const date = new Date(counselingDate);
-            const formattedDate = date.toLocaleDateString('en-US', { 
-                month: 'short', 
-                day: 'numeric', 
-                year: 'numeric' 
-            });
-            const formattedTime = date.toLocaleTimeString('en-US', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
-            });
-            
-            counselingDateCell.innerHTML = `
-                <small class="text-muted">
-                    <i class="bi bi-calendar-check"></i>
-                    ${formattedDate} ${formattedTime}
-                </small>
-            `;
-        } else {
-            counselingDateCell.innerHTML = '<small class="text-muted">Not scheduled</small>';
-        }
-        
-        // Hide respond button if resolved
-        if (status === 'resolved') {
-            const respondBtn = targetRow.querySelector('button[onclick*="respondToConcern"]');
-            if (respondBtn) {
-                respondBtn.style.display = 'none';
-            }
-        }
-    }
-}
-
-function createConfetti() {
-    const modal = document.getElementById('confirmationModal');
-    const colors = ['#28a745', '#20c997', '#007bff', '#17a2b8', '#ffc107'];
-    
-    for (let i = 0; i < 10; i++) {
-        setTimeout(() => {
-            const confetti = document.createElement('div');
-            confetti.className = 'confetti';
-            confetti.style.left = Math.random() * 100 + '%';
-            confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
-            confetti.style.animationDelay = Math.random() * 0.3 + 's';
-            confetti.style.animationDuration = (Math.random() * 1.5 + 1.5) + 's';
-            modal.appendChild(confetti);
-            
-            // Remove confetti after animation
-            setTimeout(() => {
-                confetti.remove();
-            }, 3000);
-        }, i * 50);
-    }
-}
-
-function animateProgressDots() {
-    const dots = document.querySelectorAll('.progress-dot');
-    dots.forEach((dot, index) => {
-        setTimeout(() => {
-            dot.classList.add('active');
-        }, index * 200);
-    });
-}
-
 function closeConfirmationModal() {
     bootstrap.Modal.getInstance(document.getElementById('confirmationModal')).hide();
-    // In a real application, you might refresh the page or update the table
-    // window.location.reload();
+    location.reload();
 }
 
-function viewAnotherConcern() {
-    bootstrap.Modal.getInstance(document.getElementById('confirmationModal')).hide();
-    // Reset form for new concern
-    document.getElementById('responseForm').reset();
-    document.getElementById('counselingDateGroup').style.display = 'none';
+function confirmDelete(url, title, type) {
+    if (confirm(`Are you sure you want to delete this ${type}?\n\n"${title}"\n\nThis action cannot be undone.`)) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = url;
+        form.innerHTML = `
+            @csrf
+            @method('DELETE')
+        `;
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+</script>
+
+<style>
+@media (max-width: 1200px) {
+    div[style*="grid-template-columns: repeat(4, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    div[style*="grid-template-columns: repeat(4, 1fr)"],
+    div[style*="grid-template-columns: 1fr auto"] {
+        grid-template-columns: 1fr !important;
+    }
     
-    // Reset progress dots
-    const dots = document.querySelectorAll('.progress-dot');
-    dots.forEach(dot => dot.classList.remove('active'));
+    .modern-list-item > div {
+        flex-direction: column;
+    }
+    
+    .modern-list-item > div > div:last-child {
+        width: 100%;
+    }
+    
+    .modern-list-item > div > div:last-child > div {
+        width: 100%;
+        justify-content: stretch;
+    }
+    
+    .modern-list-item > div > div:last-child button,
+    .modern-list-item > div > div:last-child a {
+        flex: 1;
+    }
 }
-</script>
-
-{{-- Delete Confirmation Modal --}}
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content border-0" style="border-radius:20px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);">
-            <div class="modal-body text-center p-4">
-                <div class="mb-3">
-                    <div style="width:60px;height:60px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;">
-                        <i class="bi bi-trash3-fill text-danger fs-4"></i>
-                    </div>
-                </div>
-                <h6 class="fw-bold mb-1">Delete <span id="deleteItemType"></span>?</h6>
-                <p class="text-muted small mb-3"><strong id="deleteItemName" class="text-dark"></strong><br>This action cannot be undone.</p>
-                <div class="d-flex gap-2 justify-content-center">
-                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
-                    <form id="deleteForm" method="POST" class="d-inline">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm px-3">
-                            <i class="bi bi-trash me-1"></i> Delete
-                        </button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<script>
-function confirmDelete(url, name, type) {
-    document.getElementById('deleteForm').action = url;
-    document.getElementById('deleteItemName').textContent = name;
-    document.getElementById('deleteItemType').textContent = type;
-    new bootstrap.Modal(document.getElementById('deleteModal')).show();
-}
-</script>
+</style>
 @endsection

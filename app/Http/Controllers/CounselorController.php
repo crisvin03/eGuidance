@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Models\Concern;
@@ -10,6 +11,7 @@ use App\Models\Appointment;
 use App\Models\SessionNote;
 use App\Models\IncidentReport;
 use App\Models\StudentReferral;
+use App\Models\MentalHealthAssessment;
 use App\Mail\ConcernScheduled;
 use App\Mail\AppointmentConfirmed;
 
@@ -61,7 +63,7 @@ class CounselorController extends Controller
 
     public function showConcern(Concern $concern)
     {
-        $concern->load(['student', 'category']);
+        $concern->load(['student', 'category', 'sessionNotes.counselor']);
 
         if (request()->expectsJson()) {
             return response()->json([
@@ -202,6 +204,33 @@ class CounselorController extends Controller
         return view('counselor.appointments.show', compact('appointment'));
     }
 
+    public function storeAppointment(Request $request)
+    {
+        $request->validate([
+            'student_id' => 'required|exists:users,id',
+            'appointment_date' => 'required|date|after_or_equal:today',
+            'appointment_time' => 'required',
+            'purpose' => 'nullable|string|max:255',
+            'notes' => 'nullable|string',
+            'status' => 'required|in:scheduled,confirmed,pending',
+        ]);
+
+        // Combine date and time
+        $appointmentDateTime = $request->appointment_date . ' ' . $request->appointment_time;
+
+        $appointment = Appointment::create([
+            'student_id' => $request->student_id,
+            'counselor_id' => Auth::id(),
+            'appointment_date' => $appointmentDateTime,
+            'purpose' => $request->purpose,
+            'notes' => $request->notes,
+            'status' => $request->status,
+        ]);
+
+        return redirect()->route('counselor.calendar')
+            ->with('success', 'Appointment created successfully!');
+    }
+
     public function respondToAppointment(Request $request, Appointment $appointment)
     {
         if ($appointment->counselor_id != Auth::id()) {
@@ -301,6 +330,48 @@ class CounselorController extends Controller
 
         return redirect()->route('counselor.appointments.show', $appointment)
             ->with('success', 'Session note created successfully.');
+    }
+
+    // ─── Session Notes for Concerns ────────────────────────────────────────────
+
+    public function addConcernNote(Request $request, Concern $concern)
+    {
+        if ($concern->counselor_id != Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $request->validate([
+            'title' => 'nullable|string|max:255',
+            'notes' => 'required|string',
+            'session_type' => 'required|in:initial,follow_up,crisis,group',
+            'recommendations' => 'nullable|string',
+            'follow_up_date' => 'nullable|date',
+            'is_confidential' => 'boolean',
+        ]);
+
+        SessionNote::create([
+            'concern_id' => $concern->id,
+            'counselor_id' => Auth::id(),
+            'title' => $request->title,
+            'notes' => $request->notes,
+            'session_type' => $request->session_type,
+            'recommendations' => $request->recommendations,
+            'follow_up_date' => $request->follow_up_date,
+            'is_confidential' => $request->boolean('is_confidential', true),
+        ]);
+
+        return back()->with('success', 'Session note added successfully.');
+    }
+
+    public function viewConcernNotes(Concern $concern)
+    {
+        if ($concern->counselor_id != Auth::id()) {
+            abort(403, 'Unauthorized');
+        }
+
+        $notes = $concern->sessionNotes()->with('counselor')->get();
+
+        return view('counselor.concerns.notes', compact('concern', 'notes'));
     }
 
     // ─── Incident Reports (from Teachers) ─────────────────────────────────────
@@ -436,6 +507,31 @@ class CounselorController extends Controller
         return view('counselor.forms.show', compact('submission'));
     }
 
+    public function printSubmittedForm(\App\Models\TeacherFormSubmission $submission)
+    {
+        $submission->load('teacher');
+        
+        // Check if it's a student form submission instead
+        if (!$submission && request()->route()->hasParameter('submission')) {
+            $submission = \App\Models\StudentFormSubmission::findOrFail(request()->route('submission'));
+            $submission->load('student');
+        }
+        
+        // Determine which PDF template to use based on form type
+        $viewMap = [
+            'exit_survey' => 'counselor.forms.pdf.exit-survey',
+            'personal_inventory' => 'counselor.forms.pdf.personal-inventory',
+            'clearance_return' => 'counselor.forms.pdf.clearance-return',
+        ];
+        
+        $view = $viewMap[$submission->form_type] ?? 'counselor.forms.pdf.clearance-return';
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView($view, compact('submission'));
+        $pdf->setPaper('letter', 'portrait');
+        
+        return $pdf->stream($submission->form_title . ' - ' . ($submission->student->name ?? $submission->teacher->name) . '.pdf');
+    }
+
     public function reviewForm(Request $request, \App\Models\TeacherFormSubmission $submission)
     {
         $request->validate([
@@ -551,5 +647,459 @@ class CounselorController extends Controller
         $user->delete();
         return redirect()->route('counselor.pending-accounts')
             ->with('success', "{$name}'s account has been rejected and removed.");
+    }
+
+    // ─── PDF Exports ──────────────────────────────────────────────────────────
+
+    public function printIncidentReport(IncidentReport $incidentReport)
+    {
+        $incidentReport->load(['teacher', 'counselor']);
+        
+        $pdf = Pdf::loadView('counselor.pdf.incident-report', [
+            'report' => $incidentReport
+        ]);
+        
+        $filename = 'Incident_Report_' . $incidentReport->case_number . '.pdf';
+        
+        return $pdf->download($filename);
+    }
+
+    public function printReferral(StudentReferral $studentReferral)
+    {
+        $studentReferral->load(['teacher', 'counselor']);
+        
+        $pdf = Pdf::loadView('counselor.pdf.referral', [
+            'referral' => $studentReferral
+        ]);
+        
+        $filename = 'Student_Referral_' . $studentReferral->referral_number . '.pdf';
+        
+        return $pdf->download($filename);
+    }
+
+    // ─── Mental Health Assessments ────────────────────────────────────────────
+
+    public function mentalHealthAssessments(Request $request)
+    {
+        $query = MentalHealthAssessment::with('user')
+            ->orderByDesc('created_at');
+
+        // Filter by assessment type
+        if ($request->filled('type')) {
+            $query->where('assessment_type', $request->type);
+        }
+
+        // Filter by risk level
+        if ($request->filled('risk_level')) {
+            $query->where('risk_level', $request->risk_level);
+        }
+
+        // Filter by follow-up status
+        if ($request->filled('follow_up')) {
+            if ($request->follow_up === 'scheduled') {
+                $query->where('follow_up_scheduled', true);
+            } elseif ($request->follow_up === 'pending') {
+                $query->where('follow_up_scheduled', false);
+            }
+        }
+
+        // Search by student name
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('user', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $assessments = $query->paginate(20);
+
+        return view('counselor.mental-health.index', compact('assessments'));
+    }
+
+    public function showMentalHealthAssessment(MentalHealthAssessment $assessment)
+    {
+        $assessment->load('user');
+
+        return view('counselor.mental-health.show', compact('assessment'));
+    }
+
+    public function updateMentalHealthAssessment(Request $request, MentalHealthAssessment $assessment)
+    {
+        $request->validate([
+            'follow_up_scheduled' => 'required|boolean',
+            'follow_up_date' => 'nullable|date|required_if:follow_up_scheduled,1',
+            'counselor_notes' => 'nullable|string',
+        ]);
+
+        $assessment->update([
+            'follow_up_scheduled' => $request->boolean('follow_up_scheduled'),
+            'follow_up_date' => $request->follow_up_date,
+            'counselor_notes' => $request->counselor_notes,
+            'counselor_notified' => true,
+        ]);
+
+        return back()->with('success', 'Assessment updated successfully.');
+    }
+
+    // ─── Student Form Submissions ─────────────────────────────────────────────
+
+    public function studentForms(Request $request)
+    {
+        $query = \App\Models\StudentFormSubmission::with('student')
+            ->orderByDesc('created_at');
+
+        // Filter by form type
+        if ($request->filled('type')) {
+            $query->where('form_type', $request->type);
+        }
+
+        // Filter by status
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Search by student name
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->whereHas('student', function($q) use ($search) {
+                $q->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+            });
+        }
+
+        $submissions = $query->paginate(20);
+
+        return view('counselor.student-forms.index', compact('submissions'));
+    }
+
+    public function showStudentForm(\App\Models\StudentFormSubmission $submission)
+    {
+        $submission->load(['student', 'reviewer']);
+
+        return view('counselor.student-forms.show', compact('submission'));
+    }
+
+    public function reviewStudentForm(Request $request, \App\Models\StudentFormSubmission $submission)
+    {
+        $request->validate([
+            'status' => 'required|in:reviewed,approved,rejected',
+            'counselor_notes' => 'nullable|string',
+        ]);
+
+        $submission->update([
+            'status' => $request->status,
+            'counselor_notes' => $request->counselor_notes,
+            'reviewed_by' => Auth::id(),
+            'reviewed_at' => now(),
+        ]);
+
+        return back()->with('success', 'Form reviewed successfully.');
+    }
+
+    public function printStudentForm(\App\Models\StudentFormSubmission $submission)
+    {
+        $submission->load(['student', 'reviewer']);
+        
+        // Determine which PDF template to use based on form type
+        $viewMap = [
+            'exit_survey' => 'counselor.forms.pdf.exit-survey',
+            'personal_inventory' => 'counselor.forms.pdf.personal-inventory',
+            'clearance_return' => 'counselor.forms.pdf.clearance-return',
+        ];
+        
+        $view = $viewMap[$submission->form_type] ?? 'counselor.forms.pdf.clearance-return';
+        
+        $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView($view, compact('submission'));
+        $pdf->setPaper('letter', 'portrait');
+        
+        $filename = $submission->form_title . ' - ' . $submission->student->name . '.pdf';
+        
+        return $pdf->stream($filename);
+    }
+
+    // ─── Calendar & Schedule ──────────────────────────────────────────────────
+
+    public function calendar()
+    {
+        return view('counselor.calendar');
+    }
+
+    public function calendarEvents(Request $request)
+    {
+        $appointments = Appointment::where('counselor_id', Auth::id())
+            ->with(['student', 'concern'])
+            ->get();
+
+        $events = $appointments->map(function($appointment) {
+            $colors = [
+                'scheduled' => '#3b82f6',
+                'confirmed' => '#22c55e',
+                'pending' => '#f59e0b',
+                'cancelled' => '#ef4444',
+                'completed' => '#6366f1',
+            ];
+
+            return [
+                'id' => $appointment->id,
+                'title' => $appointment->concern ? $appointment->concern->title : 'Appointment with ' . $appointment->student->name,
+                'start' => $appointment->appointment_date->toIso8601String(),
+                'backgroundColor' => $colors[$appointment->status] ?? '#6b7280',
+                'borderColor' => $colors[$appointment->status] ?? '#6b7280',
+                'extendedProps' => [
+                    'student' => $appointment->student->name,
+                    'status' => $appointment->status,
+                ]
+            ];
+        });
+
+        return response()->json($events);
+    }
+
+    // ─── Resources & Community ──────────────────────────────────────────────
+
+    public function resourcesCommunity()
+    {
+        $totalResources = \App\Models\Resource::active()->count();
+        $totalSubmissions = \App\Models\StudentSubmission::count();
+        $pendingSubmissions = \App\Models\StudentSubmission::status('pending')->count();
+        $featuredSubmissions = \App\Models\StudentSubmission::featured()->count();
+        
+        // Recent resources
+        $recentResources = \App\Models\Resource::active()
+            ->with('uploader')
+            ->latest()
+            ->take(5)
+            ->get();
+            
+        // Recent submissions
+        $recentSubmissions = \App\Models\StudentSubmission::with(['student'])
+            ->latest()
+            ->take(5)
+            ->get();
+            
+        // Resources by category
+        $resourcesByCategory = [
+            'hrg' => \App\Models\Resource::active()->category('hrg')->count(),
+            'handbook' => \App\Models\Resource::active()->category('handbook')->count(),
+            'gender_dev' => \App\Models\Resource::active()->category('gender_dev')->count(),
+        ];
+        
+        // Submissions by type
+        $submissionsByType = [
+            'poetry' => \App\Models\StudentSubmission::type('poetry')->count(),
+            'artwork' => \App\Models\StudentSubmission::type('artwork')->count(),
+            'photography' => \App\Models\StudentSubmission::type('photography')->count(),
+        ];
+
+        return view('counselor.resources-community', compact(
+            'totalResources', 'totalSubmissions', 'pendingSubmissions', 'featuredSubmissions',
+            'recentResources', 'recentSubmissions', 'resourcesByCategory', 'submissionsByType'
+        ));
+    }
+
+    // ─── Teacher Resources Management ─────────────────────────────────────────
+
+    public function resourcesIndex(Request $request)
+    {
+        $query = \App\Models\Resource::with('uploader');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        if ($request->filled('category')) {
+            $query->category($request->category);
+        }
+        
+        if ($request->filled('status')) {
+            if ($request->status === 'active') {
+                $query->active();
+            } else {
+                $query->where('is_active', false);
+            }
+        }
+        
+        $resources = $query->latest()->paginate(15);
+        
+        return view('counselor.resources.index', compact('resources'));
+    }
+
+    public function createResource()
+    {
+        return view('counselor.resources.create');
+    }
+
+    public function storeResource(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'category' => 'required|in:hrg,handbook,gender_dev',
+            'file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:10240', // 10MB max
+        ]);
+
+        $file = $request->file('file');
+        $fileName = time() . '_' . $file->getClientOriginalName();
+        $filePath = $file->storeAs('resources', $fileName, 'public');
+
+        \App\Models\Resource::create([
+            'title' => $request->title,
+            'description' => $request->description,
+            'category' => $request->category,
+            'file_name' => $file->getClientOriginalName(),
+            'file_path' => $filePath,
+            'file_type' => $file->getClientOriginalExtension(),
+            'file_size' => $file->getSize(),
+            'uploaded_by' => Auth::id(),
+        ]);
+
+        return redirect()->route('counselor.resources.index')
+            ->with('success', 'Resource uploaded successfully!');
+    }
+
+    public function showResource(\App\Models\Resource $resource)
+    {
+        $resource->load('uploader');
+        return view('counselor.resources.show', compact('resource'));
+    }
+
+    public function downloadResource(\App\Models\Resource $resource)
+    {
+        $filePath = storage_path('app/public/' . $resource->file_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found');
+        }
+
+        return response()->download($filePath, $resource->file_name);
+    }
+
+    public function destroyResource(\App\Models\Resource $resource)
+    {
+        // Delete the file from storage
+        if (\Storage::disk('public')->exists($resource->file_path)) {
+            \Storage::disk('public')->delete($resource->file_path);
+        }
+
+        $resource->delete();
+
+        return redirect()->route('counselor.resources.index')
+            ->with('success', 'Resource deleted successfully!');
+    }
+
+    public function toggleResourceStatus(\App\Models\Resource $resource)
+    {
+        $resource->update(['is_active' => !$resource->is_active]);
+        
+        $status = $resource->is_active ? 'activated' : 'deactivated';
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Resource {$status} successfully!",
+            'is_active' => $resource->is_active
+        ]);
+    }
+
+    // ─── Student Submissions Management ───────────────────────────────────────
+
+    public function studentSubmissionsIndex(Request $request)
+    {
+        $query = \App\Models\StudentSubmission::with(['student', 'reviewer']);
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%")
+                  ->orWhereHas('student', fn($s) => $s->where('name', 'like', "%{$search}%"));
+            });
+        }
+        
+        if ($request->filled('type')) {
+            $query->type($request->type);
+        }
+        
+        if ($request->filled('status')) {
+            $query->status($request->status);
+        }
+        
+        if ($request->filled('featured')) {
+            if ($request->featured === 'yes') {
+                $query->featured();
+            }
+        }
+        
+        $submissions = $query->latest()->paginate(15);
+        
+        return view('counselor.student-submissions.index', compact('submissions'));
+    }
+
+    public function showStudentSubmission(\App\Models\StudentSubmission $submission)
+    {
+        $submission->load(['student', 'reviewer']);
+        return view('counselor.student-submissions.show', compact('submission'));
+    }
+
+    public function reviewStudentSubmission(Request $request, \App\Models\StudentSubmission $submission)
+    {
+        $request->validate([
+            'status' => 'required|in:approved,rejected',
+            'counselor_notes' => 'nullable|string|max:1000',
+        ]);
+
+        $submission->update([
+            'status' => $request->status,
+            'counselor_notes' => $request->counselor_notes,
+            'reviewed_by' => Auth::id(),
+            'reviewed_at' => now(),
+        ]);
+
+        return redirect()->back()->with('success', 'Submission reviewed successfully!');
+    }
+
+    public function downloadStudentSubmission(\App\Models\StudentSubmission $submission)
+    {
+        if (!$submission->hasFile()) {
+            abort(404, 'No file attached to this submission');
+        }
+        
+        $filePath = storage_path('app/public/' . $submission->file_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found');
+        }
+
+        return response()->download($filePath, $submission->file_name);
+    }
+
+    public function toggleFeaturedSubmission(\App\Models\StudentSubmission $submission)
+    {
+        $submission->update(['is_featured' => !$submission->is_featured]);
+        
+        $status = $submission->is_featured ? 'featured' : 'unfeatured';
+        
+        return response()->json([
+            'success' => true,
+            'message' => "Submission {$status} successfully!",
+            'is_featured' => $submission->is_featured
+        ]);
+    }
+
+    public function destroyStudentSubmission(\App\Models\StudentSubmission $submission)
+    {
+        // Delete the file from storage if it exists
+        if ($submission->hasFile() && \Storage::disk('public')->exists($submission->file_path)) {
+            \Storage::disk('public')->delete($submission->file_path);
+        }
+
+        $submission->delete();
+
+        return redirect()->route('counselor.student-submissions.index')
+            ->with('success', 'Submission deleted successfully!');
     }
 }

@@ -124,4 +124,28 @@ class User extends Authenticatable
     {
         return $this->hasRole('teacher');
     }
+
+    public function conversations()
+    {
+        return Conversation::where('user_1_id', $this->id)
+            ->orWhere('user_2_id', $this->id)
+            ->orderBy('last_message_at', 'desc')
+            ->get();
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class, 'sender_id');
+    }
+
+    public function unreadMessagesCount()
+    {
+        return Message::whereHas('conversation', function($query) {
+            $query->where('user_1_id', $this->id)
+                  ->orWhere('user_2_id', $this->id);
+        })
+        ->where('sender_id', '!=', $this->id)
+        ->whereNull('read_at')
+        ->count();
+    }
 }

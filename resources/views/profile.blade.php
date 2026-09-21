@@ -3,6 +3,7 @@
 @section('title', 'My Profile')
 
 @section('content')
+@include('student.partials.modern-styles')
 
 @if(session('success'))
     <div class="alert alert-success alert-dismissible fade show mb-4">
@@ -12,130 +13,182 @@
 @endif
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="card text-center">
-            <div class="card-body">
-                {{-- Profile Photo with Upload Form --}}
-                <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" id="photoUploadForm">
-                    @csrf
-                    @method('PUT')
-                    {{-- Pass existing user data as hidden fields --}}
-                    <input type="hidden" name="name" value="{{ Auth::user()->name }}">
-                    <input type="hidden" name="email" value="{{ Auth::user()->email }}">
-                    @if(Auth::user()->isStudent())
-                        <input type="hidden" name="lrn" value="{{ Auth::user()->lrn ?? '' }}">
-                        <input type="hidden" name="grade_level" value="{{ Auth::user()->grade_level ?? '' }}">
-                        <input type="hidden" name="section" value="{{ Auth::user()->section ?? '' }}">
-                        <input type="hidden" name="adviser" value="{{ Auth::user()->adviser ?? '' }}">
-                        <input type="hidden" name="contact_person" value="{{ Auth::user()->contact_person ?? '' }}">
-                        <input type="hidden" name="contact_number" value="{{ Auth::user()->contact_number ?? '' }}">
-                    @endif
-                    @if(Auth::user()->isTeacher())
-                        <input type="hidden" name="advisee" value="{{ Auth::user()->advisee ?? '' }}">
-                    @endif
-                    <input type="hidden" name="phone" value="{{ Auth::user()->phone ?? '' }}">
-                    <input type="hidden" name="date_of_birth" value="{{ Auth::user()->date_of_birth ?? '' }}">
-                    <input type="hidden" name="gender" value="{{ Auth::user()->gender ?? '' }}">
-                    <input type="hidden" name="address" value="{{ Auth::user()->address ?? '' }}">
-                    <input type="file" id="photoInput" name="profile_photo" accept="image/*" class="d-none" onchange="document.getElementById('photoUploadForm').submit();">
-                </form>
-                
-                <div class="mb-3 position-relative d-inline-block">
-                    @if(Auth::user()->profile_photo)
-                        <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
-                             alt="Profile Photo"
-                             class="rounded-circle border"
-                             style="width:90px;height:90px;object-fit:cover;">
-                    @else
-                        <div class="user-avatar mx-auto d-flex align-items-center justify-content-center"
-                             style="width:90px;height:90px;font-size:1.8rem;">
-                            {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
-                        </div>
-                    @endif
-                    <label for="photoInput" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
-                           style="width:28px;height:28px;cursor:pointer;" title="Click to upload photo">
-                        <i class="bi bi-camera-fill" style="font-size:.75rem;"></i>
-                    </label>
-                </div>
-                
-                @error('profile_photo')
-                    <div class="alert alert-danger alert-dismissible fade show py-2 mt-2">
-                        <small>{{ $message }}</small>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @enderror
-                <h5 class="card-title">{{ Auth::user()->name }}</h5>
-                <p class="card-text text-muted">{{ ucfirst(Auth::user()->role->name) }}</p>
-                <div class="mt-2">
-                    <span class="badge {{ Auth::user()->is_active ? 'badge-success' : 'badge-secondary' }}">
-                        {{ Auth::user()->is_active ? 'Active' : 'Inactive' }}
-                    </span>
-                </div>
-                @if(Auth::user()->profile_photo)
-                <form method="POST" action="{{ route('profile.photo.remove') }}" class="mt-2">
-                    @csrf @method('DELETE')
-                    <button type="submit" class="btn btn-outline-danger btn-sm">
-                        <i class="bi bi-trash me-1"></i>Remove Photo
-                    </button>
-                </form>
-                @endif
-                
+    <div class="col-md-4 d-flex flex-column" style="gap: 1rem;">
+        <div class="modern-card text-center" style="padding: 1.5rem;">
+            {{-- Profile Photo with Upload Form --}}
+            <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" id="photoUploadForm">
+                @csrf
+                @method('PUT')
+                {{-- Pass existing user data as hidden fields --}}
+                <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
                 @if(Auth::user()->isStudent())
-                <div class="mt-3">
-                    <a href="{{ route('student.virtual-id') }}" class="btn btn-sm w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
-                        <i class="bi bi-person-badge me-1"></i>View Virtual ID
-                    </a>
-                </div>
+                    <input type="hidden" name="lrn" value="{{ Auth::user()->lrn ?? '' }}">
+                    <input type="hidden" name="grade_level" value="{{ Auth::user()->grade_level ?? '' }}">
+                    <input type="hidden" name="section" value="{{ Auth::user()->section ?? '' }}">
+                    <input type="hidden" name="adviser" value="{{ Auth::user()->adviser ?? '' }}">
+                    <input type="hidden" name="contact_person" value="{{ Auth::user()->contact_person ?? '' }}">
+                    <input type="hidden" name="contact_number" value="{{ Auth::user()->contact_number ?? '' }}">
                 @endif
-                
                 @if(Auth::user()->isTeacher())
-                <div class="mt-3">
-                    <a href="{{ route('teacher.virtual-id') }}" class="btn btn-sm w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
-                        <i class="bi bi-person-badge me-1"></i>View Virtual ID
-                    </a>
-                </div>
+                    <input type="hidden" name="advisee" value="{{ Auth::user()->advisee ?? '' }}">
                 @endif
+                <input type="hidden" name="phone" value="{{ Auth::user()->phone ?? '' }}">
+                <input type="hidden" name="date_of_birth" value="{{ Auth::user()->date_of_birth ?? '' }}">
+                <input type="hidden" name="gender" value="{{ Auth::user()->gender ?? '' }}">
+                <input type="hidden" name="address" value="{{ Auth::user()->address ?? '' }}">
+                <input type="file" id="photoInput" name="profile_photo" accept="image/*" class="d-none" onchange="document.getElementById('photoUploadForm').submit();">
+            </form>
+            
+            <div class="mb-3 position-relative d-inline-block">
+                @if(Auth::user()->profile_photo)
+                    <img src="{{ asset('storage/' . Auth::user()->profile_photo) }}"
+                         alt="Profile Photo"
+                         class="rounded-circle border"
+                         style="width:90px;height:90px;object-fit:cover;">
+                @else
+                    <div class="user-avatar mx-auto d-flex align-items-center justify-content-center"
+                         style="width:90px;height:90px;font-size:1.8rem;">
+                        {{ strtoupper(substr(Auth::user()->name, 0, 2)) }}
+                    </div>
+                @endif
+                <label for="photoInput" class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                       style="width:28px;height:28px;cursor:pointer;" title="Click to upload photo">
+                    <i class="bi bi-camera-fill" style="font-size:.75rem;"></i>
+                </label>
             </div>
+            
+            @error('profile_photo')
+                <div class="alert alert-danger alert-dismissible fade show py-2 mt-2">
+                    <small>{{ $message }}</small>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @enderror
+            <h5 class="card-title">{{ Auth::user()->name }}</h5>
+            <p class="card-text text-muted">{{ ucfirst(Auth::user()->role->name) }}</p>
+            <div class="mt-2">
+                <span class="badge {{ Auth::user()->is_active ? 'badge-success' : 'badge-secondary' }}">
+                    {{ Auth::user()->is_active ? 'Active' : 'Inactive' }}
+                </span>
+            </div>
+            @if(Auth::user()->profile_photo)
+            <form method="POST" action="{{ route('profile.photo.remove') }}" class="mt-2">
+                @csrf @method('DELETE')
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                    <i class="bi bi-trash me-1"></i>Remove Photo
+                </button>
+            </form>
+            @endif
+            
+            @if(Auth::user()->isStudent())
+            <div class="mt-3">
+                <a href="{{ route('student.virtual-id') }}" class="btn btn-sm w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                    <i class="bi bi-person-badge me-1"></i>View Virtual ID
+                </a>
+            </div>
+            @endif
+            
+            @if(Auth::user()->isTeacher())
+            <div class="mt-3">
+                <a href="{{ route('teacher.virtual-id') }}" class="btn btn-sm w-100 text-white" style="background:linear-gradient(135deg,#20B2AA,#008B8B);">
+                    <i class="bi bi-person-badge me-1"></i>View Virtual ID
+                </a>
+            </div>
+            @endif
         </div>
         
-        <div class="card mt-3">
-            <div class="card-header">
-                <h6 class="card-title">Quick Stats</h6>
-            </div>
-            <div class="card-body">
-                @if(Auth::user()->isStudent()) <!-- Student -->
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Concerns Submitted</span>
-                        <strong>{{ App\Models\Concern::where('student_id', Auth::user()->id)->count() }}</strong>
+        <div class="modern-card" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;">Quick Stats</h6>
+            @if(Auth::user()->isStudent()) <!-- Student -->
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Concerns Submitted</span>
+                    <strong>{{ App\Models\Concern::where('student_id', Auth::user()->id)->count() }}</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Appointments</span>
+                    <strong>{{ App\Models\Appointment::where('student_id', Auth::user()->id)->count() }}</strong>
+                </div>
+            @elseif(Auth::user()->isCounselor()) <!-- Counselor -->
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Concerns Handled</span>
+                    <strong>{{ App\Models\Concern::count() }}</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Appointments</span>
+                    <strong>{{ App\Models\Appointment::where('counselor_id', Auth::user()->id)->count() }}</strong>
+                </div>
+            @else <!-- Admin -->
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Total Users</span>
+                    <strong>{{ App\Models\User::count() }}</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Total Concerns</span>
+                    <strong>{{ App\Models\Concern::count() }}</strong>
+                </div>
+            @endif
+        </div>
+
+        <div class="modern-card flex-grow-1 d-flex flex-column" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;">Change Password</h6>
+            @if($errors->has('current_password') || $errors->has('password'))
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <ul class="mb-0">
+                        @foreach($errors->get('current_password') as $e)<li>{{ $e }}</li>@endforeach
+                        @foreach($errors->get('password') as $e)<li>{{ $e }}</li>@endforeach
+                    </ul>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            @endif
+            <form method="POST" action="{{ route('profile.password') }}">
+                @csrf
+                @method('PUT')
+                <div class="mb-3">
+                    <label for="current_password" class="form-label" style="font-size: 0.9rem;">Current Password</label>
+                    <div class="input-group">
+                        <input type="password"
+                               class="form-control @error('current_password') is-invalid @enderror"
+                               id="current_password" name="current_password" required>
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('current_password','ico-cur')" tabindex="-1">
+                            <i class="bi bi-eye" id="ico-cur"></i>
+                        </button>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Appointments</span>
-                        <strong>{{ App\Models\Appointment::where('student_id', Auth::user()->id)->count() }}</strong>
+                    @error('current_password')
+                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="password" class="form-label" style="font-size: 0.9rem;">New Password</label>
+                    <div class="input-group">
+                        <input type="password"
+                               class="form-control @error('password') is-invalid @enderror"
+                               id="password" name="password" required>
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password','ico-new')" tabindex="-1">
+                            <i class="bi bi-eye" id="ico-new"></i>
+                        </button>
                     </div>
-                @elseif(Auth::user()->isCounselor()) <!-- Counselor -->
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Concerns Handled</span>
-                        <strong>{{ App\Models\Concern::count() }}</strong>
+                    @error('password')
+                        <span class="invalid-feedback d-block">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="password_confirmation" class="form-label" style="font-size: 0.9rem;">Confirm New Password</label>
+                    <div class="input-group">
+                        <input type="password" class="form-control"
+                               id="password_confirmation" name="password_confirmation" required>
+                        <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password_confirmation','ico-conf')" tabindex="-1">
+                            <i class="bi bi-eye" id="ico-conf"></i>
+                        </button>
                     </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Appointments</span>
-                        <strong>{{ App\Models\Appointment::where('counselor_id', Auth::user()->id)->count() }}</strong>
-                    </div>
-                @else <!-- Admin -->
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Total Users</span>
-                        <strong>{{ App\Models\User::count() }}</strong>
-                    </div>
-                    <div class="d-flex justify-content-between mb-2">
-                        <span>Total Concerns</span>
-                        <strong>{{ App\Models\Concern::count() }}</strong>
-                    </div>
-                @endif
-            </div>
+                </div>
+                <button type="submit" class="btn btn-warning w-100">
+                    <i class="bi bi-lock me-1"></i> Update Password
+                </button>
+            </form>
         </div>
     </div>
     
-    <div class="col-md-8">
+    <div class="col-md-8 d-flex">
         @if($errors->any() && !$errors->has('current_password') && !$errors->has('password'))
             <div class="alert alert-danger alert-dismissible fade show">
                 <ul class="mb-0">@foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach</ul>
@@ -143,11 +196,8 @@
             </div>
         @endif
 
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title">Profile Information</h5>
-            </div>
-            <div class="card-body">
+        <div class="modern-card flex-grow-1" style="padding: 1.5rem;">
+            <h5 class="fw-semibold mb-3" style="font-size: 1.15rem;">Profile Information</h5>
                 <form method="POST" action="{{ route('profile.update') }}" enctype="multipart/form-data" id="profileForm">
                     @csrf
                     @method('PUT')
@@ -273,70 +323,6 @@
                             <i class="bi bi-x-circle"></i> Cancel
                         </button>
                     </div>
-                </form>
-            </div>
-        </div>
-        
-        <div class="card mt-4">
-            <div class="card-header">
-                <h5 class="card-title">Change Password</h5>
-            </div>
-            <div class="card-body">
-                @if($errors->has('current_password') || $errors->has('password'))
-                    <div class="alert alert-danger alert-dismissible fade show">
-                        <ul class="mb-0">
-                            @foreach($errors->get('current_password') as $e)<li>{{ $e }}</li>@endforeach
-                            @foreach($errors->get('password') as $e)<li>{{ $e }}</li>@endforeach
-                        </ul>
-                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                    </div>
-                @endif
-                <form method="POST" action="{{ route('profile.password') }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="row">
-                        <div class="col-md-4 mb-3">
-                            <label for="current_password" class="form-label">Current Password</label>
-                            <div class="input-group">
-                                <input type="password"
-                                       class="form-control @error('current_password') is-invalid @enderror"
-                                       id="current_password" name="current_password" required>
-                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('current_password','ico-cur')" tabindex="-1">
-                                    <i class="bi bi-eye" id="ico-cur"></i>
-                                </button>
-                            </div>
-                            @error('current_password')
-                                <span class="invalid-feedback d-block">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="password" class="form-label">New Password</label>
-                            <div class="input-group">
-                                <input type="password"
-                                       class="form-control @error('password') is-invalid @enderror"
-                                       id="password" name="password" required>
-                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password','ico-new')" tabindex="-1">
-                                    <i class="bi bi-eye" id="ico-new"></i>
-                                </button>
-                            </div>
-                            @error('password')
-                                <span class="invalid-feedback d-block">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col-md-4 mb-3">
-                            <label for="password_confirmation" class="form-label">Confirm New Password</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control"
-                                       id="password_confirmation" name="password_confirmation" required>
-                                <button type="button" class="btn btn-outline-secondary" onclick="togglePwd('password_confirmation','ico-conf')" tabindex="-1">
-                                    <i class="bi bi-eye" id="ico-conf"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="submit" class="btn btn-warning">
-                        <i class="bi bi-lock me-1"></i> Update Password
-                    </button>
                 </form>
             </div>
         </div>

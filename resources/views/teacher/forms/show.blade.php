@@ -2,6 +2,15 @@
 @section('title', 'Form Details')
 
 @section('content')
+@include('student.partials.modern-styles')
+
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    .col-md-8, .col-md-4 { width: 100% !important; max-width: 100% !important; }
+}
+</style>
 
 @php
     $statusColor = match($submission->status) {
@@ -92,8 +101,9 @@
 @endphp
 
 <div class="mb-3">
-    <a href="{{ route('teacher.forms.submissions') }}" class="btn btn-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i> Back to My Submitted Forms
+    <a href="{{ route('teacher.forms.submissions') }}" class="modern-btn modern-btn-secondary" style="display:inline-flex;padding:0.5rem 1rem;">
+        <i class="bi bi-arrow-left"></i>
+        <span class="ms-2">Back to My Submitted Forms</span>
     </a>
 </div>
 
@@ -101,14 +111,14 @@
 
     {{-- Left: Form content --}}
     <div class="col-md-8">
-        <div class="card border-0 shadow-sm" style="border-radius:16px;">
-            <div class="card-header d-flex align-items-center justify-content-between flex-wrap gap-2 py-3 px-4"
-                 style="background:#f8fafc;border-radius:16px 16px 0 0;">
+        <div class="modern-card">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 pb-3 mb-4"
+                 style="border-bottom:2px solid #f1f5f9;">
                 <div>
-                    <h5 class="fw-bold mb-0">{{ $submission->form_title }}</h5>
+                    <h5 class="fw-bold mb-1">{{ $submission->form_title }}</h5>
                     <small class="text-muted">Submitted on {{ $submission->created_at->format('F d, Y \a\t h:i A') }}</small>
                 </div>
-                <span class="badge fs-6 px-3 py-2 fw-semibold text-capitalize"
+                <span class="modern-badge fs-6 px-3 py-2 fw-semibold text-capitalize"
                       style="background:{{ $statusColor['bg'] }};color:{{ $statusColor['text'] }};border:1px solid {{ $statusColor['border'] }};">
                     @if($submission->status === 'submitted') <i class="bi bi-clock me-1"></i>
                     @elseif($submission->status === 'reviewed') <i class="bi bi-eye me-1"></i>
@@ -117,7 +127,6 @@
                     {{ ucfirst($submission->status) }}
                 </span>
             </div>
-            <div class="card-body p-4">
 
                 {{-- Student info --}}
                 @if($submission->student_name)
@@ -232,50 +241,48 @@
 
     {{-- Right sidebar --}}
     <div class="col-md-4">
-        <div class="card border-0 shadow-sm mb-3" style="border-radius:16px;">
-            <div class="card-body p-4">
-                <h6 class="fw-bold mb-3">Form Information</h6>
-                <div class="d-flex flex-column gap-3">
-                    <div>
-                        <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Form Type</small>
-                        <span class="fw-semibold small">{{ $submission->form_title }}</span>
-                    </div>
-                    <div>
-                        <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Date Submitted</small>
-                        <span class="fw-semibold small">{{ $submission->created_at->format('M d, Y h:i A') }}</span>
-                    </div>
-                    <div>
-                        <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Status</small>
-                        <span class="badge fw-semibold text-capitalize"
-                              style="background:{{ $statusColor['bg'] }};color:{{ $statusColor['text'] }};border:1px solid {{ $statusColor['border'] }};">
-                            {{ ucfirst($submission->status) }}
-                        </span>
-                    </div>
-                    @if($submission->reviewed_at)
-                    <div>
-                        <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Reviewed On</small>
-                        <span class="fw-semibold small">{{ $submission->reviewed_at->format('M d, Y h:i A') }}</span>
-                    </div>
-                    @endif
+        <div class="modern-card mb-3">
+            <h6 class="fw-bold mb-3">Form Information</h6>
+            <div class="d-flex flex-column gap-3">
+                <div>
+                    <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Form Type</small>
+                    <span class="fw-semibold small">{{ $submission->form_title }}</span>
                 </div>
+                <div>
+                    <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Date Submitted</small>
+                    <span class="fw-semibold small">{{ $submission->created_at->format('M d, Y h:i A') }}</span>
+                </div>
+                <div>
+                    <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Status</small>
+                    <span class="modern-badge fw-semibold text-capitalize"
+                          style="background:{{ $statusColor['bg'] }};color:{{ $statusColor['text'] }};border:1px solid {{ $statusColor['border'] }};">
+                        {{ ucfirst($submission->status) }}
+                    </span>
+                </div>
+                @if($submission->reviewed_at)
+                <div>
+                    <small class="text-muted d-block" style="font-size:0.72rem;text-transform:uppercase;letter-spacing:0.4px;">Reviewed On</small>
+                    <span class="fw-semibold small">{{ $submission->reviewed_at->format('M d, Y h:i A') }}</span>
+                </div>
+                @endif
             </div>
         </div>
 
         {{-- Print card --}}
-        <div class="card border-0 shadow-sm" style="border-radius:16px;border:2px solid #99f6e4 !important;">
-            <div class="card-body p-4 text-center">
+        <div class="modern-card" style="border:2px solid #99f6e4 !important;">
+            <div class="text-center">
                 <div class="mb-3">
                     <div class="mx-auto d-flex align-items-center justify-content-center rounded-circle"
-                         style="width:52px;height:52px;background:rgba(32,178,170,0.12);">
+                         style="width:52px;height:52px;background:rgba(30,122,74,0.12);">
                         <i class="bi bi-printer fs-4" style="color:#1e7a4a;"></i>
                     </div>
                 </div>
                 <h6 class="fw-bold mb-1">Print This Form</h6>
                 <p class="text-muted small mb-3">Print the official format of this form.</p>
-                <button class="btn w-100 fw-semibold text-white"
-                        style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
+                <button class="modern-btn modern-btn-primary w-100"
                         onclick="printStoredForm()">
-                    <i class="bi bi-printer me-1"></i> Print Form
+                    <i class="bi bi-printer"></i>
+                    <span class="ms-1">Print Form</span>
                 </button>
             </div>
         </div>

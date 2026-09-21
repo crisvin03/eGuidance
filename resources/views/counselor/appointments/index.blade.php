@@ -3,104 +3,176 @@
 @section('title', 'My Appointments')
 
 @section('content')
-<div class="card border-0 shadow-sm" style="border-radius:16px;">
-    <div class="card-header bg-white px-4 pt-4 pb-0 border-0">
-        <div class="d-flex align-items-center justify-content-between mb-3">
-            <div>
-                <h5 class="fw-bold mb-0">Appointments</h5>
-                <small class="text-muted">Manage student and teacher appointments</small>
-            </div>
+@include('student.partials.modern-styles')
+
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    .modern-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
+    .modern-tabs { flex-wrap: wrap !important; }
+    .modern-tab { padding: 0.625rem 1rem !important; font-size: 0.875rem !important; }
+    div[style*="display: grid"][style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    
+    /* Filter Form - Stack Vertically */
+    .filter-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+        grid-template-columns: unset !important;
+    }
+    .filter-form > div {
+        width: 100% !important;
+    }
+    .filter-form .form-control,
+    .filter-form .form-select {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    .filter-form .modern-btn,
+    .filter-form button[type="submit"] {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    /* Table Actions - Icon Only */
+    .btn.btn-sm span:not(.bi) { display: none !important; }
+    .btn.btn-sm { padding: 0.375rem 0.75rem !important; min-width: auto !important; }
+    
+    .table-responsive { font-size: 0.875rem !important; }
+    .badge { font-size: 0.7rem !important; }
+}
+</style>
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-calendar-check-fill"></i>
         </div>
-
-        {{-- Filters --}}
-        <form method="GET" class="row g-2 mb-3">
-            <div class="col-md-5">
-                <input type="text" name="search" class="form-control form-control-sm"
-                       placeholder="Search by name or notes..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <select name="status" class="form-select form-select-sm">
-                    <option value="">All Statuses</option>
-                    <option value="scheduled" {{ request('status')=='scheduled' ? 'selected':'' }}>Scheduled</option>
-                    <option value="confirmed" {{ request('status')=='confirmed' ? 'selected':'' }}>Confirmed</option>
-                    <option value="completed" {{ request('status')=='completed' ? 'selected':'' }}>Completed</option>
-                    <option value="cancelled" {{ request('status')=='cancelled' ? 'selected':'' }}>Cancelled</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary btn-sm w-100">
-                    <i class="bi bi-search me-1"></i> Filter
-                </button>
-            </div>
-            @if(request('search') || request('status'))
-            <div class="col-md-2">
-                <a href="{{ route('counselor.appointments.index') }}" class="btn btn-secondary btn-sm w-100">Clear</a>
-            </div>
-            @endif
-        </form>
-
-        {{-- Tabs --}}
-        <ul class="nav nav-tabs border-0 gap-1" id="apptTabs">
-            <li class="nav-item">
-                <a class="nav-link active fw-semibold px-3" href="#" data-tab="students"
-                   style="border-radius:8px 8px 0 0;font-size:.875rem;">
-                    <i class="bi bi-person me-1"></i>Student Appointments
-                    <span class="badge rounded-pill ms-1" style="background:#1e7a4a;color:#fff;font-size:.65rem;">
-                        {{ $appointments->total() }}
-                    </span>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link fw-semibold px-3" href="#" data-tab="teachers"
-                   style="border-radius:8px 8px 0 0;font-size:.875rem;">
-                    <i class="bi bi-person-badge me-1"></i>Teacher Appointments
-                    <span class="badge rounded-pill ms-1" style="background:#1e7a4a;color:#fff;font-size:.65rem;">
-                        {{ $teacherAppointments->total() }}
-                    </span>
-                </a>
-            </li>
-        </ul>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">My Appointments</h1>
+            <p class="modern-page-subtitle">Manage student and teacher appointments</p>
+        </div>
     </div>
+</div>
 
-    <div class="card-body p-0">
-
-        {{-- STUDENT APPOINTMENTS TAB --}}
-        <div id="tab-students">
-            @include('counselor.appointments._table', ['list' => $appointments, 'type' => 'student'])
+<!-- Filter Section -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <form method="GET" class="filter-form" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 1rem; align-items: end;">
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Search</label>
+            <input type="text" name="search" class="form-control" placeholder="Search by name or notes..." value="{{ request('search') }}" style="border-radius: 10px;">
         </div>
-
-        {{-- TEACHER APPOINTMENTS TAB --}}
-        <div id="tab-teachers" style="display:none;">
-            @include('counselor.appointments._table', ['list' => $teacherAppointments, 'type' => 'teacher'])
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Status</label>
+            <select name="status" class="form-select" style="border-radius: 10px;">
+                <option value="">All Statuses</option>
+                <option value="scheduled" {{ request('status')=='scheduled' ? 'selected':'' }}>Scheduled</option>
+                <option value="confirmed" {{ request('status')=='confirmed' ? 'selected':'' }}>Confirmed</option>
+                <option value="completed" {{ request('status')=='completed' ? 'selected':'' }}>Completed</option>
+                <option value="cancelled" {{ request('status')=='cancelled' ? 'selected':'' }}>Cancelled</option>
+            </select>
         </div>
+        <div style="display: flex; gap: 0.5rem;">
+            <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; white-space: nowrap;">
+                <i class="bi bi-funnel-fill"></i> Filter
+            </button>
+            @if(request('search') || request('status'))
+                <a href="{{ route('counselor.appointments.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
+                    <i class="bi bi-x-circle"></i> Clear
+                </a>
+            @endif
+        </div>
+    </form>
+</div>
 
+<!-- Tabs -->
+<div class="modern-card" style="padding: 0; margin-bottom: 1.5rem; overflow: hidden;">
+    <div style="display: flex; border-bottom: 2px solid #e5e7eb; background: #f9fafb;">
+        <button class="tab-btn active" data-tab="students" style="flex: 1; padding: 1rem 1.5rem; font-size: 0.95rem; font-weight: 600; color: var(--navy); background: transparent; border: none; border-bottom: 3px solid var(--green); cursor: pointer; transition: all 0.2s;">
+            <i class="bi bi-person-fill me-2"></i>Student Appointments
+            <span class="modern-badge modern-badge-success" style="font-size: 0.75rem; margin-left: 0.5rem;">{{ $appointments->total() }}</span>
+        </button>
+        <button class="tab-btn" data-tab="teachers" style="flex: 1; padding: 1rem 1.5rem; font-size: 0.95rem; font-weight: 600; color: #6b7280; background: transparent; border: none; border-bottom: 3px solid transparent; cursor: pointer; transition: all 0.2s;">
+            <i class="bi bi-person-badge-fill me-2"></i>Teacher Appointments
+            <span class="modern-badge" style="background: rgba(107, 114, 128, 0.1); color: #6b7280; font-size: 0.75rem; margin-left: 0.5rem;">{{ $teacherAppointments->total() }}</span>
+        </button>
+    </div>
+</div>
+
+<!-- Student Appointments Tab -->
+<div id="tab-students" class="tab-content">
+    <div class="modern-card" style="padding: 1.5rem;">
+        @include('counselor.appointments._table', ['list' => $appointments, 'type' => 'student'])
+    </div>
+</div>
+
+<!-- Teacher Appointments Tab -->
+<div id="tab-teachers" class="tab-content" style="display: none;">
+    <div class="modern-card" style="padding: 1.5rem;">
+        @include('counselor.appointments._table', ['list' => $teacherAppointments, 'type' => 'teacher'])
     </div>
 </div>
 
 @include('counselor.appointments._modals')
 
 <script>
-document.querySelectorAll('#apptTabs .nav-link').forEach(link => {
-    link.addEventListener('click', e => {
-        e.preventDefault();
-        document.querySelectorAll('#apptTabs .nav-link').forEach(l => l.classList.remove('active'));
-        link.classList.add('active');
-        const tab = link.dataset.tab;
-        document.getElementById('tab-students').style.display = tab === 'students' ? 'block' : 'none';
-        document.getElementById('tab-teachers').style.display = tab === 'teachers' ? 'block' : 'none';
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        // Update button styles
+        document.querySelectorAll('.tab-btn').forEach(b => {
+            b.style.color = '#6b7280';
+            b.style.borderBottomColor = 'transparent';
+            b.classList.remove('active');
+            const badge = b.querySelector('.modern-badge');
+            if (badge) {
+                badge.style.background = 'rgba(107, 114, 128, 0.1)';
+                badge.style.color = '#6b7280';
+            }
+        });
+        
+        btn.style.color = 'var(--navy)';
+        btn.style.borderBottomColor = 'var(--green)';
+        btn.classList.add('active');
+        const badge = btn.querySelector('.modern-badge');
+        if (badge) {
+            badge.style.background = 'rgba(30, 122, 74, 0.1)';
+            badge.style.color = 'var(--green)';
+        }
+        
+        // Show/hide content
+        const tab = btn.dataset.tab;
+        document.querySelectorAll('.tab-content').forEach(content => {
+            content.style.display = 'none';
+        });
+        document.getElementById('tab-' + tab).style.display = 'block';
     });
 });
 </script>
 
 <style>
-#apptTabs .nav-link { color:#475569; border:none; border-bottom:2px solid transparent; border-radius:0 !important; padding:.5rem 1rem; transition:all .2s; }
-#apptTabs .nav-link:hover { color:#1e7a4a; background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ; }
-#apptTabs .nav-link.active { color:#1e7a4a; border-bottom-color:#1e7a4a; background:transparent; font-weight:700; }
-.pagination { margin:0; gap:3px; }
-.pagination .page-link { border-radius:8px !important; border:1px solid #e2e8f0; color:#475569; font-size:.875rem; padding:.4rem .75rem; transition:all .2s; }
-.pagination .page-link:hover { background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ; border-color:#1e7a4a; color:#1e7a4a; }
-.pagination .page-item.active .page-link { background:#1e7a4a; border-color:#1e7a4a; color:#fff; }
-.pagination .page-item.disabled .page-link { opacity:.5; }
+.tab-btn:hover {
+    color: var(--green) !important;
+    background: rgba(30, 122, 74, 0.05);
+}
+
+@media (max-width: 768px) {
+    div[style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .tab-btn {
+        font-size: 0.85rem !important;
+        padding: 0.75rem 1rem !important;
+    }
+    
+    .tab-btn i {
+        display: none;
+    }
+}
 </style>
 
 @endsection

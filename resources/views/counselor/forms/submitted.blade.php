@@ -2,32 +2,89 @@
 @section('title', 'Submitted Forms')
 
 @section('content')
+@include('student.partials.modern-styles')
 
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-        <h5 class="fw-bold mb-0">Submitted Forms</h5>
-        <small class="text-muted">Forms submitted by teachers for your review</small>
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    
+    /* Filter Form - Stack Vertically */
+    .filter-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+        grid-template-columns: unset !important;
+    }
+    .filter-form > div {
+        width: 100% !important;
+    }
+    .filter-form .form-control,
+    .filter-form .form-select {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    .filter-form .modern-btn,
+    .filter-form .btn,
+    .filter-form button[type="submit"] {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    /* Table Action Buttons - Icon Only */
+    .btn span:not([class*="bi"]),
+    .btn-sm span:not([class*="bi"]) { 
+        display: none !important; 
+    }
+    .btn i.bi,
+    .btn-sm i.bi { 
+        margin: 0 !important; 
+    }
+    .btn-sm { 
+        padding: 0.5rem 0.75rem !important; 
+        min-width: auto !important; 
+    }
+    
+    .table-responsive { font-size: 0.875rem !important; }
+    .badge { font-size: 0.7rem !important; }
+}
+</style>
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-inbox-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Submitted Forms</h1>
+            <p class="modern-page-subtitle">Forms submitted by teachers for your review</p>
+        </div>
     </div>
 </div>
 
-{{-- Filters --}}
-<div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-    <div class="card-body">
-        <form method="GET" class="row g-3">
-            <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Search by student, teacher, form..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <select name="status" class="form-select">
-                    <option value="">All Statuses</option>
-                    <option value="submitted"    {{ request('status') == 'submitted'    ? 'selected' : '' }}>Submitted</option>
-                    <option value="reviewed"     {{ request('status') == 'reviewed'     ? 'selected' : '' }}>Reviewed</option>
-                    <option value="acknowledged" {{ request('status') == 'acknowledged' ? 'selected' : '' }}>Acknowledged</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select name="form_type" class="form-select">
-                    <option value="">All Form Types</option>
+<!-- Filters -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <form method="GET" class="filter-form" style="display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 1rem; align-items: end;">
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Search</label>
+            <input type="text" name="search" class="form-control" placeholder="Student, teacher, form..." value="{{ request('search') }}" style="border-radius: 10px;">
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Status</label>
+            <select name="status" class="form-select" style="border-radius: 10px;">
+                <option value="">All Statuses</option>
+                <option value="submitted" {{ request('status') == 'submitted' ? 'selected' : '' }}>Submitted</option>
+                <option value="reviewed" {{ request('status') == 'reviewed' ? 'selected' : '' }}>Reviewed</option>
+                <option value="acknowledged" {{ request('status') == 'acknowledged' ? 'selected' : '' }}>Acknowledged</option>
+            </select>
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Form Type</label>
+            <select name="form_type" class="form-select" style="border-radius: 10px;">
+                <option value="">All Form Types</option>
                     <option value="confiscation-electronic" {{ request('form_type') == 'confiscation-electronic' ? 'selected' : '' }}>Confiscation Slip (Electronic)</option>
                     <option value="call-slip"               {{ request('form_type') == 'call-slip'               ? 'selected' : '' }}>Call Slip</option>
                     <option value="risk-assessment"         {{ request('form_type') == 'risk-assessment'         ? 'selected' : '' }}>Risk Assessment</option>

@@ -249,6 +249,20 @@
         .form-input.is-invalid { border-color: #e74c3c; }
         .invalid-feedback { color: #e74c3c; font-size: .78rem; margin-top: .25rem; display: block; }
 
+        /* Select dropdown styling */
+        select.form-input {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%231e7a4a' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 14px;
+            padding-right: 2.5rem;
+            cursor: pointer;
+        }
+        select.form-input option {
+            padding: 0.5rem;
+        }
+
         .pw-toggle-btn {
             position: absolute;
             right: .85rem;
@@ -455,14 +469,36 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="student_id" class="form-label">Employee ID <span style="color:#94a3b8;font-weight:400;">(Optional)</span></label>
+                    <label for="role_type" class="form-label">I am a</label>
+                    <div class="input-wrap">
+                        <i class="bi bi-person-badge input-icon"></i>
+                        <select id="role_type" 
+                                class="form-input @error('role_type') is-invalid @enderror"
+                                name="role_type" 
+                                required
+                                onchange="updateIdLabel(this.value)">
+                            <option value="" disabled selected>Select your role</option>
+                            <option value="student" {{ old('role_type') == 'student' ? 'selected' : '' }}>Learner</option>
+                            <option value="teacher" {{ old('role_type') == 'teacher' ? 'selected' : '' }}>Teacher</option>
+                        </select>
+                    </div>
+                    @error('role_type')
+                        <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
+                    @enderror
+                </div>
+
+                <div class="form-group">
+                    <label for="student_id" class="form-label">
+                        <span id="id-label">Student/Employee ID</span> 
+                        <span style="color:#94a3b8;font-weight:400;">(Optional)</span>
+                    </label>
                     <div class="input-wrap">
                         <i class="bi bi-card-text input-icon"></i>
                         <input id="student_id" type="text"
                                class="form-input @error('student_id') is-invalid @enderror"
                                name="student_id" value="{{ old('student_id') }}"
                                autocomplete="student-id"
-                               placeholder="e.g., EMP-2024-001">
+                               placeholder="e.g., 2024-001">
                     </div>
                     @error('student_id')
                         <span class="invalid-feedback" role="alert"><strong>{{ $message }}</strong></span>
@@ -523,6 +559,22 @@
             } else {
                 field.type = 'password';
                 icon.classList.replace('bi-eye-slash', 'bi-eye');
+            }
+        }
+
+        function updateIdLabel(roleType) {
+            const idLabel = document.getElementById('id-label');
+            const idInput = document.getElementById('student_id');
+            
+            if (roleType === 'student') {
+                idLabel.textContent = 'Student ID';
+                idInput.placeholder = 'e.g., 2024-001';
+            } else if (roleType === 'teacher') {
+                idLabel.textContent = 'Employee ID';
+                idInput.placeholder = 'e.g., EMP-2024-001';
+            } else {
+                idLabel.textContent = 'Student/Employee ID';
+                idInput.placeholder = 'e.g., 2024-001';
             }
         }
 

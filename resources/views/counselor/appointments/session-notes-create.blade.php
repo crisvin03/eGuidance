@@ -3,21 +3,23 @@
 @section('title', 'Add Session Note')
 
 @section('content')
-<div class="row justify-content-center">
-    <div class="col-lg-8">
-        <div class="card border-0 shadow-sm" style="border-radius:16px;">
-            <div class="card-header bg-white border-0 pt-4 px-4">
-                <div class="d-flex align-items-center gap-2 mb-3">
-                    <a href="{{ route('counselor.appointments.show', $appointment) }}" class="btn btn-sm btn-outline-secondary">
-                        <i class="bi bi-arrow-left"></i>
-                    </a>
-                    <div>
-                        <h5 class="fw-bold mb-0">Add Session Note</h5>
-                        <small class="text-muted">Document your counseling session with {{ $appointment->student->name }}</small>
-                    </div>
-                </div>
-            </div>
-            <div class="card-body px-4 pb-4">
+@include('student.partials.modern-styles')
+
+<!-- Back Button -->
+<div style="margin-bottom: 1.5rem;">
+    <a href="{{ route('counselor.appointments.show', $appointment) }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1rem; font-size: 0.875rem;">
+        <i class="bi bi-arrow-left"></i> Back to Appointment
+    </a>
+</div>
+
+<div style="max-width: 900px; margin: 0 auto;">
+    <div class="modern-card" style="padding: 2rem;">
+        <div style="margin-bottom: 1.5rem;">
+            <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 0 0 0.5rem 0;">
+                <i class="bi bi-journal-plus me-2"></i>Add Session Note
+            </h1>
+            <p style="color: var(--text-muted); margin: 0;">Document your counseling session with {{ $appointment->student->name }}</p>
+        </div>
                 @if($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show">
                         <ul class="mb-0">

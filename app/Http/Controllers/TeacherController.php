@@ -417,4 +417,95 @@ class TeacherController extends Controller
     {
         return view('teacher.virtual-id');
     }
+
+    // ─── Resources ─────────────────────────────────────────────────────────────
+
+    public function resources()
+    {
+        // Get resources by category with counts
+        $hrgCount = \App\Models\Resource::active()->category('hrg')->count();
+        $handbookCount = \App\Models\Resource::active()->category('handbook')->count();
+        $genderDevCount = \App\Models\Resource::active()->category('gender_dev')->count();
+        
+        // Recent resources from all categories
+        $recentResources = \App\Models\Resource::active()
+            ->with('uploader')
+            ->latest()
+            ->take(5)
+            ->get();
+
+        return view('teacher.resources.index', compact(
+            'hrgCount', 'handbookCount', 'genderDevCount', 'recentResources'
+        ));
+    }
+
+    public function hrgResources(Request $request)
+    {
+        $query = \App\Models\Resource::active()->category('hrg')->with('uploader');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        $resources = $query->latest()->paginate(15);
+        $categoryTitle = 'Home Room Guidance (HRG)';
+        
+        return view('teacher.resources.category', compact('resources', 'categoryTitle'));
+    }
+
+    public function handbookResources(Request $request)
+    {
+        $query = \App\Models\Resource::active()->category('handbook')->with('uploader');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        $resources = $query->latest()->paginate(15);
+        $categoryTitle = 'Handbook & Policies';
+        
+        return view('teacher.resources.category', compact('resources', 'categoryTitle'));
+    }
+
+    public function genderDevResources(Request $request)
+    {
+        $query = \App\Models\Resource::active()->category('gender_dev')->with('uploader');
+        
+        if ($request->filled('search')) {
+            $search = $request->search;
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'like', "%{$search}%")
+                  ->orWhere('description', 'like', "%{$search}%");
+            });
+        }
+        
+        $resources = $query->latest()->paginate(15);
+        $categoryTitle = 'Gender and Development Corner';
+        
+        return view('teacher.resources.category', compact('resources', 'categoryTitle'));
+    }
+
+    public function downloadResource(\App\Models\Resource $resource)
+    {
+        // Ensure resource is active
+        if (!$resource->is_active) {
+            abort(404, 'Resource not available');
+        }
+        
+        $filePath = storage_path('app/public/' . $resource->file_path);
+        
+        if (!file_exists($filePath)) {
+            abort(404, 'File not found');
+        }
+
+        return response()->download($filePath, $resource->file_name);
+    }
 }

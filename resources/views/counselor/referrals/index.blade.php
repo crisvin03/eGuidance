@@ -1,121 +1,219 @@
 @extends('layouts.dashboard')
+
 @section('title', 'Student Referrals')
 
 @section('content')
-<div class="card">
-    <div class="card-header">
-        <h5 class="card-title">Student Referrals</h5>
-    </div>
-    <div class="card-body">
-        <form method="GET" class="row g-3 mb-4">
-            <div class="col-md-5">
-                <input type="text" name="search" class="form-control" placeholder="Search ref no, student, grade..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <select name="status" class="form-select">
-                    <option value="">All Statuses</option>
-                    <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
-                    <option value="ongoing" {{ request('status')=='ongoing' ? 'selected' : '' }}>Ongoing</option>
-                    <option value="closed" {{ request('status')=='closed' ? 'selected' : '' }}>Closed</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
-            </div>
-        </form>
-        
-        @if($referrals->count() > 0)
-            <div class="table-responsive">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Ref. No.</th>
-                            <th>Student</th>
-                            <th class="table-hide-mobile">Grade & Section</th>
-                            <th class="table-hide-mobile">Reason</th>
-                            <th class="table-hide-mobile">Submitted By</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach($referrals as $referral)
-                            <tr>
-                                <td>
-                                    <strong style="color:#1e7a4a;">{{ $referral->referral_number }}</strong>
-                                </td>
-                                <td>
-                                    <div class="d-flex align-items-center gap-2">
-                                        <div class="user-avatar">
-                                            {{ strtoupper(substr($referral->student_name, 0, 2)) }}
-                                        </div>
-                                        <span>{{ $referral->student_name }}</span>
-                                    </div>
-                                </td>
-                                <td class="table-hide-mobile">
-                                    <small class="text-muted">{{ $referral->grade_section }}</small>
-                                </td>
-                                <td class="table-hide-mobile">
-                                    <small class="text-muted">{{ Str::limit($referral->reason_for_referral, 60) }}</small>
-                                </td>
-                                <td class="table-hide-mobile">
-                                    <small class="text-muted">{{ $referral->teacher->name ?? '—' }}</small>
-                                </td>
-                                <td>
-                                    @if($referral->status == 'pending')
-                                        <span class="badge badge-warning">Pending</span>
-                                    @elseif($referral->status == 'ongoing')
-                                        <span class="badge badge-info">Ongoing</span>
-                                    @else
-                                        <span class="badge badge-success">Closed</span>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="btn-group" role="group">
-                                        <a href="{{ route('counselor.referrals.show', $referral) }}" class="btn btn-primary btn-sm">
-                                            <i class="bi bi-eye me-1"></i> View
-                                        </a>
-                                        <button type="button" class="btn btn-danger btn-sm"
-                                            onclick="confirmDelete('{{ route('counselor.referrals.destroy', $referral) }}', '{{ $referral->referral_number }}', 'referral')">
-                                            <i class="bi bi-trash"></i>
-                                        </button>
-                                    </div>
-                                </td>
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @if($referrals->hasPages())
-                <div class="mt-3">{{ $referrals->links() }}</div>
-            @endif
-        @else
-            <div class="text-center py-5">
-                <i class="bi bi-person-check" style="font-size: 4rem; color: #cbd5e1;"></i>
-                <h4 class="mt-3 text-muted">No Student Referrals</h4>
-                <p class="text-muted">No student referrals have been submitted by teachers yet.</p>
-            </div>
-        @endif
+@include('student.partials.modern-styles')
+
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    .modern-stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 0.75rem !important; }
+    
+    /* Filter Form - Stack Vertically */
+    .filter-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+        grid-template-columns: unset !important;
+    }
+    .filter-form > div {
+        width: 100% !important;
+    }
+    .filter-form .form-control,
+    .filter-form .form-select {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    .filter-form .modern-btn,
+    .filter-form button[type="submit"] {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    /* Table Action Buttons - Icon Only */
+    .btn span:not([class*="bi"]),
+    .btn-sm span:not([class*="bi"]) { 
+        display: none !important; 
+    }
+    .btn i.bi,
+    .btn-sm i.bi { 
+        margin: 0 !important; 
+    }
+    .btn-sm { 
+        padding: 0.5rem 0.75rem !important; 
+        min-width: auto !important; 
+    }
+    
+    div[style*="display: grid"][style*="grid-template-columns"] { grid-template-columns: 1fr !important; }
+    .table-responsive { font-size: 0.875rem !important; }
+    .badge { font-size: 0.7rem !important; }
+    .modern-btn { width: 100% !important; }
+}
+</style>
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-person-check-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Student Referrals</h1>
+            <p class="modern-page-subtitle">Review and manage student referrals from teachers</p>
+        </div>
     </div>
 </div>
 
-{{-- Delete Confirmation Modal --}}
-<div class="modal fade" id="deleteModal" tabindex="-1">
-    <div class="modal-dialog modal-dialog-centered modal-sm">
-        <div class="modal-content border-0" style="border-radius:20px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,0.18);">
-            <div class="modal-body text-center p-4">
-                <div class="mb-3">
-                    <div style="width:60px;height:60px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto;">
-                        <i class="bi bi-trash3-fill text-danger fs-4"></i>
+<!-- Filter Section -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <form method="GET" class="filter-form" style="display: grid; grid-template-columns: 2fr 1fr auto; gap: 1rem; align-items: end;">
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Search</label>
+            <input type="text" name="search" class="form-control" placeholder="Ref no, student, grade..." value="{{ request('search') }}" style="border-radius: 10px;">
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Status</label>
+            <select name="status" class="form-select" style="border-radius: 10px;">
+                <option value="">All Statuses</option>
+                <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
+                <option value="ongoing" {{ request('status')=='ongoing' ? 'selected' : '' }}>Ongoing</option>
+                <option value="closed" {{ request('status')=='closed' ? 'selected' : '' }}>Closed</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; white-space: nowrap;">
+                <i class="bi bi-funnel-fill"></i> Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Referrals List -->
+<div class="modern-card" style="padding: 1.5rem;">
+    @if($referrals->count() > 0)
+        <div class="modern-list">
+            @foreach($referrals as $referral)
+                <div class="modern-list-item" style="padding: 1.25rem; border-bottom: 1px solid #e5e7eb; display: block;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;">
+                        <!-- Left: Referral Info -->
+                        <div style="display: flex; gap: 1rem;">
+                            <!-- Student Avatar -->
+                            <div>
+                                <div class="modern-section-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: white; font-size: 0.9rem; font-weight: 700;">
+                                    {{ strtoupper(substr($referral->student_name, 0, 2)) }}
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                                    <h3 style="font-size: 1rem; font-weight: 700; color: var(--green); margin: 0;">{{ $referral->referral_number }}</h3>
+                                    
+                                    @if($referral->status == 'pending')
+                                        <span class="modern-badge modern-badge-warning" style="font-size: 0.75rem;">
+                                            <i class="bi bi-clock-fill"></i> Pending
+                                        </span>
+                                    @elseif($referral->status == 'ongoing')
+                                        <span class="modern-badge modern-badge-info" style="font-size: 0.75rem;">
+                                            <i class="bi bi-arrow-repeat"></i> Ongoing
+                                        </span>
+                                    @else
+                                        <span class="modern-badge modern-badge-success" style="font-size: 0.75rem;">
+                                            <i class="bi bi-check-circle-fill"></i> Closed
+                                        </span>
+                                    @endif
+                                </div>
+                                
+                                <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.75rem;">
+                                    <span>
+                                        <i class="bi bi-person-fill"></i> 
+                                        {{ $referral->student_name }}
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-mortarboard-fill"></i> 
+                                        {{ $referral->grade_section }}
+                                    </span>
+                                    @if($referral->teacher)
+                                        <span>
+                                            <i class="bi bi-person-badge"></i> 
+                                            {{ $referral->teacher->name }}
+                                        </span>
+                                    @endif
+                                </div>
+                                
+                                <p style="font-size: 0.875rem; color: #6b7280; margin: 0; line-height: 1.6;">
+                                    {{ Str::limit($referral->reason_for_referral, 120) }}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Actions -->
+                        <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+                            <a href="{{ route('counselor.referrals.show', $referral) }}" 
+                               class="modern-btn modern-btn-secondary" 
+                               style="padding: 0.5rem 1rem; font-size: 0.875rem; white-space: nowrap;">
+                                <i class="bi bi-eye"></i> View
+                            </a>
+                            <button type="button" class="modern-btn" 
+                                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 0.5rem 1rem; font-size: 0.875rem;"
+                                    onclick="confirmDelete('{{ route('counselor.referrals.destroy', $referral) }}', '{{ $referral->referral_number }}', 'referral')">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
-                <h6 class="fw-bold mb-1">Delete <span id="deleteItemType"></span>?</h6>
-                <p class="text-muted small mb-3"><strong id="deleteItemName" class="text-dark"></strong><br>This action cannot be undone.</p>
-                <div class="d-flex gap-2 justify-content-center">
-                    <button type="button" class="btn btn-outline-secondary btn-sm px-3" data-bs-dismiss="modal">Cancel</button>
-                    <form id="deleteForm" method="POST" class="d-inline">
+            @endforeach
+        </div>
+        
+        @if($referrals->hasPages())
+            <div style="margin-top: 1.5rem;">{{ $referrals->links() }}</div>
+        @endif
+    @else
+        <div class="modern-empty-state" style="padding: 3rem 1.5rem;">
+            <div class="modern-empty-icon" style="width: 80px; height: 80px; font-size: 2rem;">
+                <i class="bi bi-person-check"></i>
+            </div>
+            <h3 class="modern-empty-title">No referrals found</h3>
+            <p class="modern-empty-text">
+                @if(request()->hasAny(['search', 'status']))
+                    No referrals match your filter criteria. Try adjusting your filters.
+                @else
+                    No student referrals have been submitted by teachers yet.
+                @endif
+            </p>
+            @if(request()->hasAny(['search', 'status']))
+                <a href="{{ route('counselor.referrals.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
+                    <i class="bi bi-x-circle"></i> Clear Filters
+                </a>
+            @endif
+        </div>
+    @endif
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="border-radius: 16px; border: none;">
+            <div class="modal-body text-center" style="padding: 2rem;">
+                <div style="width: 80px; height: 80px; background: rgba(239, 68, 68, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;">
+                    <i class="bi bi-trash3-fill" style="font-size: 2.5rem; color: #ef4444;"></i>
+                </div>
+                
+                <h4 style="font-weight: 700; color: var(--navy); margin-bottom: 0.5rem;">Delete <span id="deleteItemType"></span>?</h4>
+                <p style="color: var(--text-muted); margin-bottom: 0.5rem;"><strong id="deleteItemName" style="color: var(--navy);"></strong></p>
+                <p style="color: var(--text-muted); margin-bottom: 1.5rem; font-size: 0.875rem;">This action cannot be undone.</p>
+                
+                <div style="display: flex; gap: 0.75rem; justify-content: center;">
+                    <button type="button" class="modern-btn modern-btn-secondary" data-bs-dismiss="modal" style="padding: 0.625rem 1.25rem;">
+                        Cancel
+                    </button>
+                    <form id="deleteForm" method="POST" style="display: inline;">
                         @csrf @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm px-3">
+                        <button type="submit" class="modern-btn" style="background: #ef4444; color: white; padding: 0.625rem 1.25rem;">
                             <i class="bi bi-trash me-1"></i> Delete
                         </button>
                     </form>
@@ -124,6 +222,7 @@
         </div>
     </div>
 </div>
+
 <script>
 function confirmDelete(url, name, type) {
     document.getElementById('deleteForm').action = url;
@@ -132,4 +231,37 @@ function confirmDelete(url, name, type) {
     new bootstrap.Modal(document.getElementById('deleteModal')).show();
 }
 </script>
+
+<style>
+@media (max-width: 1200px) {
+    div[style*="grid-template-columns: 2fr 1fr"] {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+@media (max-width: 768px) {
+    div[style*="grid-template-columns: 2fr 1fr"],
+    div[style*="grid-template-columns: 1fr auto"] {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .modern-list-item > div {
+        flex-direction: column;
+    }
+    
+    .modern-list-item > div > div:last-child {
+        width: 100%;
+    }
+    
+    .modern-list-item > div > div:last-child > div {
+        width: 100%;
+        justify-content: stretch;
+    }
+    
+    .modern-list-item > div > div:last-child button,
+    .modern-list-item > div > div:last-child a {
+        flex: 1;
+    }
+}
+</style>
 @endsection

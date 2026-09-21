@@ -55,18 +55,15 @@
                 </td>
                 <td class="py-3">
                     <span id="appt-status-{{ $appointment->id }}">
-                        @php
-                            $badge = match($appointment->status) {
-                                'confirmed' => ['bg'=>'#eff6ff','color'=>'#1e40af','border'=>'#93c5fd','label'=>'Confirmed'],
-                                'completed' => ['bg'=>'#ecfdf5','color'=>'#065f46','border'=>'#6ee7b7','label'=>'Completed'],
-                                'cancelled' => ['bg'=>'#fef2f2','color'=>'#991b1b','border'=>'#fca5a5','label'=>'Cancelled'],
-                                default     => ['bg'=>'#fef3c7','color'=>'#92400e','border'=>'#fbbf24','label'=>'Scheduled'],
-                            };
-                        @endphp
-                        <span class="badge fw-semibold"
-                              style="background:{{ $badge['bg'] }};color:{{ $badge['color'] }};border:1px solid {{ $badge['border'] }};">
-                            {{ $badge['label'] }}
-                        </span>
+                        @if($appointment->status == 'confirmed')
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.8rem;"><i class="bi bi-check-circle-fill"></i> Confirmed</span>
+                        @elseif($appointment->status == 'completed')
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.8rem;"><i class="bi bi-check-all"></i> Completed</span>
+                        @elseif($appointment->status == 'cancelled')
+                            <span class="modern-badge" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; font-size: 0.8rem;"><i class="bi bi-x-circle-fill"></i> Cancelled</span>
+                        @else
+                            <span class="modern-badge modern-badge-warning" style="font-size: 0.8rem;"><i class="bi bi-clock-fill"></i> Scheduled</span>
+                        @endif
                     </span>
                 </td>
                 <td class="py-3">

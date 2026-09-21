@@ -3,17 +3,13 @@
 @section('title', 'Appointment Details')
 
 @section('content')
-<div class="row">
-    <div class="col-12 mb-3">
-        <a href="{{ route('student.appointments.index') }}" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Back to My Appointments
-        </a>
-    </div>
+@include('student.partials.modern-styles')
 
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">Appointment Details</h5>
+<div class="row">
+    <div class="col-md-8 d-flex">
+        <div class="modern-card flex-grow-1" style="padding: 1.5rem;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-semibold mb-0" style="font-size: 1.15rem;">Appointment Details</h5>
                 @if($appointment->status == 'completed')
                     <span class="badge badge-success">Completed</span>
                 @elseif($appointment->status == 'cancelled')
@@ -24,7 +20,6 @@
                     <span class="badge badge-warning">Scheduled</span>
                 @endif
             </div>
-            <div class="card-body">
                 <div class="row g-3">
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded">
@@ -87,34 +82,26 @@
                     </button>
                 </div>
                 @endif
-            </div>
         </div>
 
         @if($appointment->concern)
-        <div class="card mt-3">
-            <div class="card-header">
-                <h6 class="card-title mb-0"><i class="bi bi-chat-left-heart me-1"></i>Linked Concern</h6>
-            </div>
-            <div class="card-body">
-                <div class="p-3 border rounded" style="border-color:#6f42c1!important;background:#f8f5ff;">
-                    <div class="fw-semibold mb-1" style="color:#6f42c1;">{{ $appointment->concern->title }}</div>
-                    @if($appointment->concern->category)
-                        <span class="badge bg-info mb-2">{{ $appointment->concern->category->name }}</span>
-                    @endif
-                    <p class="mb-0 text-muted small">{{ Str::limit($appointment->concern->description, 200) }}</p>
-                </div>
+        <div class="modern-card mt-3" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;"><i class="bi bi-chat-left-heart me-1"></i>Linked Concern</h6>
+            <div class="p-3 border rounded" style="border-color:#6f42c1!important;background:#f8f5ff;">
+                <div class="fw-semibold mb-1" style="color:#6f42c1;">{{ $appointment->concern->title }}</div>
+                @if($appointment->concern->category)
+                    <span class="badge bg-info mb-2">{{ $appointment->concern->category->name }}</span>
+                @endif
+                <p class="mb-0 text-muted small">{{ Str::limit($appointment->concern->description, 200) }}</p>
             </div>
         </div>
         @endif
     </div>
 
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h6 class="card-title mb-0">Appointment Status</h6>
-            </div>
-            <div class="card-body">
-                <div class="d-flex flex-column gap-2">
+    <div class="col-md-4 d-flex flex-column" style="gap: 1rem;">
+        <div class="modern-card" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;">Appointment Status</h6>
+            <div class="d-flex flex-column gap-2">
                     @foreach(['scheduled' => 'Scheduled', 'confirmed' => 'Confirmed', 'completed' => 'Completed'] as $s => $label)
                     @php
                         $order = ['scheduled'=>1,'confirmed'=>2,'completed'=>3];
@@ -134,6 +121,14 @@
                     </div>
                     @endif
                 </div>
+        </div>
+
+        <div class="modern-card flex-grow-1" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;"><i class="bi bi-info-circle me-2"></i>Need Help?</h6>
+            <div style="font-size: 0.85rem; line-height: 1.8;">
+                <p class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Contact your counselor for any concerns</p>
+                <p class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Arrive 5 minutes early for your session</p>
+                <p class="mb-0"><i class="bi bi-check-circle text-success me-2"></i>Bring any relevant documents or notes</p>
             </div>
         </div>
     </div>

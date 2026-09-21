@@ -2,22 +2,41 @@
 @section('title', 'Forms & Downloads')
 
 @section('content')
+@include('student.partials.modern-styles')
+
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    div[style*="display: grid"][style*="grid-template-columns"] { grid-template-columns: 1fr !important; gap: 1rem !important; }
+    .badge { font-size: 0.75rem !important; }
+    .modern-btn { width: 100% !important; justify-content: center !important; }
+}
+</style>
 
 @php
     $pendingCount = \App\Models\TeacherFormSubmission::where('status', 'submitted')->count();
 @endphp
 
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-        <h5 class="fw-bold mb-0">Forms & Downloads</h5>
-        <small class="text-muted">Fill in and generate official forms directly from here.</small>
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-file-earmark-text-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Forms & Downloads</h1>
+            <p class="modern-page-subtitle">Fill in and generate official forms directly from here</p>
+        </div>
+        <a href="{{ route('counselor.forms.submitted') }}" class="modern-btn modern-btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.95rem; position: relative;">
+            <i class="bi bi-inbox"></i>
+            <span>Teacher Submissions</span>
+            @if($pendingCount > 0)
+                <span style="position: absolute; top: -8px; right: -8px; background: #ef4444; color: white; border-radius: 12px; padding: 2px 8px; font-size: 0.7rem; font-weight: 700; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.3);">{{ $pendingCount }}</span>
+            @endif
+        </a>
     </div>
-    <a href="{{ route('counselor.forms.submitted') }}" class="btn text-white fw-semibold position-relative" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
-        <i class="bi bi-inbox me-1"></i> Submitted Forms by Teachers
-        @if($pendingCount > 0)
-            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size:0.7rem;">{{ $pendingCount }}</span>
-        @endif
-    </a>
 </div>
 
 <div class="row g-4">

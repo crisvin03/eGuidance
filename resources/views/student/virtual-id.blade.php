@@ -2,22 +2,33 @@
 @section('title', 'Virtual ID')
 
 @section('content')
-<div class="mb-4">
-    <h5 class="fw-bold mb-1">Virtual Student ID</h5>
-    <small class="text-muted">Your digital student identification card</small>
+@include('student.partials.modern-styles')
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon modern-page-icon-blue" style="width: 48px; height: 48px; font-size: 1.25rem;">
+            <i class="bi bi-card-heading"></i>
+        </div>
+        <div>
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Virtual Student ID</h1>
+            <p class="modern-page-subtitle">Your digital student identification card</p>
+        </div>
+    </div>
 </div>
 
 <div class="row justify-content-center">
     <div class="col-md-8 col-lg-6">
-        <div class="card border-0 shadow" style="border-radius:20px;">
-            <div class="card-body p-4">
-                @if(!Auth::user()->profile_photo || !Auth::user()->lrn || !Auth::user()->grade_level || !Auth::user()->section)
-                <div class="alert alert-warning">
-                    <i class="bi bi-exclamation-triangle me-2"></i>
-                    <strong>Incomplete Profile:</strong> Please update your profile with all required information (photo, LRN, grade level, section, adviser, contact person, and contact number) to generate a complete virtual ID.
-                    <a href="{{ route('profile') }}" class="alert-link">Update Profile</a>
+        <div class="modern-card" style="padding: 1.5rem;">
+            @if(!Auth::user()->profile_photo || !Auth::user()->lrn || !Auth::user()->grade_level || !Auth::user()->section)
+                <div class="modern-alert modern-alert-warning" style="margin-bottom: 1.5rem;">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 1.25rem; color: #f59e0b;"></i>
+                    <div style="flex: 1;">
+                        <strong style="font-weight: 700;">Incomplete Profile:</strong> Please update your profile with all required information (photo, LRN, grade level, section, adviser, contact person, and contact number) to generate a complete virtual ID.
+                        <a href="{{ route('profile') }}" style="color: #d97706; font-weight: 600; text-decoration: underline;">Update Profile</a>
+                    </div>
                 </div>
-                @endif
+            @endif
 
                 <!-- Virtual ID Card -->
                 <div id="virtualIdCard" style="background: linear-gradient(135deg, #1a3a3a 0%, #2d5a5a 50%, #1e7a4a 100%); border-radius:16px; padding:30px; color:#fff; position:relative; overflow:hidden;">
@@ -90,18 +101,20 @@
                 </div>
 
                 <!-- Action Buttons -->
-                <div class="mt-4 d-flex gap-2 justify-content-center">
-                    <button class="btn btn-outline-primary" onclick="downloadVirtualId()">
-                        <i class="bi bi-download me-1"></i> Download as Image
+                <div style="margin-top: 1.5rem; display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap;">
+                    <button class="modern-btn modern-btn-secondary" onclick="downloadVirtualId()" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
+                        <i class="bi bi-download"></i>
+                        <span>Download as Image</span>
                     </button>
-                    <button class="btn btn-primary" style="background:#1e7a4a; border-color:#1e7a4a;" onclick="printVirtualId()">
-                        <i class="bi bi-printer me-1"></i> Print ID
+                    <button class="modern-btn modern-btn-primary" onclick="printVirtualId()" style="padding: 0.75rem 1.5rem; font-size: 0.95rem;">
+                        <i class="bi bi-printer"></i>
+                        <span>Print ID</span>
                     </button>
                 </div>
 
-                <div class="mt-3 text-center">
-                    <small class="text-muted">
-                        <i class="bi bi-info-circle me-1"></i>
+                <div style="margin-top: 1.25rem; text-align: center;">
+                    <small style="font-size: 0.85rem; color: var(--text-muted);">
+                        <i class="bi bi-info-circle"></i>
                         Keep your virtual ID accessible for quick identification within the school.
                     </small>
                 </div>

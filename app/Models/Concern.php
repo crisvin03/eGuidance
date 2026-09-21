@@ -51,4 +51,9 @@ class Concern extends Model
     {
         return $this->hasMany(Appointment::class);
     }
+
+    public function sessionNotes()
+    {
+        return $this->hasMany(SessionNote::class)->orderBy('created_at', 'desc');
+    }
 }

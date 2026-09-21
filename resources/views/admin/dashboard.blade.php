@@ -318,7 +318,7 @@
                 </div>
                 <div class="d-flex justify-content-between align-items-center py-3">
                     <span class="small fw-semibold"><i class="bi bi-info-circle me-2 text-muted"></i>Version</span>
-                    <span class="badge" style="background:rgba(32,178,170,0.1);color:#1e7a4a;">v1.0.0</span>
+                    <span class="badge" style="background:rgba(32,178,170,0.1);color:#1e7a4a;">v2.0.0</span>
                 </div>
             </div>
         </div>

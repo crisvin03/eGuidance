@@ -44,8 +44,8 @@ This directory contains comprehensive documentation for the eGuidance Portal sys
 
 ## Document Versions
 
-- **Comprehensive User Manual & System Architecture**: v1.0.0 (March 2026)
-- **Application Version**: v1.0.0
+- **Comprehensive User Manual & System Architecture**: v2.0.0 (March 2026)
+- **Application Version**: v2.0.0
 
 ## Support
 

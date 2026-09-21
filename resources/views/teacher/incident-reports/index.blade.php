@@ -2,123 +2,232 @@
 @section('title', 'Incident Reports')
 
 @section('content')
-<div class="d-flex align-items-center justify-content-between flex-wrap gap-2 mb-4">
-    <div>
-        <h5 class="fw-bold mb-0">Incident Reports</h5>
-        <small class="text-muted">All incident reports you have submitted</small>
+@include('student.partials.modern-styles')
+
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    
+    /* Filter Form - Stack Vertically */
+    .filter-form {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 0.75rem !important;
+        align-items: stretch !important;
+        grid-template-columns: unset !important;
+    }
+    .filter-form > div {
+        width: 100% !important;
+    }
+    .filter-form .form-control,
+    .filter-form .form-select {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    .filter-form .modern-btn,
+    .filter-form button[type="submit"] {
+        width: 100% !important;
+        border-radius: 0.5rem !important;
+    }
+    
+    /* Table Action Buttons - Icon Only */
+    .btn span:not([class*="bi"]),
+    .btn-sm span:not([class*="bi"]) { 
+        display: none !important; 
+    }
+    .btn i.bi,
+    .btn-sm i.bi { 
+        margin: 0 !important; 
+    }
+    .btn-sm { 
+        padding: 0.5rem 0.75rem !important; 
+        min-width: auto !important; 
+    }
+    
+    .modern-btn { width: 100% !important; }
+}
+</style>
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Incident Reports</h1>
+            <p class="modern-page-subtitle">All incident reports you have submitted</p>
+        </div>
+        <a href="{{ route('teacher.incident-reports.create') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; white-space: nowrap;">
+            <i class="bi bi-plus-lg"></i> New Report
+        </a>
     </div>
-    <a href="{{ route('teacher.incident-reports.create') }}" class="btn text-white fw-semibold"
-       style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
-        <i class="bi bi-plus-lg me-1"></i> New Report
-    </a>
 </div>
 
-<div class="card border-0 shadow-sm" style="border-radius:16px;">
-    <div class="card-body pb-0">
-        <form method="GET" class="row g-3 mb-4">
-            <div class="col-md-4">
-                <input type="text" name="search" class="form-control" placeholder="Search case no, student, grade..." value="{{ request('search') }}">
-            </div>
-            <div class="col-md-3">
-                <select name="status" class="form-select">
-                    <option value="">All Statuses</option>
-                    <option value="pending"  {{ request('status')=='pending'  ? 'selected' : '' }}>Pending</option>
-                    <option value="ongoing"  {{ request('status')=='ongoing'  ? 'selected' : '' }}>Ongoing</option>
-                    <option value="closed"   {{ request('status')=='closed'   ? 'selected' : '' }}>Closed</option>
-                </select>
-            </div>
-            <div class="col-md-3">
-                <select name="urgency" class="form-select">
-                    <option value="">All Urgency Levels</option>
-                    <option value="low"      {{ request('urgency')=='low'      ? 'selected' : '' }}>Low</option>
-                    <option value="moderate" {{ request('urgency')=='moderate' ? 'selected' : '' }}>Moderate</option>
-                    <option value="high"     {{ request('urgency')=='high'     ? 'selected' : '' }}>High</option>
-                </select>
-            </div>
-            <div class="col-md-2">
-                <button type="submit" class="btn btn-primary w-100"><i class="bi bi-search me-1"></i> Filter</button>
-            </div>
-        </form>
-    </div>
-    <div class="card-body p-0">
-        <div class="table-responsive">
-            <table class="table table-hover mb-0">
-                <thead style="background:#f8fafc;">
-                    <tr>
-                        <th class="px-4 py-3 fw-semibold text-muted small">Case No.</th>
-                        <th class="py-3 fw-semibold text-muted small">Student</th>
-                        <th class="py-3 fw-semibold text-muted small table-hide-mobile">Category</th>
-                        <th class="py-3 fw-semibold text-muted small table-hide-mobile">Date</th>
-                        <th class="py-3 fw-semibold text-muted small">Urgency</th>
-                        <th class="py-3 fw-semibold text-muted small">Status</th>
-                        <th class="py-3 fw-semibold text-muted small">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @forelse($reports as $report)
-                        <tr>
-                            <td class="px-4 py-3">
-                                <span class="fw-semibold small" style="color:#1e7a4a;">{{ $report->case_number }}</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="fw-semibold small">{{ $report->student_name }}</div>
-                                <div class="text-muted" style="font-size:0.75rem;">{{ $report->grade_section }}</div>
-                            </td>
-                            <td class="py-3 table-hide-mobile">
-                                <span class="small text-muted">{{ $report->incident_category_label }}</span>
-                            </td>
-                            <td class="py-3 table-hide-mobile small text-muted">
-                                {{ $report->date_of_referral->format('M d, Y') }}
-                            </td>
-                            <td class="py-3">
-                                <span class="badge bg-{{ $report->urgency_badge }} text-capitalize">{{ $report->urgency_level }}</span>
-                            </td>
-                            <td class="py-3">
-                                <span class="badge bg-{{ $report->status_badge }} text-capitalize">{{ $report->status }}</span>
-                            </td>
-                            <td class="py-3">
-                                <div class="d-flex gap-2">
-                                    <a href="{{ route('teacher.incident-reports.show', $report) }}"
-                                       class="btn btn-primary btn-sm py-1 px-2" style="font-size:.78rem;">
-                                        <i class="bi bi-eye me-1"></i>View
-                                    </a>
-                                    @if($report->status === 'pending')
-                                    <button type="button"
-                                            class="btn btn-sm btn-outline-danger"
-                                            title="Delete Report"
-                                            onclick="confirmDelete(
-                                                {{ $report->id }},
-                                                '{{ $report->case_number }}',
-                                                '{{ addslashes($report->student_name) }}',
-                                                '{{ $report->date_of_referral->format('M d, Y') }}'
-                                            )">
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
+<!-- Filter Section -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <form method="GET" class="filter-form" style="display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: 1rem; align-items: end;">
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Search</label>
+            <input type="text" name="search" class="form-control" placeholder="Case no, student, grade..." value="{{ request('search') }}" style="border-radius: 10px;">
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Status</label>
+            <select name="status" class="form-select" style="border-radius: 10px;">
+                <option value="">All Statuses</option>
+                <option value="pending" {{ request('status')=='pending' ? 'selected' : '' }}>Pending</option>
+                <option value="ongoing" {{ request('status')=='ongoing' ? 'selected' : '' }}>Ongoing</option>
+                <option value="closed" {{ request('status')=='closed' ? 'selected' : '' }}>Closed</option>
+            </select>
+        </div>
+        <div>
+            <label style="display: block; font-size: 0.875rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">Urgency Level</label>
+            <select name="urgency" class="form-select" style="border-radius: 10px;">
+                <option value="">All Urgency Levels</option>
+                <option value="low" {{ request('urgency')=='low' ? 'selected' : '' }}>Low</option>
+                <option value="moderate" {{ request('urgency')=='moderate' ? 'selected' : '' }}>Moderate</option>
+                <option value="high" {{ request('urgency')=='high' ? 'selected' : '' }}>High</option>
+            </select>
+        </div>
+        <div>
+            <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; white-space: nowrap;">
+                <i class="bi bi-funnel-fill"></i> Filter
+            </button>
+        </div>
+    </form>
+</div>
+
+<!-- Incident Reports List -->
+<div class="modern-card" style="padding: 1.5rem;">
+    @if($reports->count() > 0)
+        <div class="modern-list">
+            @foreach($reports as $report)
+                <div class="modern-list-item" style="padding: 1.25rem; border-bottom: 1px solid #e5e7eb; display: block;">
+                    <div style="display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: start;">
+                        <!-- Left: Report Info -->
+                        <div style="display: flex; gap: 1rem;">
+                            <!-- Student Avatar -->
+                            <div>
+                                <div class="modern-section-icon" style="width: 48px; height: 48px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: white; font-size: 0.9rem; font-weight: 700;">
+                                    {{ strtoupper(substr($report->student_name, 0, 2)) }}
+                                </div>
+                            </div>
+                            
+                            <!-- Content -->
+                            <div style="flex: 1; min-width: 0;">
+                                <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.5rem; flex-wrap: wrap;">
+                                    <h3 style="font-size: 1rem; font-weight: 700; color: var(--green); margin: 0;">{{ $report->case_number }}</h3>
+                                    
+                                    @if($report->urgency_level == 'high')
+                                        <span class="modern-badge" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; font-size: 0.75rem;">
+                                            <i class="bi bi-exclamation-circle-fill"></i> High Urgency
+                                        </span>
+                                    @elseif($report->urgency_level == 'moderate')
+                                        <span class="modern-badge modern-badge-warning" style="font-size: 0.75rem;">
+                                            <i class="bi bi-dash-circle-fill"></i> Moderate
+                                        </span>
                                     @else
-                                    <button type="button" class="btn btn-sm btn-outline-secondary opacity-50"
-                                            title="Cannot delete — report is {{ $report->status }}" disabled>
-                                        <i class="bi bi-trash3"></i>
-                                    </button>
+                                        <span class="modern-badge modern-badge-success" style="font-size: 0.75rem;">
+                                            <i class="bi bi-check-circle-fill"></i> Low
+                                        </span>
+                                    @endif
+                                    
+                                    @if($report->status == 'pending')
+                                        <span class="modern-badge modern-badge-warning" style="font-size: 0.75rem;">
+                                            <i class="bi bi-clock-fill"></i> Pending
+                                        </span>
+                                    @elseif($report->status == 'ongoing')
+                                        <span class="modern-badge modern-badge-info" style="font-size: 0.75rem;">
+                                            <i class="bi bi-arrow-repeat"></i> Ongoing
+                                        </span>
+                                    @else
+                                        <span class="modern-badge modern-badge-success" style="font-size: 0.75rem;">
+                                            <i class="bi bi-check-circle-fill"></i> Closed
+                                        </span>
                                     @endif
                                 </div>
-                            </td>
-                        </tr>
-                    @empty
-                        <tr>
-                            <td colspan="7" class="text-center py-5 text-muted">
-                                <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
-                                No incident reports found.
-                                <a href="{{ route('teacher.incident-reports.create') }}">Submit one now.</a>
-                            </td>
-                        </tr>
-                    @endforelse
-                </tbody>
-            </table>
+                                
+                                <div style="display: flex; flex-wrap: wrap; gap: 1rem; font-size: 0.875rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                                    <span>
+                                        <i class="bi bi-person-fill"></i> 
+                                        {{ $report->student_name }}
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-mortarboard-fill"></i> 
+                                        {{ $report->grade_section }}
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-tag-fill"></i> 
+                                        {{ $report->incident_category_label }}
+                                    </span>
+                                    <span>
+                                        <i class="bi bi-calendar3"></i> 
+                                        {{ $report->date_of_referral->format('M d, Y') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Right: Actions -->
+                        <div style="display: flex; gap: 0.5rem; flex-shrink: 0;">
+                            <a href="{{ route('teacher.incident-reports.show', $report) }}" 
+                               class="modern-btn modern-btn-secondary" 
+                               style="padding: 0.5rem 1rem; font-size: 0.875rem; white-space: nowrap;">
+                                <i class="bi bi-eye"></i> <span>View</span>
+                            </a>
+                            @if($report->status === 'pending')
+                            <button type="button" class="modern-btn" 
+                                    style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 0.5rem 1rem; font-size: 0.875rem;"
+                                    onclick="confirmDelete(
+                                        {{ $report->id }},
+                                        '{{ $report->case_number }}',
+                                        '{{ addslashes($report->student_name) }}',
+                                        '{{ $report->date_of_referral->format('M d, Y') }}'
+                                    )">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            @else
+                            <button type="button" class="modern-btn" 
+                                    style="background: rgba(100, 116, 139, 0.1); color: #64748b; padding: 0.5rem 1rem; font-size: 0.875rem; opacity: 0.5; cursor: not-allowed;"
+                                    title="Cannot delete — report is {{ $report->status }}" disabled>
+                                <i class="bi bi-trash"></i>
+                            </button>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            @endforeach
         </div>
+        
         @if($reports->hasPages())
-            <div class="px-4 py-3 border-top">{{ $reports->links() }}</div>
+            <div style="margin-top: 1.5rem;">{{ $reports->links() }}</div>
         @endif
-    </div>
+    @else
+        <div class="modern-empty-state" style="padding: 3rem 1.5rem;">
+            <div class="modern-empty-icon" style="width: 80px; height: 80px; font-size: 2rem;">
+                <i class="bi bi-file-earmark-text"></i>
+            </div>
+            <h3 class="modern-empty-title">No incident reports found</h3>
+            <p class="modern-empty-text">
+                @if(request()->hasAny(['search', 'status', 'urgency']))
+                    No reports match your filter criteria. Try adjusting your filters.
+                @else
+                    You haven't submitted any incident reports yet.
+                @endif
+            </p>
+            @if(request()->hasAny(['search', 'status', 'urgency']))
+                <a href="{{ route('teacher.incident-reports.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; margin-top: 1rem;">
+                    <i class="bi bi-x-circle"></i> Clear Filters
+                </a>
+            @else
+                <a href="{{ route('teacher.incident-reports.create') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem; margin-top: 1rem;">
+                    <i class="bi bi-plus-lg"></i> Submit Report
+                </a>
+            @endif
+        </div>
+    @endif
 </div>
 
 {{-- Professional Delete Confirmation Modal --}}
@@ -187,6 +296,37 @@ function confirmDelete(id, caseNo, student, date) {
 </script>
 
 <style>
+@media (max-width: 1200px) {
+    div[style*="grid-template-columns: repeat(3, 1fr)"] {
+        grid-template-columns: 1fr 1fr !important;
+    }
+}
+
+@media (max-width: 768px) {
+    div[style*="grid-template-columns: repeat(3, 1fr)"],
+    div[style*="grid-template-columns: 1fr auto"] {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .modern-list-item > div {
+        flex-direction: column;
+    }
+    
+    .modern-list-item > div > div:last-child {
+        width: 100%;
+    }
+    
+    .modern-list-item > div > div:last-child > div {
+        width: 100%;
+        justify-content: stretch;
+    }
+    
+    .modern-list-item > div > div:last-child button,
+    .modern-list-item > div > div:last-child a {
+        flex: 1;
+    }
+}
+
 .pagination { margin: 0; gap: 3px; }
 .pagination .page-link { border-radius: 8px !important; border: 1px solid #e2e8f0; color: #475569; font-size: 0.875rem; padding: 0.4rem 0.75rem; transition: all .2s; }
 .pagination .page-link:hover { background: rgba(32,178,170,.1); border-color: #1e7a4a; color: #1e7a4a; }

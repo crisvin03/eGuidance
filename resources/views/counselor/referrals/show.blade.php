@@ -2,39 +2,112 @@
 @section('title', 'Referral Details')
 
 @section('content')
+@include('student.partials.modern-styles')
 
-@php
-    $badgeMap = [
-        'pending' => ['bg'=>'#fef3c7','color'=>'#92400e','border'=>'#fbbf24','label'=>'Pending'],
-        'ongoing' => ['bg'=>'#eff6ff','color'=>'#1e40af','border'=>'#93c5fd','label'=>'Ongoing'],
-        'closed'  => ['bg'=>'#ecfdf5','color'=>'#065f46','border'=>'#6ee7b7','label'=>'Closed'],
-    ];
-    $badge = $badgeMap[$studentReferral->status] ?? $badgeMap['pending'];
-@endphp
+<style>
+/* Mobile Responsive Styles for Counselor Pages */
+@media (max-width: 768px) {
+    /* Two-column grid becomes single column */
+    div[style*="grid-template-columns: 1fr 380px"] {
+        display: block !important;
+    }
+    
+    /* Remove fixed widths on mobile */
+    .modern-card {
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Stack action buttons vertically */
+    div[style*="display: flex"][style*="gap"] {
+        flex-direction: column !important;
+    }
+    
+    /* Full width buttons on mobile */
+    .modern-btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Reduce padding on cards */
+    .modern-card[style*="padding: 1.5rem"] {
+        padding: 1rem !important;
+    }
+    
+    /* Make badges smaller */
+    .modern-badge, .badge {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Responsive grid for info boxes */
+    .row.g-3 {
+        gap: 0.5rem !important;
+    }
+    
+    /* Full width columns on mobile */
+    .col-md-6, .col-md-4, .col-md-3, .col-12 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Smaller text on mobile */
+    h1[style*="font-size: 1.5rem"] {
+        font-size: 1.25rem !important;
+    }
+    
+    h6.fw-bold {
+        font-size: 0.95rem !important;
+    }
+    
+    /* User avatar smaller */
+    .user-avatar {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* Textareas more compact */
+    textarea.form-control {
+        font-size: 0.875rem !important;
+    }
+}
+</style>
 
-<div class="col-12 mb-3">
-    <a href="{{ route('counselor.referrals.index') }}" class="btn btn-secondary btn-sm">
-        <i class="bi bi-arrow-left me-1"></i> Back to Student Referrals
+<!-- Back Button & Actions -->
+<div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+    <a href="{{ route('counselor.referrals.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1rem; font-size: 0.875rem;">
+        <i class="bi bi-arrow-left"></i> Back to Student Referrals
+    </a>
+    <a href="{{ route('counselor.referrals.print', $studentReferral) }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1rem; font-size: 0.875rem;" target="_blank">
+        <i class="bi bi-printer-fill"></i> Print/Download PDF
     </a>
 </div>
 
-<div class="row g-4">
+<!-- Page Header -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--green); margin: 0 0 0.5rem 0;">{{ $studentReferral->referral_number }}</h1>
+            <p style="color: var(--text-muted); margin: 0;">Student Referral Details</p>
+        </div>
+        @if($studentReferral->status == 'pending')
+            <span class="modern-badge modern-badge-warning" style="font-size: 0.9rem;"><i class="bi bi-clock-fill"></i> Pending</span>
+        @elseif($studentReferral->status == 'ongoing')
+            <span class="modern-badge modern-badge-info" style="font-size: 0.9rem;"><i class="bi bi-arrow-repeat"></i> Ongoing</span>
+        @else
+            <span class="modern-badge modern-badge-success" style="font-size: 0.9rem;"><i class="bi bi-check-circle-fill"></i> Closed</span>
+        @endif
+    </div>
+</div>
 
-    {{-- Left --}}
-    <div class="col-md-8">
-
-        {{-- Student Info --}}
-        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-            <div class="card-header d-flex align-items-center justify-content-between py-3 px-4"
-                 style="background:#f8fafc;border-radius:16px 16px 0 0;">
-                <h6 class="fw-bold mb-0"><i class="bi bi-person me-2" style="color:#1e7a4a;"></i>Student Information</h6>
-                <span class="badge fw-semibold px-3 py-2"
-                      style="background:{{ $badge['bg'] }};color:{{ $badge['color'] }};border:1px solid {{ $badge['border'] }};font-size:.8rem;">
-                    {{ $badge['label'] }}
-                </span>
-            </div>
-            <div class="card-body p-4">
-                <div class="row g-3">
+<div style="display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem;">
+    <!-- Main Content -->
+    <div>
+        <!-- Student Info -->
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h6 class="fw-bold mb-3" style="color: var(--navy);">
+                <i class="bi bi-person me-2" style="color:#1e7a4a;"></i>Student Information
+            </h6>
+            <div class="row g-3">
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded">
                             <small class="text-muted d-block mb-1"><i class="bi bi-person me-1"></i>Student Name</small>
@@ -78,12 +151,52 @@
             </div>
         </div>
 
-        {{-- Referral Details --}}
-        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-            <div class="card-header py-3 px-4" style="background:#f8fafc;border-radius:16px 16px 0 0;">
-                <h6 class="fw-bold mb-0"><i class="bi bi-card-text me-2" style="color:#1e7a4a;"></i>Referral Details</h6>
+        {{-- Update form --}}
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h6 class="fw-bold mb-3" style="color: var(--navy);">
+                <i class="bi bi-reply me-2" style="color:#1e7a4a;"></i>Update Status & Notes
+            </h6>
+            <div>
+                <form method="POST" action="{{ route('counselor.referrals.update', $studentReferral) }}">
+                    @csrf
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
+                        <select name="status" class="form-select">
+                            <option value="pending" {{ $studentReferral->status === 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="ongoing" {{ $studentReferral->status === 'ongoing' ? 'selected' : '' }}>Ongoing</option>
+                            <option value="closed"  {{ $studentReferral->status === 'closed'  ? 'selected' : '' }}>Closed</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Counselor Notes</label>
+                        <textarea class="form-control" name="counselor_notes" rows="4"
+                                  placeholder="Add observations, recommendations, or follow-up actions...">{{ $studentReferral->counselor_notes }}</textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-check-lg me-1"></i> Update Referral
+                    </button>
+                </form>
             </div>
-            <div class="card-body p-4">
+        </div>
+
+        {{-- Counselor Notes --}}
+        @if($studentReferral->counselor_notes)
+        <div class="alert alert-info mb-4">
+            <h6 class="alert-heading fw-semibold"><i class="bi bi-person-check-fill me-1"></i>Counselor Notes</h6>
+            <p class="mb-0" style="white-space:pre-wrap;">{{ $studentReferral->counselor_notes }}</p>
+        </div>
+        @endif
+    </div>
+
+    {{-- Right sidebar --}}
+    <div>
+
+        {{-- Referral Details --}}
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h6 class="fw-bold mb-3" style="color: var(--navy);">
+                <i class="bi bi-card-text me-2" style="color:#1e7a4a;"></i>Referral Details
+            </h6>
+            <div>
                 <div class="mb-4">
                     <h6 class="fw-semibold mb-2"><i class="bi bi-text-paragraph me-1"></i>Reason for Referral</h6>
                     <div class="p-3 rounded-3" style="background:#f8fafc;white-space:pre-wrap;">{{ $studentReferral->reason_for_referral }}</div>
@@ -112,52 +225,12 @@
             </div>
         </div>
 
-        {{-- Counselor Notes --}}
-        @if($studentReferral->counselor_notes)
-        <div class="alert alert-info mb-4">
-            <h6 class="alert-heading fw-semibold"><i class="bi bi-person-check-fill me-1"></i>Counselor Notes</h6>
-            <p class="mb-0" style="white-space:pre-wrap;">{{ $studentReferral->counselor_notes }}</p>
-        </div>
-        @endif
-    </div>
-
-    {{-- Right sidebar --}}
-    <div class="col-md-4">
-
-        {{-- Update form --}}
-        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-            <div class="card-header py-3 px-4" style="background:#f8fafc;border-radius:16px 16px 0 0;">
-                <h6 class="fw-bold mb-0"><i class="bi bi-reply me-2" style="color:#1e7a4a;"></i>Update Status & Notes</h6>
-            </div>
-            <div class="card-body p-4">
-                <form method="POST" action="{{ route('counselor.referrals.update', $studentReferral) }}">
-                    @csrf
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Status <span class="text-danger">*</span></label>
-                        <select name="status" class="form-select">
-                            <option value="pending" {{ $studentReferral->status === 'pending' ? 'selected' : '' }}>Pending</option>
-                            <option value="ongoing" {{ $studentReferral->status === 'ongoing' ? 'selected' : '' }}>Ongoing</option>
-                            <option value="closed"  {{ $studentReferral->status === 'closed'  ? 'selected' : '' }}>Closed</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold">Counselor Notes</label>
-                        <textarea class="form-control" name="counselor_notes" rows="4"
-                                  placeholder="Add observations, recommendations, or follow-up actions...">{{ $studentReferral->counselor_notes }}</textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary w-100">
-                        <i class="bi bi-check-lg me-1"></i> Update Referral
-                    </button>
-                </form>
-            </div>
-        </div>
-
         {{-- Quick Info --}}
-        <div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-            <div class="card-header py-3 px-4" style="background:#f8fafc;border-radius:16px 16px 0 0;">
-                <h6 class="fw-bold mb-0">Quick Info</h6>
-            </div>
-            <div class="card-body p-4">
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h6 class="fw-bold mb-3" style="color: var(--navy);">
+                Quick Info
+            </h6>
+            <div>
                 <div class="d-flex flex-column gap-3">
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">Referral Number</small>
@@ -165,10 +238,13 @@
                     </div>
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">Status</small>
-                        <span class="badge fw-semibold"
-                              style="background:{{ $badge['bg'] }};color:{{ $badge['color'] }};border:1px solid {{ $badge['border'] }};">
-                            {{ $badge['label'] }}
-                        </span>
+                        @if($studentReferral->status == 'pending')
+                            <span class="modern-badge modern-badge-warning" style="font-size: 0.85rem;"><i class="bi bi-clock-fill"></i> Pending</span>
+                        @elseif($studentReferral->status == 'ongoing')
+                            <span class="modern-badge modern-badge-info" style="font-size: 0.85rem;"><i class="bi bi-arrow-repeat"></i> Ongoing</span>
+                        @else
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.85rem;"><i class="bi bi-check-circle-fill"></i> Closed</span>
+                        @endif
                     </div>
                     @if($studentReferral->preferred_followup)
                     <div>

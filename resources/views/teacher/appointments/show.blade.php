@@ -2,14 +2,25 @@
 @section('title', 'Appointment Details')
 
 @section('content')
+@include('student.partials.modern-styles')
 
-<div class="row">
-    <div class="col-12 mb-3">
-        <a href="{{ route('teacher.appointments.index') }}" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Back to My Appointments
-        </a>
-    </div>
+<style>
+@media (max-width: 768px) {
+    .row.g-4 > div {
+        margin-bottom: 1rem !important;
+    }
+    .modern-card { padding: 1rem !important; }
+    h5, h6 { font-size: 0.95rem !important; }
+}
+</style>
 
+<div style="margin-bottom: 1.5rem;">
+    <a href="{{ route('teacher.appointments.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1rem; font-size: 0.875rem;">
+        <i class="bi bi-arrow-left"></i> Back to My Appointments
+    </a>
+</div>
+
+<div class="row g-4">
     <div class="col-md-8">
         <div class="card border-0 shadow-sm" style="border-radius:16px;">
             <div class="card-header d-flex justify-content-between align-items-center py-3 px-4"

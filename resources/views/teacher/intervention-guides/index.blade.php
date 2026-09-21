@@ -2,25 +2,45 @@
 @section('title', 'Intervention Guides')
 
 @section('content')
-<div class="mb-4">
-    <h5 class="fw-bold mb-1">Intervention Guides</h5>
-    <small class="text-muted">Searchable guides, downloadable resources, and online tools for classroom intervention and student support.</small>
+@include('student.partials.modern-styles')
+
+<style>
+@media (max-width: 768px) {
+    .modern-page-header { padding: 1rem !important; }
+    .modern-page-header-compact { flex-direction: column !important; align-items: flex-start !important; gap: 1rem !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    .filter-form { grid-template-columns: unset !important; }
+    .filter-form .col-md-6, .filter-form .col-md-4, .filter-form .col-md-2 { width: 100% !important; }
+}
+</style>
+
+<!-- Page Header -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-lightbulb-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Intervention Guides</h1>
+            <p class="modern-page-subtitle">Searchable guides, downloadable resources, and online tools for classroom intervention and student support</p>
+        </div>
+    </div>
 </div>
 
 <!-- Search & Filter -->
 <form method="GET" action="{{ route('teacher.intervention-guides.index') }}" class="mb-4">
-    <div class="row g-2">
+    <div class="row g-2 filter-form">
         <div class="col-md-6">
             <div class="input-group">
                 <span class="input-group-text bg-white border-end-0">
                     <i class="bi bi-search text-muted"></i>
                 </span>
-                <input type="text" name="search" class="form-control border-start-0"
+                <input type="text" name="search" class="form-control border-start-0 modern-form-control"
                        placeholder="Search guides..." value="{{ $search }}">
             </div>
         </div>
         <div class="col-md-4">
-            <select name="category" class="form-select">
+            <select name="category" class="form-select modern-form-control">
                 <option value="">All Categories</option>
                 @foreach($categories as $key => $label)
                     <option value="{{ $key }}" {{ $category == $key ? 'selected' : '' }}>{{ $label }}</option>
@@ -28,8 +48,9 @@
             </select>
         </div>
         <div class="col-md-2">
-            <button type="submit" class="btn w-100 text-white" style="background:linear-gradient(135deg,#1e7a4a,#145e38);">
-                <i class="bi bi-funnel me-1"></i>Filter
+            <button type="submit" class="btn w-100 text-white modern-btn modern-btn-primary">
+                <i class="bi bi-funnel"></i>
+                <span>Filter</span>
             </button>
         </div>
     </div>

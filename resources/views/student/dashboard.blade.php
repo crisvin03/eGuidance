@@ -1,223 +1,206 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Student Dashboard')
+@section('title', 'Tambayan - Student Portal')
 
 @section('content')
-<!-- Welcome Banner -->
-<div class="card border-0 mb-4" style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:16px;">
-    <div class="card-body p-4 text-white">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <div>
-                <h4 class="fw-bold mb-1">Good day, {{ Auth::user()->name }}! 👋</h4>
-                <p class="mb-0 opacity-75">BNHS Care Konek Student Portal &mdash; {{ now()->format('l, F d, Y') }}</p>
-            </div>
-            <div class="d-flex gap-2 flex-wrap">
-                <a href="{{ route('student.concerns.create') }}" class="btn btn-light btn-sm fw-semibold">
-                    <i class="bi bi-plus-circle me-1"></i> Submit Concern
-                </a>
-                <a href="{{ route('student.kamustaka') }}" class="btn btn-outline-light btn-sm fw-semibold">
-                    <i class="bi bi-heart-pulse me-1"></i> Kamusta Ka?
-                </a>
-            </div>
-        </div>
-    </div>
-</div>
+@include('student.partials.modern-styles')
 
-<!-- Stats Row -->
-<div class="row g-3 mb-4">
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
-            <div class="card-body text-center p-3">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                     style="width:48px;height:48px;background:rgba(32,178,170,0.1);">
-                    <i class="bi bi-chat-dots-fill fs-5" style="color:#1e7a4a;"></i>
-                </div>
-                <div class="fs-3 fw-bold" style="color:#1e7a4a;">{{ $concerns->count() }}</div>
-                <div class="text-muted small">Total Concerns</div>
-                <div class="text-success" style="font-size:0.75rem;">{{ $concerns->where('status','resolved')->count() }} resolved</div>
-            </div>
+<!-- Welcome Hero Section -->
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div style="flex: 1;">
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Kumusta, {{ explode(' ', Auth::user()->name)[0] }}! 👋</h1>
+            <p class="modern-page-subtitle">Welcome back to your Care Konek. {{ now()->format('l, F d, Y') }}</p>
         </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
-            <div class="card-body text-center p-3">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                     style="width:48px;height:48px;background:rgba(245,158,11,0.1);">
-                    <i class="bi bi-hourglass-split fs-5 text-warning"></i>
-                </div>
-                <div class="fs-3 fw-bold text-warning">{{ $concerns->where('status','submitted')->count() }}</div>
-                <div class="text-muted small">Pending Concerns</div>
-                <div class="text-muted" style="font-size:0.75rem;">awaiting review</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
-            <div class="card-body text-center p-3">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                     style="width:48px;height:48px;background:rgba(59,130,246,0.1);">
-                    <i class="bi bi-calendar3 fs-5 text-primary"></i>
-                </div>
-                <div class="fs-3 fw-bold text-primary">{{ $appointments->count() }}</div>
-                <div class="text-muted small">Total Appointments</div>
-                <div class="text-success" style="font-size:0.75rem;">{{ $appointments->where('status','completed')->count() }} completed</div>
-            </div>
-        </div>
-    </div>
-    <div class="col-6 col-md-3">
-        <div class="card border-0 shadow-sm h-100" style="border-radius:12px;">
-            <div class="card-body text-center p-3">
-                <div class="rounded-circle d-inline-flex align-items-center justify-content-center mb-2"
-                     style="width:48px;height:48px;background:rgba(16,185,129,0.1);">
-                    <i class="bi bi-calendar-check fs-5 text-success"></i>
-                </div>
-                <div class="fs-3 fw-bold text-success">{{ $appointments->where('appointment_date','>',now())->count() }}</div>
-                <div class="text-muted small">Upcoming Sessions</div>
-                <div class="text-muted" style="font-size:0.75rem;">scheduled ahead</div>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Kamusta Ka? Check-in Card -->
-<div class="card border-0 shadow-sm mb-4" style="border-radius:16px;background:linear-gradient(135deg,rgba(32,178,170,0.06),rgba(0,139,139,0.04));">
-    <div class="card-body p-4">
-        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
-            <div class="d-flex align-items-center gap-3">
-                <div class="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                     style="width:52px;height:52px;background:linear-gradient(135deg,#1e7a4a,#145e38);">
-                    <i class="bi bi-heart-pulse-fill text-white fs-4"></i>
-                </div>
-                <div>
-                    <h6 class="fw-bold mb-1">Kamusta Ka? — Emotional Check-In</h6>
-                    <p class="text-muted small mb-0">How are you feeling today? Take a moment to check in with yourself.</p>
-                </div>
-            </div>
-            <a href="{{ route('student.kamustaka') }}" class="btn fw-semibold text-white flex-shrink-0"
-               style="background:linear-gradient(135deg,#1e7a4a,#145e38);border-radius:50px;">
-                <i class="bi bi-emoji-smile me-1"></i> Check In Now
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+            <a href="{{ route('student.spill-tea') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
+                <i class="bi bi-chat-heart-fill"></i>
+                <span>Share</span>
+            </a>
+            <a href="{{ route('student.mind-check') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
+                <i class="bi bi-heart-pulse-fill"></i>
+                <span>Check-in</span>
+            </a>
+            <a href="{{ route('student.connect') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
+                <i class="bi bi-people-fill"></i>
+                <span>Connect</span>
             </a>
         </div>
     </div>
 </div>
 
-<!-- Quick Actions -->
-<div class="card border-0 shadow-sm mb-4" style="border-radius:16px;">
-    <div class="card-header bg-white border-0 pt-4 pb-2 px-4">
-        <h6 class="fw-bold mb-0"><i class="bi bi-lightning-charge me-2" style="color:#1e7a4a;"></i>Quick Actions</h6>
-    </div>
-    <div class="card-body px-4 pb-4">
-        <div class="row g-3">
-            <div class="col-6 col-md-3">
-                <a href="{{ route('student.concerns.create') }}" class="text-decoration-none">
-                    <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-plus-circle fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
-                        <div class="fw-semibold small">Submit Concern</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="{{ route('student.appointments.create') }}" class="text-decoration-none">
-                    <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-calendar-plus fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
-                        <div class="fw-semibold small">Book Appointment</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="{{ route('student.forms.index') }}" class="text-decoration-none">
-                    <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-file-earmark-text fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
-                        <div class="fw-semibold small">Request Forms</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="{{ route('student.concerns.index') }}" class="text-decoration-none">
-                    <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-chat-dots fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
-                        <div class="fw-semibold small">My Concerns</div>
-                    </div>
-                </a>
-            </div>
-            <div class="col-6 col-md-3">
-                <a href="{{ route('student.resources') }}" class="text-decoration-none">
-                    <div class="border rounded-3 p-3 text-center quick-action-card">
-                        <i class="bi bi-journal-bookmark fs-2 mb-2 d-block" style="color:#1e7a4a;"></i>
-                        <div class="fw-semibold small">Resources</div>
-                    </div>
-                </a>
-            </div>
+<!-- Status Cards Grid -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 1.5rem;">
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon modern-page-icon-green" style="width: 48px; height: 48px; font-size: 1.25rem;">
+            <i class="bi bi-chat-dots-fill"></i>
         </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $concerns->count() }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Concerns</div>
+        </div>
+        <a href="{{ route('student.concerns.index') }}" style="width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(30, 122, 74, 0.1); color: var(--green); text-decoration: none; transition: all 0.2s;">
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon modern-page-icon-green" style="width: 48px; height: 48px; font-size: 1.25rem;">
+            <i class="bi bi-calendar-check"></i>
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $appointments->count() }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Sessions</div>
+        </div>
+        <a href="{{ route('student.connect') }}" style="width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(30, 122, 74, 0.1); color: var(--green); text-decoration: none; transition: all 0.2s;">
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon modern-page-icon-green" style="width: 48px; height: 48px; font-size: 1.25rem;">
+            <i class="bi bi-check-circle-fill"></i>
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $concerns->where('status','resolved')->count() }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Resolved</div>
+        </div>
+        <a href="{{ route('student.concerns.index') }}" style="width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(30, 122, 74, 0.1); color: var(--green); text-decoration: none; transition: all 0.2s;">
+            <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon modern-page-icon-green" style="width: 48px; height: 48px; font-size: 1.25rem;">
+            <i class="bi bi-calendar-event"></i>
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $appointments->where('appointment_date','>',now())->count() }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Upcoming</div>
+        </div>
+        <a href="{{ route('student.connect') }}" style="width: 32px; height: 32px; border-radius: 10px; display: flex; align-items: center; justify-content: center; background: rgba(30, 122, 74, 0.1); color: var(--green); text-decoration: none; transition: all 0.2s;">
+            <i class="bi bi-arrow-right"></i>
+        </a>
     </div>
 </div>
 
-<!-- Recent Concerns & Appointments -->
-<div class="row g-4">
-    <div class="col-md-6">
-        <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
-            <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-chat-dots me-2" style="color:#1e7a4a;"></i>My Concerns</h6>
-                <a href="{{ route('student.concerns.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
+<!-- Main Content Grid -->
+<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
+    <!-- Recent Concerns -->
+    <div class="modern-card" style="padding: 1.5rem;">
+        <div class="modern-section-header">
+            <div class="modern-section-icon modern-page-icon-green" style="width: 40px; height: 40px; font-size: 1.1rem;">
+                <i class="bi bi-chat-dots-fill"></i>
             </div>
-            <div class="card-body px-4 pb-4">
-                @forelse($concerns->take(5) as $concern)
-                    <div class="d-flex justify-content-between align-items-start py-3 border-bottom">
-                        <div>
-                            <div class="fw-semibold text-dark small">{{ Str::limit($concern->title, 35) }}</div>
-                            <div class="text-muted" style="font-size:0.78rem;">{{ $concern->category->name ?? '—' }} &bull; {{ $concern->created_at->format('M d, Y') }}</div>
+            <h2 class="modern-section-title" style="flex: 1; font-size: 1.15rem;">Recent Concerns</h2>
+            <a href="{{ route('student.concerns.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                View All
+            </a>
+        </div>
+        
+        <div class="modern-list">
+            @forelse($concerns->take(4) as $concern)
+                <div class="modern-list-item" style="padding: 1rem 0;">
+                    <div style="flex: 1;">
+                        <div style="font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">{{ Str::limit($concern->title, 40) }}</div>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted);">
+                            <span class="modern-badge modern-badge-secondary">{{ $concern->category->name ?? 'General' }}</span>
+                            <span>{{ $concern->created_at->diffForHumans() }}</span>
                         </div>
+                    </div>
+                    <div>
                         @if($concern->status == 'resolved')
-                            <span class="badge bg-success">Resolved</span>
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.8rem;"><i class="bi bi-check-circle-fill"></i> Resolved</span>
                         @elseif($concern->status == 'scheduled')
-                            <span class="badge bg-info">Scheduled</span>
+                            <span class="modern-badge modern-badge-info" style="font-size: 0.8rem;"><i class="bi bi-calendar-check"></i> Scheduled</span>
                         @else
-                            <span class="badge bg-warning">Pending</span>
+                            <span class="modern-badge modern-badge-warning" style="font-size: 0.8rem;"><i class="bi bi-clock-fill"></i> Pending</span>
                         @endif
                     </div>
-                @empty
-                    <div class="text-center text-muted py-4">
-                        <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
-                        <small>No concerns yet. <a href="{{ route('student.concerns.create') }}">Submit one.</a></small>
+                </div>
+            @empty
+                <div class="modern-empty-state" style="padding: 2.5rem 1.5rem;">
+                    <div class="modern-empty-icon" style="width: 60px; height: 60px; font-size: 1.75rem;">
+                        <i class="bi bi-chat-heart"></i>
                     </div>
-                @endforelse
-            </div>
+                    <h3 class="modern-empty-title" style="font-size: 1.05rem;">No concerns yet</h3>
+                    <p class="modern-empty-text" style="font-size: 0.9rem;">When you're ready to talk, we're here to listen.</p>
+                    <a href="{{ route('student.spill-tea') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">Share a concern</a>
+                </div>
+            @endforelse
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="card border-0 shadow-sm h-100" style="border-radius:16px;">
-            <div class="card-header bg-white border-0 pt-4 pb-0 px-4 d-flex justify-content-between align-items-center">
-                <h6 class="fw-bold mb-0"><i class="bi bi-calendar3 me-2" style="color:#1e7a4a;"></i>My Appointments</h6>
-                <a href="{{ route('student.appointments.index') }}" class="btn btn-sm btn-outline-secondary">View All</a>
+
+    <!-- Upcoming Sessions -->
+    <div class="modern-card" style="padding: 1.5rem;">
+        <div class="modern-section-header">
+            <div class="modern-section-icon modern-page-icon-green" style="width: 40px; height: 40px; font-size: 1.1rem;">
+                <i class="bi bi-calendar3"></i>
             </div>
-            <div class="card-body px-4 pb-4">
-                @forelse($appointments->take(5) as $appointment)
-                    <div class="d-flex justify-content-between align-items-start py-3 border-bottom">
-                        <div>
-                            <div class="fw-semibold text-dark small">{{ $appointment->counselor->name }}</div>
-                            <div class="text-muted" style="font-size:0.78rem;">{{ $appointment->appointment_date->format('M d, Y \a\t h:i A') }}</div>
+            <h2 class="modern-section-title" style="flex: 1; font-size: 1.15rem;">Upcoming Sessions</h2>
+            <a href="{{ route('student.connect') }}" class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                View All
+            </a>
+        </div>
+        
+        <div class="modern-list">
+            @forelse($appointments->where('appointment_date', '>', now())->take(4) as $appointment)
+                <div class="modern-list-item" style="padding: 1rem 0;">
+                    <div style="flex: 1;">
+                        <div style="font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">{{ $appointment->counselor->name }}</div>
+                        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted);">
+                            <span><i class="bi bi-calendar3"></i> {{ $appointment->appointment_date->format('M d') }}</span>
+                            <span><i class="bi bi-clock"></i> {{ $appointment->appointment_date->format('h:i A') }}</span>
                         </div>
-                        @if($appointment->status == 'completed')
-                            <span class="badge bg-success">Completed</span>
+                    </div>
+                    <div>
+                        @if($appointment->status == 'confirmed')
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.8rem;"><i class="bi bi-check-circle-fill"></i> Confirmed</span>
                         @elseif($appointment->status == 'cancelled')
-                            <span class="badge bg-danger">Cancelled</span>
+                            <span class="modern-badge modern-badge-danger" style="font-size: 0.8rem;"><i class="bi bi-x-circle-fill"></i> Cancelled</span>
                         @else
-                            <span class="badge bg-info">Scheduled</span>
+                            <span class="modern-badge modern-badge-info" style="font-size: 0.8rem;"><i class="bi bi-clock-fill"></i> Scheduled</span>
                         @endif
                     </div>
-                @empty
-                    <div class="text-center text-muted py-4">
-                        <i class="bi bi-inbox fs-2 d-block mb-2 opacity-50"></i>
-                        <small>No appointments yet. <a href="{{ route('student.appointments.create') }}">Book one.</a></small>
+                </div>
+            @empty
+                <div class="modern-empty-state" style="padding: 2.5rem 1.5rem;">
+                    <div class="modern-empty-icon" style="width: 60px; height: 60px; font-size: 1.75rem;">
+                        <i class="bi bi-calendar-heart"></i>
                     </div>
-                @endforelse
-            </div>
+                    <h3 class="modern-empty-title" style="font-size: 1.05rem;">No sessions scheduled</h3>
+                    <p class="modern-empty-text" style="font-size: 0.9rem;">Book a session with a counselor when you need support.</p>
+                    <a href="{{ route('student.connect') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">Book a session</a>
+                </div>
+            @endforelse
         </div>
     </div>
 </div>
 
 <style>
-.quick-action-card { transition:all 0.2s ease; cursor:pointer; color:#334155; background:#f8fafc; }
-.quick-action-card:hover { background:rgba(32,178,170,0.06); border-color:#1e7a4a !important; transform:translateY(-3px); box-shadow:0 8px 20px rgba(32,178,170,0.15); }
+/* Responsive adjustments */
+@media (max-width: 1200px) {
+    div[style*="grid-template-columns: repeat(4, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    div[style*="grid-template-columns: repeat(4, 1fr)"],
+    div[style*="grid-template-columns: repeat(2, 1fr)"] {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .modern-page-header-compact {
+        flex-direction: column;
+        align-items: flex-start !important;
+    }
+    
+    .modern-list-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+}
 </style>
 @endsection

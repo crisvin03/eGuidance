@@ -3,17 +3,13 @@
 @section('title', 'Concern Details')
 
 @section('content')
-<div class="row">
-    <div class="col-12 mb-3">
-        <a href="{{ route('student.concerns.index') }}" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Back to My Concerns
-        </a>
-    </div>
+@include('student.partials.modern-styles')
 
-    <div class="col-md-8">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h5 class="card-title mb-0">{{ $concern->title }}</h5>
+<div class="row">
+    <div class="col-md-8 d-flex flex-column" style="gap: 1rem;">
+        <div class="modern-card flex-grow-1" style="padding: 1.5rem;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h5 class="fw-semibold mb-0" style="font-size: 1.15rem;">{{ $concern->title }}</h5>
                 @if($concern->status == 'resolved')
                     <span class="badge badge-success">Resolved</span>
                 @elseif($concern->status == 'scheduled')
@@ -24,7 +20,6 @@
                     <span class="badge badge-warning">Pending</span>
                 @endif
             </div>
-            <div class="card-body">
                 <div class="row g-3 mb-4">
                     <div class="col-md-6">
                         <div class="p-3 bg-light rounded">
@@ -95,16 +90,12 @@
                     <small><i class="bi bi-check-circle-fill me-1"></i>Resolved on {{ $concern->resolved_at->format('F d, Y h:i A') }}</small>
                 </div>
                 @endif
-            </div>
         </div>
 
         @if($concern->appointments && $concern->appointments->count() > 0)
-        <div class="card mt-3">
-            <div class="card-header">
-                <h6 class="card-title mb-0"><i class="bi bi-calendar-event me-1"></i>Related Appointments</h6>
-            </div>
-            <div class="card-body p-0">
-                <div class="table-responsive">
+        <div class="modern-card" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;"><i class="bi bi-calendar-event me-1"></i>Related Appointments</h6>
+            <div class="table-responsive">
                     <table class="table mb-0">
                         <thead>
                             <tr>
@@ -134,35 +125,39 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
         </div>
         @endif
     </div>
 
-    <div class="col-md-4">
-        <div class="card">
-            <div class="card-header">
-                <h6 class="card-title mb-0">Concern Status</h6>
-            </div>
-            <div class="card-body">
-                <div class="d-flex flex-column gap-2">
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['submitted','under_review','scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
-                        <small class="{{ in_array($concern->status, ['submitted','under_review','scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Submitted</small>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['under_review','scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
-                        <small class="{{ in_array($concern->status, ['under_review','scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Under Review</small>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
-                        <small class="{{ in_array($concern->status, ['scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Counseling Scheduled</small>
-                    </div>
-                    <div class="d-flex align-items-center gap-2">
-                        <i class="bi bi-circle-fill" style="color:{{ $concern->status == 'resolved' ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
-                        <small class="{{ $concern->status == 'resolved' ? 'fw-semibold text-success' : 'text-muted' }}">Resolved</small>
-                    </div>
+    <div class="col-md-4 d-flex flex-column" style="gap: 1rem;">
+        <div class="modern-card" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;">Concern Status</h6>
+            <div class="d-flex flex-column gap-2">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['submitted','under_review','scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                    <small class="{{ in_array($concern->status, ['submitted','under_review','scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Submitted</small>
                 </div>
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['under_review','scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                    <small class="{{ in_array($concern->status, ['under_review','scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Under Review</small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-circle-fill" style="color:{{ in_array($concern->status, ['scheduled','resolved']) ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                    <small class="{{ in_array($concern->status, ['scheduled','resolved']) ? 'fw-semibold' : 'text-muted' }}">Counseling Scheduled</small>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-circle-fill" style="color:{{ $concern->status == 'resolved' ? '#1e7a4a' : '#cbd5e1' }}; font-size:.5rem;"></i>
+                    <small class="{{ $concern->status == 'resolved' ? 'fw-semibold text-success' : 'text-muted' }}">Resolved</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="modern-card flex-grow-1" style="padding: 1.5rem;">
+            <h6 class="fw-semibold mb-3" style="font-size: 1rem;"><i class="bi bi-info-circle me-2"></i>What's Next?</h6>
+            <div style="font-size: 0.85rem; line-height: 1.8;">
+                <p class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>Your counselor will review your concern</p>
+                <p class="mb-2"><i class="bi bi-check-circle text-success me-2"></i>You'll be notified of any updates</p>
+                <p class="mb-0"><i class="bi bi-check-circle text-success me-2"></i>A counseling session may be scheduled</p>
             </div>
         </div>
     </div>

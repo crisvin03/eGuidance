@@ -2,67 +2,139 @@
 @section('title', 'Appointment Details')
 
 @section('content')
+@include('student.partials.modern-styles')
+
+<style>
+/* Mobile Responsive Styles for Counselor Pages */
+@media (max-width: 768px) {
+    /* Two-column grid becomes single column */
+    div[style*="grid-template-columns: 1fr 380px"] {
+        display: block !important;
+    }
+    
+    /* Remove fixed widths on mobile */
+    .modern-card {
+        margin-bottom: 1rem !important;
+    }
+    
+    /* Stack action buttons vertically */
+    div[style*="display: flex"][style*="gap"] {
+        flex-direction: column !important;
+    }
+    
+    /* Full width buttons on mobile */
+    .modern-btn {
+        width: 100% !important;
+        justify-content: center !important;
+    }
+    
+    /* Reduce padding on cards */
+    .modern-card[style*="padding: 1.5rem"] {
+        padding: 1rem !important;
+    }
+    
+    /* Make badges smaller */
+    .modern-badge, .badge {
+        font-size: 0.75rem !important;
+    }
+    
+    /* Responsive grid for info boxes */
+    .row.g-3 {
+        gap: 0.5rem !important;
+    }
+    
+    /* Full width columns on mobile */
+    .col-md-6, .col-md-4, .col-md-3, .col-12 {
+        width: 100% !important;
+        max-width: 100% !important;
+    }
+    
+    /* Smaller text on mobile */
+    h1[style*="font-size: 1.5rem"] {
+        font-size: 1.25rem !important;
+    }
+    
+    h6.fw-bold {
+        font-size: 0.95rem !important;
+    }
+    
+    /* User avatar smaller */
+    .user-avatar {
+        width: 32px !important;
+        height: 32px !important;
+        font-size: 0.75rem !important;
+    }
+    
+    /* Textareas more compact */
+    textarea.form-control {
+        font-size: 0.875rem !important;
+    }
+    
+    /* Card borders and alerts */
+    .card, .alert {
+        margin-bottom: 1rem !important;
+    }
+}
+</style>
 
 @php
-    $badgeMap = [
-        'confirmed' => ['bg'=>'#eff6ff','color'=>'#1e40af','border'=>'#93c5fd','label'=>'Confirmed'],
-        'completed' => ['bg'=>'#ecfdf5','color'=>'#065f46','border'=>'#6ee7b7','label'=>'Completed'],
-        'cancelled' => ['bg'=>'#fef2f2','color'=>'#991b1b','border'=>'#fca5a5','label'=>'Cancelled'],
-        'scheduled' => ['bg'=>'#fef3c7','color'=>'#92400e','border'=>'#fbbf24','label'=>'Scheduled'],
-    ];
-    $badge     = $badgeMap[$appointment->status] ?? $badgeMap['scheduled'];
-    $isTeacher = $appointment->requester_type === 'teacher';
+    // Determine if this is a teacher request based on student role
+    $isTeacher = $appointment->student && $appointment->student->role && $appointment->student->role->name === 'teacher';
 @endphp
 
-<div class="row">
-    {{-- Back + action buttons row --}}
-    <div class="col-12 mb-3 d-flex align-items-center justify-content-between flex-wrap gap-2">
-        <a href="{{ route('counselor.appointments.index') }}" class="btn btn-secondary btn-sm">
-            <i class="bi bi-arrow-left me-1"></i> Back to Appointments
-        </a>
-        <div class="d-flex gap-2 flex-wrap">
-            @if($appointment->status === 'scheduled')
-                <button class="btn btn-sm text-white fw-semibold"
-                        style="background:linear-gradient(135deg,#1e7a4a,#145e38);"
-                        onclick="updateStatus('confirmed')">
-                    <i class="bi bi-check-circle me-1"></i> Confirm
-                </button>
-                <button class="btn btn-sm btn-outline-danger" onclick="updateStatus('cancelled')">
-                    <i class="bi bi-x-circle me-1"></i> Cancel
-                </button>
-            @elseif($appointment->status === 'confirmed')
-                <button class="btn btn-sm btn-warning fw-semibold" onclick="updateStatus('completed')">
-                    <i class="bi bi-check2-all me-1"></i> Mark Completed
-                </button>
-            @endif
-            @if(in_array($appointment->status, ['confirmed','completed']))
-                <a href="{{ route('counselor.appointments.session-notes.create', $appointment) }}"
-                   class="btn btn-sm btn-outline-secondary">
-                    <i class="bi bi-journal-plus me-1"></i> Add Session Note
-                </a>
-            @endif
-        </div>
+<!-- Back Button & Actions -->
+<div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap;">
+    <a href="{{ route('counselor.appointments.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1rem; font-size: 0.875rem;">
+        <i class="bi bi-arrow-left"></i> Back to Appointments
+    </a>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        @if($appointment->status === 'scheduled')
+            <button class="modern-btn modern-btn-primary" style="padding: 0.625rem 1rem; font-size: 0.875rem;" onclick="updateStatus('confirmed')">
+                <i class="bi bi-check-circle"></i> Confirm
+            </button>
+            <button class="modern-btn" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 0.625rem 1rem; font-size: 0.875rem;" onclick="updateStatus('cancelled')">
+                <i class="bi bi-x-circle"></i> Cancel
+            </button>
+        @elseif($appointment->status === 'confirmed')
+            <button class="modern-btn modern-btn-primary" style="padding: 0.625rem 1rem; font-size: 0.875rem;" onclick="updateStatus('completed')">
+                <i class="bi bi-check2-all"></i> Mark Completed
+            </button>
+        @endif
+        @if(in_array($appointment->status, ['confirmed','completed']))
+            <a href="{{ route('counselor.appointments.session-notes.create', $appointment) }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1rem; font-size: 0.875rem;">
+                <i class="bi bi-journal-plus"></i> Add Session Note
+            </a>
+        @endif
     </div>
+</div>
 
-    {{-- Left: main card --}}
-    <div class="col-md-8">
-        <div class="card border-0 shadow-sm" style="border-radius:16px;">
-            <div class="card-header d-flex justify-content-between align-items-center py-3 px-4"
-                 style="background:#f8fafc;border-radius:16px 16px 0 0;">
-                <div>
-                    <h5 class="card-title mb-0 fw-bold">Appointment Details</h5>
-                    <small class="text-muted">
-                        {{ $isTeacher ? 'Teacher request' : 'Student booking' }}
-                        &mdash; {{ $appointment->created_at->format('M d, Y') }}
-                    </small>
-                </div>
-                <span class="badge fw-semibold px-3 py-2"
-                      style="background:{{ $badge['bg'] }};color:{{ $badge['color'] }};border:1px solid {{ $badge['border'] }};font-size:.8rem;">
-                    {{ $badge['label'] }}
-                </span>
-            </div>
+<!-- Page Header -->
+<div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+    <div style="display: flex; justify-content: space-between; align-items: start; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--green); margin: 0 0 0.5rem 0;">Appointment #{{ $appointment->id }}</h1>
+            <p style="color: var(--text-muted); margin: 0;">{{ $isTeacher ? 'Teacher request' : 'Student booking' }} - {{ $appointment->created_at->format('M d, Y') }}</p>
+        </div>
+        @if($appointment->status == 'confirmed')
+            <span class="modern-badge modern-badge-success" style="font-size: 0.9rem;"><i class="bi bi-check-circle-fill"></i> Confirmed</span>
+        @elseif($appointment->status == 'completed')
+            <span class="modern-badge modern-badge-success" style="font-size: 0.9rem;"><i class="bi bi-check-all"></i> Completed</span>
+        @elseif($appointment->status == 'cancelled')
+            <span class="modern-badge" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; font-size: 0.9rem;"><i class="bi bi-x-circle-fill"></i> Cancelled</span>
+        @else
+            <span class="modern-badge modern-badge-warning" style="font-size: 0.9rem;"><i class="bi bi-clock-fill"></i> Scheduled</span>
+        @endif
+    </div>
+</div>
 
-            <div class="card-body p-4">
+<div style="display: grid; grid-template-columns: 1fr 380px; gap: 1.5rem;">
+    <!-- Main Content -->
+    <div>
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h6 class="fw-bold mb-3" style="color: var(--navy);">
+                <i class="bi bi-calendar-check me-2" style="color:#1e7a4a;"></i>Appointment Details
+            </h6>
+            <div>
 
                 {{-- Person + date info --}}
                 <div class="row g-3 mb-4">
@@ -228,13 +300,13 @@
         </div>
     </div>
 
-    {{-- Right sidebar — identical structure to teacher show --}}
-    <div class="col-md-4">
-        <div class="card border-0 shadow-sm" style="border-radius:16px;">
-            <div class="card-header py-3 px-4" style="background:#f8fafc;border-radius:16px 16px 0 0;">
-                <h6 class="card-title mb-0 fw-bold">Appointment Status</h6>
-            </div>
-            <div class="card-body px-4 py-3">
+    {{-- Right sidebar --}}
+    <div>
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h6 class="fw-bold mb-3" style="color: var(--navy);">
+                Appointment Status
+            </h6>
+            <div>
                 <div class="d-flex flex-column gap-3">
 
                     <div class="d-flex align-items-center gap-3">
@@ -314,10 +386,15 @@
                     </div>
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">Status</small>
-                        <span class="badge fw-semibold"
-                              style="background:{{ $badge['bg'] }};color:{{ $badge['color'] }};border:1px solid {{ $badge['border'] }};">
-                            {{ $badge['label'] }}
-                        </span>
+                        @if($appointment->status == 'confirmed')
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.85rem;"><i class="bi bi-check-circle-fill"></i> Confirmed</span>
+                        @elseif($appointment->status == 'completed')
+                            <span class="modern-badge modern-badge-success" style="font-size: 0.85rem;"><i class="bi bi-check-all"></i> Completed</span>
+                        @elseif($appointment->status == 'cancelled')
+                            <span class="modern-badge" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; font-size: 0.85rem;"><i class="bi bi-x-circle-fill"></i> Cancelled</span>
+                        @else
+                            <span class="modern-badge modern-badge-warning" style="font-size: 0.85rem;"><i class="bi bi-clock-fill"></i> Scheduled</span>
+                        @endif
                     </div>
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">Session Notes</small>
