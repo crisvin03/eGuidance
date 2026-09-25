@@ -724,6 +724,14 @@ class CounselorController extends Controller
         return view('counselor.mental-health.show', compact('assessment'));
     }
 
+    public function deleteMentalHealthAssessment(MentalHealthAssessment $assessment)
+    {
+        $assessment->delete();
+
+        return redirect()->route('counselor.mental-health.index')
+            ->with('success', 'Assessment deleted successfully.');
+    }
+
     public function updateMentalHealthAssessment(Request $request, MentalHealthAssessment $assessment)
     {
         $request->validate([

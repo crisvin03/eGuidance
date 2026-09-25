@@ -563,6 +563,18 @@ class StudentController extends Controller
         return view('student.mind-check.results', compact('assessment'));
     }
 
+    public function deleteMindCheck(\App\Models\MentalHealthAssessment $assessment)
+    {
+        if ($assessment->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        $assessment->delete();
+
+        return redirect()->route('student.mind-check.history')
+            ->with('success', 'Assessment deleted successfully.');
+    }
+
     public function mindCheckSubmitted()
     {
         return view('student.mind-check.submitted');

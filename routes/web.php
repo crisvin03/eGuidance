@@ -92,6 +92,7 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::post('/mind-check/phq9', [StudentController::class, 'storePhq9'])->name('mind-check.phq9.store');
     Route::get('/mind-check/submitted', [StudentController::class, 'mindCheckSubmitted'])->name('mind-check.submitted');
     Route::get('/mind-check/results/{assessment}', [StudentController::class, 'mindCheckResults'])->name('mind-check.results');
+    Route::delete('/mind-check/{assessment}', [StudentController::class, 'deleteMindCheck'])->name('mind-check.delete');
     Route::get('/mind-check/history', [StudentController::class, 'mindCheckHistory'])->name('mind-check.history');
     
     // Other features
@@ -172,6 +173,7 @@ Route::middleware(['auth', 'role:counselor'])->prefix('counselor')->name('counse
     Route::get('/mental-health', [CounselorController::class, 'mentalHealthAssessments'])->name('mental-health.index');
     Route::get('/mental-health/{assessment}', [CounselorController::class, 'showMentalHealthAssessment'])->name('mental-health.show');
     Route::put('/mental-health/{assessment}', [CounselorController::class, 'updateMentalHealthAssessment'])->name('mental-health.update');
+    Route::delete('/mental-health/{assessment}', [CounselorController::class, 'deleteMentalHealthAssessment'])->name('mental-health.delete');
     
     // Student Form Submissions
     Route::get('/student-forms', [CounselorController::class, 'studentForms'])->name('student-forms.index');

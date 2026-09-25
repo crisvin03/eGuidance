@@ -211,7 +211,17 @@
                 <i class="bi bi-arrow-left"></i>
                 <span>Back to Mind Check</span>
             </a>
+            <button type="button" class="modern-btn modern-btn-secondary" style="justify-content: center; border-color: #ef4444; color: #ef4444;" onclick="confirmDelete()">
+                <i class="bi bi-trash"></i>
+                <span>Delete Assessment</span>
+            </button>
         </div>
+
+        <!-- Delete Form (Hidden) -->
+        <form id="deleteForm" method="POST" action="{{ route('student.mind-check.delete', $assessment) }}" style="display: none;">
+            @csrf
+            @method('DELETE')
+        </form>
     </div>
 
     <!-- Sidebar -->
@@ -282,4 +292,12 @@
         </div>
     </div>
 </div>
+
+<script>
+function confirmDelete() {
+    if (confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+        document.getElementById('deleteForm').submit();
+    }
+}
+</script>
 @endsection

@@ -287,11 +287,20 @@
                 <a href="{{ route('counselor.concerns.index', ['student_id' => $assessment->user_id]) }}" class="btn btn-outline-secondary btn-sm w-100 mb-2">
                     <i class="bi bi-file-text me-1"></i>View Student Concerns
                 </a>
-                <a href="{{ route('counselor.appointments.index', ['student_id' => $assessment->user_id]) }}" class="btn btn-outline-info btn-sm w-100">
+                <a href="{{ route('counselor.appointments.index', ['student_id' => $assessment->user_id]) }}" class="btn btn-outline-info btn-sm w-100 mb-2">
                     <i class="bi bi-calendar3 me-1"></i>Schedule Appointment
                 </a>
+                <button type="button" class="btn btn-outline-danger btn-sm w-100" onclick="confirmDelete()">
+                    <i class="bi bi-trash me-1"></i>Delete Assessment
+                </button>
             </div>
         </div>
+
+        <!-- Delete Form (Hidden) -->
+        <form id="deleteForm" method="POST" action="{{ route('counselor.mental-health.delete', $assessment) }}" style="display: none;">
+            @csrf
+            @method('DELETE')
+        </form>
 
         <!-- Risk Level Guide -->
         @if(in_array($assessment->risk_level, ['high', 'moderately-high']))
@@ -308,6 +317,12 @@ function toggleDateField() {
     const scheduled = document.getElementById('followUpScheduled').value;
     const dateField = document.getElementById('dateField');
     dateField.style.display = scheduled === '1' ? 'block' : 'none';
+}
+
+function confirmDelete() {
+    if (confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+        document.getElementById('deleteForm').submit();
+    }
 }
 </script>
 @endsection
