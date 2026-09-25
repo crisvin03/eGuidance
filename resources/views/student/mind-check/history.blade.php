@@ -127,11 +127,24 @@
                                     <p class="text-muted small mb-3">Comprehensive psychosocial evaluation covering home, education, activities, relationships, and mental health.</p>
                                 @endif
 
-                                <a href="{{ route('student.mind-check.results', $assessment->id) }}" 
-                                   class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                                    <i class="bi bi-eye"></i>
-                                    <span>View Details</span>
-                                </a>
+                                <div style="display: flex; gap: 0.5rem;">
+                                    <a href="{{ route('student.mind-check.results', $assessment->id) }}" 
+                                       class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                        <i class="bi bi-eye"></i>
+                                        <span>View Details</span>
+                                    </a>
+                                    <button type="button" 
+                                            class="modern-btn modern-btn-secondary" 
+                                            style="padding: 0.5rem 1rem; font-size: 0.875rem; border-color: #ef4444; color: #ef4444;"
+                                            onclick="confirmDelete({{ $assessment->id }})">
+                                        <i class="bi bi-trash"></i>
+                                        <span>Delete</span>
+                                    </button>
+                                    <form id="deleteForm{{ $assessment->id }}" method="POST" action="{{ route('student.mind-check.delete', $assessment) }}" style="display: none;">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -261,4 +274,12 @@
         </div>
     </div>
 </div>
+
+<script>
+function confirmDelete(assessmentId) {
+    if (confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+        document.getElementById('deleteForm' + assessmentId).submit();
+    }
+}
+</script>
 @endsection

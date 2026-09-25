@@ -235,8 +235,18 @@
                             <a href="{{ route('counselor.mental-health.show', $assessment) }}" 
                                class="modern-btn modern-btn-primary" 
                                style="padding: 0.5rem 1rem; font-size: 0.875rem; white-space: nowrap;">
-                                <i class="bi bi-eye"></i> View Details
+                                <i class="bi bi-eye"></i> <span>View Details</span>
                             </a>
+                            <button type="button" 
+                                    class="modern-btn modern-btn-secondary" 
+                                    style="padding: 0.5rem 1rem; font-size: 0.875rem; white-space: nowrap; border-color: #ef4444; color: #ef4444;"
+                                    onclick="confirmDelete({{ $assessment->id }})">
+                                <i class="bi bi-trash"></i> <span>Delete</span>
+                            </button>
+                            <form id="deleteForm{{ $assessment->id }}" method="POST" action="{{ route('counselor.mental-health.delete', $assessment) }}" style="display: none;">
+                                @csrf
+                                @method('DELETE')
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -286,4 +296,12 @@
     }
 }
 </style>
+
+<script>
+function confirmDelete(assessmentId) {
+    if (confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
+        document.getElementById('deleteForm' + assessmentId).submit();
+    }
+}
+</script>
 @endsection
