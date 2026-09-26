@@ -424,19 +424,13 @@ class StudentController extends Controller
     {
         $user = Auth::user();
         
-        // Get recent assessments
-        $recentAssessments = \App\Models\MentalHealthAssessment::where('user_id', $user->id)
-            ->orderBy('created_at', 'desc')
-            ->limit(5)
-            ->get();
-        
         // Count assessments by type
         $assessmentCounts = \App\Models\MentalHealthAssessment::where('user_id', $user->id)
             ->selectRaw('assessment_type, count(*) as count')
             ->groupBy('assessment_type')
             ->pluck('count', 'assessment_type');
         
-        return view('student.mind-check.index', compact('recentAssessments', 'assessmentCounts'));
+        return view('student.mind-check.index', compact('assessmentCounts'));
     }
 
     public function headssAssessment()
@@ -554,62 +548,9 @@ class StudentController extends Controller
             ->with('success', 'PHQ-9 assessment submitted successfully for counselor review.');
     }
 
-    public function mindCheckResults(\App\Models\MentalHealthAssessment $assessment)
-    {
-        if ($assessment->user_id !== Auth::id()) {
-            abort(403);
-        }
-
-        return view('student.mind-check.results', compact('assessment'));
-    }
-
-    public function deleteMindCheck(\App\Models\MentalHealthAssessment $assessment)
-    {
-        if ($assessment->user_id !== Auth::id()) {
-            abort(403);
-        }
-
-        $assessment->delete();
-
-        return redirect()->route('student.mind-check.history')
-            ->with('success', 'Assessment deleted successfully.');
-    }
-
     public function mindCheckSubmitted()
     {
         return view('student.mind-check.submitted');
-    }
-
-    public function mindCheckHistory()
-    {
-        $userId = Auth::id();
-        
-        $assessments = \App\Models\MentalHealthAssessment::where('user_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
-
-        // Calculate statistics
-        $totalCount = \App\Models\MentalHealthAssessment::where('user_id', $userId)->count();
-        $headssCount = \App\Models\MentalHealthAssessment::where('user_id', $userId)
-            ->where('assessment_type', 'headss')->count();
-        $gad7Count = \App\Models\MentalHealthAssessment::where('user_id', $userId)
-            ->where('assessment_type', 'gad7')->count();
-        $phq9Count = \App\Models\MentalHealthAssessment::where('user_id', $userId)
-            ->where('assessment_type', 'phq9')->count();
-        
-        // Get latest assessment
-        $latestAssessment = \App\Models\MentalHealthAssessment::where('user_id', $userId)
-            ->orderBy('created_at', 'desc')
-            ->first();
-
-        return view('student.mind-check.history', compact(
-            'assessments',
-            'totalCount',
-            'headssCount',
-            'gad7Count',
-            'phq9Count',
-            'latestAssessment'
-        ));
     }
 
     private function calculateHeadssRiskLevel(array $responses): string

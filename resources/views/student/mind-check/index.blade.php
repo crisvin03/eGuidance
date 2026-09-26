@@ -104,50 +104,6 @@
     </div>
 </div>
 
-<!-- Recent Assessments -->
-@if($recentAssessments && $recentAssessments->count() > 0)
-<div class="modern-card mb-4" style="padding: 1.5rem;">
-    <div class="modern-section-header">
-        <div class="modern-section-icon" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
-            <i class="bi bi-clock-history"></i>
-        </div>
-        <h2 class="modern-section-title" style="flex: 1; font-size: 1.15rem;">Recent Assessments</h2>
-        <a href="{{ route('student.mind-check.history') }}" class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-            View All
-        </a>
-    </div>
-    
-    <div class="modern-list">
-        @foreach($recentAssessments as $assessment)
-            <div class="modern-list-item" style="padding: 1rem 0;">
-                <div style="display: flex; align-items: center; gap: 1rem; flex: 1;">
-                    <div class="modern-section-icon" style="width: 40px; height: 40px; font-size: 1rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
-                        <i class="bi bi-file-earmark-medical"></i>
-                    </div>
-                    <div style="flex: 1;">
-                        <div style="font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.25rem;">{{ $assessment->assessment_name }}</div>
-                        <small style="color: var(--text-muted); font-size: 0.85rem;">
-                            <i class="bi bi-calendar3"></i>
-                            {{ $assessment->created_at->format('M d, Y') }}
-                        </small>
-                    </div>
-                </div>
-                <div style="display: flex; align-items: center; gap: 0.75rem;">
-                    <span class="modern-badge modern-badge-{{ $assessment->risk_level_color }}" style="font-size: 0.8rem;">
-                        {{ $assessment->risk_level_text }}
-                    </span>
-                    <a href="{{ route('student.mind-check.results', $assessment->id) }}" 
-                       class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                        <i class="bi bi-eye"></i>
-                        <span>View</span>
-                    </a>
-                </div>
-            </div>
-        @endforeach
-    </div>
-</div>
-@endif
-
 <!-- Stats & Support -->
 <div class="modern-grid-2" style="gap: 1.5rem; align-items: stretch;">
     <!-- Stats -->
