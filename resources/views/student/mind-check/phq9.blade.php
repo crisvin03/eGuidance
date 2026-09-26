@@ -139,7 +139,7 @@
                     <div>
                         <h6 style="font-size: 0.9rem; font-weight: 700; color: #ef4444; margin-bottom: 0.5rem;">Need Help Now?</h6>
                         <p style="font-size: 0.8rem; color: var(--text-muted); margin: 0;">
-                            If you're having thoughts of self-harm, please reach out immediately: NCMH 0917-899-8727 or Crisis Line 1553
+                            If you're having thoughts of self-harm, please reach out immediately: NCMH Crisis Hotline <strong>1553</strong>, <strong>0917-899-8727</strong>, or <strong>0966-351-4518</strong>
                         </p>
                     </div>
                 </div>

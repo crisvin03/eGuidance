@@ -191,7 +191,7 @@
                 <ul class="mb-3" style="color: #374151;">
                     <li class="mb-2"><strong>Schedule an appointment with a CARE Team counselor soon</strong></li>
                     <li class="mb-2">Reach out to trusted adults (parents, teachers, mentors)</li>
-                    <li class="mb-2">Call crisis support if you're in distress: <strong>1553</strong> or <strong>0917-899-USAP (8727)</strong></li>
+                    <li class="mb-2">Call crisis support if you're in distress: <strong>1553</strong> or <strong>0917-899-8727</strong> or <strong>0966-351-4518</strong></li>
                     <li>Know that support is available and you don't have to face this alone</li>
                 </ul>
             @endif
@@ -276,8 +276,9 @@
                     <strong style="color: #111827;">National Crisis Hotline</strong>
                 </div>
                 <div class="ms-4">
-                    <small style="color: #374151;">📞 <strong>1553</strong></small><br>
-                    <small style="color: #374151;">📱 <strong>0917-899-USAP (8727)</strong></small>
+                    <small style="color: #374151;">📞 <strong>1553</strong> or <strong>1800-1888-1553</strong> (Toll-Free)</small><br>
+                    <small style="color: #374151;">📱 <strong>0919-057-1553</strong> (Smart/TNT)</small><br>
+                    <small style="color: #374151;">📱 <strong>0917-899-8727</strong> or <strong>0966-351-4518</strong> (Globe/TM)</small>
                 </div>
             </div>
             <div>

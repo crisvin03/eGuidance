@@ -23,9 +23,30 @@
                 <div class="row g-3">
                     <div class="col-sm-6">
                         <div class="p-3 rounded-3" style="background:#fef2f2;">
-                            <div class="fw-semibold small text-danger mb-1"><i class="bi bi-shield-fill-exclamation me-1"></i>National Crisis Line</div>
-                            <div class="fs-5 fw-bold">1553</div>
+                            <div class="fw-semibold small text-danger mb-1"><i class="bi bi-shield-fill-exclamation me-1"></i>NCMH Crisis Hotline (Toll-Free)</div>
+                            <div class="fs-5 fw-bold">1553 / 1800-1888-1553</div>
                             <div class="text-muted small">Available 24/7 — Free & Confidential</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 rounded-3" style="background:#fef2f2;">
+                            <div class="fw-semibold small text-danger mb-1"><i class="bi bi-phone me-1"></i>NCMH Smart/TNT</div>
+                            <div class="fs-5 fw-bold">0919-057-1553</div>
+                            <div class="text-muted small">Crisis support via Smart/TNT</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 rounded-3" style="background:#fef2f2;">
+                            <div class="fw-semibold small text-danger mb-1"><i class="bi bi-phone me-1"></i>NCMH Globe/TM</div>
+                            <div class="fs-5 fw-bold">0917-899-8727</div>
+                            <div class="text-muted small">Crisis support via Globe/TM</div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="p-3 rounded-3" style="background:#fef2f2;">
+                            <div class="fw-semibold small text-danger mb-1"><i class="bi bi-phone me-1"></i>NCMH Globe/TM</div>
+                            <div class="fs-5 fw-bold">0966-351-4518</div>
+                            <div class="text-muted small">Crisis support via Globe/TM</div>
                         </div>
                     </div>
                     <div class="col-sm-6">
@@ -33,13 +54,6 @@
                             <div class="fw-semibold small text-danger mb-1"><i class="bi bi-heart-fill me-1"></i>In Touch Community Services</div>
                             <div class="fs-5 fw-bold">(02) 8893-7603</div>
                             <div class="text-muted small">Emotional crisis support</div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6">
-                        <div class="p-3 rounded-3" style="background:#fef2f2;">
-                            <div class="fw-semibold small text-danger mb-1"><i class="bi bi-building me-1"></i>HOPELINE Philippines</div>
-                            <div class="fs-5 fw-bold">02-804-4673</div>
-                            <div class="text-muted small">Mental health helpline</div>
                         </div>
                     </div>
                     <div class="col-sm-6">

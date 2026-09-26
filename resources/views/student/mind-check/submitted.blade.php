@@ -80,12 +80,22 @@
             <p class="small text-muted mb-3">If you're experiencing a crisis or need urgent help:</p>
             <div class="d-flex justify-content-center gap-4 flex-wrap">
                 <div>
-                    <small class="text-muted d-block" style="font-size: 0.75rem;">National Crisis Hotline</small>
-                    <strong style="color: #ef4444; font-size: 1rem;">1553</strong>
+                    <small class="text-muted d-block" style="font-size: 0.75rem;">Landline (Toll-Free)</small>
+                    <strong style="color: #ef4444; font-size: 1rem;">1553 / 1800-1888-1553</strong>
                 </div>
                 <div>
-                    <small class="text-muted d-block" style="font-size: 0.75rem;">USAP Hotline</small>
-                    <strong style="color: #ef4444; font-size: 1rem;">0917-899-USAP</strong>
+                    <small class="text-muted d-block" style="font-size: 0.75rem;">Smart/TNT</small>
+                    <strong style="color: #ef4444; font-size: 1rem;">0919-057-1553</strong>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center gap-4 flex-wrap mt-2">
+                <div>
+                    <small class="text-muted d-block" style="font-size: 0.75rem;">Globe/TM (NCMH)</small>
+                    <strong style="color: #ef4444; font-size: 1rem;">0917-899-8727</strong>
+                </div>
+                <div>
+                    <small class="text-muted d-block" style="font-size: 0.75rem;">Globe/TM</small>
+                    <strong style="color: #ef4444; font-size: 1rem;">0966-351-4518</strong>
                 </div>
             </div>
             <div class="mt-3">

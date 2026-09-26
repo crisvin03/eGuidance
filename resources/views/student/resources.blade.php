@@ -36,6 +36,10 @@
                         <i class="bi bi-telephone-fill"></i>
                         <span>NCMH: 0917-899-8727</span>
                     </a>
+                    <a href="tel:0-966-351-4518" class="modern-btn" style="background: white; color: #ef4444; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 600;">
+                        <i class="bi bi-telephone-fill"></i>
+                        <span>NCMH: 0966-351-4518</span>
+                    </a>
                     <a href="tel:1553" class="modern-btn" style="background: white; color: #ef4444; padding: 0.625rem 1.25rem; font-size: 0.875rem; font-weight: 600;">
                         <i class="bi bi-telephone-fill"></i>
                         <span>Crisis: 1553</span>
@@ -141,7 +145,9 @@
         <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem;">
             @php
             $contacts = [
-                ['icon'=>'bi-heart-pulse','name'=>'NCMH Hope Line','detail'=>'0917-899-8727 / (02) 8989-8727','note'=>'24/7 Crisis & Mental Health Support','color'=>'#ef4444','href'=>'tel:09178998727'],
+                ['icon'=>'bi-heart-pulse','name'=>'NCMH Crisis Hotline','detail'=>'1553 or 1800-1888-1553 (Toll-Free)','note'=>'24/7 Crisis & Mental Health Support','color'=>'#ef4444','href'=>'tel:1553'],
+                ['icon'=>'bi-telephone','name'=>'NCMH Smart/TNT','detail'=>'0919-057-1553','note'=>'Crisis support via Smart/TNT','color'=>'#ef4444','href'=>'tel:09190571553'],
+                ['icon'=>'bi-telephone','name'=>'NCMH Globe/TM','detail'=>'0917-899-8727 or 0966-351-4518','note'=>'Crisis support via Globe/TM','color'=>'#ef4444','href'=>'tel:09178998727'],
                 ['icon'=>'bi-chat-heart','name'=>'In Touch Crisis Line','detail'=>'(02) 8893-7603','note'=>'Mon–Fri, 9am–5pm','color'=>'#f97316','href'=>'tel:028893-7603'],
                 ['icon'=>'bi-globe','name'=>'iCall (Online Counseling)','detail'=>'icallhelpline.org','note'=>'Free online counseling sessions','color'=>'#6366f1','href'=>'https://icallhelpline.org'],
                 ['icon'=>'bi-shield-check','name'=>'DepEd Student Protection','detail'=>'(02) 8633-7208','note'=>'Student welfare and protection','color'=>'#10b981','href'=>'tel:028633-7208'],
