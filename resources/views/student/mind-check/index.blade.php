@@ -5,20 +5,6 @@
 @section('content')
 @include('student.partials.modern-styles')
 
-<!-- Success Message -->
-@if(session('success'))
-<div class="alert alert-success alert-dismissible fade show" style="border-radius: 12px; border-left: 4px solid var(--green); margin-bottom: 1.5rem;">
-    <div class="d-flex align-items-start gap-3">
-        <i class="bi bi-check-circle-fill" style="color: var(--green); font-size: 1.5rem;"></i>
-        <div style="flex: 1;">
-            <strong style="color: var(--green);">Success!</strong>
-            <p class="mb-0" style="color: #374151; margin-top: 0.25rem;">{{ session('success') }}</p>
-        </div>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
-</div>
-@endif
-
 <!-- Page Header -->
 <div class="modern-page-header mb-4" style="padding: 1.5rem;">
     <div class="modern-page-header-compact">
