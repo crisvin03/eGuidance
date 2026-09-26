@@ -90,7 +90,6 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::post('/mind-check/gad7', [StudentController::class, 'storeGad7'])->name('mind-check.gad7.store');
     Route::get('/mind-check/phq9', [StudentController::class, 'phq9Assessment'])->name('mind-check.phq9');
     Route::post('/mind-check/phq9', [StudentController::class, 'storePhq9'])->name('mind-check.phq9.store');
-    Route::get('/mind-check/submitted', [StudentController::class, 'mindCheckSubmitted'])->name('mind-check.submitted');
     
     // Other features
     Route::get('/resources', [StudentController::class, 'resources'])->name('resources');

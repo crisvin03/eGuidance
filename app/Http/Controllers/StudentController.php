@@ -463,8 +463,8 @@ class StudentController extends Controller
             // TODO: Send notification to counselor
         }
 
-        return redirect()->route('student.mind-check.submitted')
-            ->with('success', 'Assessment submitted successfully for counselor review.');
+        return redirect()->route('student.mind-check')
+            ->with('success', 'Assessment submitted successfully! Your responses have been sent to the CARE Team for review.');
     }
 
     public function gad7Assessment()
@@ -503,8 +503,8 @@ class StudentController extends Controller
             // TODO: Send notification to counselor
         }
 
-        return redirect()->route('student.mind-check.submitted')
-            ->with('success', 'GAD-7 assessment submitted successfully for counselor review.');
+        return redirect()->route('student.mind-check')
+            ->with('success', 'GAD-7 assessment submitted successfully! Your responses have been sent to the CARE Team for review.');
     }
 
     public function phq9Assessment()
@@ -544,13 +544,8 @@ class StudentController extends Controller
             // TODO: Send notification to counselor
         }
 
-        return redirect()->route('student.mind-check.submitted')
-            ->with('success', 'PHQ-9 assessment submitted successfully for counselor review.');
-    }
-
-    public function mindCheckSubmitted()
-    {
-        return view('student.mind-check.submitted');
+        return redirect()->route('student.mind-check')
+            ->with('success', 'PHQ-9 assessment submitted successfully! Your responses have been sent to the CARE Team for review.');
     }
 
     private function calculateHeadssRiskLevel(array $responses): string
