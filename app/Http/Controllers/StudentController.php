@@ -424,13 +424,19 @@ class StudentController extends Controller
     {
         $user = Auth::user();
         
+        // Get recent assessments
+        $recentAssessments = \App\Models\MentalHealthAssessment::where('user_id', $user->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(5)
+            ->get();
+        
         // Count assessments by type
         $assessmentCounts = \App\Models\MentalHealthAssessment::where('user_id', $user->id)
             ->selectRaw('assessment_type, count(*) as count')
             ->groupBy('assessment_type')
             ->pluck('count', 'assessment_type');
         
-        return view('student.mind-check.index', compact('assessmentCounts'));
+        return view('student.mind-check.index', compact('recentAssessments', 'assessmentCounts'));
     }
 
     public function headssAssessment()
@@ -546,6 +552,66 @@ class StudentController extends Controller
 
         return redirect()->route('student.mind-check')
             ->with('success', 'PHQ-9 assessment submitted successfully! Your responses have been sent to the CARE Team for review.');
+    }
+
+    public function mindCheckSubmitted()
+    {
+        return view('student.mind-check.submitted');
+    }
+
+    public function mindCheckHistory()
+    {
+        $userId = Auth::id();
+        
+        // Apply filters
+        $query = \App\Models\MentalHealthAssessment::where('user_id', $userId);
+        
+        if (request('type')) {
+            $query->where('assessment_type', request('type'));
+        }
+        
+        if (request('risk')) {
+            $query->where('risk_level', request('risk'));
+        }
+        
+        if (request('period')) {
+            $period = request('period');
+            $date = match($period) {
+                'week' => now()->subWeek(),
+                'month' => now()->subMonth(),
+                'quarter' => now()->subMonths(3),
+                'year' => now()->subYear(),
+                default => null
+            };
+            if ($date) {
+                $query->where('created_at', '>=', $date);
+            }
+        }
+        
+        $assessments = $query->orderBy('created_at', 'desc')->paginate(15);
+
+        // Calculate statistics
+        $totalCount = \App\Models\MentalHealthAssessment::where('user_id', $userId)->count();
+        $headssCount = \App\Models\MentalHealthAssessment::where('user_id', $userId)
+            ->where('assessment_type', 'headss')->count();
+        $gad7Count = \App\Models\MentalHealthAssessment::where('user_id', $userId)
+            ->where('assessment_type', 'gad7')->count();
+        $phq9Count = \App\Models\MentalHealthAssessment::where('user_id', $userId)
+            ->where('assessment_type', 'phq9')->count();
+        
+        // Get latest assessment
+        $latestAssessment = \App\Models\MentalHealthAssessment::where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        return view('student.mind-check.history', compact(
+            'assessments',
+            'totalCount',
+            'headssCount',
+            'gad7Count',
+            'phq9Count',
+            'latestAssessment'
+        ));
     }
 
     private function calculateHeadssRiskLevel(array $responses): string

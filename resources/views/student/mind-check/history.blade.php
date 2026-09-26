@@ -97,54 +97,17 @@
                                         <small class="text-muted">{{ $assessment->created_at->format('g:i A') }}</small>
                                     </div>
                                     
-                                    <!-- Risk Badge -->
-                                    <span class="modern-badge {{ 
-                                        $assessment->risk_level === 'low' ? 'modern-badge-success' :
-                                        ($assessment->risk_level === 'mild' ? 'modern-badge-warning' :
-                                        'modern-badge-danger') }}">
-                                        {{ ucwords(str_replace('-', ' ', $assessment->risk_level)) }}
+                                    <!-- Status Badge -->
+                                    <span class="modern-badge modern-badge-success" style="font-size: 0.8rem;">
+                                        Submitted
                                     </span>
                                 </div>
 
                                 @if($assessment->assessment_type !== 'headss')
-                                    <div class="d-flex align-items-center gap-4 mb-3">
-                                        <div>
-                                            <small class="text-muted d-block" style="font-size: 0.75rem;">Score</small>
-                                            <span class="fw-bold" style="color:var(--green);font-size:1.1rem;">
-                                                {{ $assessment->score }}<small class="text-muted">/{{ $assessment->assessment_type === 'gad7' ? '21' : '27' }}</small>
-                                            </span>
-                                        </div>
-                                        <div class="flex-grow-1">
-                                            <small class="text-muted d-block mb-1" style="font-size: 0.75rem;">Severity</small>
-                                            <div class="progress" style="height:6px;border-radius:6px;background:#e5e7eb;">
-                                                <div class="progress-bar" role="progressbar" 
-                                                     style="width:{{ ($assessment->score / ($assessment->assessment_type === 'gad7' ? 21 : 27)) * 100 }}%;background:var(--green);">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <p class="text-muted small mb-0">Submitted {{ $assessment->created_at->diffForHumans() }} - Awaiting counselor review</p>
                                 @else
-                                    <p class="text-muted small mb-3">Comprehensive psychosocial evaluation covering home, education, activities, relationships, and mental health.</p>
+                                    <p class="text-muted small mb-0">Comprehensive psychosocial evaluation - Submitted {{ $assessment->created_at->diffForHumans() }}</p>
                                 @endif
-
-                                <div style="display: flex; gap: 0.5rem;">
-                                    <a href="{{ route('student.mind-check.results', $assessment->id) }}" 
-                                       class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
-                                        <i class="bi bi-eye"></i>
-                                        <span>View Details</span>
-                                    </a>
-                                    <button type="button" 
-                                            class="modern-btn modern-btn-secondary" 
-                                            style="padding: 0.5rem 1rem; font-size: 0.875rem; border-color: #ef4444; color: #ef4444;"
-                                            onclick="confirmDelete({{ $assessment->id }})">
-                                        <i class="bi bi-trash"></i>
-                                        <span>Delete</span>
-                                    </button>
-                                    <form id="deleteForm{{ $assessment->id }}" method="POST" action="{{ route('student.mind-check.delete', $assessment) }}" style="display: none;">
-                                        @csrf
-                                        @method('DELETE')
-                                    </form>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -238,19 +201,9 @@
                     <small class="text-muted">{{ $latestAssessment->created_at->diffForHumans() }}</small>
                 </div>
                 <div class="fw-semibold mb-2" style="color: var(--green);">{{ strtoupper($latestAssessment->assessment_type) }}</div>
-                <span class="modern-badge {{ 
-                    $latestAssessment->risk_level === 'low' ? 'modern-badge-success' :
-                    ($latestAssessment->risk_level === 'mild' ? 'modern-badge-warning' :
-                    'modern-badge-danger') }}">
-                    {{ ucwords(str_replace('-', ' ', $latestAssessment->risk_level)) }}
+                <span class="modern-badge modern-badge-success">
+                    Submitted
                 </span>
-                <div class="mt-3">
-                    <a href="{{ route('student.mind-check.results', $latestAssessment->id) }}" 
-                       class="modern-btn modern-btn-primary" style="width: 100%; justify-content: center;">
-                        <i class="bi bi-eye"></i>
-                        <span>View Results</span>
-                    </a>
-                </div>
             </div>
         @endif
 
@@ -274,12 +227,4 @@
         </div>
     </div>
 </div>
-
-<script>
-function confirmDelete(assessmentId) {
-    if (confirm('Are you sure you want to delete this assessment? This action cannot be undone.')) {
-        document.getElementById('deleteForm' + assessmentId).submit();
-    }
-}
-</script>
 @endsection

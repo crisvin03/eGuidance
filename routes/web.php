@@ -89,7 +89,8 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     Route::get('/mind-check/gad7', [StudentController::class, 'gad7Assessment'])->name('mind-check.gad7');
     Route::post('/mind-check/gad7', [StudentController::class, 'storeGad7'])->name('mind-check.gad7.store');
     Route::get('/mind-check/phq9', [StudentController::class, 'phq9Assessment'])->name('mind-check.phq9');
-    Route::post('/mind-check/phq9', [StudentController::class, 'storePhq9'])->name('mind-check.phq9.store');
+    Route::get('/mind-check/submitted', [StudentController::class, 'mindCheckSubmitted'])->name('mind-check.submitted');
+    Route::get('/mind-check/history', [StudentController::class, 'mindCheckHistory'])->name('mind-check.history');
     
     // Other features
     Route::get('/resources', [StudentController::class, 'resources'])->name('resources');
