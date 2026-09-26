@@ -53,9 +53,9 @@
 
         <!-- Action Buttons -->
         <div class="d-grid gap-2" style="max-width: 400px; margin: 0 auto;">
-            <a href="{{ route('student.mind-check.history') }}" class="modern-btn modern-btn-primary" style="justify-content: center;">
-                <i class="bi bi-clock-history"></i>
-                <span>View Assessment History</span>
+            <a href="{{ route('student.connect') }}" class="modern-btn modern-btn-primary" style="justify-content: center;">
+                <i class="bi bi-chat-dots"></i>
+                <span>Connect with Counselor</span>
             </a>
             
             <a href="{{ route('student.mind-check') }}" class="modern-btn modern-btn-secondary" style="justify-content: center;">
