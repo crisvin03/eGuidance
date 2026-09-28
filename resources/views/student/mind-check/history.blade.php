@@ -20,23 +20,25 @@
 
 <!-- Filters -->
 <div class="modern-card mb-4" style="padding: 1.5rem;">
-    <form method="GET" action="{{ route('student.mind-check.history') }}" class="row g-3">
-        <div class="col-md-3">
-            <label class="form-label fw-semibold" style="font-size: 0.875rem; color: var(--navy);">
-                <i class="bi bi-filter me-1"></i>Assessment Type
+    <form method="GET" action="{{ route('student.mind-check.history') }}" class="row g-3 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label fw-semibold mb-2" style="font-size: 0.875rem; color: var(--navy); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="bi bi-funnel" style="font-size: 0.875rem;"></i>
+                <span>Assessment Type</span>
             </label>
-            <select name="type" class="form-select" onchange="this.form.submit()" style="border-radius: 10px;">
+            <select name="type" class="form-select" onchange="this.form.submit()" style="border-radius: 10px; padding: 0.625rem 1rem;">
                 <option value="">All Types</option>
                 <option value="headss" {{ request('type') === 'headss' ? 'selected' : '' }}>HEADSS</option>
                 <option value="gad7" {{ request('type') === 'gad7' ? 'selected' : '' }}>GAD-7</option>
                 <option value="phq9" {{ request('type') === 'phq9' ? 'selected' : '' }}>PHQ-9</option>
             </select>
         </div>
-        <div class="col-md-3">
-            <label class="form-label fw-semibold" style="font-size: 0.875rem; color: var(--navy);">
-                <i class="bi bi-calendar-range me-1"></i>Date Range
+        <div class="col-md-4">
+            <label class="form-label fw-semibold mb-2" style="font-size: 0.875rem; color: var(--navy); display: flex; align-items: center; gap: 0.5rem;">
+                <i class="bi bi-calendar-range" style="font-size: 0.875rem;"></i>
+                <span>Date Range</span>
             </label>
-            <select name="period" class="form-select" onchange="this.form.submit()" style="border-radius: 10px;">
+            <select name="period" class="form-select" onchange="this.form.submit()" style="border-radius: 10px; padding: 0.625rem 1rem;">
                 <option value="">All Time</option>
                 <option value="week" {{ request('period') === 'week' ? 'selected' : '' }}>Last 7 Days</option>
                 <option value="month" {{ request('period') === 'month' ? 'selected' : '' }}>Last 30 Days</option>
@@ -44,11 +46,11 @@
                 <option value="year" {{ request('period') === 'year' ? 'selected' : '' }}>Last Year</option>
             </select>
         </div>
-        <div class="col-md-6 d-flex align-items-end">
+        <div class="col-md-4">
             @if(request()->hasAny(['type', 'period']))
-                <a href="{{ route('student.mind-check.history') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
-                    <i class="bi bi-x-circle"></i> Clear Filters
-                </a>
+                <button type="button" onclick="window.location.href='{{ route('student.mind-check.history') }}'" class="btn btn-outline-secondary w-100" style="border-radius: 10px; padding: 0.625rem 1rem;">
+                    <i class="bi bi-x-circle me-1"></i>Clear Filters
+                </button>
             @endif
         </div>
     </form>
