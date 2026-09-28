@@ -7,17 +7,10 @@
 
 <!-- Page Header -->
 <div class="modern-card mb-4" style="padding: 1.5rem;">
-    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-        <div>
-            <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 0 0 0.5rem 0;">
-                <i class="bi bi-clock-history me-2" style="color: var(--green);"></i>Assessment History
-            </h1>
-            <p style="color: var(--text-muted); margin: 0;">View your past mental health screenings</p>
-        </div>
-        <a href="{{ route('student.mind-check') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
-            <i class="bi bi-arrow-left"></i> Back to Mind Check
-        </a>
-    </div>
+    <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 0 0 0.5rem 0;">
+        <i class="bi bi-clock-history me-2" style="color: var(--green);"></i>Assessment History
+    </h1>
+    <p style="color: var(--text-muted); margin: 0;">View your past mental health screenings</p>
 </div>
 
 <!-- Filters -->
