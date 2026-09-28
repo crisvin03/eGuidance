@@ -56,8 +56,51 @@
     </form>
 </div>
 
+<!-- Statistics Cards -->
+<div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; margin-bottom: 1.5rem;">
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-clipboard2-pulse"></i>
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $totalCount }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">Total</div>
+        </div>
+    </div>
+
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-person-heart"></i>
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $headssCount }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">HEADSS</div>
+        </div>
+    </div>
+
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-activity"></i>
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $gad7Count }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">GAD-7</div>
+        </div>
+    </div>
+
+    <div class="modern-card" style="padding: 1.5rem; display: flex; align-items: center; gap: 1rem;">
+        <div class="modern-section-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-heart-pulse"></i>
+        </div>
+        <div style="flex: 1;">
+            <div style="font-size: 1.75rem; font-weight: 800; color: var(--green); line-height: 1; margin-bottom: 0.25rem;">{{ $phq9Count }}</div>
+            <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px;">PHQ-9</div>
+        </div>
+    </div>
+</div>
+
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-12">
         @if($assessments->count() > 0)
             @foreach($assessments as $assessment)
                 <div class="modern-card mb-3" style="padding: 1.5rem;">
@@ -145,95 +188,19 @@
             </div>
         @endif
     </div>
-
-    <!-- Sidebar -->
-    <div class="col-lg-4">
-        <!-- Statistics -->
-        <div class="modern-card mb-3" style="padding: 1.5rem;">
-            <h6 class="fw-bold mb-3" style="color: var(--navy);">
-                <i class="bi bi-bar-chart-fill me-2" style="color: var(--green);"></i>Your Statistics
-            </h6>
-            <div class="mb-3 pb-3" style="border-bottom: 1px solid #e5e7eb;">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <small class="text-muted d-block" style="font-size: 0.8rem;">Total Assessments</small>
-                        <h4 class="fw-bold mb-0" style="color: var(--green);">{{ $totalCount }}</h4>
-                    </div>
-                    <div class="modern-section-icon" style="width: 45px; height: 45px; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
-                        <i class="bi bi-clipboard-check"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="mb-2">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <small class="text-muted" style="font-size: 0.85rem;">
-                        <i class="bi bi-person-heart me-1"></i>HEADSS
-                    </small>
-                    <small class="fw-semibold">{{ $headssCount }}</small>
-                </div>
-                <div class="progress" style="height: 6px; border-radius: 6px; background: #e5e7eb;">
-                    <div class="progress-bar" style="width: {{ $totalCount > 0 ? ($headssCount / $totalCount * 100) : 0 }}%; background: var(--green);"></div>
-                </div>
-            </div>
-            <div class="mb-2">
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <small class="text-muted" style="font-size: 0.85rem;">
-                        <i class="bi bi-activity me-1"></i>GAD-7
-                    </small>
-                    <small class="fw-semibold">{{ $gad7Count }}</small>
-                </div>
-                <div class="progress" style="height: 6px; border-radius: 6px; background: #e5e7eb;">
-                    <div class="progress-bar" style="width: {{ $totalCount > 0 ? ($gad7Count / $totalCount * 100) : 0 }}%; background: var(--green);"></div>
-                </div>
-            </div>
-            <div>
-                <div class="d-flex justify-content-between align-items-center mb-1">
-                    <small class="text-muted" style="font-size: 0.85rem;">
-                        <i class="bi bi-heart-pulse me-1"></i>PHQ-9
-                    </small>
-                    <small class="fw-semibold">{{ $phq9Count }}</small>
-                </div>
-                <div class="progress" style="height: 6px; border-radius: 6px; background: #e5e7eb;">
-                    <div class="progress-bar" style="width: {{ $totalCount > 0 ? ($phq9Count / $totalCount * 100) : 0 }}%; background: var(--green);"></div>
-                </div>
-            </div>
-        </div>
-
-        @if($latestAssessment)
-            <!-- Most Recent -->
-            <div class="modern-card mb-3" style="padding: 1.5rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.08), rgba(20, 94, 56, 0.08));">
-                <h6 class="fw-bold mb-3" style="color: var(--navy);">
-                    <i class="bi bi-star-fill me-2" style="color: var(--green);"></i>Most Recent
-                </h6>
-                <div class="mb-2">
-                    <small class="text-muted">{{ $latestAssessment->created_at->diffForHumans() }}</small>
-                </div>
-                <div class="fw-semibold mb-2" style="color: var(--green); font-size: 1.1rem;">
-                    {{ strtoupper($latestAssessment->assessment_type) }}
-                </div>
-                <span class="badge" style="background: var(--green); color: white;">
-                    <i class="bi bi-check-circle me-1"></i>Submitted
-                </span>
-            </div>
-        @endif
-
-        <!-- Quick Actions -->
-        <div class="modern-card" style="padding: 1.5rem;">
-            <h6 class="fw-bold mb-3" style="color: var(--navy);">
-                <i class="bi bi-lightning-charge-fill me-2" style="color: var(--green);"></i>Quick Actions
-            </h6>
-            <div class="d-grid gap-2">
-                <a href="{{ route('student.mind-check.headss') }}" class="modern-btn modern-btn-secondary" style="justify-content: flex-start;">
-                    <i class="bi bi-person-heart"></i> Take HEADSS
-                </a>
-                <a href="{{ route('student.mind-check.gad7') }}" class="modern-btn modern-btn-secondary" style="justify-content: flex-start;">
-                    <i class="bi bi-activity"></i> Take GAD-7
-                </a>
-                <a href="{{ route('student.mind-check.phq9') }}" class="modern-btn modern-btn-secondary" style="justify-content: flex-start;">
-                    <i class="bi bi-heart-pulse"></i> Take PHQ-9
-                </a>
-            </div>
-        </div>
-    </div>
 </div>
+
+<style>
+@media (max-width: 1200px) {
+    div[style*="grid-template-columns: repeat(4, 1fr)"] {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+}
+
+@media (max-width: 768px) {
+    div[style*="grid-template-columns: repeat(4, 1fr)"] {
+        grid-template-columns: 1fr !important;
+    }
+}
+</style>
 @endsection
