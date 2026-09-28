@@ -6,11 +6,16 @@
 @include('student.partials.modern-styles')
 
 <!-- Page Header -->
-<div class="modern-card mb-4" style="padding: 1.5rem;">
-    <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 0 0 0.5rem 0;">
-        <i class="bi bi-clock-history me-2" style="color: var(--green);"></i>Assessment History
-    </h1>
-    <p style="color: var(--text-muted); margin: 0;">View your past mental health screenings</p>
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-clock-history"></i>
+        </div>
+        <div>
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Assessment History</h1>
+            <p class="modern-page-subtitle">View your past mental health screenings</p>
+        </div>
+    </div>
 </div>
 
 <!-- Filters -->
