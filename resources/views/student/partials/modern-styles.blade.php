@@ -386,6 +386,50 @@
     color: #f59e0b;
 }
 
+/* Modal Z-Index Fix - CRITICAL FOR CLICKABLE MODALS */
+.modal {
+    z-index: 9999 !important;
+}
+
+.modal-backdrop {
+    z-index: 9998 !important;
+}
+
+.modal-dialog {
+    z-index: 10000 !important;
+}
+
+/* Ensure modal content is always on top */
+.modal-content {
+    position: relative;
+    z-index: 10001 !important;
+}
+
+/* Fix for any potential overlay issues */
+.modal.show {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-body,
+.modal-header,
+.modal-footer {
+    position: relative;
+    z-index: 10002 !important;
+}
+
+/* Ensure buttons and inputs in modals are clickable */
+.modal button,
+.modal input,
+.modal select,
+.modal textarea,
+.modal a {
+    position: relative;
+    z-index: 10003 !important;
+    pointer-events: auto !important;
+}
+
 /* Grid System */
 .modern-grid-2 {
     display: grid;

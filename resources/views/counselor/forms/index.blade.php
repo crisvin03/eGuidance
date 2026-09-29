@@ -13,6 +13,50 @@
     .badge { font-size: 0.75rem !important; }
     .modern-btn { width: 100% !important; justify-content: center !important; }
 }
+
+/* CRITICAL FIX - Modal Must Be Clickable */
+.modal {
+    z-index: 99999 !important;
+}
+
+.modal-backdrop {
+    z-index: 99998 !important;
+}
+
+.modal-dialog {
+    z-index: 100000 !important;
+    position: relative;
+}
+
+.modal-content {
+    position: relative;
+    z-index: 100001 !important;
+    pointer-events: auto !important;
+}
+
+.modal-body,
+.modal-header,
+.modal-footer {
+    position: relative;
+    z-index: 100002 !important;
+    pointer-events: auto !important;
+}
+
+.modal button,
+.modal input,
+.modal select,
+.modal textarea,
+.modal a,
+.modal label,
+.modal .btn,
+.modal .btn-close,
+.modal .form-control,
+.modal .form-select,
+.modal .form-check-input {
+    position: relative;
+    z-index: 100003 !important;
+    pointer-events: auto !important;
+}
 </style>
 
 @php

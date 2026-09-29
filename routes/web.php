@@ -103,11 +103,13 @@ Route::middleware(['auth', 'role:student'])->prefix('student')->name('student.')
     // Resources & Community Hub (unified page)
     Route::get('/resources', [StudentController::class, 'resourcesIndex'])->name('resources.index');
     
-    // Redirect individual feature routes to unified page
+    // New Here - Personal Inventory (Annex C)
     Route::get('/new-here', [StudentController::class, 'newHere'])->name('new-here');
     Route::get('/new-here/form', [StudentController::class, 'newHereForm'])->name('new-here.form');
     Route::post('/new-here/submit', [StudentController::class, 'storeNewHere'])->name('new-here.submit');
     Route::get('/new-here/view/{id}', [StudentController::class, 'viewNewHere'])->name('new-here.view');
+    
+    // Redirect individual feature routes to unified page
     Route::get('/real-talk', [StudentController::class, 'realTalk'])->name('real-talk');
     Route::get('/unfiltered', [StudentController::class, 'unfiltered'])->name('unfiltered');
     Route::get('/find-people', [StudentController::class, 'findPeople'])->name('find-people');

@@ -18,7 +18,7 @@
             <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 0 0 0.5rem 0;">
                 <i class="bi bi-journal-plus me-2"></i>Add Session Note
             </h1>
-            <p style="color: var(--text-muted); margin: 0;">Document your counseling session with {{ $appointment->student->name }}</p>
+            <p style="color: var(--text-muted); margin: 0;">Document your counseling session with {{ $appointment->client_display_name }}</p>
         </div>
                 @if($errors->any())
                     <div class="alert alert-danger alert-dismissible fade show">
@@ -115,8 +115,8 @@
                 <h6 class="fw-bold mb-3"><i class="bi bi-info-circle me-2" style="color:#1e7a4a;"></i>Appointment Information</h6>
                 <div class="row g-3">
                     <div class="col-md-6">
-                        <small class="text-muted d-block">Student</small>
-                        <strong>{{ $appointment->student->name }}</strong>
+                        <small class="text-muted d-block">Client</small>
+                        <strong>{{ $appointment->client_display_name }}</strong>
                     </div>
                     <div class="col-md-6">
                         <small class="text-muted d-block">Scheduled Date</small>

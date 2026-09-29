@@ -1,61 +1,9 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Teacher Resources Management')
+@section('title', 'Resource Management')
 
 @section('content')
 @include('student.partials.modern-styles')
-
-<style>
-.resource-card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    padding: 1.25rem;
-    transition: all 0.2s ease;
-}
-
-.resource-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-    border-color: var(--green);
-}
-
-.resource-category-badge {
-    padding: 0.375rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.resource-category-hrg { background: rgba(59, 130, 246, 0.1); color: #1e40af; }
-.resource-category-handbook { background: rgba(16, 185, 129, 0.1); color: #047857; }
-.resource-category-gender_dev { background: rgba(139, 92, 246, 0.1); color: #6d28d9; }
-
-.file-type-icon {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.25rem;
-    font-weight: 600;
-    text-transform: uppercase;
-}
-
-.file-type-pdf { background: #fee2e2; color: #dc2626; }
-.file-type-doc, .file-type-docx { background: #dbeafe; color: #2563eb; }
-.file-type-ppt, .file-type-pptx { background: #fed7d7; color: #e53e3e; }
-.file-type-jpg, .file-type-jpeg, .file-type-png { background: #d1fae5; color: #059669; }
-.file-type-default { background: #f3f4f6; color: #6b7280; }
-
-@media (max-width: 768px) {
-    .resource-grid { grid-template-columns: 1fr !important; }
-    .resource-filters { flex-direction: column !important; gap: 1rem !important; }
-}
-</style>
 
 <!-- Page Header -->
 <div class="modern-page-header mb-4" style="padding: 1.5rem;">
@@ -64,36 +12,42 @@
             <i class="bi bi-folder-fill"></i>
         </div>
         <div style="flex: 1;">
-            <h1 class="modern-page-title" style="font-size: 1.5rem;">Teacher Resources Management</h1>
-            <p class="modern-page-subtitle">Upload and manage resources for teachers</p>
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Resource Management</h1>
+            <p class="modern-page-subtitle">Manage resources for teachers and students</p>
         </div>
         <a href="{{ route('counselor.resources.create') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
-            <i class="bi bi-plus-circle"></i> Upload Resource
+            <i class="bi bi-plus-circle"></i>
+            <span>Upload Resource</span>
         </a>
     </div>
 </div>
 
 <!-- Filters -->
 <div class="modern-card mb-4" style="padding: 1.5rem;">
-    <form method="GET" action="{{ route('counselor.resources.index') }}" class="resource-filters" style="display: flex; gap: 1rem; align-items: end; flex-wrap: wrap;">
+    <form method="GET" action="{{ route('counselor.resources.index') }}" style="display: flex; gap: 1rem; align-items: end; flex-wrap: wrap;">
         <div style="flex: 1; min-width: 250px;">
-            <label class="form-label fw-semibold" style="color: var(--navy); margin-bottom: 0.5rem;">Search Resources</label>
-            <input type="text" class="form-control" name="search" value="{{ request('search') }}" placeholder="Search by title or description..." style="border-radius: 10px;">
+            <label class="modern-form-label">Search Resources</label>
+            <input type="text" class="form-control modern-form-control" name="search" value="{{ request('search') }}" placeholder="Search by title or description...">
         </div>
         
-        <div style="min-width: 150px;">
-            <label class="form-label fw-semibold" style="color: var(--navy); margin-bottom: 0.5rem;">Category</label>
-            <select class="form-control" name="category" style="border-radius: 10px;">
+        <div style="min-width: 180px;">
+            <label class="modern-form-label">Category</label>
+            <select class="form-control modern-form-control" name="category">
                 <option value="">All Categories</option>
-                <option value="hrg" {{ request('category') === 'hrg' ? 'selected' : '' }}>Home Room Guidance</option>
-                <option value="handbook" {{ request('category') === 'handbook' ? 'selected' : '' }}>Handbook & Policies</option>
-                <option value="gender_dev" {{ request('category') === 'gender_dev' ? 'selected' : '' }}>Gender & Development</option>
+                <optgroup label="For Teachers">
+                    <option value="hrg" {{ request('category') === 'hrg' ? 'selected' : '' }}>Home Room Guidance</option>
+                    <option value="handbook" {{ request('category') === 'handbook' ? 'selected' : '' }}>Handbook & Policies</option>
+                    <option value="gender_dev" {{ request('category') === 'gender_dev' ? 'selected' : '' }}>Gender & Development</option>
+                </optgroup>
+                <optgroup label="For Students">
+                    <option value="future_me" {{ request('category') === 'future_me' ? 'selected' : '' }}>Future Me (Career)</option>
+                </optgroup>
             </select>
         </div>
         
-        <div style="min-width: 120px;">
-            <label class="form-label fw-semibold" style="color: var(--navy); margin-bottom: 0.5rem;">Status</label>
-            <select class="form-control" name="status" style="border-radius: 10px;">
+        <div style="min-width: 150px;">
+            <label class="modern-form-label">Status</label>
+            <select class="form-control modern-form-control" name="status">
                 <option value="">All Status</option>
                 <option value="active" {{ request('status') === 'active' ? 'selected' : '' }}>Active</option>
                 <option value="inactive" {{ request('status') === 'inactive' ? 'selected' : '' }}>Inactive</option>
@@ -102,85 +56,98 @@
         
         <div style="display: flex; gap: 0.5rem;">
             <button type="submit" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
-                <i class="bi bi-search"></i> Filter
+                <i class="bi bi-search"></i>
+                <span>Filter</span>
             </button>
-            <a href="{{ route('counselor.resources.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
-                <i class="bi bi-arrow-clockwise"></i> Reset
-            </a>
+            @if(request()->hasAny(['search', 'category', 'status']))
+                <a href="{{ route('counselor.resources.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
+                    <i class="bi bi-x-circle"></i>
+                    <span>Clear</span>
+                </a>
+            @endif
         </div>
     </form>
 </div>
 
 @if($resources->count() > 0)
     <!-- Resources Grid -->
-    <div class="resource-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
         @foreach($resources as $resource)
-            <div class="resource-card">
-                <div style="display: flex; gap: 1rem; margin-bottom: 1rem;">
-                    <div class="file-type-icon file-type-{{ strtolower($resource->file_type) }}">
-                        {{ strtoupper($resource->file_type) }}
-                    </div>
-                    <div style="flex: 1; min-width: 0;">
-                        <div style="display: flex; align-items: start; justify-content: between; gap: 0.5rem; margin-bottom: 0.5rem;">
-                            <h3 style="font-size: 1rem; font-weight: 700; color: var(--navy); margin: 0; line-height: 1.3; word-break: break-word;">
+            <div class="modern-card" style="padding: 1.25rem; transition: all 0.3s ease;" onmouseover="this.style.transform='translateY(-4px)'; this.style.boxShadow='0 12px 30px rgba(0,0,0,0.1)';" onmouseout="this.style.transform=''; this.style.boxShadow='';">
+                <!-- Header -->
+                <div style="display: flex; align-items: start; justify-content: space-between; gap: 1rem; margin-bottom: 1rem;">
+                    <div style="display: flex; align-items: start; gap: 1rem; flex: 1; min-width: 0;">
+                        @php
+                            $fileTypeColors = [
+                                'pdf' => ['bg' => '#fee2e2', 'color' => '#dc2626'],
+                                'doc' => ['bg' => '#dbeafe', 'color' => '#2563eb'],
+                                'docx' => ['bg' => '#dbeafe', 'color' => '#2563eb'],
+                                'ppt' => ['bg' => '#fed7aa', 'color' => '#ea580c'],
+                                'pptx' => ['bg' => '#fed7aa', 'color' => '#ea580c'],
+                                'xls' => ['bg' => '#d1fae5', 'color' => '#059669'],
+                                'xlsx' => ['bg' => '#d1fae5', 'color' => '#059669'],
+                            ];
+                            $fileType = strtolower($resource->file_type);
+                            $typeStyle = $fileTypeColors[$fileType] ?? ['bg' => '#f3f4f6', 'color' => '#6b7280'];
+                        @endphp
+                        <div style="width: 48px; height: 48px; border-radius: 10px; background: {{ $typeStyle['bg'] }}; color: {{ $typeStyle['color'] }}; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; flex-shrink: 0;">
+                            {{ strtoupper($resource->file_type) }}
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <h6 style="font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; line-height: 1.3; word-break: break-word;">
                                 {{ $resource->title }}
-                            </h3>
-                            <div class="dropdown">
-                                <button class="btn btn-sm" type="button" data-bs-toggle="dropdown" style="border: none; color: var(--text-muted); padding: 0.25rem;">
-                                    <i class="bi bi-three-dots-vertical"></i>
-                                </button>
-                                <ul class="dropdown-menu dropdown-menu-end" style="border-radius: 12px; border: 1px solid #e5e7eb; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
-                                    <li><a class="dropdown-item" href="{{ route('counselor.resources.show', $resource) }}"><i class="bi bi-eye me-2"></i>View Details</a></li>
-                                    <li><a class="dropdown-item" href="{{ route('counselor.resources.download', $resource) }}"><i class="bi bi-download me-2"></i>Download</a></li>
-                                    <li><hr class="dropdown-divider"></li>
-                                    <li>
-                                        <button class="dropdown-item toggle-status" 
-                                                data-id="{{ $resource->id }}"
-                                                data-status="{{ $resource->is_active ? 'deactivate' : 'activate' }}">
-                                            <i class="bi bi-{{ $resource->is_active ? 'eye-slash' : 'eye' }} me-2"></i>
-                                            {{ $resource->is_active ? 'Deactivate' : 'Activate' }}
-                                        </button>
-                                    </li>
-                                    <li>
-                                        <form action="{{ route('counselor.resources.destroy', $resource) }}" method="POST" class="d-inline delete-form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="dropdown-item text-danger">
-                                                <i class="bi bi-trash me-2"></i>Delete
-                                            </button>
-                                        </form>
-                                    </li>
-                                </ul>
+                            </h6>
+                            <div style="font-size: 0.75rem; margin-bottom: 0.5rem;">
+                                <span class="modern-badge modern-badge-{{ $resource->category === 'future_me' ? 'secondary' : 'info' }}" style="font-size: 0.7rem;">
+                                    {{ $resource->category_label }}
+                                </span>
                             </div>
                         </div>
-                        <span class="resource-category-badge resource-category-{{ $resource->category }}">
-                            {{ $resource->category_label }}
+                    </div>
+                    
+                    <!-- Status Toggle -->
+                    <div>
+                        <span class="modern-badge modern-badge-{{ $resource->is_active ? 'success' : 'secondary' }}" style="font-size: 0.75rem;">
+                            {{ $resource->is_active ? 'Active' : 'Inactive' }}
                         </span>
                     </div>
                 </div>
                 
+                <!-- Description -->
                 @if($resource->description)
-                    <p style="color: var(--text-muted); font-size: 0.875rem; line-height: 1.5; margin-bottom: 1rem;">
+                    <p style="color: var(--text-muted); font-size: 0.85rem; line-height: 1.5; margin-bottom: 1rem;">
                         {{ Str::limit($resource->description, 100) }}
                     </p>
                 @endif
                 
-                <div style="display: flex; align-items: center; justify-content: between; text-align: center; padding-top: 1rem; border-top: 1px solid #f3f4f6;">
-                    <div style="font-size: 0.75rem; color: var(--text-muted);">
-                        <div style="font-weight: 600;">{{ $resource->formatted_file_size }}</div>
-                        <div>{{ $resource->created_at->format('M j, Y') }}</div>
+                <!-- Meta -->
+                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem; padding-top: 1rem; border-top: 1px solid rgba(0, 0, 0, 0.06); font-size: 0.8rem; color: var(--text-muted);">
+                    <div style="display: flex; align-items: center; gap: 0.375rem;">
+                        <i class="bi bi-hdd"></i>
+                        <span>{{ $resource->formatted_file_size }}</span>
                     </div>
-                    <div style="font-size: 0.75rem; color: var(--text-muted); text-align: right;">
-                        <div style="font-weight: 600;">Uploaded by</div>
-                        <div>{{ $resource->uploader->name }}</div>
+                    <div style="display: flex; align-items: center; gap: 0.375rem;">
+                        <i class="bi bi-calendar3"></i>
+                        <span>{{ $resource->created_at->format('M j, Y') }}</span>
                     </div>
-                    <div>
-                        @if($resource->is_active)
-                            <span class="modern-badge modern-badge-success" style="font-size: 0.7rem;">Active</span>
-                        @else
-                            <span class="modern-badge modern-badge-secondary" style="font-size: 0.7rem;">Inactive</span>
-                        @endif
-                    </div>
+                </div>
+                
+                <!-- Actions -->
+                <div style="display: flex; gap: 0.5rem;">
+                    <a href="{{ route('counselor.resources.show', $resource) }}" 
+                       class="modern-btn modern-btn-primary" 
+                       style="flex: 1; justify-content: center; padding: 0.625rem; font-size: 0.85rem;">
+                        <i class="bi bi-eye"></i>
+                        <span>View</span>
+                    </a>
+                    <form action="{{ route('counselor.resources.destroy', $resource) }}" method="POST" style="flex: 1;" onsubmit="return confirm('Are you sure you want to delete this resource?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="modern-btn modern-btn-outline" style="width: 100%; justify-content: center; padding: 0.625rem; font-size: 0.85rem; color: #dc2626; border-color: #dc2626;">
+                            <i class="bi bi-trash"></i>
+                            <span>Delete</span>
+                        </button>
+                    </form>
                 </div>
             </div>
         @endforeach
@@ -194,69 +161,48 @@
     @endif
 @else
     <!-- Empty State -->
-    <div class="modern-card text-center" style="padding: 3rem;">
-        <div class="modern-page-icon" style="width: 80px; height: 80px; font-size: 2rem; background: rgba(107, 114, 128, 0.1); color: var(--text-muted); margin: 0 auto 1.5rem;">
-            <i class="bi bi-folder-x"></i>
-        </div>
-        <h3 style="color: var(--navy); font-weight: 700; margin-bottom: 0.5rem;">No Resources Found</h3>
-        <p style="color: var(--text-muted); margin-bottom: 2rem;">
+    <div class="modern-card" style="padding: 3rem; text-align: center;">
+        <i class="bi bi-inbox" style="font-size: 3.5rem; color: var(--text-muted); opacity: 0.3; display: block; margin-bottom: 1rem;"></i>
+        <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem;">
             @if(request()->hasAny(['search', 'category', 'status']))
-                Try adjusting your filters or <a href="{{ route('counselor.resources.index') }}" class="text-decoration-none" style="color: var(--green);">clear all filters</a>.
+                No Resources Found
+            @else
+                No Resources Yet
+            @endif
+        </h3>
+        <p style="font-size: 0.95rem; color: var(--text-muted); margin-bottom: 2rem;">
+            @if(request()->hasAny(['search', 'category', 'status']))
+                No resources match your filters. Try adjusting your search criteria.
             @else
                 Start by uploading your first resource for teachers.
             @endif
         </p>
-        <a href="{{ route('counselor.resources.create') }}" class="modern-btn modern-btn-primary">
-            <i class="bi bi-plus-circle"></i> Upload First Resource
-        </a>
+        <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+            @if(request()->hasAny(['search', 'category', 'status']))
+                <a href="{{ route('counselor.resources.index') }}" class="modern-btn modern-btn-secondary">
+                    <i class="bi bi-x-circle"></i>
+                    <span>Clear Filters</span>
+                </a>
+            @endif
+            <a href="{{ route('counselor.resources.create') }}" class="modern-btn modern-btn-primary">
+                <i class="bi bi-plus-circle"></i>
+                <span>Upload Resource</span>
+            </a>
+        </div>
     </div>
 @endif
-@endsection
 
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Toggle resource status
-    document.querySelectorAll('.toggle-status').forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            const resourceId = this.dataset.id;
-            const action = this.dataset.status;
-            
-            if (confirm(`Are you sure you want to ${action} this resource?`)) {
-                fetch(`/counselor/resources/${resourceId}/toggle-status`, {
-                    method: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('Failed to update resource status');
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to update resource status');
-                });
-            }
-        });
-    });
+<style>
+@media (max-width: 768px) {
+    .modern-page-header-compact {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+    }
     
-    // Delete confirmation
-    document.querySelectorAll('.delete-form').forEach(form => {
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            if (confirm('Are you sure you want to delete this resource? This action cannot be undone.')) {
-                this.submit();
-            }
-        });
-    });
-});
-</script>
-@endpush
+    .modern-page-header-compact > a {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+@endsection

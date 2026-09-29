@@ -634,17 +634,20 @@ class StudentController extends Controller
         };
     }
 
+
+
+
     // ========================================
-    // NEW HERE - Learner Reintegration Clearance
+    // NEW HERE - Personal Inventory Form (Annex C)
     // ========================================
     
     public function newHere()
     {
         $userId = Auth::id();
         
-        // Get user's reintegration clearance submissions
+        // Get user's personal inventory form submissions
         $submissions = \App\Models\StudentFormSubmission::where('student_id', $userId)
-            ->where('form_type', 'reintegration_clearance')
+            ->where('form_type', 'personal_inventory')
             ->orderBy('created_at', 'desc')
             ->get();
         
@@ -658,49 +661,28 @@ class StudentController extends Controller
     
     public function storeNewHere(Request $request)
     {
-        $validated = $request->validate([
-            'learner_name' => 'required|string|max:255',
-            'grade_section' => 'required|string|max:255',
-            'reason' => 'required|string|max:500',
-            'return_date' => 'required|date',
-            'checklist' => 'nullable|array',
-            'remarks' => 'nullable|array',
-            'support' => 'nullable|array',
-            'other_support' => 'nullable|string|max:255',
-            'additional_comments' => 'nullable|string|max:1000',
+        // The form data comes from the Personal Inventory form
+        $request->validate([
+            'form_data' => 'required|array',
         ]);
-        
-        // Prepare form data
-        $formData = [
-            'learner_name' => $validated['learner_name'],
-            'grade_section' => $validated['grade_section'],
-            'reason' => $validated['reason'],
-            'return_date' => $validated['return_date'],
-            'checklist' => $validated['checklist'] ?? [],
-            'remarks' => $validated['remarks'] ?? [],
-            'support' => $validated['support'] ?? [],
-            'other_support' => $validated['other_support'] ?? null,
-            'additional_comments' => $validated['additional_comments'] ?? null,
-        ];
-        
-        // Create submission
+
         \App\Models\StudentFormSubmission::create([
             'student_id' => Auth::id(),
-            'form_type' => 'reintegration_clearance',
-            'form_title' => 'Learner Reintegration Clearance',
-            'form_data' => $formData,
+            'form_type' => 'personal_inventory',
+            'form_title' => 'Personal Inventory Form (Annex C)',
+            'form_data' => $request->form_data,
             'status' => 'submitted',
         ]);
-        
+
         return redirect()->route('student.new-here')
-            ->with('success', 'Your Learner Reintegration Clearance form has been submitted successfully! A counselor will review it soon.');
+            ->with('success', 'Your Personal Inventory form has been submitted successfully! A counselor will review it soon.');
     }
     
     public function viewNewHere($id)
     {
         $submission = \App\Models\StudentFormSubmission::where('student_id', Auth::id())
             ->where('id', $id)
-            ->where('form_type', 'reintegration_clearance')
+            ->where('form_type', 'personal_inventory')
             ->firstOrFail();
         
         return view('student.new-here.view', compact('submission'));
@@ -713,15 +695,65 @@ class StudentController extends Controller
             ->orderBy('created_at', 'desc')
             ->get();
 
-        // Get featured submissions (approved and featured)
-        $featuredSubmissions = \App\Models\StudentSubmission::with('student')
-            ->where('status', 'approved')
-            ->where('is_featured', true)
-            ->orderBy('created_at', 'desc')
-            ->take(6)
-            ->get();
+        // Get featured submissions (approved and featured) with pagination/limit
+        $showAllFeatured = request()->get('show_all_featured', false);
+        
+        if ($showAllFeatured) {
+            // Show all featured submissions with pagination
+            $featuredSubmissions = \App\Models\StudentSubmission::with('student')
+                ->where('status', 'approved')
+                ->where('is_featured', true)
+                ->orderBy('created_at', 'desc')
+                ->paginate(12, ['*'], 'featured_page');
+        } else {
+            // Show only first 6 featured submissions
+            $featuredSubmissions = \App\Models\StudentSubmission::with('student')
+                ->where('status', 'approved')
+                ->where('is_featured', true)
+                ->orderBy('created_at', 'desc')
+                ->limit(6)
+                ->get();
+            
+            // Count total for "show more" button
+            $totalFeaturedSubmissions = \App\Models\StudentSubmission::where('status', 'approved')
+                ->where('is_featured', true)
+                ->count();
+        }
 
-        return view('student.resources.index', compact('mySubmissions', 'featuredSubmissions'));
+        // Get Future Me resources uploaded by counselors (paginated or limited)
+        $showAll = request()->get('show_all', false);
+        
+        if ($showAll) {
+            // Show all resources with pagination
+            $futureMeResources = \App\Models\Resource::with('uploader')
+                ->where('category', 'future_me')
+                ->where('is_active', true)
+                ->orderBy('created_at', 'desc')
+                ->paginate(12);
+        } else {
+            // Show only first 6 resources
+            $futureMeResources = \App\Models\Resource::with('uploader')
+                ->where('category', 'future_me')
+                ->where('is_active', true)
+                ->orderBy('created_at', 'desc')
+                ->limit(6)
+                ->get();
+            
+            // Count total for "show more" button
+            $totalFutureMeResources = \App\Models\Resource::where('category', 'future_me')
+                ->where('is_active', true)
+                ->count();
+        }
+
+        return view('student.resources.index', compact(
+            'mySubmissions', 
+            'featuredSubmissions', 
+            'futureMeResources',
+            'showAll',
+            'showAllFeatured',
+            'totalFutureMeResources',
+            'totalFeaturedSubmissions'
+        ));
     }
 
     public function realTalk()

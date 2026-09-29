@@ -1,269 +1,352 @@
 @extends('layouts.dashboard')
 
-@section('title', 'Learner Reintegration Clearance')
+@section('title', 'Personal Inventory Form')
 
 @section('content')
 @include('student.partials.modern-styles')
 
-<!-- Back Button -->
-<div style="margin-bottom: 1.5rem;">
-    <a href="{{ route('student.new-here') }}" class="modern-btn modern-btn-secondary">
-        <i class="bi bi-arrow-left"></i>
-        <span>Back</span>
-    </a>
-</div>
-
 <!-- Page Header -->
-<div class="modern-card mb-4" style="text-align: center; padding: 2rem;">
-    <h2 class="fw-bold mb-2" style="color: var(--green); font-size: 1.75rem;">LEARNER REINTEGRATION CLEARANCE</h2>
-    <p class="text-muted mb-0" style="font-size: 1.05rem;">For Return to Regular Classroom Participation</p>
+<div class="modern-page-header mb-4" style="padding: 1.5rem;">
+    <div class="modern-page-header-compact">
+        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+            <i class="bi bi-person-lines-fill"></i>
+        </div>
+        <div>
+            <h1 class="modern-page-title" style="font-size: 1.5rem;">Personal Inventory Form</h1>
+            <p class="modern-page-subtitle">Annex C - Help us know you better</p>
+        </div>
+    </div>
 </div>
 
-<form method="POST" action="{{ route('student.new-here.submit') }}">
+<!-- Instructions -->
+<div class="modern-alert modern-alert-info mb-4">
+    <div class="modern-alert-icon">
+        <i class="bi bi-info-circle-fill"></i>
+    </div>
+    <div>
+        <h6 style="font-weight: 700; margin-bottom: 0.5rem; color: var(--green);">Confidentiality</h6>
+        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">
+            The information provided in this form will be used for guidance and counseling services only. It will be treated with strict confidentiality.
+        </p>
+    </div>
+</div>
+
+<form method="POST" action="{{ route('student.new-here.submit') }}" id="personalInventoryForm">
     @csrf
 
-    <!-- Basic Information -->
-    <div class="modern-card mb-4">
-        <h6 class="fw-bold mb-3" style="color: #111827;">
-            <i class="bi bi-person-fill me-2" style="color: var(--green);"></i>Learner Information
-        </h6>
-        
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Name of Learner <span class="text-danger">*</span></label>
-                <input type="text" class="form-control modern-input @error('learner_name') is-invalid @enderror" 
-                       name="learner_name" value="{{ old('learner_name', auth()->user()->name) }}" required>
-                @error('learner_name')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+    <div class="row" style="gap: 0;">
+        <div class="col-12">
+            
+            <!-- I. PERSONAL INFORMATION -->
+            <div class="modern-card mb-4" style="padding: 1.5rem;">
+                <div class="modern-section-header" style="padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div class="modern-section-icon" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+                        <i class="bi bi-person-badge"></i>
+                    </div>
+                    <h3 class="modern-section-title" style="font-size: 1rem;">I. Personal Information</h3>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="modern-form-label">
+                        <span>Name</span>
+                        <span class="text-danger">*</span>
+                    </label>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <input type="text" class="form-control modern-form-control" name="form_data[last_name]" placeholder="Last Name" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control modern-form-control" name="form_data[first_name]" placeholder="First Name" required>
+                        </div>
+                        <div class="col-md-4">
+                            <input type="text" class="form-control modern-form-control" name="form_data[middle_name]" placeholder="Middle Name">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="modern-form-label">
+                            <span>Date of Birth</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="date" class="form-control modern-form-control" name="form_data[date_of_birth]" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">
+                            <span>Age</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="number" class="form-control modern-form-control" name="form_data[age]" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">
+                            <span>Sex</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="form_data[sex]" value="Male" id="sex_male" required>
+                                <label class="form-check-label" for="sex_male">Male</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="form_data[sex]" value="Female" id="sex_female" required>
+                                <label class="form-check-label" for="sex_female">Female</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="modern-form-label">
+                            <span>Place of Birth</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[place_of_birth]" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="modern-form-label">
+                            <span>Religion</span>
+                        </label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[religion]">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">
+                        <span>Complete Address</span>
+                        <span class="text-danger">*</span>
+                    </label>
+                    <textarea class="form-control modern-form-control" name="form_data[address]" rows="2" required></textarea>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="modern-form-label">
+                            <span>Contact Number</span>
+                        </label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[contact_number]">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="modern-form-label">
+                            <span>Email Address</span>
+                        </label>
+                        <input type="email" class="form-control modern-form-control" name="form_data[email]">
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="modern-form-label">
+                            <span>Grade & Section</span>
+                            <span class="text-danger">*</span>
+                        </label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[grade_section]" placeholder="e.g., Grade 7 - A" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="modern-form-label">
+                            <span>LRN (Learner Reference Number)</span>
+                        </label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[lrn]">
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Grade & Section <span class="text-danger">*</span></label>
-                <input type="text" class="form-control modern-input @error('grade_section') is-invalid @enderror" 
-                       name="grade_section" value="{{ old('grade_section') }}" 
-                       placeholder="e.g., Grade 11 - STEM A" required>
-                @error('grade_section')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <!-- II. FAMILY BACKGROUND -->
+            <div class="modern-card mb-4" style="padding: 1.5rem;">
+                <div class="modern-section-header" style="padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div class="modern-section-icon" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+                        <i class="bi bi-people-fill"></i>
+                    </div>
+                    <h3 class="modern-section-title" style="font-size: 1rem;">II. Family Background</h3>
+                </div>
+
+                <!-- Father's Information -->
+                <h6 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem;">Father's Information</h6>
+                
+                <div class="mb-3">
+                    <label class="modern-form-label">Father's Full Name</label>
+                    <input type="text" class="form-control modern-form-control" name="form_data[father_name]">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Age</label>
+                        <input type="number" class="form-control modern-form-control" name="form_data[father_age]">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Occupation</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[father_occupation]">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Contact Number</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[father_contact]">
+                    </div>
+                </div>
+
+                <hr style="margin: 1.5rem 0; border-color: rgba(0, 0, 0, 0.08);">
+
+                <!-- Mother's Information -->
+                <h6 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem;">Mother's Information</h6>
+                
+                <div class="mb-3">
+                    <label class="modern-form-label">Mother's Full Name</label>
+                    <input type="text" class="form-control modern-form-control" name="form_data[mother_name]">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Age</label>
+                        <input type="number" class="form-control modern-form-control" name="form_data[mother_age]">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Occupation</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[mother_occupation]">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Contact Number</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[mother_contact]">
+                    </div>
+                </div>
+
+                <hr style="margin: 1.5rem 0; border-color: rgba(0, 0, 0, 0.08);">
+
+                <!-- Guardian Information (if applicable) -->
+                <h6 style="font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem;">Guardian Information (if applicable)</h6>
+                
+                <div class="mb-3">
+                    <label class="modern-form-label">Guardian's Full Name</label>
+                    <input type="text" class="form-control modern-form-control" name="form_data[guardian_name]">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Relationship</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[guardian_relationship]" placeholder="e.g., Aunt, Uncle">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Occupation</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[guardian_occupation]">
+                    </div>
+                    <div class="col-md-4">
+                        <label class="modern-form-label">Contact Number</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[guardian_contact]">
+                    </div>
+                </div>
+
+                <hr style="margin: 1.5rem 0; border-color: rgba(0, 0, 0, 0.08);">
+
+                <!-- Number of Siblings -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <label class="modern-form-label">Number of Siblings</label>
+                        <input type="number" class="form-control modern-form-control" name="form_data[number_of_siblings]" min="0">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="modern-form-label">Birth Order</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[birth_order]" placeholder="e.g., 1st, 2nd, 3rd">
+                    </div>
+                </div>
             </div>
 
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Reason for Intervention/Suspension <span class="text-danger">*</span></label>
-                <input type="text" class="form-control modern-input @error('reason') is-invalid @enderror" 
-                       name="reason" value="{{ old('reason') }}" 
-                       placeholder="Brief description" required>
-                @error('reason')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <!-- III. EDUCATIONAL BACKGROUND -->
+            <div class="modern-card mb-4" style="padding: 1.5rem;">
+                <div class="modern-section-header" style="padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div class="modern-section-icon" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+                        <i class="bi bi-mortarboard-fill"></i>
+                    </div>
+                    <h3 class="modern-section-title" style="font-size: 1rem;">III. Educational Background</h3>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">Last School Attended (Elementary)</label>
+                    <input type="text" class="form-control modern-form-control" name="form_data[last_elementary_school]">
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">School Address</label>
+                    <input type="text" class="form-control modern-form-control" name="form_data[elementary_school_address]">
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="modern-form-label">Year Graduated</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[elementary_year_graduated]" placeholder="e.g., 2023">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="modern-form-label">General Average</label>
+                        <input type="text" class="form-control modern-form-control" name="form_data[elementary_general_average]">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">Honors/Awards Received</label>
+                    <textarea class="form-control modern-form-control" name="form_data[honors_awards]" rows="2" placeholder="List any honors, awards, or recognitions received"></textarea>
+                </div>
             </div>
 
-            <div class="col-md-6">
-                <label class="form-label fw-semibold">Date of Return <span class="text-danger">*</span></label>
-                <input type="date" class="form-control modern-input @error('return_date') is-invalid @enderror" 
-                       name="return_date" value="{{ old('return_date') }}" required>
-                @error('return_date')
-                    <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
+            <!-- IV. INTERESTS & HOBBIES -->
+            <div class="modern-card mb-4" style="padding: 1.5rem;">
+                <div class="modern-section-header" style="padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div class="modern-section-icon" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+                        <i class="bi bi-stars"></i>
+                    </div>
+                    <h3 class="modern-section-title" style="font-size: 1rem;">IV. Interests & Hobbies</h3>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">What are your hobbies and interests?</label>
+                    <textarea class="form-control modern-form-control" name="form_data[hobbies_interests]" rows="3" placeholder="e.g., reading, sports, music, arts, etc."></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">What are your strengths and talents?</label>
+                    <textarea class="form-control modern-form-control" name="form_data[strengths_talents]" rows="3" placeholder="What are you good at?"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">What career or course are you interested in pursuing?</label>
+                    <textarea class="form-control modern-form-control" name="form_data[career_interests]" rows="2"></textarea>
+                </div>
             </div>
+
+            <!-- V. SUPPORT NEEDS -->
+            <div class="modern-card mb-4" style="padding: 1.5rem;">
+                <div class="modern-section-header" style="padding-bottom: 0.75rem; margin-bottom: 1rem;">
+                    <div class="modern-section-icon" style="width: 40px; height: 40px; font-size: 1.1rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
+                        <i class="bi bi-heart-pulse-fill"></i>
+                    </div>
+                    <h3 class="modern-section-title" style="font-size: 1rem;">V. Support Needs</h3>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">Do you have any concerns you'd like to discuss with a counselor?</label>
+                    <textarea class="form-control modern-form-control" name="form_data[concerns]" rows="3" placeholder="Optional - Share any concerns about academics, personal life, or relationships"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="modern-form-label">Is there any additional information you'd like us to know?</label>
+                    <textarea class="form-control modern-form-control" name="form_data[additional_info]" rows="3" placeholder="Optional - Any other information that might help us support you better"></textarea>
+                </div>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="modern-card mb-4" style="padding: 1.5rem;">
+                <div class="d-flex gap-2">
+                    <button type="submit" class="modern-btn modern-btn-primary" style="padding: 1rem; font-size: 1.05rem; justify-content: center; flex: 1;">
+                        <i class="bi bi-check-circle"></i>
+                        <span>Submit Personal Inventory Form</span>
+                    </button>
+                    <a href="{{ route('student.new-here') }}" class="modern-btn modern-btn-secondary" style="padding: 1rem; font-size: 1.05rem; justify-content: center;">
+                        <i class="bi bi-x-circle"></i>
+                        <span>Cancel</span>
+                    </a>
+                </div>
+            </div>
+
         </div>
-    </div>
-
-    <!-- Reintegration Checklist -->
-    <div class="modern-card mb-4">
-        <h6 class="fw-bold mb-3" style="color: #111827;">
-            <i class="bi bi-clipboard-check me-2" style="color: var(--green);"></i>Reintegration Checklist
-        </h6>
-        <p class="text-muted small mb-3">Please indicate your understanding and readiness for each requirement:</p>
-
-        <div class="table-responsive">
-            <table class="table table-bordered">
-                <thead style="background: rgba(30, 122, 74, 0.08);">
-                    <tr>
-                        <th style="width: 50%;">Requirement</th>
-                        <th style="width: 10%; text-align: center;">Aware</th>
-                        <th style="width: 40%;">Remarks (Optional)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <strong>1. Case Review</strong><br>
-                            <small class="text-muted">I understand my situation will be reviewed.</small>
-                        </td>
-                        <td style="text-align: center;">
-                            <input type="checkbox" class="form-check-input" name="checklist[case_review]" value="1" {{ old('checklist.case_review') ? 'checked' : '' }}>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" name="remarks[case_review]" value="{{ old('remarks.case_review') }}" placeholder="Optional notes">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>2. Intervention</strong><br>
-                            <small class="text-muted">I am willing to receive appropriate intervention or support.</small>
-                        </td>
-                        <td style="text-align: center;">
-                            <input type="checkbox" class="form-check-input" name="checklist[intervention]" value="1" {{ old('checklist.intervention') ? 'checked' : '' }}>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" name="remarks[intervention]" value="{{ old('remarks.intervention') }}" placeholder="Optional notes">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>3. Learner Conference</strong><br>
-                            <small class="text-muted">I am prepared to attend orientation regarding expectations.</small>
-                        </td>
-                        <td style="text-align: center;">
-                            <input type="checkbox" class="form-check-input" name="checklist[conference]" value="1" {{ old('checklist.conference') ? 'checked' : '' }}>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" name="remarks[conference]" value="{{ old('remarks.conference') }}" placeholder="Optional notes">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>4. Parent Coordination</strong><br>
-                            <small class="text-muted">My parent/guardian has been informed or will be consulted.</small>
-                        </td>
-                        <td style="text-align: center;">
-                            <input type="checkbox" class="form-check-input" name="checklist[parent_coord]" value="1" {{ old('checklist.parent_coord') ? 'checked' : '' }}>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" name="remarks[parent_coord]" value="{{ old('remarks.parent_coord') }}" placeholder="Optional notes">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>5. Readiness Assessment</strong><br>
-                            <small class="text-muted">I believe I am ready to return with appropriate support.</small>
-                        </td>
-                        <td style="text-align: center;">
-                            <input type="checkbox" class="form-check-input" name="checklist[readiness]" value="1" {{ old('checklist.readiness') ? 'checked' : '' }}>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" name="remarks[readiness]" value="{{ old('remarks.readiness') }}" placeholder="Optional notes">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <strong>6. Follow-Up Plan</strong><br>
-                            <small class="text-muted">I understand monitoring or follow-up support may be needed.</small>
-                        </td>
-                        <td style="text-align: center;">
-                            <input type="checkbox" class="form-check-input" name="checklist[followup]" value="1" {{ old('checklist.followup') ? 'checked' : '' }}>
-                        </td>
-                        <td>
-                            <input type="text" class="form-control form-control-sm" name="remarks[followup]" value="{{ old('remarks.followup') }}" placeholder="Optional notes">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- Support Needs -->
-    <div class="modern-card mb-4">
-        <h6 class="fw-bold mb-3" style="color: #111827;">
-            <i class="bi bi-hand-thumbs-up me-2" style="color: var(--green);"></i>Follow-Up Support Needed
-        </h6>
-        <p class="text-muted small mb-3">Select any support you feel you might need:</p>
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="support[]" value="counseling" id="support1" {{ in_array('counseling', old('support', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="support1">
-                        <i class="bi bi-chat-dots text-primary me-1"></i> Counseling Follow-Up
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="support[]" value="teacher_monitoring" id="support2" {{ in_array('teacher_monitoring', old('support', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="support2">
-                        <i class="bi bi-person-video3 text-success me-1"></i> Teacher Monitoring
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="support[]" value="parent_coordination" id="support3" {{ in_array('parent_coordination', old('support', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="support3">
-                        <i class="bi bi-people text-info me-1"></i> Parent/Guardian Coordination
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="support[]" value="behavior_monitoring" id="support4" {{ in_array('behavior_monitoring', old('support', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="support4">
-                        <i class="bi bi-clipboard-check text-warning me-1"></i> Behavior Monitoring
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="support[]" value="academic_support" id="support5" {{ in_array('academic_support', old('support', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="support5">
-                        <i class="bi bi-book text-danger me-1"></i> Academic Support
-                    </label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="form-check">
-                    <input class="form-check-input" type="checkbox" name="support[]" value="other" id="support6" onclick="toggleOtherSupport()" {{ in_array('other', old('support', [])) ? 'checked' : '' }}>
-                    <label class="form-check-label" for="support6">
-                        <i class="bi bi-three-dots text-secondary me-1"></i> Other
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div id="otherSupportField" class="mt-3" style="display: {{ in_array('other', old('support', [])) ? 'block' : 'none' }};">
-            <label class="form-label fw-semibold">Please specify:</label>
-            <input type="text" class="form-control modern-input" name="other_support" value="{{ old('other_support') }}" placeholder="Describe the support you need">
-        </div>
-    </div>
-
-    <!-- Additional Comments -->
-    <div class="modern-card mb-4">
-        <h6 class="fw-bold mb-3" style="color: #111827;">
-            <i class="bi bi-chat-left-text me-2" style="color: var(--green);"></i>Additional Comments or Concerns (Optional)
-        </h6>
-        <textarea class="form-control modern-input" name="additional_comments" rows="5" placeholder="Share any additional information that might help the counselor understand your situation better...">{{ old('additional_comments') }}</textarea>
-    </div>
-
-    <!-- Submit Button -->
-    <div class="d-grid gap-2 mb-4">
-        <button type="submit" class="modern-btn modern-btn-primary" style="padding: 1rem; font-size: 1.05rem; justify-content: center;">
-            <i class="bi bi-send-fill"></i>
-            <span>Submit Reintegration Clearance Form</span>
-        </button>
-        <a href="{{ route('student.new-here') }}" class="modern-btn modern-btn-secondary" style="padding: 1rem; font-size: 1.05rem; justify-content: center;">
-            <i class="bi bi-x-circle"></i>
-            <span>Cancel</span>
-        </a>
-    </div>
-
-    <!-- Note -->
-    <div class="alert" style="background: rgba(59, 130, 246, 0.08); border: 1px solid rgba(59, 130, 246, 0.2); border-radius: 12px;">
-        <h6 class="fw-bold mb-2" style="color: #3b82f6;">
-            <i class="bi bi-info-circle-fill me-2"></i>Important Note
-        </h6>
-        <small class="text-muted">
-            This clearance request will be reviewed by the guidance counselor. The final clearance decision will be based on your current assessment and intervention outcomes. You may be subject to continued monitoring and appropriate support following reintegration.
-        </small>
     </div>
 </form>
-
-<script>
-function toggleOtherSupport() {
-    const checkbox = document.getElementById('support6');
-    const field = document.getElementById('otherSupportField');
-    field.style.display = checkbox.checked ? 'block' : 'none';
-}
-</script>
 
 @endsection

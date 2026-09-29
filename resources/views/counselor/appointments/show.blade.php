@@ -80,6 +80,7 @@
 @php
     // Determine if this is a teacher request based on student role
     $isTeacher = $appointment->student && $appointment->student->role && $appointment->student->role->name === 'teacher';
+    $clientName = $appointment->client_display_name;
 @endphp
 
 <!-- Back Button & Actions -->
@@ -146,14 +147,14 @@
                             </small>
                             <div class="d-flex align-items-center gap-2">
                                 <div class="user-avatar" style="width:36px;height:36px;font-size:.8rem;">
-                                    {{ strtoupper(substr($appointment->student->name, 0, 2)) }}
+                                    {{ strtoupper(substr($clientName, 0, 2)) }}
                                 </div>
                                 <div>
-                                    <div class="fw-semibold small">{{ $appointment->student->name }}</div>
-                                    <div class="text-muted" style="font-size:.72rem;">{{ $appointment->student->email }}</div>
+                                    <div class="fw-semibold small">{{ $clientName }}</div>
+                                    <div class="text-muted" style="font-size:.72rem;">{{ $appointment->student?->email ?? 'No linked account (walk-in client)' }}</div>
                                 </div>
                             </div>
-                            @if(!$isTeacher && $appointment->student->student_id)
+                            @if(!$isTeacher && $appointment->student?->student_id)
                                 <div class="mt-2"><small class="text-muted">ID: {{ $appointment->student->student_id }}</small></div>
                             @endif
                         </div>
@@ -172,11 +173,11 @@
                         <div class="p-3 bg-light rounded">
                             <small class="text-muted d-block mb-1">Source</small>
                             @if($appointment->concern_id)
-                                <span class="badge" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;">
+                                <span class="badge" style="background:#eff6ff;color:#0f766e;border:1px solid #99f6e4;">
                                     <i class="bi bi-chat-left-heart me-1"></i>From Concern
                                 </span>
                             @elseif($isTeacher)
-                                <span class="badge" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;">
+                                <span class="badge" style="background:#eff6ff;color:#0f766e;border:1px solid #99f6e4;">
                                     <i class="bi bi-person-badge me-1"></i>Teacher Request
                                 </span>
                             @else
@@ -374,7 +375,7 @@
                 <div class="d-flex flex-column gap-3">
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">{{ $isTeacher ? 'Teacher' : 'Student' }}</small>
-                        <span class="fw-semibold small">{{ $appointment->student->name }}</span>
+                        <span class="fw-semibold small">{{ $clientName }}</span>
                     </div>
                     <div>
                         <small class="text-muted d-block" style="font-size:.72rem;text-transform:uppercase;letter-spacing:.4px;">Scheduled On</small>

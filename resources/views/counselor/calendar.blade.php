@@ -136,14 +136,10 @@
                 <div class="modal-body" style="padding: 1.5rem;">
                     <div class="mb-3">
                         <label class="form-label fw-semibold" style="color: var(--navy);">
-                            Select Student <span class="text-danger">*</span>
+                            Client Name <span class="text-danger">*</span>
                         </label>
-                        <select class="form-control" name="student_id" id="studentSelect" required style="border-radius: 10px;">
-                            <option value="">Choose a student...</option>
-                            @foreach(\App\Models\User::whereHas('role', function($q) { $q->where('name', 'student'); })->where('is_active', true)->orderBy('name')->get() as $student)
-                                <option value="{{ $student->id }}">{{ $student->name }} - {{ $student->email }}</option>
-                            @endforeach
-                        </select>
+                        <input type="text" class="form-control" name="client_name" id="clientName" required style="border-radius: 10px;" placeholder="Enter client's full name">
+                        <small class="text-muted">Enter the name of the student or client for this appointment</small>
                     </div>
 
                     <div class="row mb-3">
@@ -436,6 +432,9 @@ function showAppointmentDetails(appointmentId) {
         const student = appointment.student;
         const concern = appointment.concern;
         
+        // Walk-in appointments have no linked student account — fall back to client_name
+        const clientName = student ? student.name : (appointment.client_name || 'Unknown Client');
+        const clientEmail = student ? student.email : 'No linked account';
         let statusBadge = '';
         switch(appointment.status) {
             case 'scheduled': statusBadge = 'modern-badge-info'; break;
@@ -452,8 +451,8 @@ function showAppointmentDetails(appointmentId) {
             </div>
             <div style="margin-bottom: 1rem;">
                 <small style="color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Student</small>
-                <strong style="color: var(--navy);">${student.name}</strong><br>
-                <small style="color: var(--text-muted);">${student.email}</small>
+                <strong style="color: var(--navy);">${clientName}</strong><br>
+                <small style="color: var(--text-muted);">${clientEmail}</small>
             </div>
             <div style="margin-bottom: 1rem;">
                 <small style="color: var(--text-muted); display: block; margin-bottom: 0.25rem;">Date & Time</small>

@@ -17,15 +17,15 @@
                 <td class="px-4 py-3">
                     <div class="d-flex align-items-center gap-2">
                         <div class="user-avatar" style="{{ $type === 'teacher' ? 'background:linear-gradient(135deg,#6366f1,#4f46e5);' : '' }}">
-                            {{ strtoupper(substr($appointment->student->name, 0, 2)) }}
+                            {{ strtoupper(substr($appointment->client_display_name, 0, 2)) }}
                         </div>
                         <div>
-                            <div class="fw-semibold small">{{ $appointment->student->name }}</div>
+                            <div class="fw-semibold small">{{ $appointment->client_display_name }}</div>
                             <div class="text-muted" style="font-size:.72rem;">
                                 @if($type === 'teacher')
                                     <span class="badge" style="background:#ede9fe;color:#4f46e5;font-size:.65rem;">Teacher</span>
                                 @else
-                                    <span class="badge" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#1e7a4a;font-size:.65rem;">Student</span>
+                                    <span class="badge" style="background:#eff6ff;color:#1e7a4a;font-size:.65rem;">Student</span>
                                 @endif
                             </div>
                         </div>
@@ -37,11 +37,11 @@
                 </td>
                 <td class="py-3 table-hide-mobile">
                     @if($appointment->concern_id)
-                        <span class="badge mb-1" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
+                        <span class="badge mb-1" style="background:#eff6ff;color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
                             <i class="bi bi-chat-left-heart me-1"></i>From Concern
                         </span>
                     @elseif($type === 'teacher')
-                        <span class="badge mb-1" style="background: "rgba(30,122,74,$($args[0].Groups[1].Value))" ;color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
+                        <span class="badge mb-1" style="background:#eff6ff;color:#0f766e;border:1px solid #99f6e4;font-size:.72rem;">
                             <i class="bi bi-person-badge me-1"></i>Teacher Request
                         </span>
                     @else

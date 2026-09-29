@@ -1,220 +1,183 @@
 @extends('layouts.dashboard')
 
-@section('title', 'View Clearance Submission')
+@section('title', 'Personal Inventory Submission')
 
 @section('content')
 @include('student.partials.modern-styles')
 
 <!-- Back Button -->
-<div style="margin-bottom: 1.5rem;">
-    <a href="{{ route('student.new-here') }}" class="modern-btn modern-btn-secondary">
+<div class="mb-3">
+    <a href="{{ route('student.new-here') }}" class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
         <i class="bi bi-arrow-left"></i>
         <span>Back to New Here</span>
     </a>
 </div>
 
-<!-- Status Banner -->
-<div class="modern-card mb-4" style="text-align: center; padding: 1.5rem; background: 
-    {{ $submission->status === 'approved' ? 'linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05))' : 
-       ($submission->status === 'submitted' ? 'linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05))' : 
-       'linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.05))') }};">
-    <h4 class="fw-bold mb-2">
-        @if($submission->status === 'approved')
-            <i class="bi bi-check-circle-fill" style="color: #10b981;"></i> Clearance Approved
-        @elseif($submission->status === 'submitted')
-            <i class="bi bi-clock-fill" style="color: #f59e0b;"></i> Pending Review
-        @else
-            <i class="bi bi-exclamation-circle-fill" style="color: #ef4444;"></i> Needs Revision
-        @endif
-    </h4>
-    <p class="text-muted mb-0">Submitted on {{ $submission->created_at->format('F d, Y h:i A') }}</p>
-    @if($submission->reviewer)
-        <p class="text-muted mb-0">Reviewed by: <strong>{{ $submission->reviewer->name }}</strong></p>
-    @endif
-</div>
-
-<!-- Page Header -->
-<div class="modern-card mb-4" style="text-align: center; padding: 2rem;">
-    <h2 class="fw-bold mb-2" style="color: var(--green); font-size: 1.75rem;">LEARNER REINTEGRATION CLEARANCE</h2>
-    <p class="text-muted mb-0" style="font-size: 1.05rem;">For Return to Regular Classroom Participation</p>
-</div>
-
-@php
-    $data = $submission->form_data;
-@endphp
-
-<!-- Basic Information -->
-<div class="modern-card mb-4">
-    <h6 class="fw-bold mb-3" style="color: #111827;">
-        <i class="bi bi-person-fill me-2" style="color: var(--green);"></i>Learner Information
-    </h6>
-    
-    <div class="row g-3">
-        <div class="col-md-6">
-            <div class="p-3 bg-light rounded">
-                <small class="text-muted d-block mb-1">Name of Learner</small>
-                <strong>{{ $data['learner_name'] }}</strong>
+<div class="row" style="gap: 0;">
+    <div class="col-lg-10 mx-auto">
+        <!-- Header Card -->
+        <div class="modern-card mb-3" style="padding: 1.5rem;">
+            <div style="display: flex; align-items: start; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <h5 style="font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem;">{{ $submission->form_title }}</h5>
+                    <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0;">
+                        <i class="bi bi-calendar3"></i>
+                        Submitted on {{ $submission->created_at->format('F d, Y \a\t g:i A') }}
+                    </p>
+                </div>
+                <div>
+                    @if($submission->status === 'submitted')
+                        <span class="modern-badge modern-badge-warning">Pending Review</span>
+                    @elseif($submission->status === 'reviewed')
+                        <span class="modern-badge modern-badge-success">Reviewed</span>
+                    @elseif($submission->status === 'requires_action')
+                        <span class="modern-badge modern-badge-danger">Action Required</span>
+                    @endif
+                </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="p-3 bg-light rounded">
-                <small class="text-muted d-block mb-1">Grade & Section</small>
-                <strong>{{ $data['grade_section'] }}</strong>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="p-3 bg-light rounded">
-                <small class="text-muted d-block mb-1">Reason for Intervention/Suspension</small>
-                <strong>{{ $data['reason'] }}</strong>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="p-3 bg-light rounded">
-                <small class="text-muted d-block mb-1">Date of Return</small>
-                <strong>{{ \Carbon\Carbon::parse($data['return_date'])->format('F d, Y') }}</strong>
-            </div>
-        </div>
-    </div>
-</div>
 
-<!-- Reintegration Checklist -->
-<div class="modern-card mb-4">
-    <h6 class="fw-bold mb-3" style="color: #111827;">
-        <i class="bi bi-clipboard-check me-2" style="color: var(--green);"></i>Reintegration Checklist
-    </h6>
-    
-    <div class="table-responsive">
-        <table class="table table-bordered">
-            <thead style="background: rgba(30, 122, 74, 0.08);">
-                <tr>
-                    <th style="width: 50%;">Requirement</th>
-                    <th style="width: 10%; text-align: center;">Status</th>
-                    <th style="width: 40%;">Remarks</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><strong>1. Case Review</strong></td>
-                    <td style="text-align: center;">
-                        @if(isset($data['checklist']['case_review']) && $data['checklist']['case_review'])
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                        @else
-                            <i class="bi bi-x-circle text-muted"></i>
-                        @endif
-                    </td>
-                    <td>{{ $data['remarks']['case_review'] ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>2. Intervention</strong></td>
-                    <td style="text-align: center;">
-                        @if(isset($data['checklist']['intervention']) && $data['checklist']['intervention'])
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                        @else
-                            <i class="bi bi-x-circle text-muted"></i>
-                        @endif
-                    </td>
-                    <td>{{ $data['remarks']['intervention'] ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>3. Learner Conference</strong></td>
-                    <td style="text-align: center;">
-                        @if(isset($data['checklist']['conference']) && $data['checklist']['conference'])
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                        @else
-                            <i class="bi bi-x-circle text-muted"></i>
-                        @endif
-                    </td>
-                    <td>{{ $data['remarks']['conference'] ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>4. Parent Coordination</strong></td>
-                    <td style="text-align: center;">
-                        @if(isset($data['checklist']['parent_coord']) && $data['checklist']['parent_coord'])
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                        @else
-                            <i class="bi bi-x-circle text-muted"></i>
-                        @endif
-                    </td>
-                    <td>{{ $data['remarks']['parent_coord'] ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>5. Readiness Assessment</strong></td>
-                    <td style="text-align: center;">
-                        @if(isset($data['checklist']['readiness']) && $data['checklist']['readiness'])
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                        @else
-                            <i class="bi bi-x-circle text-muted"></i>
-                        @endif
-                    </td>
-                    <td>{{ $data['remarks']['readiness'] ?? '-' }}</td>
-                </tr>
-                <tr>
-                    <td><strong>6. Follow-Up Plan</strong></td>
-                    <td style="text-align: center;">
-                        @if(isset($data['checklist']['followup']) && $data['checklist']['followup'])
-                            <i class="bi bi-check-circle-fill text-success"></i>
-                        @else
-                            <i class="bi bi-x-circle text-muted"></i>
-                        @endif
-                    </td>
-                    <td>{{ $data['remarks']['followup'] ?? '-' }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-</div>
-
-<!-- Support Needs -->
-<div class="modern-card mb-4">
-    <h6 class="fw-bold mb-3" style="color: #111827;">
-        <i class="bi bi-hand-thumbs-up me-2" style="color: var(--green);"></i>Follow-Up Support Requested
-    </h6>
-    
-    @if(isset($data['support']) && count($data['support']) > 0)
-        <div class="row g-2">
-            @foreach($data['support'] as $support)
-                <div class="col-md-6">
-                    <div class="p-2 rounded" style="background: rgba(30, 122, 74, 0.05); border-left: 3px solid var(--green);">
-                        @if($support === 'counseling')
-                            <i class="bi bi-chat-dots text-primary me-2"></i> Counseling Follow-Up
-                        @elseif($support === 'teacher_monitoring')
-                            <i class="bi bi-person-video3 text-success me-2"></i> Teacher Monitoring
-                        @elseif($support === 'parent_coordination')
-                            <i class="bi bi-people text-info me-2"></i> Parent/Guardian Coordination
-                        @elseif($support === 'behavior_monitoring')
-                            <i class="bi bi-clipboard-check text-warning me-2"></i> Behavior Monitoring
-                        @elseif($support === 'academic_support')
-                            <i class="bi bi-book text-danger me-2"></i> Academic Support
-                        @else
-                            <i class="bi bi-three-dots text-secondary me-2"></i> Other: {{ $data['other_support'] ?? '' }}
+        <!-- Counselor Feedback (if available) -->
+        @if($submission->counselor_notes)
+            <div class="modern-alert mb-3" style="background: rgba(59, 130, 246, 0.08); border-left: 4px solid #3b82f6;">
+                <div style="display: flex; align-items: start; gap: 0.75rem;">
+                    <i class="bi bi-chat-left-text-fill" style="font-size: 1.25rem; color: #3b82f6; flex-shrink: 0;"></i>
+                    <div style="flex: 1;">
+                        <h6 style="font-size: 0.95rem; font-weight: 700; color: #3b82f6; margin-bottom: 0.5rem;">Counselor's Feedback</h6>
+                        <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0; white-space: pre-wrap;">{{ $submission->counselor_notes }}</p>
+                        @if($submission->reviewed_at)
+                            <small style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 0.5rem;">
+                                <i class="bi bi-clock"></i>
+                                Reviewed on {{ $submission->reviewed_at->format('F d, Y \a\t g:i A') }}
+                            </small>
                         @endif
                     </div>
                 </div>
+            </div>
+        @endif
+
+        <!-- Status Alert -->
+        @if($submission->status === 'submitted')
+            <div class="modern-alert modern-alert-warning mb-3">
+                <div class="modern-alert-icon">
+                    <i class="bi bi-hourglass-split"></i>
+                </div>
+                <span>Your form is pending review by a counselor.</span>
+            </div>
+        @elseif($submission->status === 'reviewed')
+            <div class="modern-alert modern-alert-success mb-3">
+                <div class="modern-alert-icon">
+                    <i class="bi bi-check-circle-fill"></i>
+                </div>
+                <span>Your form has been reviewed by a counselor.</span>
+            </div>
+        @endif
+
+        <!-- Form Data Display -->
+        @if($submission->form_data)
+            
+            @php
+                $fieldLabels = [
+                    // Personal Information
+                    'last_name' => 'Last Name',
+                    'first_name' => 'First Name',
+                    'middle_name' => 'Middle Name',
+                    'date_of_birth' => 'Date of Birth',
+                    'age' => 'Age',
+                    'sex' => 'Sex',
+                    'place_of_birth' => 'Place of Birth',
+                    'religion' => 'Religion',
+                    'address' => 'Complete Address',
+                    'contact_number' => 'Contact Number',
+                    'email' => 'Email Address',
+                    'grade_section' => 'Grade & Section',
+                    'lrn' => 'LRN (Learner Reference Number)',
+                    
+                    // Family Background
+                    'father_name' => 'Father\'s Full Name',
+                    'father_age' => 'Father\'s Age',
+                    'father_occupation' => 'Father\'s Occupation',
+                    'father_contact' => 'Father\'s Contact',
+                    'mother_name' => 'Mother\'s Full Name',
+                    'mother_age' => 'Mother\'s Age',
+                    'mother_occupation' => 'Mother\'s Occupation',
+                    'mother_contact' => 'Mother\'s Contact',
+                    'guardian_name' => 'Guardian\'s Name',
+                    'guardian_relationship' => 'Guardian\'s Relationship',
+                    'guardian_occupation' => 'Guardian\'s Occupation',
+                    'guardian_contact' => 'Guardian\'s Contact',
+                    'number_of_siblings' => 'Number of Siblings',
+                    'birth_order' => 'Birth Order',
+                    
+                    // Educational Background
+                    'last_elementary_school' => 'Last Elementary School',
+                    'elementary_school_address' => 'Elementary School Address',
+                    'elementary_year_graduated' => 'Year Graduated',
+                    'elementary_general_average' => 'General Average',
+                    'honors_awards' => 'Honors/Awards',
+                    
+                    // Interests & Hobbies
+                    'hobbies_interests' => 'Hobbies & Interests',
+                    'strengths_talents' => 'Strengths & Talents',
+                    'career_interests' => 'Career Interests',
+                    
+                    // Support Needs
+                    'concerns' => 'Concerns',
+                    'additional_info' => 'Additional Information',
+                ];
+                
+                $sections = [
+                    'Personal Information' => ['last_name', 'first_name', 'middle_name', 'date_of_birth', 'age', 'sex', 'place_of_birth', 'religion', 'address', 'contact_number', 'email', 'grade_section', 'lrn'],
+                    'Family Background' => ['father_name', 'father_age', 'father_occupation', 'father_contact', 'mother_name', 'mother_age', 'mother_occupation', 'mother_contact', 'guardian_name', 'guardian_relationship', 'guardian_occupation', 'guardian_contact', 'number_of_siblings', 'birth_order'],
+                    'Educational Background' => ['last_elementary_school', 'elementary_school_address', 'elementary_year_graduated', 'elementary_general_average', 'honors_awards'],
+                    'Interests & Hobbies' => ['hobbies_interests', 'strengths_talents', 'career_interests'],
+                    'Support Needs' => ['concerns', 'additional_info'],
+                ];
+            @endphp
+
+            @foreach($sections as $sectionTitle => $fields)
+                <div class="modern-card mb-3" style="padding: 1.5rem;">
+                    <h6 style="font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 2px solid rgba(0, 0, 0, 0.06);">
+                        {{ $sectionTitle }}
+                    </h6>
+
+                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
+                        @foreach($fields as $field)
+                            @if(isset($submission->form_data[$field]))
+                                @php
+                                    $value = $submission->form_data[$field];
+                                    $hasValue = is_array($value) ? !empty($value) : ($value !== null && $value !== '');
+                                @endphp
+                                
+                                @if($hasValue)
+                                    <div style="padding: 0.875rem; background: rgba(248, 250, 252, 0.6); border-radius: 8px; border: 1px solid rgba(0, 0, 0, 0.04);">
+                                        <div style="font-size: 0.75rem; font-weight: 700; color: var(--green); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.5px;">
+                                            {{ $fieldLabels[$field] ?? ucwords(str_replace('_', ' ', $field)) }}
+                                        </div>
+                                        <div style="font-size: 0.9rem; color: var(--navy); line-height: 1.5;">
+                                            @if(is_array($value))
+                                                @foreach($value as $item)
+                                                    <span class="modern-badge modern-badge-secondary" style="margin-right: 0.25rem; margin-bottom: 0.25rem;">{{ $item }}</span>
+                                                @endforeach
+                                            @else
+                                                {{ $value }}
+                                            @endif
+                                        </div>
+                                    </div>
+                                @endif
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
             @endforeach
-        </div>
-    @else
-        <p class="text-muted mb-0">No specific support requested.</p>
-    @endif
-</div>
 
-<!-- Additional Comments -->
-@if(isset($data['additional_comments']) && $data['additional_comments'])
-<div class="modern-card mb-4">
-    <h6 class="fw-bold mb-3" style="color: #111827;">
-        <i class="bi bi-chat-left-text me-2" style="color: var(--green);"></i>Additional Comments
-    </h6>
-    <p class="mb-0" style="white-space: pre-wrap;">{{ $data['additional_comments'] }}</p>
+        @else
+            <div class="modern-card" style="padding: 2rem; text-align: center;">
+                <i class="bi bi-exclamation-circle" style="font-size: 3rem; color: var(--text-muted); opacity: 0.3;"></i>
+                <h6 style="font-size: 1rem; font-weight: 700; color: var(--navy); margin: 1rem 0 0.5rem;">No Data Available</h6>
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin: 0;">No form data could be found for this submission.</p>
+            </div>
+        @endif
+    </div>
 </div>
-@endif
-
-<!-- Counselor Response -->
-@if($submission->counselor_notes)
-<div class="modern-card mb-4" style="background: rgba(59, 130, 246, 0.05); border-left: 4px solid #3b82f6;">
-    <h6 class="fw-bold mb-3" style="color: #3b82f6;">
-        <i class="bi bi-person-badge me-2"></i>Counselor's Notes
-    </h6>
-    <p class="mb-0" style="white-space: pre-wrap;">{{ $submission->counselor_notes }}</p>
-</div>
-@endif
-
 @endsection

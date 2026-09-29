@@ -121,7 +121,7 @@
             @forelse($upcomingAppointments as $appointment)
                 <div class="modern-list-item" style="padding: 1rem 0;">
                     <div style="flex: 1;">
-                        <div style="font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">{{ $appointment->student->name }}</div>
+                        <div style="font-size: 0.95rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem;">{{ $appointment->client_display_name }}</div>
                         <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; font-size: 0.8rem; color: var(--text-muted);">
                             <span><i class="bi bi-calendar3"></i> {{ $appointment->appointment_date->format('M d') }}</span>
                             <span><i class="bi bi-clock"></i> {{ $appointment->appointment_date->format('h:i A') }}</span>

@@ -6,225 +6,163 @@
 @include('student.partials.modern-styles')
 
 <style>
-.resource-header {
-    background: linear-gradient(135deg, var(--green) 0%, var(--green-dark) 100%);
-    color: white;
-    padding: 2rem;
-    border-radius: 16px;
-    margin-bottom: 2rem;
-}
-
-.resource-details-grid {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 2rem;
-}
-
-.resource-meta {
-    background: #f8fafc;
-    border-radius: 12px;
-    padding: 1.5rem;
-}
-
-.resource-meta-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-.resource-meta-item:last-child {
-    border-bottom: none;
-}
-
-.file-preview-card {
-    background: white;
-    border: 2px solid #e5e7eb;
-    border-radius: 12px;
-    padding: 2rem;
-    text-align: center;
-    transition: all 0.2s ease;
-}
-
-.file-preview-card:hover {
-    border-color: var(--green);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-}
-
-.category-badge-large {
-    padding: 0.5rem 1rem;
-    border-radius: 25px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-}
-
-.category-hrg { background: rgba(59, 130, 246, 0.1); color: #1e40af; }
-.category-handbook { background: rgba(16, 185, 129, 0.1); color: #047857; }
-.category-gender_dev { background: rgba(139, 92, 246, 0.1); color: #6d28d9; }
-
-@media (max-width: 1024px) {
-    .resource-details-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    .resource-header { padding: 1.5rem; }
-}
-
 @media (max-width: 768px) {
-    .resource-actions { 
-        flex-direction: column !important; 
-        align-items: stretch !important;
-    }
+    div[style*="grid-template-columns: 1fr 320px"] { display: block !important; }
+    .modern-card { padding: 1rem !important; margin-bottom: 1rem !important; }
+    .modern-btn { width: 100% !important; justify-content: center !important; }
+    div[style*="display: flex"][style*="gap"] { flex-direction: column !important; }
 }
 </style>
 
-<!-- Page Header -->
-<div class="modern-page-header mb-4" style="padding: 1.5rem;">
-    <div class="modern-page-header-compact">
-        <div class="modern-page-icon" style="width: 48px; height: 48px; font-size: 1.25rem; background: linear-gradient(135deg, rgba(30, 122, 74, 0.12), rgba(20, 94, 56, 0.12)); color: var(--green);">
-            <i class="bi bi-file-earmark-text-fill"></i>
-        </div>
-        <div style="flex: 1;">
-            <h1 class="modern-page-title" style="font-size: 1.5rem;">Resource Details</h1>
-            <p class="modern-page-subtitle">View and manage resource information</p>
-        </div>
-        <a href="{{ route('counselor.resources.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
-            <i class="bi bi-arrow-left"></i> Back to Resources
-        </a>
-    </div>
+<!-- Back Button -->
+<div style="margin-bottom: 1.5rem;">
+    <a href="{{ route('counselor.resources.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.625rem 1rem; font-size: 0.875rem;">
+        <i class="bi bi-arrow-left me-2"></i>Back to Resources
+    </a>
 </div>
 
-<div class="resource-details-grid">
+<div style="display: grid; grid-template-columns: 1fr 320px; gap: 1.5rem;">
     <!-- Main Content -->
     <div>
-        <!-- Resource Header -->
-        <div class="resource-header">
-            <div style="display: flex; align-items: start; justify-content: between; gap: 1rem; margin-bottom: 1.5rem;">
+        <!-- Resource Details Card -->
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 2px solid #e5e7eb;">
                 <div style="flex: 1;">
-                    <h1 style="font-size: 1.75rem; font-weight: 800; margin-bottom: 0.5rem; line-height: 1.2;">
-                        {{ $resource->title }}
-                    </h1>
-                    <div class="category-badge-large category-{{ $resource->category }}">
-                        {{ $resource->category_label }}
+                    <h1 style="font-size: 1.5rem; font-weight: 700; color: var(--navy); margin: 0 0 0.75rem 0;">{{ $resource->title }}</h1>
+                    <div style="display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap;">
+                        @if($resource->is_active)
+                            <span class="modern-badge modern-badge-success"><i class="bi bi-eye-fill"></i> Active</span>
+                        @else
+                            <span class="modern-badge modern-badge-secondary"><i class="bi bi-eye-slash-fill"></i> Inactive</span>
+                        @endif
+                        
+                        @php
+                            $categoryBadge = match($resource->category) {
+                                'hrg' => 'info',
+                                'handbook' => 'success',
+                                'gender_dev' => 'warning',
+                                'future_me' => 'primary',
+                                default => 'secondary'
+                            };
+                            $categoryIcon = match($resource->category) {
+                                'hrg' => 'book',
+                                'handbook' => 'journal-text',
+                                'gender_dev' => 'gender-ambiguous',
+                                'future_me' => 'compass',
+                                default => 'folder'
+                            };
+                        @endphp
+                        <span class="modern-badge modern-badge-{{ $categoryBadge }}"><i class="bi bi-{{ $categoryIcon }}"></i> {{ $resource->category_label }}</span>
                     </div>
-                </div>
-                <div style="display: flex; gap: 0.5rem;">
-                    @if($resource->is_active)
-                        <span class="badge" style="background: rgba(255, 255, 255, 0.2); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem;">
-                            <i class="bi bi-eye me-1"></i>Active
-                        </span>
-                    @else
-                        <span class="badge" style="background: rgba(255, 255, 255, 0.2); color: white; padding: 0.5rem 1rem; border-radius: 20px; font-size: 0.8rem;">
-                            <i class="bi bi-eye-slash me-1"></i>Inactive
-                        </span>
-                    @endif
                 </div>
             </div>
-            
+
+            <!-- Info Grid -->
+            <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; margin-bottom: 1.5rem;">
+                <div style="background: #f9fafb; border-radius: 12px; padding: 1rem;">
+                    <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">Uploaded By</div>
+                    <div style="display: flex; align-items: center; gap: 0.75rem;">
+                        <div class="modern-section-icon" style="width: 36px; height: 36px; background: linear-gradient(135deg, var(--green), var(--green-dark)); color: white; font-size: 0.8rem; font-weight: 700;">
+                            {{ strtoupper(substr($resource->uploader->name, 0, 2)) }}
+                        </div>
+                        <strong style="color: var(--navy);">{{ $resource->uploader->name }}</strong>
+                    </div>
+                </div>
+
+                <div style="background: #f9fafb; border-radius: 12px; padding: 1rem;">
+                    <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.5rem;">
+                        <i class="bi bi-calendar"></i> Uploaded
+                    </div>
+                    <strong style="color: var(--navy);">{{ $resource->created_at->format('M d, Y h:i A') }}</strong>
+                </div>
+            </div>
+
+            <!-- Description -->
             @if($resource->description)
-                <p style="font-size: 1rem; line-height: 1.6; margin: 0; opacity: 0.95;">
-                    {{ $resource->description }}
-                </p>
+            <div style="margin-bottom: 1.5rem;">
+                <h6 style="font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.75rem;">
+                    <i class="bi bi-text-paragraph me-2"></i>Description
+                </h6>
+                <p style="margin: 0; color: #4b5563; line-height: 1.6; white-space: pre-wrap;">{{ $resource->description }}</p>
+            </div>
             @endif
-        </div>
-        
-        <!-- File Preview -->
-        <div class="modern-card" style="padding: 0;">
-            <div class="file-preview-card">
-                <div style="margin-bottom: 1.5rem;">
-                    @php
-                        $fileIcon = match(strtolower($resource->file_type)) {
-                            'pdf' => 'bi-file-earmark-pdf-fill text-danger',
-                            'doc', 'docx' => 'bi-file-earmark-word-fill text-primary',
-                            'ppt', 'pptx' => 'bi-file-earmark-ppt-fill text-warning',
-                            'jpg', 'jpeg', 'png' => 'bi-file-earmark-image-fill text-success',
-                            default => 'bi-file-earmark text-muted'
-                        };
-                    @endphp
-                    <i class="bi {{ $fileIcon }}" style="font-size: 4rem;"></i>
+
+            <!-- File Preview -->
+            <div style="background: linear-gradient(135deg, rgba(30, 122, 74, 0.05), rgba(30, 122, 74, 0.02)); border: 2px dashed rgba(30, 122, 74, 0.2); border-radius: 12px; padding: 2rem; text-align: center; margin-bottom: 1.5rem;">
+                @php
+                    $fileIcon = match(strtolower($resource->file_type)) {
+                        'pdf' => 'bi-file-earmark-pdf-fill text-danger',
+                        'doc', 'docx' => 'bi-file-earmark-word-fill text-primary',
+                        'ppt', 'pptx' => 'bi-file-earmark-ppt-fill text-warning',
+                        'jpg', 'jpeg', 'png' => 'bi-file-earmark-image-fill text-success',
+                        default => 'bi-file-earmark text-muted'
+                    };
+                @endphp
+                <i class="bi {{ $fileIcon }}" style="font-size: 3rem; margin-bottom: 1rem;"></i>
+                <h4 style="font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem;">{{ $resource->file_name }}</h4>
+                <div style="display: flex; justify-content: center; gap: 1.5rem; font-size: 0.875rem; color: var(--text-muted);">
+                    <span><strong>Type:</strong> {{ strtoupper($resource->file_type) }}</span>
+                    <span><strong>Size:</strong> {{ $resource->formatted_file_size }}</span>
                 </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+                <a href="{{ route('counselor.resources.download', $resource) }}" 
+                   class="modern-btn modern-btn-primary" style="flex: 1; justify-content: center; min-width: 150px;">
+                    <i class="bi bi-download"></i> Download
+                </a>
                 
-                <h3 style="font-size: 1.25rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem;">
-                    {{ $resource->file_name }}
-                </h3>
+                <button type="button" class="modern-btn modern-btn-secondary toggle-status" 
+                        data-id="{{ $resource->id }}"
+                        data-status="{{ $resource->is_active ? 'deactivate' : 'activate' }}"
+                        style="flex: 1; justify-content: center; min-width: 150px;">
+                    <i class="bi bi-{{ $resource->is_active ? 'eye-slash' : 'eye' }}"></i>
+                    {{ $resource->is_active ? 'Deactivate' : 'Activate' }}
+                </button>
                 
-                <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 2rem; font-size: 0.875rem; color: var(--text-muted);">
-                    <div>
-                        <strong>Type:</strong> {{ strtoupper($resource->file_type) }}
-                    </div>
-                    <div>
-                        <strong>Size:</strong> {{ $resource->formatted_file_size }}
-                    </div>
-                </div>
-                
-                <div class="resource-actions" style="display: flex; gap: 1rem; justify-content: center;">
-                    <a href="{{ route('counselor.resources.download', $resource) }}" 
-                       class="modern-btn modern-btn-primary" style="padding: 0.75rem 2rem;">
-                        <i class="bi bi-download"></i> Download File
-                    </a>
-                    
-                    <button type="button" class="modern-btn modern-btn-secondary toggle-status" 
-                            data-id="{{ $resource->id }}"
-                            data-status="{{ $resource->is_active ? 'deactivate' : 'activate' }}"
-                            style="padding: 0.75rem 2rem;">
-                        <i class="bi bi-{{ $resource->is_active ? 'eye-slash' : 'eye' }}"></i>
-                        {{ $resource->is_active ? 'Deactivate' : 'Activate' }}
+                <form action="{{ route('counselor.resources.destroy', $resource) }}" method="POST" class="delete-form" style="flex: 1; min-width: 150px;">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="modern-btn modern-btn-outline" style="width: 100%; justify-content: center; color: #dc2626; border-color: #dc2626;">
+                        <i class="bi bi-trash"></i> Delete
                     </button>
-                    
-                    <form action="{{ route('counselor.resources.destroy', $resource) }}" method="POST" class="d-inline delete-form">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="modern-btn" style="background: #fee2e2; color: #dc2626; border: 1px solid #fecaca; padding: 0.75rem 2rem;">
-                            <i class="bi bi-trash"></i> Delete
-                        </button>
-                    </form>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-    
+
     <!-- Sidebar -->
     <div>
-        <!-- Resource Metadata -->
-        <div class="modern-card" style="padding: 0; margin-bottom: 1.5rem;">
-            <div style="padding: 1.5rem; border-bottom: 1px solid #e5e7eb;">
-                <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--navy); margin: 0;">
-                    <i class="bi bi-info-circle me-2" style="color: var(--green);"></i>
-                    Resource Information
-                </h3>
-            </div>
-            <div class="resource-meta">
-                <div class="resource-meta-item">
-                    <span style="font-weight: 600; color: var(--navy);">Uploaded By</span>
-                    <span style="color: var(--text-muted);">{{ $resource->uploader->name }}</span>
-                </div>
-                <div class="resource-meta-item">
-                    <span style="font-weight: 600; color: var(--navy);">Upload Date</span>
-                    <span style="color: var(--text-muted);">{{ $resource->created_at->format('M j, Y \a\t g:i A') }}</span>
-                </div>
-                <div class="resource-meta-item">
-                    <span style="font-weight: 600; color: var(--navy);">Last Modified</span>
-                    <span style="color: var(--text-muted);">{{ $resource->updated_at->format('M j, Y \a\t g:i A') }}</span>
-                </div>
-                <div class="resource-meta-item">
-                    <span style="font-weight: 600; color: var(--navy);">Status</span>
+        <!-- Resource Info -->
+        <div class="modern-card" style="padding: 1.5rem; margin-bottom: 1.5rem;">
+            <h3 style="font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem;">
+                <i class="bi bi-info-circle me-2" style="color: var(--green);"></i>Resource Info
+            </h3>
+            
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+                <div>
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Status</div>
                     @if($resource->is_active)
                         <span class="modern-badge modern-badge-success">Active</span>
                     @else
                         <span class="modern-badge modern-badge-secondary">Inactive</span>
                     @endif
                 </div>
-                <div class="resource-meta-item">
-                    <span style="font-weight: 600; color: var(--navy);">Category</span>
-                    <span style="color: var(--text-muted);">{{ $resource->category_label }}</span>
+                
+                <div>
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Category</div>
+                    <strong style="color: var(--navy); font-size: 0.9rem;">{{ $resource->category_label }}</strong>
                 </div>
-                <div class="resource-meta-item">
-                    <span style="font-weight: 600; color: var(--navy);">File Size</span>
-                    <span style="color: var(--text-muted);">{{ $resource->formatted_file_size }}</span>
+                
+                <div>
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">File Size</div>
+                    <strong style="color: var(--navy); font-size: 0.9rem;">{{ $resource->formatted_file_size }}</strong>
+                </div>
+                
+                <div>
+                    <div style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 0.25rem;">Last Modified</div>
+                    <strong style="color: var(--navy); font-size: 0.9rem;">{{ $resource->updated_at->format('M d, Y') }}</strong>
                 </div>
             </div>
         </div>
@@ -232,32 +170,18 @@
         <!-- Quick Actions -->
         <div class="modern-card" style="padding: 1.5rem;">
             <h4 style="font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 1rem;">
-                <i class="bi bi-lightning me-2" style="color: var(--green);"></i>
-                Quick Actions
+                <i class="bi bi-lightning me-2" style="color: var(--green);"></i>Quick Actions
             </h4>
             
-            <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                <a href="{{ route('counselor.resources.download', $resource) }}" 
-                   class="modern-btn modern-btn-outline" style="justify-content: start; text-align: left;">
-                    <i class="bi bi-download me-2"></i> Download File
-                </a>
-                
-                <button type="button" class="modern-btn modern-btn-outline toggle-status" 
-                        data-id="{{ $resource->id }}"
-                        data-status="{{ $resource->is_active ? 'deactivate' : 'activate' }}"
-                        style="justify-content: start; text-align: left;">
-                    <i class="bi bi-{{ $resource->is_active ? 'eye-slash' : 'eye' }} me-2"></i>
-                    {{ $resource->is_active ? 'Deactivate Resource' : 'Activate Resource' }}
-                </button>
-                
+            <div style="display: flex; flex-direction: column; gap: 0.625rem;">
                 <a href="{{ route('counselor.resources.index') }}" 
-                   class="modern-btn modern-btn-outline" style="justify-content: start; text-align: left;">
-                    <i class="bi bi-list me-2"></i> View All Resources
+                   class="modern-btn modern-btn-outline" style="justify-content: start; font-size: 0.875rem;">
+                    <i class="bi bi-list me-2"></i> All Resources
                 </a>
                 
                 <a href="{{ route('counselor.resources.create') }}" 
-                   class="modern-btn modern-btn-outline" style="justify-content: start; text-align: left;">
-                    <i class="bi bi-plus-circle me-2"></i> Upload New Resource
+                   class="modern-btn modern-btn-outline" style="justify-content: start; font-size: 0.875rem;">
+                    <i class="bi bi-plus-circle me-2"></i> Upload New
                 </a>
             </div>
         </div>

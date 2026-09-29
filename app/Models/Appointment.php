@@ -8,10 +8,12 @@ class Appointment extends Model
 {
     protected $fillable = [
         'student_id',
+        'client_name',
         'counselor_id',
         'concern_id',
         'requester_type',
         'appointment_date',
+        'purpose',
         'status',
         'notes',
         'cancellation_reason'
@@ -24,6 +26,17 @@ class Appointment extends Model
     public function student()
     {
         return $this->belongsTo(User::class, 'student_id');
+    }
+
+    /**
+     * Display name for the client of this appointment.
+     * Falls back to client_name when no student account is linked (walk-in clients).
+     */
+    public function getClientDisplayNameAttribute(): string
+    {
+        return $this->student?->name
+            ?? $this->client_name
+            ?? 'Unknown Client';
     }
 
     public function counselor()

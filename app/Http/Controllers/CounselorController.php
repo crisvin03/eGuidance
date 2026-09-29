@@ -167,10 +167,12 @@ class CounselorController extends Controller
             $search = $request->search;
             $studentQuery->where(function($q) use ($search) {
                 $q->whereHas('student', fn($s) => $s->where('name', 'like', "%{$search}%"))
+                  ->orWhere('client_name', 'like', "%{$search}%")
                   ->orWhere('notes', 'like', "%{$search}%");
             });
             $teacherQuery->where(function($q) use ($search) {
                 $q->whereHas('student', fn($s) => $s->where('name', 'like', "%{$search}%"))
+                  ->orWhere('client_name', 'like', "%{$search}%")
                   ->orWhere('notes', 'like', "%{$search}%");
             });
         }
@@ -207,7 +209,7 @@ class CounselorController extends Controller
     public function storeAppointment(Request $request)
     {
         $request->validate([
-            'student_id' => 'required|exists:users,id',
+            'client_name' => 'required|string|max:255',
             'appointment_date' => 'required|date|after_or_equal:today',
             'appointment_time' => 'required',
             'purpose' => 'nullable|string|max:255',
@@ -219,7 +221,8 @@ class CounselorController extends Controller
         $appointmentDateTime = $request->appointment_date . ' ' . $request->appointment_time;
 
         $appointment = Appointment::create([
-            'student_id' => $request->student_id,
+            'student_id' => null, // No student linked
+            'client_name' => $request->client_name,
             'counselor_id' => Auth::id(),
             'appointment_date' => $appointmentDateTime,
             'purpose' => $request->purpose,
@@ -250,7 +253,7 @@ class CounselorController extends Controller
             ]);
 
             // Send email notification when appointment is confirmed
-            if ($request->status === 'confirmed') {
+            if ($request->status === 'confirmed' && $appointment->student) {
                 $appointment->load(['student', 'counselor', 'concern']);
                 try {
                     Mail::to($appointment->student->email)->send(new AppointmentConfirmed($appointment));
@@ -841,22 +844,35 @@ class CounselorController extends Controller
 
         $events = $appointments->map(function($appointment) {
             $colors = [
-                'scheduled' => '#3b82f6',
+                'scheduled' => '#1e7a4a',
                 'confirmed' => '#22c55e',
                 'pending' => '#f59e0b',
                 'cancelled' => '#ef4444',
                 'completed' => '#6366f1',
             ];
 
+            // Get client name - either from student relationship or manual entry
+            $clientName = $appointment->student 
+                ? $appointment->student->name 
+                : ($appointment->client_name ?? 'Unknown Client');
+
+            // Build title
+            $title = $appointment->concern 
+                ? $appointment->concern->title 
+                : ($appointment->purpose 
+                    ? $appointment->purpose . ' - ' . $clientName
+                    : 'Appointment with ' . $clientName);
+
             return [
                 'id' => $appointment->id,
-                'title' => $appointment->concern ? $appointment->concern->title : 'Appointment with ' . $appointment->student->name,
+                'title' => $title,
                 'start' => $appointment->appointment_date->toIso8601String(),
                 'backgroundColor' => $colors[$appointment->status] ?? '#6b7280',
                 'borderColor' => $colors[$appointment->status] ?? '#6b7280',
                 'extendedProps' => [
-                    'student' => $appointment->student->name,
+                    'client' => $clientName,
                     'status' => $appointment->status,
+                    'purpose' => $appointment->purpose,
                 ]
             ];
         });
@@ -947,7 +963,7 @@ class CounselorController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'category' => 'required|in:hrg,handbook,gender_dev',
+            'category' => 'required|in:hrg,handbook,gender_dev,future_me',
             'file' => 'required|file|mimes:pdf,doc,docx,ppt,pptx,txt,jpg,jpeg,png|max:10240', // 10MB max
         ]);
 
@@ -964,6 +980,7 @@ class CounselorController extends Controller
             'file_type' => $file->getClientOriginalExtension(),
             'file_size' => $file->getSize(),
             'uploaded_by' => Auth::id(),
+            'is_active' => $request->has('is_active'),
         ]);
 
         return redirect()->route('counselor.resources.index')

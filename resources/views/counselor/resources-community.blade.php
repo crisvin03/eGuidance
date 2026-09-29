@@ -39,7 +39,7 @@
         </div>
         <div style="flex: 1;">
             <h1 class="modern-page-title" style="font-size: 1.5rem;">Resources & Community</h1>
-            <p class="modern-page-subtitle">Manage teacher resources and review student creative submissions</p>
+            <p class="modern-page-subtitle">Manage resources (teacher & student) and review student creative submissions</p>
         </div>
         <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
             <a href="{{ route('counselor.resources.create') }}" class="modern-btn modern-btn-primary" style="padding: 0.625rem 1.25rem; font-size: 0.875rem;">
@@ -114,31 +114,35 @@
 
 <!-- Main Content Grid -->
 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem;">
-    <!-- Teacher Resources -->
+    <!-- Resources -->
     <div class="modern-card" style="padding: 1.5rem;">
         <div class="modern-section-header">
             <div class="modern-section-icon modern-page-icon-green">
                 <i class="bi bi-book-half"></i>
             </div>
-            <h2 class="modern-section-title" style="flex: 1; font-size: 1.15rem;">Teacher Resources</h2>
+            <h2 class="modern-section-title" style="flex: 1; font-size: 1.15rem;">Resources (Teacher & Student)</h2>
             <a href="{{ route('counselor.resources.index') }}" class="modern-btn modern-btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
                 View All
             </a>
         </div>
 
         <!-- Categories -->
-        <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
-            <div style="text-align: center; padding: 0.875rem; background: rgba(59, 130, 246, 0.05); border-radius: 10px; border: 1px solid rgba(59, 130, 246, 0.1);">
-                <div style="font-size: 1.5rem; font-weight: 800; color: #3b82f6;">{{ $resourcesByCategory['hrg'] }}</div>
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; margin-bottom: 1.5rem;">
+            <div style="text-align: center; padding: 0.875rem; background: rgba(30, 122, 74, 0.08); border-radius: 10px; border: 1px solid rgba(30, 122, 74, 0.15);">
+                <div style="font-size: 1.5rem; font-weight: 800; color: var(--green);">{{ $resourcesByCategory['hrg'] }}</div>
                 <div style="font-size: 0.7rem; font-weight: 600; color: var(--navy); text-transform: uppercase;">HRG</div>
             </div>
-            <div style="text-align: center; padding: 0.875rem; background: rgba(16, 185, 129, 0.05); border-radius: 10px; border: 1px solid rgba(16, 185, 129, 0.1);">
-                <div style="font-size: 1.5rem; font-weight: 800; color: #10b981;">{{ $resourcesByCategory['handbook'] }}</div>
+            <div style="text-align: center; padding: 0.875rem; background: rgba(30, 122, 74, 0.08); border-radius: 10px; border: 1px solid rgba(30, 122, 74, 0.15);">
+                <div style="font-size: 1.5rem; font-weight: 800; color: var(--green);">{{ $resourcesByCategory['handbook'] }}</div>
                 <div style="font-size: 0.7rem; font-weight: 600; color: var(--navy); text-transform: uppercase;">Handbook</div>
             </div>
-            <div style="text-align: center; padding: 0.875rem; background: rgba(139, 92, 246, 0.05); border-radius: 10px; border: 1px solid rgba(139, 92, 246, 0.1);">
-                <div style="font-size: 1.5rem; font-weight: 800; color: #8b5cf6;">{{ $resourcesByCategory['gender_dev'] }}</div>
+            <div style="text-align: center; padding: 0.875rem; background: rgba(30, 122, 74, 0.08); border-radius: 10px; border: 1px solid rgba(30, 122, 74, 0.15);">
+                <div style="font-size: 1.5rem; font-weight: 800; color: var(--green);">{{ $resourcesByCategory['gender_dev'] }}</div>
                 <div style="font-size: 0.7rem; font-weight: 600; color: var(--navy); text-transform: uppercase;">Gender Dev</div>
+            </div>
+            <div style="text-align: center; padding: 0.875rem; background: rgba(30, 122, 74, 0.08); border-radius: 10px; border: 1px solid rgba(30, 122, 74, 0.15);">
+                <div style="font-size: 1.5rem; font-weight: 800; color: var(--green);">{{ $resourcesByCategory['future_me'] ?? 0 }}</div>
+                <div style="font-size: 0.7rem; font-weight: 600; color: var(--navy); text-transform: uppercase;">Future Me</div>
             </div>
         </div>
 

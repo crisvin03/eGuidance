@@ -46,7 +46,7 @@
                             <p style="margin:0 0 20px;color:#6b7280;font-size:14px;">Your counseling session has been officially confirmed.</p>
 
                             <p style="margin:0 0 20px;color:#374151;font-size:15px;line-height:1.6;">
-                                Dear <strong style="color:#1a3a3a;">{{ $appointment->student->name }}</strong>,
+                                Dear <strong style="color:#1a3a3a;">{{ $appointment->client_display_name }}</strong>,
                                 <br>great news! Your counseling appointment has been confirmed by your counselor. Please review the details below.
                             </p>
 

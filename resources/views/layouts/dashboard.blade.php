@@ -1000,6 +1000,77 @@
         .modal-body *, .modal-header *, .modal-footer * {
             pointer-events: auto !important;
         }
+        
+        /* ========================================
+           GLOBAL MODAL FIX - PREVENT BLOCKING ISSUE
+           ======================================== */
+        
+        /* Force modals to highest z-index */
+        .modal {
+            z-index: 999999 !important;
+        }
+        
+        .modal-backdrop {
+            z-index: 999998 !important;
+            pointer-events: none !important;
+            background-color: rgba(0, 0, 0, 0.3) !important; /* Lighter backdrop */
+        }
+        
+        .modal-backdrop.show {
+            pointer-events: none !important;
+            opacity: 0.3 !important; /* Much lighter - was 0.5 */
+        }
+        
+        /* Make modal dialog and all children clickable */
+        .modal-dialog {
+            z-index: 1000000 !important;
+            position: relative;
+            pointer-events: auto !important;
+        }
+        
+        .modal-content {
+            z-index: 1000001 !important;
+            pointer-events: auto !important;
+            position: relative;
+        }
+        
+        .modal-header,
+        .modal-body,
+        .modal-footer {
+            z-index: 1000002 !important;
+            pointer-events: auto !important;
+            position: relative;
+        }
+        
+        /* Make ALL interactive elements in modals clickable */
+        .modal button,
+        .modal input,
+        .modal select,
+        .modal textarea,
+        .modal a,
+        .modal label,
+        .modal .btn,
+        .modal .btn-close,
+        .modal .form-control,
+        .modal .form-select,
+        .modal .form-check,
+        .modal .form-check-input,
+        .modal .form-check-label {
+            z-index: 1000003 !important;
+            pointer-events: auto !important;
+            position: relative;
+        }
+        
+        /* Ensure modal shows properly */
+        .modal.show {
+            display: flex !important;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.show .modal-dialog {
+            pointer-events: auto !important;
+        }
     </style>
 </head>
 <body>
@@ -1085,10 +1156,11 @@
                             <i class="bi bi-calendar3"></i>
                             <span class="nav-link-text">My Appointments</span>
                         </a>
-                        <a href="{{ route('student.forms.index') }}" class="nav-link @if(request()->is('student/forms*')) active @endif">
+                        {{-- Temporarily hidden --}}
+                        {{-- <a href="{{ route('student.forms.index') }}" class="nav-link @if(request()->is('student/forms*')) active @endif">
                             <i class="bi bi-file-earmark-text"></i>
                             <span class="nav-link-text">My Forms</span>
-                        </a>
+                        </a> --}}
                     </div>
 
                     
@@ -1269,10 +1341,6 @@
                             @endif
                         </a>
                     </div>
-
-                    <div class="nav-section" style="margin-bottom:0.75rem;">
-                        <div class="nav-section-title">Account</div>
-                        <a href="{{ route('settings') }}" class="nav-link @if(request()->is('settings')) active @endif" style="padding:0.5rem 1.5rem;font-size:0.83rem;">
 
                 @elseif(Auth::user()->isAdmin())
                     <div class="nav-section">

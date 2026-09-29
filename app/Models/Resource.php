@@ -40,6 +40,7 @@ class Resource extends Model
             'hrg' => 'Home Room Guidance (HRG)',
             'handbook' => 'Handbook & Policies',
             'gender_dev' => 'Gender and Development Corner',
+            'future_me' => 'Future Me',
             default => $this->category
         };
     }
