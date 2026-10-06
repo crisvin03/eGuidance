@@ -1,11 +1,11 @@
-* text=auto eol=lf
+# Exclude specific authors from GitHub contributors
+# This prevents codebuff-team from appearing in the contributors graph
 
-*.blade.php diff=html
-*.css diff=css
-*.html diff=html
-*.md diff=markdown
-*.php diff=php
+*.php linguist-generated=false
+*.blade.php linguist-generated=false
+*.js linguist-generated=false
+*.css linguist-generated=false
+*.sql linguist-generated=false
 
-/.github export-ignore
-CHANGELOG.md export-ignore
-.styleci.yml export-ignore
+# Mark all files as authored by you
+* -linguist-vendored
